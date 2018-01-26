@@ -1,2 +1,2 @@
 #Opedia
-Ocean DB2
+Ocean DB
