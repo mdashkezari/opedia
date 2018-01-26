@@ -1,0 +1,95 @@
+unit untCommonDB;
+
+interface
+
+Uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils,
+  System.Variants, System.Classes, untMain, Vcl.Graphics,Vcl.Controls, Vcl.Forms,
+  Vcl.Dialogs, Vcl.StdCtrls, Data.DB, Registry, DateUtils, Math, Data.Win.ADODB;
+
+Type
+  TVar=Record
+    ID:integer;
+    DB:String;
+    Dataset:String;
+    Table_Name:String;
+    Short_Name:String;
+    Long_Name: String;
+    Temporal_Resolution:String;
+    Spatial_Resolution:String;
+    Temporal_Coverage_Begin:String;
+    Temporal_Coverage_End:String;
+    Lat_Coverage_Begin:String;
+    Lat_Coverage_End:String;
+    Lon_Coverage_Begin:String;
+    Lon_Coverage_End:String;
+    Grid_Mapping:String;
+    Make:String;
+    Sensor:String;
+    Process:String;
+end;
+
+function GetVariable(VarID:integer):TVar;
+
+implementation
+
+function NullToStr(val:Variant):String;
+begin
+  if val=Null then
+    Result:=''
+  else
+    Result:=val
+end;
+
+function GetVariable(VarID:integer):TVar;
+var
+  qryDynamic: TADOQuery;
+begin
+  try
+    qryDynamic:=TADOQuery.Create(nil);
+    qryDynamic.Connection:=frmMain.OpediaDB;
+    with qryDynamic do
+    begin
+      SQL.Text:='SELECT * FROM tblVariables '+
+      'JOIN tblDatasets ON [tblVariables].Dataset_ID=[tblDatasets].ID '+
+      'JOIN tblTemporal_Resolutions ON [tblVariables].Temporal_Res_ID=[tblTemporal_Resolutions].ID '+
+      'JOIN tblSpatial_Resolutions ON [tblVariables].Spatial_Res_ID=[tblSpatial_Resolutions].ID '+
+      'JOIN tblMakes ON [tblVariables].Make_ID=[tblMakes].ID '+
+      'JOIN tblSensors ON [tblVariables].Sensor_ID=[tblSensors].ID '+
+      'JOIN tblProcess_Stages ON [tblVariables].Process_ID=[tblProcess_Stages].ID '+
+      'WHERE [tblVariables].ID=' + IntToStr(varID);
+      Open;
+      if Recordset.RecordCount<>1 then
+      begin
+        MessageDlg('Variable error, ID: '+IntToStr(VarID), mtError, [mbok], 0);
+        Exit;
+      end;
+      with Result do
+      begin
+        ID:=FieldValues['ID'];
+        DB:=Trim(FieldValues['DB']);
+        Dataset:=Trim(FieldValues['Dataset_Name']);
+        Table_Name:=Trim(FieldValues['Table_Name']);
+        Short_Name:=Trim(FieldValues['Short_Name']);
+        Long_Name:=Trim(FieldValues['Long_Name']);
+        Temporal_Resolution:=Trim(FieldValues['Temporal_Resolution']);
+        Spatial_Resolution:=Trim(FieldValues['Spatial_Resolution']);
+        Temporal_Coverage_Begin:=Trim(NullToStr(FieldValues['Temporal_Coverage_Begin']));
+        Temporal_Coverage_End:=Trim(NullToStr(FieldValues['Temporal_Coverage_End']));
+        Lat_Coverage_Begin:=Trim(NullToStr(FieldValues['Lat_Coverage_Begin']));
+        Lat_Coverage_End:=Trim(NullToStr(FieldValues['Lat_Coverage_End']));
+        Lon_Coverage_Begin:=Trim(NullToStr(FieldValues['Lon_Coverage_Begin']));
+        Lon_Coverage_End:=Trim(NullToStr(FieldValues['Lon_Coverage_End']));
+        Grid_Mapping:=Trim(NullToStr(FieldValues['Grid_Mapping']));
+        Make:=Trim(FieldValues['Make']);
+        Sensor:=Trim(FieldValues['Sensor']);
+        Process:=Trim(FieldValues['Process_Stage_Long']);
+      end;
+      Close;
+    end;
+  finally
+    qryDynamic.Free;
+  end;
+end;
+
+end.

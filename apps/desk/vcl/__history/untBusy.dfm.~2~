@@ -1,0 +1,32 @@
+object frmBusy: TfrmBusy
+  Left = 0
+  Top = 0
+  AlphaBlendValue = 80
+  BorderStyle = bsNone
+  ClientHeight = 100
+  ClientWidth = 100
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  Position = poOwnerFormCenter
+  PixelsPerInch = 96
+  TextHeight = 13
+  object AdvWiiProgressBar1: TAdvWiiProgressBar
+    Left = 0
+    Top = 0
+    Width = 100
+    Height = 100
+    Align = alClient
+    Appearance.BlockBorderColorActive = clNone
+    Appearance.BlockColor = 15650560
+    Padding = 4
+    ExplicitLeft = 40
+    ExplicitTop = 8
+    ExplicitWidth = 50
+    ExplicitHeight = 50
+  end
+end

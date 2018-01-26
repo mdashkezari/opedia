@@ -1,0 +1,434 @@
+unit untFilter;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, cxGraphics, cxControls, cxLookAndFeels,
+  cxLookAndFeelPainters, cxStyles, dxSkinsCore, dxSkinBlack, dxSkinBlue,
+  dxSkinBlueprint, dxSkinCaramel, dxSkinCoffee, dxSkinDarkRoom, dxSkinDarkSide,
+  dxSkinDevExpressDarkStyle, dxSkinDevExpressStyle, dxSkinFoggy,
+  dxSkinGlassOceans, dxSkinHighContrast, dxSkiniMaginary, dxSkinLilian,
+  dxSkinLiquidSky, dxSkinLondonLiquidSky, dxSkinMcSkin, dxSkinMetropolis,
+  dxSkinMetropolisDark, dxSkinMoneyTwins, dxSkinOffice2007Black,
+  dxSkinOffice2007Blue, dxSkinOffice2007Green, dxSkinOffice2007Pink,
+  dxSkinOffice2007Silver, dxSkinOffice2010Black, dxSkinOffice2010Blue,
+  dxSkinOffice2010Silver, dxSkinOffice2013DarkGray, dxSkinOffice2013LightGray,
+  dxSkinOffice2013White, dxSkinOffice2016Colorful, dxSkinOffice2016Dark,
+  dxSkinPumpkin, dxSkinSeven, dxSkinSevenClassic, dxSkinSharp, dxSkinSharpPlus,
+  dxSkinSilver, dxSkinSpringTime, dxSkinStardust, dxSkinSummer2008,
+  dxSkinTheAsphaltWorld, dxSkinsDefaultPainters, dxSkinValentine,
+  dxSkinVisualStudio2013Blue, dxSkinVisualStudio2013Dark,
+  dxSkinVisualStudio2013Light, dxSkinVS2010, dxSkinWhiteprint,
+  dxSkinXmas2008Blue, dxSkinscxPCPainter, cxCustomData, cxFilter, cxData,
+  cxDataStorage, cxEdit, cxNavigator, Data.DB, cxDBData, Data.Win.ADODB,
+  cxGridLevel, cxClasses, cxGridCustomView, cxGridCustomTableView,
+  cxGridTableView, cxGridDBTableView, cxGrid, cxContainer, cxTextEdit, cxDBEdit,
+  cxMemo, cxListBox, cxLabel, cxSplitter, cxScrollBox, AdvListEditor,
+  cxCheckBox, dxToggleSwitch, cxGroupBox, cxMaskEdit, cxDropDownEdit, cxSpinEdit,
+  strUtils;
+
+type
+  TfrmFilter = class(TForm)
+    gryVars: TADOQuery;
+    dsVars: TDataSource;
+    cxScrollBox1: TcxScrollBox;
+    cxSplitter1: TcxSplitter;
+    cxScrollBox2: TcxScrollBox;
+    grdVars: TcxGrid;
+    grdVarsDBTableView1: TcxGridDBTableView;
+    grdVarsDBTableView1Variable: TcxGridDBColumn;
+    grdVarsDBTableView1LongName: TcxGridDBColumn;
+    grdVarsDBTableView1Unit: TcxGridDBColumn;
+    grdVarsDBTableView1Make: TcxGridDBColumn;
+    grdVarsDBTableView1Sensor: TcxGridDBColumn;
+    grdVarsDBTableView1processLevel: TcxGridDBColumn;
+    grdVarsDBTableView1StudyDomain: TcxGridDBColumn;
+    grdVarsDBTableView1TemporalResolution: TcxGridDBColumn;
+    grdVarsDBTableView1SpatialResolution: TcxGridDBColumn;
+    grdVarsDBTableView1DatasetName: TcxGridDBColumn;
+    grdVarsDBTableView1DataSource: TcxGridDBColumn;
+    grdVarsDBTableView1Distributor: TcxGridDBColumn;
+    grdVarsLevel1: TcxGridLevel;
+    cxScrollBox3: TcxScrollBox;
+    dbmemDataset_Description: TcxDBMemo;
+    dbmemComment: TcxDBMemo;
+    dbedtData_Source: TcxDBTextEdit;
+    dbedtDataset_ID: TcxDBTextEdit;
+    memReferences: TcxMemo;
+    dbedtDistributor: TcxDBTextEdit;
+    dbmemDatasetName: TcxDBMemo;
+    cxLabel1: TcxLabel;
+    cxLabel2: TcxLabel;
+    cxLabel3: TcxLabel;
+    cxLabel4: TcxLabel;
+    cxLabel5: TcxLabel;
+    cxLabel6: TcxLabel;
+    dbedtVarID: TcxDBTextEdit;
+    cxSplitter2: TcxSplitter;
+    ledtVars: TAdvListEditor;
+    gbYear: TcxGroupBox;
+    tsYear: TdxToggleSwitch;
+    cxLabel7: TcxLabel;
+    cxLabel8: TcxLabel;
+    gbRegion: TcxGroupBox;
+    tsRegion: TdxToggleSwitch;
+    edtLat1: TcxTextEdit;
+    edtLat2: TcxTextEdit;
+    edtLon1: TcxTextEdit;
+    edtLon2: TcxTextEdit;
+    cbRegion: TcxComboBox;
+    cxLabel11: TcxLabel;
+    cxLabel12: TcxLabel;
+    cxLabel13: TcxLabel;
+    cxLabel14: TcxLabel;
+    speYear1: TcxSpinEdit;
+    speYear2: TcxSpinEdit;
+    gbMonth: TcxGroupBox;
+    tsMonth: TdxToggleSwitch;
+    cxLabel9: TcxLabel;
+    cxLabel10: TcxLabel;
+    gbDay: TcxGroupBox;
+    tsDay: TdxToggleSwitch;
+    cxLabel15: TcxLabel;
+    cxLabel16: TcxLabel;
+    speDay1: TcxSpinEdit;
+    speDay2: TcxSpinEdit;
+    cbMonth1: TcxComboBox;
+    cbMonth2: TcxComboBox;
+    gbSLA: TcxGroupBox;
+    tsSLA: TdxToggleSwitch;
+    cxLabel17: TcxLabel;
+    cxLabel18: TcxLabel;
+    edtSLA1: TcxTextEdit;
+    edtSLA2: TcxTextEdit;
+    gbADT: TcxGroupBox;
+    tsADT: TdxToggleSwitch;
+    cxLabel19: TcxLabel;
+    cxLabel20: TcxLabel;
+    edtADT1: TcxTextEdit;
+    edtADT2: TcxTextEdit;
+    gbSST: TcxGroupBox;
+    tsSST: TdxToggleSwitch;
+    cxLabel21: TcxLabel;
+    cxLabel22: TcxLabel;
+    edtSST1: TcxTextEdit;
+    edtSST2: TcxTextEdit;
+    gbCHL: TcxGroupBox;
+    tsCHL: TdxToggleSwitch;
+    cxLabel23: TcxLabel;
+    cxLabel24: TcxLabel;
+    edtCHL1: TcxTextEdit;
+    edtCHL2: TcxTextEdit;
+    gbWindStress: TcxGroupBox;
+    tsWindStress: TdxToggleSwitch;
+    cxLabel25: TcxLabel;
+    cxLabel26: TcxLabel;
+    edtWindStress1: TcxTextEdit;
+    edtWindStress2: TcxTextEdit;
+    gbVorticity: TcxGroupBox;
+    tsVorticity: TdxToggleSwitch;
+    cxLabel27: TcxLabel;
+    cxLabel28: TcxLabel;
+    edtVort1: TcxTextEdit;
+    edtVort2: TcxTextEdit;
+    gbFe: TcxGroupBox;
+    tsFe: TdxToggleSwitch;
+    cxLabel29: TcxLabel;
+    cxLabel30: TcxLabel;
+    edtFe1: TcxTextEdit;
+    edtFe2: TcxTextEdit;
+    gbPP: TcxGroupBox;
+    tsPP: TdxToggleSwitch;
+    cxLabel31: TcxLabel;
+    cxLabel32: TcxLabel;
+    edtPP1: TcxTextEdit;
+    edtPP2: TcxTextEdit;
+    gbSi: TcxGroupBox;
+    tsSi: TdxToggleSwitch;
+    cxLabel33: TcxLabel;
+    cxLabel34: TcxLabel;
+    edtSi1: TcxTextEdit;
+    edtSi2: TcxTextEdit;
+    gbNO3: TcxGroupBox;
+    tsNO3: TdxToggleSwitch;
+    cxLabel35: TcxLabel;
+    cxLabel36: TcxLabel;
+    edtNO3_1: TcxTextEdit;
+    edtNO3_2: TcxTextEdit;
+    gbPHYC: TcxGroupBox;
+    tsPHYC: TdxToggleSwitch;
+    cxLabel37: TcxLabel;
+    cxLabel38: TcxLabel;
+    edtPHYC1: TcxTextEdit;
+    edtPHYC2: TcxTextEdit;
+    gbPO4: TcxGroupBox;
+    tsPO4: TdxToggleSwitch;
+    cxLabel39: TcxLabel;
+    cxLabel40: TcxLabel;
+    edtPO4_1: TcxTextEdit;
+    edtPO4_2: TcxTextEdit;
+    gbO2: TcxGroupBox;
+    tsO2: TdxToggleSwitch;
+    cxLabel41: TcxLabel;
+    cxLabel42: TcxLabel;
+    edtO2_1: TcxTextEdit;
+    edtO2_2: TcxTextEdit;
+    gbDepth: TcxGroupBox;
+    tsDepth: TdxToggleSwitch;
+    cxLabel43: TcxLabel;
+    cxLabel44: TcxLabel;
+    edtDepth1: TcxTextEdit;
+    edtDepth2: TcxTextEdit;
+    gbHour: TcxGroupBox;
+    tsHour: TdxToggleSwitch;
+    cxLabel45: TcxLabel;
+    cxLabel46: TcxLabel;
+    speHour1: TcxSpinEdit;
+    speHour2: TcxSpinEdit;
+    gbFTLE: TcxGroupBox;
+    tsFTLE: TdxToggleSwitch;
+    cxLabel47: TcxLabel;
+    cxLabel48: TcxLabel;
+    edtFTLE1: TcxTextEdit;
+    edtFTLE2: TcxTextEdit;
+    gbDisp: TcxGroupBox;
+    tsDisp: TdxToggleSwitch;
+    cxLabel49: TcxLabel;
+    cxLabel50: TcxLabel;
+    edtDisp1: TcxTextEdit;
+    edtDisp2: TcxTextEdit;
+    procedure dbedtDataset_IDPropertiesChange(Sender: TObject);
+    procedure grdVarsDBTableView1CellDblClick(Sender: TcxCustomGridTableView;
+      ACellViewInfo: TcxGridTableDataCellViewInfo; AButton: TMouseButton;
+      AShift: TShiftState; var AHandled: Boolean);
+    procedure FormKeyPress(Sender: TObject; var Key: Char);
+    procedure tsRegionPropertiesEditValueChanged(Sender: TObject);
+    procedure cbRegionPropertiesChange(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmFilter: TfrmFilter;
+
+procedure AddVariable(ID:integer; shortName, longName, keywords:string);
+
+implementation
+
+uses
+  untMain, untCommonDB;
+
+procedure SetRegion(RegionID:integer);
+begin
+  with frmFilter do
+  begin
+    case RegionID of
+      0:begin
+          //cbDomain.Checked:=False;
+          edtlon1.Text:='-180';
+          edtlon2.Text:='180';
+          edtlat1.Text:='-90';
+          edtlat2.Text:='90';
+        end;
+      1:begin      // North Pacific
+          edtlon1.Text:='-216';
+          edtlon2.Text:='-126';
+          edtlat1.Text:='15';
+          edtlat2.Text:='38';
+        end;
+      2:begin      // Tropical Pacific
+          edtlon1.Text:='-234';
+          edtlon2.Text:='-94';
+          edtlat1.Text:='-15';
+          edtlat2.Text:='15';
+        end;
+      3:begin      // South Pacific
+          edtlon1.Text:='-204';
+          edtlon2.Text:='-81';
+          edtlat1.Text:='-50';
+          edtlat2.Text:='-15';
+        end;
+      4:begin      // North Atlantic
+          edtlon1.Text:='-67';
+          edtlon2.Text:='-20';
+          edtlat1.Text:='22';
+          edtlat2.Text:='41';
+        end;
+      5:begin      // Tropical Atlantic
+          edtlon1.Text:='-32.6';
+          edtlon2.Text:='-17.7';
+          edtlat1.Text:='-10';
+          edtlat2.Text:='10';
+        end;
+      6:begin      // South Atlantic
+          edtlon1.Text:='-38';
+          edtlon2.Text:='9';
+          edtlat1.Text:='-15';
+          edtlat2.Text:='-38';
+        end;
+      7:begin      // Tropical Indian
+          edtlon1.Text:='51';
+          edtlon2.Text:='97';
+          edtlat1.Text:='-13';
+          edtlat2.Text:='5';
+        end;
+      8:begin      // Indian Ocean
+          edtlon1.Text:='52.5';
+          edtlon2.Text:='108.7';
+          edtlat1.Text:='-37';
+          edtlat2.Text:='-13';
+        end;
+      9:begin      // Southern Ocean
+          edtlon1.Text:='-180';
+          edtlon2.Text:='180';
+          edtlat1.Text:='-80';
+          edtlat2.Text:='-50';
+        end;
+      10:begin      //  Mediterranean Sea
+          edtlon1.Text:='-5.7';
+          edtlon2.Text:='36.9';
+          edtlat1.Text:='29.4';
+          edtlat2.Text:='41.4';
+        end;
+      11:begin      //  Black Sea
+          edtlon1.Text:='26.3';
+          edtlon2.Text:='43.5';
+          edtlat1.Text:='40.6';
+          edtlat2.Text:='47.5';
+        end;
+      12:begin      //  Caspian Sea
+          edtlon1.Text:='46.45';
+          edtlon2.Text:='54.77';
+          edtlat1.Text:='36.5';
+          edtlat2.Text:='47.5';
+        end;
+      13:begin      // Gulf of Mexico
+          edtlon1.Text:='-99.3';
+          edtlon2.Text:='-81.4';
+          edtlat1.Text:='18.1';
+          edtlat2.Text:='30.8';
+        end;
+      14:begin      // North of Hawaii
+          edtlon1.Text:='-170';
+          edtlon2.Text:='-140';
+          edtlat1.Text:='22.5';
+          edtlat2.Text:='35';
+        end;
+
+    end;
+  end;
+end;
+
+procedure AddVariable(ID:integer; shortName, longName, keywords:string);
+var
+  ind:integer;
+  lv:TAdvListValue;
+begin
+  with frmFilter do
+  begin
+    lv:=ledtVars.Values.Add;
+    lv.DisplayText:=shortName;
+    lv.Value:=longName + ' ' + keywords;
+    lv.Tag:=ID;
+  end;
+end;
+
+procedure AddFilterPanel(varName:string; keywords:string='');
+var
+  ind:integer;
+  lv:TAdvListValue;
+begin
+
+  with frmFilter do
+  begin
+    if ContainsText(LowerCase(keywords), 'model') then
+      gbDepth.Visible:=True;
+    if ContainsText(LowerCase(varName), 'wind') then
+    begin
+      gbHour.Visible:=True;
+      gbWindStress.Visible:=True;
+    end;
+
+    if ContainsText(LowerCase(varName), 'sla') then
+      gbSLA.Visible:=True;
+    if ContainsText(LowerCase(varName), 'adt') then
+      gbADT.Visible:=True;
+    if ContainsText(LowerCase(varName), 'sst') then
+      gbSST.Visible:=True;
+    if ContainsText(LowerCase(varName), 'vort') then
+      gbVorticity.Visible:=True;
+    if ContainsText(LowerCase(varName), 'ftle') then
+      gbFTLE.Visible:=True;
+    if ContainsText(LowerCase(varName), 'disp') then
+      gbDisp.Visible:=True;
+    if ContainsText(LowerCase(varName), 'chl') then
+      gbCHL.Visible:=True;
+
+    if ContainsText(LowerCase(varName), 'fe') then
+      gbFe.Visible:=True;
+    if ContainsText(LowerCase(varName), 'pp') then
+      gbPP.Visible:=True;
+    if ContainsText(LowerCase(varName), 'si') then
+      gbSi.Visible:=True;
+    if ContainsText(LowerCase(varName), 'no3') then
+      gbNO3.Visible:=True;
+    if ContainsText(LowerCase(varName), 'phyc') then
+      gbPHYC.Visible:=True;
+    if ContainsText(LowerCase(varName), 'po4') then
+      gbPO4.Visible:=True;
+    if ContainsText(LowerCase(varName), 'o2') and ContainsText(LowerCase(keywords), 'model') then
+      gbO2.Visible:=True;
+
+  end;
+
+end;
+
+{$R *.dfm}
+
+procedure TfrmFilter.cbRegionPropertiesChange(Sender: TObject);
+begin
+  SetRegion(cbRegion.ItemIndex);
+end;
+
+procedure TfrmFilter.dbedtDataset_IDPropertiesChange(Sender: TObject);
+begin
+  memReferences.Lines:=DatasetReferences(StrToInt(dbedtDataset_ID.Text));
+end;
+
+procedure TfrmFilter.FormKeyPress(Sender: TObject; var Key: Char);
+begin
+  if (Key = #27) then
+    Close;
+end;
+
+procedure TfrmFilter.grdVarsDBTableView1CellDblClick(
+  Sender: TcxCustomGridTableView; ACellViewInfo: TcxGridTableDataCellViewInfo;
+  AButton: TMouseButton; AShift: TShiftState; var AHandled: Boolean);
+var
+  variable: TVar;
+begin
+  variable:=GetVariable(StrToInt(frmFilter.dbedtVarID.Text));
+  AddVariable(variable.ID, variable.Short_Name, variable.Long_Name, variable.Keywords);
+  AddFilterPanel(variable.Short_Name, variable.Keywords);
+end;
+
+procedure TfrmFilter.tsRegionPropertiesEditValueChanged(Sender: TObject);
+var
+  i:integer;
+  act:boolean;
+begin
+  act:=TdxToggleSwitch(Sender).Checked;
+  caption:=IntToStr(TdxToggleSwitch(Sender).Parent.ControlCount-1);
+  for I := 0 to TdxToggleSwitch(Sender).Parent.ControlCount-1 do
+  begin
+    if TdxToggleSwitch(Sender).Parent.Controls[i] is TdxToggleSwitch then
+      Continue;
+    TdxToggleSwitch(Sender).Parent.Controls[i].Enabled:=act;
+  end;
+
+end;
+
+end.

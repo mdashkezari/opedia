@@ -1,0 +1,817 @@
+unit untRegistration;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Data.DB, Data.Win.ADODB, IdStack, IdBaseComponent,
+  IdComponent, IdTCPConnection, IdTCPClient, IdExplicitTLSClientServerBase,
+  IdMessageClient, IdSMTPBase, IdSMTP, IdSSL, IdSSLOpenSSL, IdMessage, IdAttachment, IdAttachmentFile,
+  IdHTTP, DBXJSON, cxGraphics, cxControls, cxLookAndFeels,
+  cxLookAndFeelPainters, dxSkinsCore, dxSkinBlack, dxSkinBlue, dxSkinBlueprint,
+  dxSkinCaramel, dxSkinCoffee, dxSkinDarkRoom, dxSkinDarkSide,
+  dxSkinDevExpressDarkStyle, dxSkinDevExpressStyle, dxSkinFoggy,
+  dxSkinGlassOceans, dxSkinHighContrast, dxSkiniMaginary, dxSkinLilian,
+  dxSkinLiquidSky, dxSkinLondonLiquidSky, dxSkinMcSkin, dxSkinMetropolis,
+  dxSkinMetropolisDark, dxSkinMoneyTwins, dxSkinOffice2007Black,
+  dxSkinOffice2007Blue, dxSkinOffice2007Green, dxSkinOffice2007Pink,
+  dxSkinOffice2007Silver, dxSkinOffice2010Black, dxSkinOffice2010Blue,
+  dxSkinOffice2010Silver, dxSkinOffice2013DarkGray, dxSkinOffice2013LightGray,
+  dxSkinOffice2013White, dxSkinOffice2016Colorful, dxSkinOffice2016Dark,
+  dxSkinPumpkin, dxSkinSeven, dxSkinSevenClassic, dxSkinSharp, dxSkinSharpPlus,
+  dxSkinSilver, dxSkinSpringTime, dxSkinStardust, dxSkinSummer2008,
+  dxSkinTheAsphaltWorld, dxSkinsDefaultPainters, dxSkinValentine,
+  dxSkinVisualStudio2013Blue, dxSkinVisualStudio2013Dark,
+  dxSkinVisualStudio2013Light, dxSkinVS2010, dxSkinWhiteprint,
+  dxSkinXmas2008Blue, Vcl.Menus, cxContainer, cxEdit, cxTextEdit, cxMaskEdit,
+  cxDropDownEdit, cxLabel, cxGroupBox, Vcl.StdCtrls, cxButtons, cxSplitter,
+  cxScrollBox, Vcl.ExtCtrls, cxMemo, cxCheckBox;
+
+type
+  TfrmRegistration = class(TForm)
+    cxScrollBox1: TcxScrollBox;
+    cxSplitter1: TcxSplitter;
+    cxScrollBox2: TcxScrollBox;
+    btnRegister: TcxButton;
+    cxGroupBox1: TcxGroupBox;
+    cxLabel1: TcxLabel;
+    cbTitle: TcxComboBox;
+    cxLabel2: TcxLabel;
+    cxLabel3: TcxLabel;
+    edtFirstName: TcxTextEdit;
+    edtFamilyName: TcxTextEdit;
+    cxLabel4: TcxLabel;
+    cxLabel5: TcxLabel;
+    cxLabel6: TcxLabel;
+    edtUserName: TcxTextEdit;
+    edtPassword: TcxTextEdit;
+    edtEmail: TcxTextEdit;
+    imgEmailNo: TImage;
+    imgEmailOk: TImage;
+    imgEmailWait: TImage;
+    imgUserNo: TImage;
+    imgUserOk: TImage;
+    imgUserWait: TImage;
+    cxGroupBox2: TcxGroupBox;
+    cxLabel8: TcxLabel;
+    cxLabel9: TcxLabel;
+    edtInstitute: TcxTextEdit;
+    edtDepartment: TcxTextEdit;
+    cxLabel10: TcxLabel;
+    cxLabel11: TcxLabel;
+    cxLabel12: TcxLabel;
+    edtCity: TcxTextEdit;
+    edtState: TcxTextEdit;
+    edtCountry: TcxTextEdit;
+    cxLabel7: TcxLabel;
+    memAddress: TcxMemo;
+    cxLabel13: TcxLabel;
+    edtZipCode: TcxTextEdit;
+    cxLabel14: TcxLabel;
+    edtTelephone: TcxTextEdit;
+    cxGroupBox3: TcxGroupBox;
+    cxLabel15: TcxLabel;
+    chbPhysicalOceanography: TcxCheckBox;
+    chbChemicalOceanography: TcxCheckBox;
+    chbBiology: TcxCheckBox;
+    chbDataScience: TcxCheckBox;
+    chbMachineLearning: TcxCheckBox;
+    chbOthers: TcxCheckBox;
+    cxGroupBox4: TcxGroupBox;
+    cxLabel16: TcxLabel;
+    chbResearch: TcxCheckBox;
+    chbEducation: TcxCheckBox;
+    chbOperation: TcxCheckBox;
+    chbPurOthers: TcxCheckBox;
+    cxLabel17: TcxLabel;
+    cxLabel18: TcxLabel;
+    procedure edtUserNamePropertiesChange(Sender: TObject);
+    procedure edtEmailPropertiesChange(Sender: TObject);
+    procedure btnRegisterClick(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+type
+  NetWork=Record
+    IP:String;
+    Info:String;
+end;
+
+function GetPublicIPinfo:NetWork;
+function ValidateTextField(Input:String; MinLen:integer=-1):Boolean;
+
+
+var
+  frmRegistration: TfrmRegistration;
+
+implementation
+
+uses untMain;
+
+function GetPublicIPinfo:NetWork;
+var
+  //LJsonObj:TJSONObject;
+  http:TIdHttp;
+begin
+  //http:=TIdHTTP.Create(nil);
+  Result.IP:='';
+  Result.Info:='';
+  {
+  try
+      Result.Info:=http.Get('http://ipinfo.io/json');
+      LJsonObj:= TJSONObject.ParseJSONValue(TEncoding.ASCII.GetBytes(Result.Info),0) as TJSONObject;
+      Result.IP := LJsonObj.Get('ip').JsonValue.Value;
+      LJsonObj.Free;
+      http.Free;
+  Except
+    Application.ProcessMessages;
+  end;
+  }
+end;
+
+
+function GetLocalIP:String;
+var
+  i:integer;
+  IPs:TStringList;
+
+begin
+  IPs:=TStringList.Create;
+  TIdStack.IncUsage;
+  try
+    GStack.AddLocalAddressesToList(IPs);
+  finally
+    TIdStack.DecUsage;
+  end;
+
+  Result:='';
+  for I := 0 to IPs.Count-1 do
+    Result:=Result+', '+IPs[i];
+end;
+
+function GetComputerNetName: string;
+var
+  NameBuffer: array[0..255] of char;
+  NameString : String;
+  size: dword;
+begin
+  Result := '';
+  try
+    size := 256;
+    if GetComputerName(NameBuffer, size) then
+    begin
+      NameString := NameBuffer;
+      Result := Trim(NameString);
+    end;
+  except
+    Exit;
+  end;
+end;
+
+function SendEmail(sendTo: string; subject: string; body: string; attachFiles: TStringList;
+                    smtpHost: string; smtpPort: Integer; smtpUser: string; smtpPass: string;
+                    tls: TIdUseTLS): boolean;
+var
+    smtp: TIdSmtp;
+    ssl: TIdSSLIOHandlerSocketOpenSSL;
+    msg: TIdMessage;
+    i: Integer;
+begin
+    smtp:=TIdSmtp.Create(nil);
+    ssl:=TIdSSLIOHandlerSocketOpenSSL.Create(nil);
+    msg:=TIdMessage.Create(nil);
+    try
+
+        try
+            smtp.Host:=smtpHost;
+            smtp.Port:=smtpPort;
+            smtp.Username:=smtpUser;
+            smtp.Password:=smtpPass;
+
+            //smtp.OnConnected :=IdSMTP1Connected;
+            //smtp.OnDisconnected :=IdSMTP1Disconnected;
+            //smtp.OnFailedRecipient :=IdSMTP1FailedRecipient;
+            //smtp.OnStatus :=IdSMTP1Status;
+            //smtp.OnTLSNotAvailable :=IdSMTP1TLSNotAvailable;
+            //smtp.OnWork :=IdSMTP1Work;
+
+            if not (tls=utNoTLSSupport) then begin
+                ssl.Destination:=smtpHost + ':' + IntToStr(smtpPort);
+                ssl.Host:=smtpHost;
+                ssl.Port:=smtpPort;
+                ssl.SSLOptions.Method:=sslvTLSv1;
+
+                //ssl.OnStatusInfo:=IdSSLIOHandlerSocketOpenSSL1StatusInfo;
+                //ssl.OnGetPassword:=IdSSLIOHandlerSocketOpenSSL1GetPassword;
+                //ssl.OnStatus:=IdSSLIOHandlerSocketOpenSSL1Status;
+
+                smtp.IOHandler:=ssl;
+                smtp.UseTLS:=tls;
+            end;
+
+            msg.Recipients.EMailAddresses := sendTo;
+            msg.Subject:=subject;
+            msg.Body.Text:=body;
+
+            if(Assigned(attachFiles)) then begin
+                for i := 0 to attachFiles.Count - 1 do begin
+                   if FileExists(attachFiles[i]) then
+                        TIdAttachmentFile.Create(msg.MessageParts, attachFiles[i]);
+                end;
+            end;
+
+            smtp.Connect;
+            smtp.Send(msg);
+            smtp.Disconnect;
+
+            result:=true;
+        finally
+            msg.Free;
+            ssl.Free;
+            smtp.Free;
+        end;
+    except
+       result:=false;
+    end;
+
+end;
+
+procedure PostSubmit;
+begin
+  ShowMessage('Thanks for your interest!'+char(10)+char(13)+'Your credentials have beed sent to your email address.');
+end;
+
+function Submit(SendTo, Subject, Body, Filename:String):Boolean;
+var
+    attachmentFiles: TStringList;
+    port: integer;
+    host, usr, psw: string;
+begin
+    Result:=False;
+
+    attachmentFiles:=TStringList.Create;
+    try
+        attachmentFiles.Add(Filename);
+        //sendto:='eddy.ocean.atlas@gmail.com';
+        //subject:='SignUp Request';
+        //body:='';
+        host:='smtp.gmail.com';
+        port:=587;
+        usr:='eddy.ocean.atlas@gmail.com';
+        psw:='EddyMIT2016';
+        try
+          SendEmail( sendto,
+                  subject,
+                  body,
+                  attachmentFiles,
+                  host,
+                  port,
+                  usr,
+                  psw, utUseExplicitTLS);
+          Result:=True;
+        except
+             on E : Exception do
+             begin
+                WriteCoreDump('Submission Exception: ' + E.Message);
+             end;
+        end;
+    finally
+        attachmentFiles.Free;
+    end;
+end;
+
+procedure UserImages(ImageName:string);
+begin
+{
+  with frmRegistration do
+  begin
+    if ImageName='wait' then
+    begin
+      imgUserWait.Visible:=True;
+      imgUserNo.Visible:=False;
+      imgUserOk.Visible:=False;
+    end;
+    if ImageName='no' then
+    begin
+      imgUserWait.Visible:=False;
+      imgUserNo.Visible:=True;
+      imgUserOk.Visible:=False;
+    end;
+    if ImageName='ext' then
+    begin
+      imgUserWait.Visible:=False;
+      imgUserNo.Visible:=True;
+      imgUserOk.Visible:=False;
+    end;
+    if ImageName='len' then
+    begin
+      imgUserWait.Visible:=False;
+      imgUserNo.Visible:=True;
+      imgUserOk.Visible:=False;
+    end;
+    if ImageName='ok' then
+    begin
+      imgUserWait.Visible:=False;
+      imgUserNo.Visible:=False;
+      imgUserOk.Visible:=True;
+    end;
+    if ImageName='nothing' then
+    begin
+      imgUserWait.Visible:=False;
+      imgUserNo.Visible:=False;
+      imgUserOk.Visible:=False;
+    end;
+  end;
+}
+
+end;
+
+procedure EmailImages(ImageName:string);
+begin
+{
+  with frmRegistration do
+  begin
+    if ImageName='wait' then
+    begin
+      imgEmailWait.Visible:=True;
+      imgEmailNo.Visible:=False;
+      imgEmailOk.Visible:=False;
+    end;
+    if ImageName='no' then
+    begin
+      imgEmailWait.Visible:=False;
+      imgEmailNo.Visible:=True;
+      imgEmailOk.Visible:=False;
+    end;
+    if ImageName='ext' then
+    begin
+      imgEmailWait.Visible:=False;
+      imgEmailNo.Visible:=True;
+      imgEmailOk.Visible:=False;
+    end;
+    if ImageName='len' then
+    begin
+      imgEmailWait.Visible:=False;
+      imgEmailNo.Visible:=True;
+      imgEmailOk.Visible:=False;
+    end;
+    if ImageName='ok' then
+    begin
+      imgEmailWait.Visible:=False;
+      imgEmailNo.Visible:=False;
+      imgEmailOk.Visible:=True;
+    end;
+    if ImageName='nothing' then
+    begin
+      imgEmailWait.Visible:=False;
+      imgEmailNo.Visible:=False;
+      imgEmailOk.Visible:=False;
+    end;
+  end;
+}
+
+end;
+
+function UsernameAvalaiblity(usr:String):Boolean;
+var
+  qryDynamic:TADOQuery;
+begin
+  OpenDB;
+  qryDynamic:=TADOQuery.Create(nil);
+  qryDynamic.Connection:=frmMain.OpediaDB;
+  with qryDynamic do
+  begin
+    try
+      SQL.Text:='select * from tblUsers where UserName='+QuotedStr(usr);
+      UserImages('wait');
+      Open;
+      if Recordset.RecordCount<1 then
+        Result:=True
+      else
+        Result:=False;
+    finally
+      Close;
+      CloseDB;
+      qryDynamic.Free;
+    end;
+  end;
+
+end;
+
+function EmailExists(email:String):Boolean;
+var
+  qryDynamic:TADOQuery;
+begin
+  OpenDB;
+  qryDynamic:=TADOQuery.Create(nil);
+  qryDynamic.Connection:=frmMain.OpediaDB;
+  with qryDynamic do
+  begin
+    try
+      SQL.Text:='select * from tblUsers where Email='+QuotedStr(email);
+      UserImages('wait');
+      Open;
+      if Recordset.RecordCount>0 then
+        Result:=True
+      else
+        Result:=False;
+    finally
+      Close;
+      CloseDB;
+      qryDynamic.Free;
+    end;
+  end;
+
+end;
+
+function ValidateTextField(Input:String; MinLen:integer=-1):Boolean;
+var
+  len:integer;
+begin
+  Result:=True;
+  len:=Length(Trim(Input));
+  if len<1 then
+    Result:=False;
+
+  if (MinLen>0) and (len<MinLen) then
+    Result:=False;
+end;
+
+function ValidateApplication:Boolean;
+begin
+  Result:=True;
+  with frmRegistration do
+  begin
+    {
+    if cbTitle.ItemIndex<0 then
+    begin
+      Result:=False;
+      MessageDlg('Please select a valid title!', mtError, [mbok], 0);
+      Exit;
+    end;
+    }
+    if not ValidateTextField(edtFirstName.Text) then
+    begin
+      Result:=False;
+      MessageDlg('Please enter your first name!', mtError, [mbok], 0);
+      Exit;
+    end;
+    if not ValidateTextField(edtFamilyName.Text) then
+    begin
+      Result:=False;
+      MessageDlg('Please enter your last name!', mtError, [mbok], 0);
+      Exit;
+    end;
+    {
+    if not ValidateTextField(edtUserName.Text,MinLen_Username) then
+    begin
+      Result:=False;
+      MessageDlg('Please enter a valid username (at least '+inttostr(MinLen_Username)+' characters)!', mtError, [mbok], 0);
+      Exit;
+    end;
+    if not UsernameAvalaiblity(edtUserName.Text) then
+    begin
+      Result:=False;
+      MessageDlg('The entered username is not available', mtError, [mbok], 0);
+      Exit;
+    end;
+    if not ValidateTextField(edtPassword.Text,MinLen_Password) then
+    begin
+      Result:=False;
+      MessageDlg('Please enter a strong password (at least '+inttostr(MinLen_Password)+' characters)!', mtError, [mbok], 0);
+      Exit;
+    end;
+    }
+    if not ValidateTextField(edtEmail.Text) then
+    begin
+      Result:=False;
+      MessageDlg('Please enter your email address!', mtError, [mbok], 0);
+      Exit;
+    end;
+    if EmailExists(edtEmail.Text) then
+    begin
+      Result:=False;
+      MessageDlg('The entered email already registered!', mtError, [mbok], 0);
+      Exit;
+    end;
+
+
+
+    {
+    if not ValidateTextField(edtInstitute.Text) then
+    begin
+      Result:=False;
+      MessageDlg('Please enter your institute!', mtError, [mbok], 0);
+      Exit;
+    end;
+    if not ValidateTextField(memAddress.Text) then
+    begin
+      Result:=False;
+      MessageDlg('Please enter your address!', mtError, [mbok], 0);
+      Exit;
+    end;
+    if not ValidateTextField(edtCity.Text) then
+    begin
+      Result:=False;
+      MessageDlg('Please enter your city!', mtError, [mbok], 0);
+      Exit;
+    end;
+    if not ValidateTextField(edtState.Text) then
+    begin
+      Result:=False;
+      MessageDlg('Please enter your state!', mtError, [mbok], 0);
+      Exit;
+    end;
+    if not ValidateTextField(edtCountry.Text) then
+    begin
+      Result:=False;
+      MessageDlg('Please enter your country!', mtError, [mbok], 0);
+      Exit;
+    end;
+    if not ValidateTextField(edtZipCode.Text) then
+    begin
+      Result:=False;
+      MessageDlg('Please enter your zip code!', mtError, [mbok], 0);
+      Exit;
+    end;
+
+    if (not chbResearch.Checked) and (not chbEducation.Checked) and (not chbOperation.Checked) and (not chbPurOthers.Checked) then
+    begin
+      Result:=False;
+      MessageDlg('Please indicate your purpose of using this product!', mtError, [mbok], 0);
+      Exit;
+    end;
+
+    if (not chbPhysicalOceanography.Checked) and (not chbChemicalOceanography.Checked) and (not chbBiology.Checked) and (not chbDataScience.Checked) and (not chbMachineLearning.Checked) and (not chbOthers.Checked) then
+    begin
+      Result:=False;
+      MessageDlg('Please indicate your domain of interest/expertise!', mtError, [mbok], 0);
+      Exit;
+    end;
+    }
+
+  end;
+
+end;
+
+function GetPurpose:String;
+var
+  pur:String;
+begin
+  with frmRegistration do
+  begin
+    pur:='';
+    if chbResearch.Checked then
+      pur:=pur+chbResearch.Caption+' ';
+    if chbEducation.Checked then
+      pur:=pur+chbEducation.Caption+' ';
+    if chbOperation.Checked then
+      pur:=pur+chbOperation.Caption+' ';
+    if chbPurOthers.Checked then
+      pur:=pur+chbPurOthers.Caption+' ';
+  end;
+  Result:=pur;
+end;
+
+function GetDomain:String;
+var
+  dom:String;
+begin
+  with frmRegistration do
+  begin
+    dom:='';
+    if chbPhysicalOceanography.Checked then
+      dom:=dom+chbPhysicalOceanography.Caption+' ';
+    if chbChemicalOceanography.Checked then
+      dom:=dom+chbChemicalOceanography.Caption+' ';
+    if chbBiology.Checked then
+      dom:=dom+chbBiology.Caption+' ';
+    if chbDataScience.Checked then
+      dom:=dom+chbDataScience.Caption+' ';
+    if chbMachineLearning.Checked then
+      dom:=dom+chbMachineLearning.Caption+' ';
+    if chbOthers.Checked then
+      dom:=dom+chbOthers.Caption+' ';
+  end;
+  Result:=dom;
+end;
+
+procedure GenerateCredentialFile(Path, psw:String);
+var
+  F:TextFile;
+  pur, dom: String;
+begin
+  with frmRegistration do
+  begin
+    AssignFile(F,Path);
+    Rewrite(F);
+    Writeln(F, 'Username: ' + edtUserName.Text);
+    Writeln(F, 'Temporary Password: ' + psw);
+    CloseFile(F);
+  end;
+end;
+
+procedure GenerateApplicationForm(Path:String);
+var
+  F:TextFile;
+  pur, dom: String;
+begin
+  with frmRegistration do
+  begin
+    AssignFile(F,Path);
+    Rewrite(F);
+    Writeln(F, 'Title: ' + cbTitle.Text);
+    Writeln(F, 'First Name: ' + edtFirstName.Text);
+    Writeln(F, 'Family Name: ' + edtFamilyName.Text);
+    Writeln(F, 'User Name: ' + edtUserName.Text);
+    Writeln(F, 'Password: ' + edtPassword.Text);
+    Writeln(F, 'Email: ' + edtEmail.Text);
+
+    Writeln(F, 'Institute: ' + edtInstitute.Text);
+    Writeln(F, 'Department: ' + edtDepartment.Text);
+    Writeln(F, 'Address: ' + memAddress.Text);
+    Writeln(F, 'City: ' + edtCity.Text);
+    Writeln(F, 'State: ' + edtState.Text);
+    Writeln(F, 'Country: ' + edtCountry.Text);
+    Writeln(F, 'Zip Code: ' + edtZipCode.Text);
+    Writeln(F, 'Telephone: ' + edtTelephone.Text);
+
+    Writeln(F, 'Purpose: ' + GetPurpose);
+    Writeln(F, 'Domain: ' + GetDomain);
+    Writeln(F, 'IP: ' + GetPublicIPinfo.IP);
+    Writeln(F, 'IPinfo: ' + GetPublicIPinfo.Info);
+
+    CloseFile(F);
+  end;
+end;
+
+
+function DeleteAttachmentFile(Path:String):Boolean;
+begin
+  Result:=DeleteFile(Path);
+end;
+
+function UserFieldNames:String;
+begin
+  Result:= '';
+  Result:=Result+'Title,';
+  Result:=Result+'FirstName, ';
+  Result:=Result+'FamilyName, ';
+  Result:=Result+'Username, ';
+  Result:=Result+'Password, ';
+  Result:=Result+'Email, ';
+  Result:=Result+'Institute, ';
+  Result:=Result+'Department, ';
+  Result:=Result+'Address, ';
+  Result:=Result+'City, ';
+  Result:=Result+'State, ';
+  Result:=Result+'ZipCode, ';
+  Result:=Result+'Country, ';
+  Result:=Result+'Telephone, ';
+  Result:=Result+'Purpose, ';
+  Result:=Result+'Domain, ';
+  Result:=Result+'IP, ';
+  Result:=Result+'IPinfo';
+
+end;
+
+function UserValues(psw:String):String;
+begin
+  with frmRegistration do
+  begin
+    Result:='';
+    Result:=Result+QuotedStr(Trim(cbTitle.Text))+', ';
+    Result:=Result+QuotedStr(Trim(edtFirstName.Text))+', ';
+    Result:=Result+QuotedStr(Trim(edtFamilyName.Text))+', ';
+    Result:=Result+QuotedStr(Trim(edtUserName.Text))+', ';
+    Result:=Result+QuotedStr(Trim(psw))+', ';
+    Result:=Result+QuotedStr(Trim(edtEmail.Text))+', ';
+    Result:=Result+QuotedStr(Trim(edtInstitute.Text))+', ';
+    Result:=Result+QuotedStr(Trim(edtDepartment.Text))+', ';
+    Result:=Result+QuotedStr(Trim(memAddress.Text))+', ';
+    Result:=Result+QuotedStr(Trim(edtCity.Text))+', ';
+    Result:=Result+QuotedStr(Trim(edtState.Text))+', ';
+    Result:=Result+QuotedStr(Trim(edtCountry.Text))+', ';
+    Result:=Result+QuotedStr(Trim(edtZipCode.Text))+', ';
+    Result:=Result+QuotedStr(Trim(edtTelephone.Text))+', ';
+    Result:=Result+QuotedStr(Trim(GetPurpose))+', ';
+    Result:=Result+QuotedStr(Trim(GetDomain))+', ';
+    Result:=Result+QuotedStr(Trim(GetPublicIPinfo.IP))+', ';
+    Result:=Result+QuotedStr(Trim(GetPublicIPinfo.Info));
+  end;
+end;
+
+function AddUser(psw:String):Boolean;
+var
+  qryDynamic:TADOQuery;
+begin
+  OpenDB;
+  Result:=False;
+  qryDynamic:=TADOQuery.Create(nil);
+  qryDynamic.Connection:=frmMain.OpediaDB;
+  with qryDynamic do
+  begin
+    try
+      SQL.Text:='INSERT INTO tblUsers ('+ UserFieldNames +') ';
+      SQL.Text:=SQL.Text + 'VALUES ('+ UserValues(psw) +')';
+      ExecSQL;
+      Result:=True;
+    finally
+      CloseDB;
+      qryDynamic.Free;
+    end;
+  end;
+
+end;
+
+function GenerateGreetingBody(Firstname, Lastname:String):String;
+var
+  ln:String;
+begin
+  ln:=Char(13)+char(10);
+  Result:='Dear '+Firstname+' '+Lastname+','+ln+ln;
+  Result:=Result+'  Thank you for your interest in Opedia. Please find the attachment to access your credentials.'+ln;
+  Result:=Result+'  Notice you will be required to change your password once you logged in with the temporary password.'+ln+ln;
+  Result:=Result+'Best regards,'+ln;
+  Result:=Result+'Opedia!';
+end;
+
+
+{$R *.dfm}
+
+procedure TfrmRegistration.btnRegisterClick(Sender: TObject);
+var
+  ApplicationFilePath, CredentialFilePath:String;
+  ApplicationSubmission, UserInsert: Boolean;
+begin
+  ApplicationFilePath:=Root+'\Application.txt';
+  CredentialFilePath:=Root+'\Credentials.txt';
+  if not ValidateApplication then
+    Exit;
+  try
+    Screen.Cursor:=crHourGlass;
+    GenerateApplicationForm(ApplicationFilePath);
+    ApplicationSubmission:=Submit('eddy.ocean.atlas@gmail.com', 'SignUp Request', '', ApplicationFilePath);
+    UserInsert:=AddUser(DefaultPassword);
+
+    GenerateCredentialFile(CredentialFilePath, DefaultPassword);
+    ApplicationSubmission:=Submit(frmRegistration.edtEmail.Text, 'Opedia Account', GenerateGreetingBody(frmRegistration.edtFirstname.Text,frmRegistration.edtFamilyname.Text), CredentialFilePath);
+    DeleteAttachmentFile(ApplicationFilePath);
+    DeleteAttachmentFile(CredentialFilePath);
+
+    if ApplicationSubmission and UserInsert then
+    begin
+      PostSubmit;
+      Close;
+    end;
+  finally
+    Screen.Cursor:=crDefault;
+  end;
+end;
+
+procedure TfrmRegistration.edtEmailPropertiesChange(Sender: TObject);
+begin
+  edtUserName.Text:=edtEmail.Text;
+  Exit;
+
+  EmailImages('wait');
+  if edtEmail.Text='' then
+  begin
+    EmailImages('nothing');
+    Exit;
+  end;
+
+  if not EmailExists(edtEmail.Text) then
+    EmailImages('ok')
+  else
+    EmailImages('no');
+end;
+
+procedure TfrmRegistration.edtUserNamePropertiesChange(Sender: TObject);
+begin
+{
+  UserImages('wait');
+  if edtUserName.Text='' then
+  begin
+    UserImages('nothing');
+    Exit;
+  end;
+
+  if Length(edtUserName.Text)<MinLen_Username then
+  begin
+    UserImages('no');
+    Exit;
+  end;
+
+
+  if UsernameAvalaiblity(edtUserName.Text) then
+    UserImages('ok')
+  else
+    UserImages('no');
+}
+end;
+
+end.

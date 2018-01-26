@@ -1,0 +1,19 @@
+program Opedia;
+
+uses
+  Vcl.Forms,
+  untMain in 'untMain.pas' {frmMain},
+  untCommonDB in 'untCommonDB.pas',
+  untBusy in 'untBusy.pas' {frmBusy},
+  untCruise in 'untCruise.pas' {frmCruise};
+
+{$R *.res}
+
+begin
+  Application.Initialize;
+  Application.MainFormOnTaskbar := True;
+  Application.CreateForm(TfrmMain, frmMain);
+  Application.CreateForm(TfrmBusy, frmBusy);
+  Application.CreateForm(TfrmCruise, frmCruise);
+  Application.Run;
+end.

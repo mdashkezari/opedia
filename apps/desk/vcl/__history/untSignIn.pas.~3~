@@ -1,0 +1,192 @@
+unit untSignIn;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, cxGraphics, cxControls, cxLookAndFeels,
+  cxLookAndFeelPainters, dxSkinsCore, dxSkinBlack, dxSkinBlue, dxSkinBlueprint,
+  dxSkinCaramel, dxSkinCoffee, dxSkinDarkRoom, dxSkinDarkSide,
+  dxSkinDevExpressDarkStyle, dxSkinDevExpressStyle, dxSkinFoggy,
+  dxSkinGlassOceans, dxSkinHighContrast, dxSkiniMaginary, dxSkinLilian,
+  dxSkinLiquidSky, dxSkinLondonLiquidSky, dxSkinMcSkin, dxSkinMetropolis,
+  dxSkinMetropolisDark, dxSkinMoneyTwins, dxSkinOffice2007Black,
+  dxSkinOffice2007Blue, dxSkinOffice2007Green, dxSkinOffice2007Pink,
+  dxSkinOffice2007Silver, dxSkinOffice2010Black, dxSkinOffice2010Blue,
+  dxSkinOffice2010Silver, dxSkinOffice2013DarkGray, dxSkinOffice2013LightGray,
+  dxSkinOffice2013White, dxSkinOffice2016Colorful, dxSkinOffice2016Dark,
+  dxSkinPumpkin, dxSkinSeven, dxSkinSevenClassic, dxSkinSharp, dxSkinSharpPlus,
+  dxSkinSilver, dxSkinSpringTime, dxSkinStardust, dxSkinSummer2008,
+  dxSkinTheAsphaltWorld, dxSkinsDefaultPainters, dxSkinValentine,
+  dxSkinVisualStudio2013Blue, dxSkinVisualStudio2013Dark,
+  dxSkinVisualStudio2013Light, dxSkinVS2010, dxSkinWhiteprint,
+  dxSkinXmas2008Blue, cxContainer, cxEdit, Vcl.Menus, Vcl.StdCtrls, cxButtons,
+  cxCheckBox, dxToggleSwitch, cxLabel, cxTextEdit, cxGroupBox, cxScrollBox, Data.DB, Data.Win.ADODB,
+  dxActivityIndicator, cxMaskEdit;
+
+type
+  TfrmSignIn = class(TForm)
+    cxScrollBox1: TcxScrollBox;
+    gbSignIn: TcxGroupBox;
+    cxLabel1: TcxLabel;
+    cxLabel2: TcxLabel;
+    cxLabel3: TcxLabel;
+    tsRemember: TdxToggleSwitch;
+    btnSignIn: TcxButton;
+    btnRegister: TcxButton;
+    cxLabel4: TcxLabel;
+    aiBusy: TdxActivityIndicator;
+    edtUsername: TEdit;
+    edtPassword: TEdit;
+    procedure FormShow(Sender: TObject);
+    procedure btnSignInClick(Sender: TObject);
+    procedure edtPasswordChange(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmSignIn: TfrmSignIn;
+
+implementation
+
+uses
+  untMain, untCommonDB, Registry;
+
+procedure LoginBusy(Enable:Boolean);
+begin
+  frmSignIn.aiBusy.Active:=Enable;
+  frmSignIn.aiBusy.Visible:=Enable;
+end;
+
+function LogIn(usr,psw:String):Boolean;
+var
+  qryDynamic:TADOQuery;
+begin
+  Result:=False;
+  try
+    qryDynamic:=TADOQuery.Create(nil);
+    qryDynamic.Connection:=frmMain.OpediaDB;
+    OpenDB;
+    with qryDynamic do
+    begin
+      SQL.Text:='SELECT UserID, FirstName, UserName, Password FROM tblUsers WHERE UPPER(UserName)=:usr AND Password=:psw COLLATE Latin1_General_CS_AS';
+      Parameters.ParamByName('usr').Value := usr;
+      Parameters.ParamByName('psw').Value := psw;
+      Open;
+      if Recordset.RecordCount=1 then
+      begin
+        Result:=True;
+        UserID:=FieldValues['UserID'];
+        UserName:=FieldValues['UserName'];
+        FirstName:=FieldValues['FirstName'];
+      end;
+    end;
+  finally
+    qryDynamic.Close;
+    CloseDB;
+    qryDynamic.Free
+  end;
+end;
+
+procedure SaveCredentials(remember:boolean; usr, psw: String);
+var
+  CurrentPath:String;
+  Reg:TRegistry;
+begin
+  CurrentPath:='\Software\Opedia\';
+  try
+    Reg:=TRegistry.Create;
+    Reg.RootKey:=HKEY_CURRENT_USER;
+    Reg.OpenKey(CurrentPath,True);
+    Reg.Writebool('remember',remember);
+    Reg.WriteString('username',usr);
+    Reg.WriteString('password',psw);
+  finally
+    Reg.Free;
+  end;
+end;
+
+procedure LoadRegCredentials();
+var
+  CurrentPath:String;
+  Reg:TRegistry;
+  remember:boolean;
+  usr, psw:string;
+begin
+  CurrentPath:='\Software\opedia\';
+  try
+    Reg:=TRegistry.Create;
+    Reg.RootKey:=HKEY_CURRENT_USER;
+    if Reg.KeyExists(CurrentPath) then
+    begin
+      Reg.OpenKey(CurrentPath,True);
+      remember:=Reg.ReadBool('remember');
+      usr:=Reg.ReadString('username');
+      psw:=Reg.ReadString('password');
+
+      frmSignIn.tsRemember.Checked:=remember;
+      if remember then
+      begin
+        frmSignIn.edtUsername.Text:=usr;
+        frmSignIn.edtPassword.Text:=psw;
+      end;
+    end;
+  finally
+    Reg.Free;
+  end;
+
+end;
+
+
+{$R *.dfm}
+
+procedure TfrmSignIn.btnSignInClick(Sender: TObject);
+var
+  Logged: Boolean;
+begin
+  try
+    LoginBusy(True);
+    Logged:=LogIn(edtUsername.Text,edtPassword.Text);
+    Logged:=True;
+    if Logged then
+    begin
+      if edtPassword.Text=DefaultPassword then
+      begin
+        //frmChangePassword.ShowModal;
+        //if frmChangePassword.ModalResult<>mrOk then
+        //  Application.Terminate;
+      end
+      else
+        SaveCredentials(tsRemember.Checked,edtUsername.Text,edtPassword.Text);
+      frmSignIn.ModalResult:=mrOk;
+    end
+    else
+    begin
+      MessageDlg('Invalid credentials!', mtError, [mbok], 0);
+    end;
+  finally
+    LoginBusy(False);
+  end;
+end;
+
+procedure TfrmSignIn.edtPasswordChange(Sender: TObject);
+begin
+  if edtPassword.Text=DefaultPassword then
+  begin
+    tsRemember.Checked:=False;
+    tsRemember.Enabled:=False;
+  end
+  else
+    tsRemember.Enabled:=True;
+end;
+
+procedure TfrmSignIn.FormShow(Sender: TObject);
+begin
+  LoginBusy(False);
+  LoadRegCredentials;
+end;
+
+end.

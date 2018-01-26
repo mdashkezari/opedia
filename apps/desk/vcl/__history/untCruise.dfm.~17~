@@ -1,0 +1,250 @@
+object frmCruise: TfrmCruise
+  Left = 0
+  Top = 0
+  AlphaBlend = True
+  AlphaBlendValue = 210
+  BorderStyle = bsToolWindow
+  Caption = 'Cruise Track'
+  ClientHeight = 320
+  ClientWidth = 473
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  KeyPreview = True
+  OldCreateOrder = False
+  Position = poOwnerFormCenter
+  OnKeyPress = FormKeyPress
+  OnShow = FormShow
+  PixelsPerInch = 96
+  TextHeight = 13
+  object cbCruises: TcxComboBox
+    Left = 155
+    Top = 37
+    BeepOnEnter = False
+    ParentFont = False
+    Properties.DropDownListStyle = lsFixedList
+    Style.Font.Charset = DEFAULT_CHARSET
+    Style.Font.Color = clWindowText
+    Style.Font.Height = -13
+    Style.Font.Name = 'Tahoma'
+    Style.Font.Style = []
+    Style.IsFontAssigned = True
+    TabOrder = 1
+    Width = 305
+  end
+  object wpResample: TdxWheelPicker
+    Left = 155
+    Top = 127
+    EditValue = #3#0#0#0
+    ParentFont = False
+    Properties.ImmediatePost = True
+    Properties.LineAutoHeight = True
+    Properties.WheelAutoWidth = True
+    Properties.Wheels = <
+      item
+        Cyclic = True
+        Items = <
+          item
+            Text = '3-Min'
+          end
+          item
+            Text = '10-Min'
+          end
+          item
+            Text = '30-Min'
+          end
+          item
+            Text = '1-Hour'
+          end
+          item
+            Text = '6-Hour'
+          end
+          item
+            Text = '1-Day'
+          end>
+      end>
+    Style.BorderStyle = ebs3D
+    Style.Edges = [bLeft, bTop, bRight, bBottom]
+    Style.Font.Charset = DEFAULT_CHARSET
+    Style.Font.Color = clWindowText
+    Style.Font.Height = -13
+    Style.Font.Name = 'Tahoma'
+    Style.Font.Pitch = fpFixed
+    Style.Font.Style = []
+    Style.Shadow = False
+    Style.TransparentBorder = True
+    Style.IsFontAssigned = True
+    TabOrder = 0
+    Height = 119
+    Width = 305
+  end
+  object tsCruiseDB: TdxToggleSwitch
+    Left = 193
+    Top = 11
+    Checked = True
+    ParentFont = False
+    Properties.StateIndicator.Kind = sikText
+    Properties.StateIndicator.OffText = 'Virtual Cruise'
+    Properties.StateIndicator.OnText = 'Listed Cruise'
+    Properties.OnEditValueChanged = tsCruiseDBPropertiesEditValueChanged
+    Style.Font.Charset = DEFAULT_CHARSET
+    Style.Font.Color = clWindowText
+    Style.Font.Height = -13
+    Style.Font.Name = 'Tahoma'
+    Style.Font.Style = []
+    Style.IsFontAssigned = True
+    TabOrder = 3
+    Transparent = True
+  end
+  object bedtVirtualCruise: TcxButtonEdit
+    Left = 155
+    Top = 67
+    BeepOnEnter = False
+    ParentFont = False
+    Properties.Buttons = <
+      item
+        Action = Action1
+        Default = True
+        Enabled = False
+        Kind = bkEllipsis
+      end>
+    Style.Font.Charset = DEFAULT_CHARSET
+    Style.Font.Color = clWindowText
+    Style.Font.Height = -13
+    Style.Font.Name = 'Tahoma'
+    Style.Font.Style = []
+    Style.IsFontAssigned = True
+    TabOrder = 4
+    Width = 305
+  end
+  object edtMargin: TcxTextEdit
+    Left = 155
+    Top = 97
+    BeepOnEnter = False
+    ParentFont = False
+    Style.Font.Charset = DEFAULT_CHARSET
+    Style.Font.Color = clWindowText
+    Style.Font.Height = -13
+    Style.Font.Name = 'Tahoma'
+    Style.Font.Style = []
+    Style.IsFontAssigned = True
+    TabOrder = 5
+    Text = '0.5'
+    Width = 305
+  end
+  object cxLabel1: TcxLabel
+    Left = 8
+    Top = 47
+    Caption = 'Cruise'
+    ParentFont = False
+    Style.Font.Charset = DEFAULT_CHARSET
+    Style.Font.Color = clWindowText
+    Style.Font.Height = -13
+    Style.Font.Name = 'Tahoma'
+    Style.Font.Style = []
+    Style.IsFontAssigned = True
+    Transparent = True
+  end
+  object cxLabel2: TcxLabel
+    Left = 8
+    Top = 70
+    Caption = 'Virtual Cruise'
+    Enabled = False
+    ParentFont = False
+    Style.Font.Charset = DEFAULT_CHARSET
+    Style.Font.Color = clWindowText
+    Style.Font.Height = -13
+    Style.Font.Name = 'Tahoma'
+    Style.Font.Style = []
+    Style.IsFontAssigned = True
+    Transparent = True
+  end
+  object cxLabel3: TcxLabel
+    Left = 8
+    Top = 104
+    Caption = 'Margin (+/- degree)'
+    ParentFont = False
+    Style.Font.Charset = DEFAULT_CHARSET
+    Style.Font.Color = clWindowText
+    Style.Font.Height = -13
+    Style.Font.Name = 'Tahoma'
+    Style.Font.Style = []
+    Style.IsFontAssigned = True
+    Transparent = True
+  end
+  object aiBusy: TdxActivityIndicator
+    Left = 8
+    Top = 164
+    Width = 129
+    Height = 96
+    PropertiesClassName = 'TdxActivityIndicatorGravityDotsProperties'
+    Transparent = True
+  end
+  object btnCruiseTrack: TcxButton
+    Left = 155
+    Top = 276
+    Width = 105
+    Height = 33
+    Caption = 'Show Track'
+    TabOrder = 9
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -13
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
+    OnClick = btnCruiseTrackClick
+  end
+  object cxLabel4: TcxLabel
+    Left = 8
+    Top = 127
+    Caption = 'Sampling Rate'
+    ParentFont = False
+    Style.Font.Charset = DEFAULT_CHARSET
+    Style.Font.Color = clWindowText
+    Style.Font.Height = -13
+    Style.Font.Name = 'Tahoma'
+    Style.Font.Style = []
+    Style.IsFontAssigned = True
+    Transparent = True
+  end
+  object btnColocalize: TcxButton
+    Left = 355
+    Top = 276
+    Width = 105
+    Height = 33
+    Caption = 'Colocalize'
+    TabOrder = 11
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -13
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
+    OnClick = btnColocalizeClick
+  end
+  object Edit1: TEdit
+    Left = 8
+    Top = 248
+    Width = 457
+    Height = 21
+    TabOrder = 12
+    Text = 'Edit1'
+  end
+  object OpenDialog1: TOpenDialog
+    Filter = 'CSV File|*.csv'
+    Left = 35
+    Top = 272
+  end
+  object ActionList1: TActionList
+    Left = 91
+    Top = 272
+    object Action1: TAction
+      Caption = 'Action1'
+      OnExecute = Action1Execute
+    end
+  end
+end

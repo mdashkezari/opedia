@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2017/10/25 14:40:43.000.649,=C:\Users\Mohammad\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2017/12/20 10:59:17.000.083,=C:\Users\Mohammad\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2017/12/20 13:03:17.000.551,=C:\Users\Mohammad\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2017/12/20 14:01:44.000.873,H:\projects\opedia\apps\desk\vcl\untMain.pas=C:\Users\Mohammad\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2017/12/20 14:01:44.000.873,H:\projects\opedia\apps\desk\vcl\untMain.dfm=C:\Users\Mohammad\Documents\Embarcadero\Studio\Projects\Unit1.dfm</Transaction>
+    <Transaction>2017/12/20 14:02:06.000.516,H:\projects\opedia\apps\desk\vcl\Opedia.dproj=C:\Users\Mohammad\Documents\Embarcadero\Studio\Projects\Project1.dproj</Transaction>
+    <Transaction>2017/12/22 15:45:14.000.739,=H:\projects\opedia\apps\desk\vcl\Unit1.pas</Transaction>
+    <Transaction>2017/12/22 15:45:59.000.259,H:\projects\opedia\apps\desk\vcl\untCommonDB.pas=H:\projects\opedia\apps\desk\vcl\Unit1.pas</Transaction>
+    <Transaction>2017/12/24 19:05:24.000.586,=H:\projects\opedia\apps\desk\vcl\Unit1.pas</Transaction>
+    <Transaction>2017/12/24 19:08:51.000.280,H:\projects\opedia\apps\desk\vcl\untBusy.dfm=H:\projects\opedia\apps\desk\vcl\Unit1.dfm</Transaction>
+    <Transaction>2017/12/24 19:08:51.000.280,H:\projects\opedia\apps\desk\vcl\untBusy.pas=H:\projects\opedia\apps\desk\vcl\Unit1.pas</Transaction>
+    <Transaction>2017/12/27 14:57:20.000.698,=H:\projects\opedia\apps\desk\vcl\Unit1.pas</Transaction>
+    <Transaction>2017/12/27 18:02:08.000.515,H:\projects\opedia\apps\desk\vcl\Unit1.dfm=H:\projects\opedia\apps\desk\vcl\untCruise.dfm</Transaction>
+    <Transaction>2017/12/27 18:02:08.000.515,H:\projects\opedia\apps\desk\vcl\Unit1.pas=H:\projects\opedia\apps\desk\vcl\untCruise.pas</Transaction>
+    <Transaction>2017/12/31 11:50:54.000.052,=H:\projects\opedia\apps\desk\vcl\Unit1.pas</Transaction>
+    <Transaction>2017/12/31 11:52:23.000.545,H:\projects\opedia\apps\desk\vcl\Unit1.dfm=H:\projects\opedia\apps\desk\vcl\untFilter.dfm</Transaction>
+    <Transaction>2017/12/31 11:52:23.000.545,H:\projects\opedia\apps\desk\vcl\Unit1.pas=H:\projects\opedia\apps\desk\vcl\untFilter.pas</Transaction>
+    <Transaction>2018/01/08 10:50:23.000.174,=H:\projects\opedia\apps\desk\vcl\Unit1.pas</Transaction>
+    <Transaction>2018/01/08 11:18:17.000.443,H:\projects\opedia\apps\desk\vcl\untSignIn.pas=H:\projects\opedia\apps\desk\vcl\Unit1.pas</Transaction>
+    <Transaction>2018/01/08 11:18:17.000.443,H:\projects\opedia\apps\desk\vcl\untSignIn.dfm=H:\projects\opedia\apps\desk\vcl\Unit1.dfm</Transaction>
+    <Transaction>2018/01/09 11:19:39.000.279,=H:\projects\opedia\apps\desk\vcl\Unit1.pas</Transaction>
+    <Transaction>2018/01/09 12:29:05.000.614,H:\projects\opedia\apps\desk\vcl\Unit1.dfm=H:\projects\opedia\apps\desk\vcl\untChangePassword.dfm</Transaction>
+    <Transaction>2018/01/09 12:29:05.000.614,H:\projects\opedia\apps\desk\vcl\Unit1.pas=H:\projects\opedia\apps\desk\vcl\untChangePassword.pas</Transaction>
+    <Transaction>2018/01/09 12:34:49.000.258,=H:\projects\opedia\apps\desk\vcl\Unit1.pas</Transaction>
+    <Transaction>2018/01/09 12:36:58.000.536,H:\projects\opedia\apps\desk\vcl\Unit1.dfm=H:\projects\opedia\apps\desk\vcl\untRegistration.dfm</Transaction>
+    <Transaction>2018/01/09 12:36:58.000.536,H:\projects\opedia\apps\desk\vcl\Unit1.pas=H:\projects\opedia\apps\desk\vcl\untRegistration.pas</Transaction>
+  </Transactions>
+	<ActiveMobileDevice>
+		<NoProfile iOSSimulator="iPhone5"/>
+	</ActiveMobileDevice>
+</BorlandProject>
