@@ -9,9 +9,9 @@ def makedir(directory):
 
 
 
-opedia_proj = r'H:/Dropbox (MIT)/projects/opedia/'
+opedia_proj = r'H:/Dropbox/projects/opedia/'
 
-vault = r'H:/Dropbox (MIT)/opedia_vault/'
+vault = r'H:/Dropbox/opedia_vault/'
 makedir(vault)
 
 

@@ -1,4 +1,4 @@
-
+import platform
 import sys
 import pyodbc
 import pandas.io.sql as sql
@@ -6,33 +6,15 @@ import pandas.io.sql as sql
 
 def dbConnect():
     try:
-        #print('Connecting to Database ...')
-        
-        
-        ###### local DB
-        '''
-        server = 'THEBEAST'
-        db = 'Opedia'
-        conn = pyodbc.connect('DRIVER={SQL Server};SERVER=' + server + ';DATABASE=' + db + ';Trusted_Connection=yes')
-        '''
-        
-        ## THEBEAST Server
+        #print('Connecting to Database ...')        
         server = '128.208.239.15,1433'
         db = 'Opedia'
         Uid = 'ArmLab'
         psw = 'ArmLab2018'
-        conn = pyodbc.connect('DRIVER={SQL Server};SERVER=' + server + ';DATABASE=' + db + ';Uid=' + Uid + ';Pwd='+ psw )
-        
-
-        '''
-        ## Cloud (Azure) Database
-        server = 'oceanatlas.database.windows.net'
-        db = 'NPG'
-        Uid = 'AdminAtlas@oceanatlas'
-        psw = 'Ocean@2016@'
-        conn = pyodbc.connect('DRIVER={SQL Server};SERVER=' + server + ';DATABASE=' + db + ';Uid=' + Uid + ';Pwd='+ psw +';Encrypt=yes')
-        '''
-        
+        if platform.system().lower().find('windows') != -1:
+            conn = pyodbc.connect('DRIVER={SQL Server};SERVER=' + server + ';DATABASE=' + db + ';Uid=' + Uid + ';Pwd='+ psw )
+        elif platform.system().lower().find('darwin') != -1:
+            conn = pyodbc.connect('DRIVER=/usr/local/lib/libtdsodbc.so;SERVER=' + server + ';DATABASE=' + db + ';Uid=' + Uid + ';Pwd='+ psw )
         #print('Successful Database Connection')
     except Exception as e:
         print('Error in Database Connection. Error message: '+str(e))        
@@ -46,17 +28,13 @@ def dbFetch(query):
     return df
 
 
-
 def dbFetchStoredProc(query, args):
     conn = dbConnect()
     cur = conn.cursor()
-
     cur.execute(query, args)
     df = cur.fetchall()
-
     conn.close()
     return df
-
 
 
 def bulkInsert(filePath, tableName):
@@ -66,7 +44,6 @@ def bulkInsert(filePath, tableName):
     cursor.execute(query, [])
     conn.commit()
     return
-
 
     
 def getVar(tableName, varName):

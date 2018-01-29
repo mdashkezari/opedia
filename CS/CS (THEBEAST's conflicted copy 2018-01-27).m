@@ -33,7 +33,7 @@ for flowloop=itnum_starts
   %************************************************************************** 
 
   %************************ Store FTLE/Vort in Vault ************************
-  vault_path = 'H:/Dropbox (MIT)/opedia_vault/raw/obs/%s/%s/%s%10.10d.mat';
+  vault_path = 'H:/Dropbox/opedia_vault/raw/obs/%s/%s/%s%10.10d.mat';
   
   if flgEulerian         
     if nrt

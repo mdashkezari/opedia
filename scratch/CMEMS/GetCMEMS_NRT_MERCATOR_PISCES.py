@@ -59,6 +59,7 @@ def get_all_available_days():
 def piscesFileExist(days=get_all_available_days()):
       for dt in days:
         path = cfgv.nrt_mercator_pisces_raw + cfgv.nrt_mercator_pisces_prefix + str(dl.dateToDayn(dt)) + '.nc'
+        print path
         if not os.path.isfile(path):
               print('The following file not found in the opedia vault: ' + path + ', Date: ' + dt.strftime('%Y-%m-%d'))
       return

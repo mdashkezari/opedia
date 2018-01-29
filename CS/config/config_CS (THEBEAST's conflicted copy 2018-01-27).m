@@ -68,7 +68,7 @@ crop_lat1= 18;              % if flgCrop=true: this is the initial latitude of t
 crop_lat2= 26;              % if flgCrop=true: this is the final latitude of the maps (in degrees)
 
 
-trunk='H:/Dropbox (MIT)/opedia_vault/CS_trunk/';           % The root address where the  MAT files and figures are stored
+trunk='H:/Dropbox/opedia_vault/CS_trunk/';           % The root address where the  MAT files and figures are stored
 
 if exist(trunk)~=7
   mkdir(trunk);
