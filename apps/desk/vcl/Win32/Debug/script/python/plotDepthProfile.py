@@ -37,13 +37,23 @@ def prepareTimeSpaceQuery(table, date1, date2, lat1, lat2, lon1, lon2):
     return query
 
 
+def exportData(z, y, yErr, table, variable, lat1, lat2, lon1, lon2):
+    df = pd.DataFrame()
+    df['depth'] = z
+    df[variable] = y
+    df[variable+'_std'] = yErr
+    df['lat1'] = lat1
+    df['lat2'] = lat2
+    df['lon1'] = lon1
+    df['lon2'] = lon2
+    path = 'data/DP_' + table + '_' + variable + '.csv'
+    df.to_csv(path, index=False)    
+    return
 
 def depthProfile(table, field, dt, lat1, lat2, lon1, lon2, depth1, depth2):
     y = np.array([])
     y_std = np.array([])
     depths = depthLevels(depth1, depth2)
-    
-    
     for depth in depths:
         '''
         ############# App-Level Query #############
@@ -82,6 +92,9 @@ def depthProfile(table, field, dt, lat1, lat2, lon1, lon2, depth1, depth2):
             tempY_std = np.nan   
 
         y_std = np.append(y_std, tempY_std)
+
+    if exportDataFlag:
+        exportData(depths, y, y_std, table, field, lat1, lat2, lon1, lon2)    
     return depths, y, y_std
 
 def plotDepthProfile(tables, variables, dt, lat1, lat2, lon1, lon2, depth1, depth2, fname, marker='-', msize=30, clr='orangered'):
@@ -115,8 +128,9 @@ lat2 = float(sys.argv[5])      #lat2
 lon1 = float(sys.argv[6])      #lon1
 lon2 = float(sys.argv[7])      #lon2
 fname = sys.argv[8]
-depth1 = float(sys.argv[9])      #depth1
-depth2 = float(sys.argv[10])      #depth2
+exportDataFlag = bool(int(sys.argv[9]))
+depth1 = float(sys.argv[10])      #depth1
+depth2 = float(sys.argv[11])      #depth2
 
 
 

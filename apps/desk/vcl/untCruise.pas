@@ -157,7 +157,7 @@ var
   command: integer;
   i, count:integer;
   Variable:TVar;
-  vars, tables: String;
+  vars, tables, exportflag: String;
   extV, extVV, extVars, extVarVals: String;
   extV2, extVV2, extVars2, extVarVals2: String;
 begin
@@ -216,9 +216,10 @@ begin
     end;
   end;
   fname:='AlongTrack';
+  exportflag:=inttostr(getExportDataFlag);
   command:=2;
-  ShellExecute(0, nil, 'python.exe', Pchar(' ./script/python/plotCruise.py '+inttostr(cruiseDB)+' '+inttostr(command)+' '+source+' '+cruise+' '+Resample+' '+fname+' '+FloatToStr(spatialMargin)+' '+tables+' '+vars+' '+extVars+' '+extVarVals+' '+extVars2+' '+extVarVals2), nil, SW_HIDE);
-  //frmCruise.edit1.text:='python.exe'+ Pchar(' ./script/python/plotCruise.py '+inttostr(cruiseDB)+' '+inttostr(command)+' '+source+' '+cruise+' '+Resample+' '+fname+' '+FloatToStr(spatialMargin)+' '+tables+' '+vars+' '+extVars+' '+extVarVals+' '+extVars2+' '+extVarVals2);
+  ShellExecute(0, nil, 'python.exe', Pchar(' ./script/python/plotCruise.py '+inttostr(cruiseDB)+' '+inttostr(command)+' '+source+' '+cruise+' '+Resample+' '+fname+' '+exportflag+' '+FloatToStr(spatialMargin)+' '+tables+' '+vars+' '+extVars+' '+extVarVals+' '+extVars2+' '+extVarVals2), nil, SW_HIDE);
+  //frmMain.edit1.text:='python.exe'+ Pchar(' ./script/python/plotCruise.py '+inttostr(cruiseDB)+' '+inttostr(command)+' '+source+' '+cruise+' '+Resample+' '+fname+' '+exportflag+' '+FloatToStr(spatialMargin)+' '+tables+' '+vars+' '+extVars+' '+extVarVals+' '+extVars2+' '+extVarVals2);
 
 
   DeleteFile('embed/'+fname+'.html');

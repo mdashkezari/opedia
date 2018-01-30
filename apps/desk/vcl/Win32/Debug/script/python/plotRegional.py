@@ -25,7 +25,12 @@ def prepareGMQuery(table, dt):
     return query
 
 
-def RegionalMap(tables, variabels, dt, lat1, lat2, lon1, lon2, arg8, arg9, fname):
+def exportData(df, path):
+    df.to_csv(path, index=False)    
+    return
+
+
+def RegionalMap(tables, variabels, dt, lat1, lat2, lon1, lon2, arg8, arg9, fname, exportDataFlag):
     '''
     ############# App-Level Query #############
     query = prepareGMQuery(table, dt)
@@ -45,7 +50,7 @@ def RegionalMap(tables, variabels, dt, lat1, lat2, lon1, lon2, arg8, arg9, fname
         args = [tables[i], variabels[i], dt, lat1, lat2, lon1, lon2, arg8[i], arg9[i]]
         query = 'EXEC uspRegionalMap ?, ?, ?, ?, ?, ?, ?, ?, ?'
         df = db.dbFetchStoredProc(query, args)        
-        df = pd.DataFrame.from_records(df, columns=['lat', 'lon', variabels[i]])
+        df = pd.DataFrame.from_records(df, columns=['time', 'lat', 'lon', variabels[i]])
         lat = df.lat.unique()
         lon = df.lon.unique()
         shape = (len(lat), len(lon))
@@ -64,7 +69,8 @@ def RegionalMap(tables, variabels, dt, lat1, lat2, lon1, lon2, arg8, arg9, fname
         else:
             sub = variabels[i] + unit + ' ' + dt    
         subs.append(sub)
-    ###########################################
+        if exportDataFlag:      # export data
+            exportData(df, path='data/RM_' + tables[i] + '_' + variabels[i] + '.csv')
     bokehGM(data=data, subject=subs, fname=fname, lat=lat, lon=lon)
     return
 
@@ -73,7 +79,6 @@ def bokehGM(data, subject, fname, lat, lon):
     TOOLS="hover,crosshair,pan,wheel_zoom,zoom_in,zoom_out,box_zoom,undo,redo,reset,tap,save,box_select,poly_select,lasso_select,"
     w = 1000
     h = 500
-
     p = []
     for ind in range(len(data)):
         p1 = figure(tools=TOOLS, toolbar_location="above", title=subject[ind], plot_width=w, plot_height=h, x_range=(np.min(lon), np.max(lon)), y_range=(np.min(lat), np.max(lat)))
@@ -87,18 +92,9 @@ def bokehGM(data, subject, fname, lat, lon):
                         label_standoff=12, border_line_color=None, location=(0,0))
         p1.add_layout(color_bar, 'right')
         p.append(p1)
-
-
-
     output_file("embed/" + fname + ".html", title="Regional Map")
     show(column(p))
-    '''
-    p1_script, p1_div = components(p1)
-    embedComponents('embed/scriptGM1.js', p1_script)
-    embedComponents('embed/divGM1.js', p1_div)
-    '''
     return
-
 
 
 
@@ -110,10 +106,11 @@ arg5 = sys.argv[5]      #lat2
 arg6 = sys.argv[6]      #lon1
 arg7 = sys.argv[7]      #lon2
 fname = sys.argv[8]
+exportDataFlag = bool(int(sys.argv[9]))
 arg8 = None
 arg9 = None
-if len(sys.argv)>10:
-    arg8 = sys.argv[9]      #extra condition: var_name
-    arg9 = sys.argv[10]      #extra condition: var_val
+if len(sys.argv)>11:
+    arg8 = sys.argv[10]      #extra condition: var_name
+    arg9 = sys.argv[11]      #extra condition: var_val
 
-RegionalMap(arg1.split(','), arg2.split(','), arg3, arg4, arg5, arg6, arg7, arg8.split(','), arg9.split(','), fname)
+RegionalMap(arg1.split(','), arg2.split(','), arg3, arg4, arg5, arg6, arg7, arg8.split(','), arg9.split(','), fname, exportDataFlag)

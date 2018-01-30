@@ -19,12 +19,11 @@ def dbConnect(local=True):
 			conn = pyodbc.connect('DRIVER={SQL Server};SERVER=' + server + ';DATABASE=' + db + ';Trusted_Connection=yes')
         else: 
 			## Cloud (Azure) Database			
-			server = 'oceanatlas.database.windows.net'
-			db = 'Opedia'
-			Uid = 'AdminAtlas@oceanatlas'
-			psw = 'Ocean@2016@'
-			conn = pyodbc.connect('DRIVER={SQL Server};SERVER=' + server + ';DATABASE=' + db + ';Uid=' + Uid + ';Pwd='+ psw +';Encrypt=yes')
-        
+			server = ''
+			db = ''
+			Uid = ''
+			psw = ''
+			conn = pyodbc.connect('DRIVER={SQL Server};SERVER=' + server + ';DATABASE=' + db + ';Uid=' + Uid + ';Pwd='+ psw +';Encrypt=yes')       
         #print('Successful Database Connection')
     except Exception as e:
         print('Error in Database Connection. Error message: '+str(e))        

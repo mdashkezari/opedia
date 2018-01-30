@@ -2,7 +2,7 @@ object frmMain: TfrmMain
   Left = 0
   Top = 0
   Caption = 'Opedia'
-  ClientHeight = 897
+  ClientHeight = 922
   ClientWidth = 1250
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -19,14 +19,15 @@ object frmMain: TfrmMain
     Left = 0
     Top = 0
     Width = 1000
-    Height = 872
+    Height = 897
     Align = alClient
     TabOrder = 0
+    ExplicitHeight = 872
     object Map: TdxMapControl
       Left = 0
       Top = 0
       Width = 998
-      Height = 870
+      Height = 895
       Align = alClient
       LookAndFeel.NativeStyle = False
       PopupMenu = dxRibbonRadialMenu1
@@ -34,6 +35,7 @@ object frmMain: TfrmMain
       ZoomLevel = 2.025000000000000000
       OnMouseDown = MapMouseDown
       OnMouseUp = MapMouseUp
+      ExplicitHeight = 870
       object dxMapControl1ImageTileLayer1: TdxMapImageTileLayer
         ProviderClassName = 'TdxMapControlBingMapImageryDataProvider'
         Provider.BingKey = 
@@ -58,20 +60,29 @@ object frmMain: TfrmMain
       Transparent = True
       Visible = False
     end
+    object Edit1: TEdit
+      Left = 24
+      Top = 720
+      Width = 945
+      Height = 21
+      TabOrder = 2
+      Text = 'Edit1'
+    end
   end
   object scbSettingsPanel: TcxScrollBox
     Left = 1000
     Top = 0
     Width = 250
-    Height = 872
+    Height = 897
     Align = alRight
     Color = clBtnFace
     ParentColor = False
     PopupMenu = dxRibbonRadialMenu1
     TabOrder = 1
+    ExplicitHeight = 872
     object cxLabel1: TcxLabel
       Left = 4
-      Top = 131
+      Top = 155
       Caption = 'Start Date'
       ParentFont = False
       Style.Font.Charset = DEFAULT_CHARSET
@@ -84,7 +95,7 @@ object frmMain: TfrmMain
     end
     object dtwpTimeStart: TdxDateTimeWheelPicker
       Left = 28
-      Top = 154
+      Top = 178
       Properties.Wheels = [pwYear, pwMonth, pwDay, pwHour]
       TabOrder = 1
       Height = 160
@@ -92,7 +103,7 @@ object frmMain: TfrmMain
     end
     object cxLabel2: TcxLabel
       Left = 4
-      Top = 321
+      Top = 345
       Caption = 'End Date'
       ParentFont = False
       Style.Font.Charset = DEFAULT_CHARSET
@@ -105,7 +116,7 @@ object frmMain: TfrmMain
     end
     object dtwpTimeEnd: TdxDateTimeWheelPicker
       Left = 28
-      Top = 344
+      Top = 368
       Properties.Wheels = [pwYear, pwMonth, pwDay, pwHour]
       TabOrder = 2
       Height = 160
@@ -113,7 +124,7 @@ object frmMain: TfrmMain
     end
     object rtbLat: TdxRangeTrackBar
       Left = 8
-      Top = 596
+      Top = 620
       Properties.Max = 9000
       Properties.Min = -9000
       Properties.ShowTicks = False
@@ -128,7 +139,7 @@ object frmMain: TfrmMain
     end
     object cxLabel4: TcxLabel
       Left = 4
-      Top = 577
+      Top = 601
       Caption = 'Latitude Range'
       ParentFont = False
       Style.Font.Charset = DEFAULT_CHARSET
@@ -141,7 +152,7 @@ object frmMain: TfrmMain
     end
     object rtbLon: TdxRangeTrackBar
       Left = 8
-      Top = 673
+      Top = 697
       Properties.Max = 18000
       Properties.Min = -18000
       Properties.ShowTicks = False
@@ -156,7 +167,7 @@ object frmMain: TfrmMain
     end
     object cxLabel5: TcxLabel
       Left = 4
-      Top = 651
+      Top = 675
       Caption = 'Longitude Range'
       ParentFont = False
       Style.Font.Charset = DEFAULT_CHARSET
@@ -169,7 +180,7 @@ object frmMain: TfrmMain
     end
     object edtLat1: TcxTextEdit
       Left = 14
-      Top = 621
+      Top = 645
       AutoSize = False
       ParentFont = False
       Properties.OnChange = edtLat1PropertiesChange
@@ -187,7 +198,7 @@ object frmMain: TfrmMain
     end
     object edtLat2: TcxTextEdit
       Left = 176
-      Top = 621
+      Top = 645
       AutoSize = False
       ParentFont = False
       Properties.OnChange = edtLat2PropertiesChange
@@ -205,7 +216,7 @@ object frmMain: TfrmMain
     end
     object edtLon1: TcxTextEdit
       Left = 14
-      Top = 697
+      Top = 721
       AutoSize = False
       ParentFont = False
       Properties.OnChange = edtLon1PropertiesChange
@@ -223,7 +234,7 @@ object frmMain: TfrmMain
     end
     object edtLon2: TcxTextEdit
       Left = 176
-      Top = 697
+      Top = 721
       AutoSize = False
       ParentFont = False
       Properties.OnChange = edtLon2PropertiesChange
@@ -241,7 +252,7 @@ object frmMain: TfrmMain
     end
     object ledtVars: TAdvListEditor
       Left = 28
-      Top = 29
+      Top = 30
       Width = 200
       Height = 96
       Appearance.Normal.ColorFrom = 16312028
@@ -275,7 +286,7 @@ object frmMain: TfrmMain
     end
     object cxLabel3: TcxLabel
       Left = 4
-      Top = 3
+      Top = 4
       Caption = 'Variables'
       ParentFont = False
       Style.Font.Charset = DEFAULT_CHARSET
@@ -288,7 +299,7 @@ object frmMain: TfrmMain
     end
     object cbDepthStart: TcxComboBox
       Left = 28
-      Top = 778
+      Top = 802
       ParentFont = False
       Properties.DropDownListStyle = lsFixedList
       Properties.Items.Strings = (
@@ -356,7 +367,7 @@ object frmMain: TfrmMain
     end
     object cbRegion: TcxComboBox
       Left = 28
-      Top = 549
+      Top = 573
       ParentFont = False
       Properties.DropDownListStyle = lsFixedList
       Properties.Items.Strings = (
@@ -393,7 +404,7 @@ object frmMain: TfrmMain
     end
     object cbPiscesDepthStart: TcxComboBox
       Left = 162
-      Top = 751
+      Top = 775
       Properties.DropDownListStyle = lsFixedList
       Properties.Items.Strings = (
         '0.494024991989'
@@ -454,7 +465,7 @@ object frmMain: TfrmMain
     end
     object cxLabel6: TcxLabel
       Left = 4
-      Top = 527
+      Top = 551
       Caption = 'Preset Regions'
       ParentFont = False
       Style.Font.Charset = DEFAULT_CHARSET
@@ -467,7 +478,7 @@ object frmMain: TfrmMain
     end
     object cxLabel7: TcxLabel
       Left = 4
-      Top = 752
+      Top = 776
       Caption = 'Start Depth (m)'
       ParentFont = False
       Style.Font.Charset = DEFAULT_CHARSET
@@ -480,7 +491,7 @@ object frmMain: TfrmMain
     end
     object cxLabel8: TcxLabel
       Left = 4
-      Top = 809
+      Top = 833
       Caption = 'End Depth (m)'
       ParentFont = False
       Style.Font.Charset = DEFAULT_CHARSET
@@ -493,7 +504,7 @@ object frmMain: TfrmMain
     end
     object cbDepthEnd: TcxComboBox
       Left = 28
-      Top = 835
+      Top = 859
       ParentFont = False
       Properties.DropDownListStyle = lsFixedList
       Properties.Items.Strings = (
@@ -561,7 +572,7 @@ object frmMain: TfrmMain
     end
     object cbPiscesDepthEnd: TcxComboBox
       Left = 162
-      Top = 808
+      Top = 832
       Properties.DropDownListStyle = lsFixedList
       Properties.Items.Strings = (
         '0.494024991989'
@@ -620,14 +631,35 @@ object frmMain: TfrmMain
       Visible = False
       Width = 66
     end
+    object tsExportData: TdxToggleSwitch
+      Left = 154
+      Top = 129
+      Checked = False
+      TabOrder = 22
+      Transparent = True
+    end
+    object cxLabel9: TcxLabel
+      Left = 28
+      Top = 129
+      Caption = 'Export Data'
+      ParentFont = False
+      Style.Font.Charset = DEFAULT_CHARSET
+      Style.Font.Color = clWindowText
+      Style.Font.Height = -13
+      Style.Font.Name = 'Tahoma'
+      Style.Font.Style = [fsBold]
+      Style.IsFontAssigned = True
+      Transparent = True
+    end
   end
   object cxScrollBox1: TcxScrollBox
     Left = 0
-    Top = 872
+    Top = 897
     Width = 1250
     Height = 25
     Align = alBottom
     TabOrder = 6
+    ExplicitTop = 872
     object cxProgressBar1: TcxProgressBar
       Left = 0
       Top = 0
@@ -688,9 +720,9 @@ object frmMain: TfrmMain
       ImageIndex = 4
     end
     object barFilter: TdxBarButton
-      Caption = 'Filter'
+      Caption = 'Catalog'
       Category = 0
-      Hint = 'Filter'
+      Hint = 'Catalog'
       Visible = ivAlways
       ImageIndex = 21
       OnClick = barFilterClick
@@ -848,6 +880,7 @@ object frmMain: TfrmMain
       Category = 0
       Hint = 'Monthly'
       Visible = ivAlways
+      OnClick = barMonthlyClick
     end
     object barGeneralRun: TdxBarButton
       Caption = 'Run'
@@ -981,6 +1014,10 @@ object frmMain: TfrmMain
         item
           Visible = True
           ItemName = 'barHistogram'
+        end
+        item
+          Visible = True
+          ItemName = 'barMonthly'
         end>
     end
     object dxBarButton1: TdxBarButton
@@ -4688,7 +4725,10 @@ object frmMain: TfrmMain
   object OpediaDB: TADOConnection
     ConnectionString = 
       'Provider=SQLOLEDB.1;Password=Jazireie08;Persist Security Info=Tr' +
-      'ue;User ID=sa;Initial Catalog=Opedia;Data Source=THEBEAST'
+      'ue;User ID=sa;Initial Catalog=Opedia;Data Source=128.208.239.15,' +
+      '1433;Use Procedure for Prepare=1;Auto Translate=True;Packet Size' +
+      '=4096;Workstation ID=THEBEAST;Use Encryption for Data=False;Tag ' +
+      'with column collation when possible=False'
     LoginPrompt = False
     Provider = 'SQLOLEDB.1'
     Left = 144

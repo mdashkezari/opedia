@@ -21,7 +21,7 @@ extV, extVV = 'hour', '12'
 args = [table, field, dt, lat1, lat2, lon1, lon2, extV, extVV]
 query = 'EXEC uspRegionalMap ?, ?, ?, ?, ?, ?, ?, ?, ?'
 df = db.dbFetchStoredProc(query, args)        
-df = pd.DataFrame.from_records(df, columns=['lat', 'lon', field])
+df = pd.DataFrame.from_records(df, columns=['time', 'lat', 'lon', field])
 lat = df.lat.unique()
 lon = df.lon.unique()
 shape = (len(lat), len(lon))

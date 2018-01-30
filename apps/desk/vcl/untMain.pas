@@ -81,38 +81,42 @@ type
     Map: TdxMapControl;
     dxMapControl1ImageTileLayer1: TdxMapImageTileLayer;
     scbSettingsPanel: TcxScrollBox;
-    cxLabel1: TcxLabel;
-    dtwpTimeStart: TdxDateTimeWheelPicker;
-    cxLabel2: TcxLabel;
-    dtwpTimeEnd: TdxDateTimeWheelPicker;
-    rtbLat: TdxRangeTrackBar;
-    cxLabel4: TcxLabel;
-    rtbLon: TdxRangeTrackBar;
-    cxLabel5: TcxLabel;
     dxSkinController1: TdxSkinController;
-    edtLat1: TcxTextEdit;
-    edtLat2: TcxTextEdit;
-    edtLon1: TcxTextEdit;
-    edtLon2: TcxTextEdit;
     cxScrollBox1: TcxScrollBox;
     OpediaDB: TADOConnection;
-    ledtVars: TAdvListEditor;
-    cxLabel3: TcxLabel;
-    cbDepthStart: TcxComboBox;
-    cbRegion: TcxComboBox;
     cxProgressBar1: TcxProgressBar;
-    cbPiscesDepthStart: TcxComboBox;
-    cxLabel6: TcxLabel;
-    cxLabel7: TcxLabel;
-    cxLabel8: TcxLabel;
-    cbDepthEnd: TcxComboBox;
-    cbPiscesDepthEnd: TcxComboBox;
     barDepthProfile: TdxBarButton;
     MapItemLayer1: TdxMapItemLayer;
     MapItemFileLayer1: TdxMapItemFileLayer;
     barplotXY: TdxBarButton;
     aiBusy: TdxActivityIndicator;
     barHistogram: TdxBarButton;
+    cxGroupBox1: TcxGroupBox;
+    cxGroupBox2: TcxGroupBox;
+    cxGroupBox3: TcxGroupBox;
+    ledtVars: TAdvListEditor;
+    cxLabel9: TcxLabel;
+    tsExportData: TdxToggleSwitch;
+    dtwpTimeStart: TdxDateTimeWheelPicker;
+    dtwpTimeEnd: TdxDateTimeWheelPicker;
+    cxLabel1: TcxLabel;
+    cxLabel2: TcxLabel;
+    cxLabel6: TcxLabel;
+    cbRegion: TcxComboBox;
+    cxLabel4: TcxLabel;
+    rtbLat: TdxRangeTrackBar;
+    edtLat1: TcxTextEdit;
+    edtLat2: TcxTextEdit;
+    cxLabel5: TcxLabel;
+    rtbLon: TdxRangeTrackBar;
+    edtLon1: TcxTextEdit;
+    edtLon2: TcxTextEdit;
+    cxLabel7: TcxLabel;
+    cbPiscesDepthStart: TcxComboBox;
+    cbDepthStart: TcxComboBox;
+    cxLabel8: TcxLabel;
+    cbPiscesDepthEnd: TcxComboBox;
+    cbDepthEnd: TcxComboBox;
     procedure rtbLatPropertiesChange(Sender: TObject);
     procedure rtbLonPropertiesChange(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -147,6 +151,7 @@ type
     procedure barFilterClick(Sender: TObject);
     procedure barHistogramClick(Sender: TObject);
     procedure barMonthlyClick(Sender: TObject);
+    procedure MapResize(Sender: TObject);
   private
     { Private declarations }
   public
@@ -171,6 +176,7 @@ Procedure WriteCoreDump(CoredumpBody:String);
 procedure Busy(Enable:Boolean);
 procedure OpenDB();
 procedure CloseDB();
+function getExportDataFlag:integer;
 
 implementation
 
@@ -411,6 +417,12 @@ begin
   end;
 end;
 
+function getExportDataFlag:integer;
+begin
+  Result:=0;
+  if frmMain.tsExportData.Checked then
+    Result:=1
+end;
 
 procedure makeDirectory(path:string);
 begin
@@ -472,7 +484,7 @@ end;
 
 procedure TfrmMain.barDepthProfileClick(Sender: TObject);
 var
-  dt, fname: String;
+  dt, fname, exportflag: String;
   i, count:integer;
   Variable:TVar;
   vars, tables: String;
@@ -501,8 +513,9 @@ begin
     end;
   end;
   fname:='DP';
-  ShellExecute(0, nil, 'python.exe', Pchar(' ./script/python/plotDepthProfile.py '+tables+' '+vars+' '+dt+' '+edtLat1.Text+' '+edtLat2.Text+' '+edtLon1.Text+' '+edtLon2.Text+' '+fname+' '+cbPiscesDepthStart.Text+' '+cbPiscesDepthEnd.Text), nil, SW_HIDE);
-  //edit1.text:='python.exe'+ Pchar(' ./script/python/plotDepthProfile.py '+tables+' '+vars+' '+dt+' '+edtLat1.Text+' '+edtLat2.Text+' '+edtLon1.Text+' '+edtLon2.Text+' '+fname+' '+cbPiscesDepthStart.Text+' '+cbPiscesDepthEnd.Text);
+  exportflag:=inttostr(getExportDataFlag);
+  ShellExecute(0, nil, 'python.exe', Pchar(' ./script/python/plotDepthProfile.py '+tables+' '+vars+' '+dt+' '+edtLat1.Text+' '+edtLat2.Text+' '+edtLon1.Text+' '+edtLon2.Text+' '+fname+' '+exportflag+' '+cbPiscesDepthStart.Text+' '+cbPiscesDepthEnd.Text), nil, SW_HIDE);
+  //edit1.text:='python.exe'+ Pchar(' ./script/python/plotDepthProfile.py '+tables+' '+vars+' '+dt+' '+edtLat1.Text+' '+edtLat2.Text+' '+edtLon1.Text+' '+edtLon2.Text+' '+fname+' '+exportflag+' '+cbPiscesDepthStart.Text+' '+cbPiscesDepthEnd.Text);
 
 
   DeleteFile('embed/'+fname+'.html');
@@ -521,7 +534,7 @@ end;
 
 procedure TfrmMain.barGMClick(Sender: TObject);
 var
-  dt, fname: String;
+  dt, fname, exportflag: String;
   i, count:integer;
   Variable:TVar;
   vars, tables, extV, extVV, extVars, extVarVals: String;
@@ -569,8 +582,9 @@ begin
     end;
   end;
   fname:='RM';
-  ShellExecute(0, nil, 'python.exe', Pchar(' ./script/python/plotRegional.py '+tables+' '+vars+' '+dt+' '+edtLat1.Text+' '+edtLat2.Text+' '+edtLon1.Text+' '+edtLon2.Text+' '+fname+' '+extVars+' '+extVarVals), nil, SW_HIDE);
-  //edit1.text:='python.exe'+ Pchar(' ./script/python/plotRegional.py '+tables+' '+vars+' '+dt+' '+edtLat1.Text+' '+edtLat2.Text+' '+edtLon1.Text+' '+edtLon2.Text+' '+fname+' '+extVars+' '+extVarVals);
+  exportflag:=inttostr(getExportDataFlag);
+  ShellExecute(0, nil, 'python.exe', Pchar(' ./script/python/plotRegional.py '+tables+' '+vars+' '+dt+' '+edtLat1.Text+' '+edtLat2.Text+' '+edtLon1.Text+' '+edtLon2.Text+' '+fname+' '+exportflag+' '+extVars+' '+extVarVals), nil, SW_HIDE);
+  //edit1.text:='python.exe'+ Pchar(' ./script/python/plotRegional.py '+tables+' '+vars+' '+dt+' '+edtLat1.Text+' '+edtLat2.Text+' '+edtLon1.Text+' '+edtLon2.Text+' '+fname+' '+exportflag+' '+extVars+' '+extVarVals);
 
 
   DeleteFile('embed/'+fname+'.html');
@@ -584,7 +598,7 @@ end;
 
 procedure TfrmMain.barHistogramClick(Sender: TObject);
 var
-  dt1, dt2, fname: String;
+  dt1, dt2, fname, exportflag: String;
   i, count:integer;
   Variable:TVar;
   vars, tables: String;
@@ -648,8 +662,9 @@ begin
     end;
   end;
   fname:='Dist';
-  ShellExecute(0, nil, 'python.exe', Pchar(' ./script/python/plotDist.py '+tables+' '+vars+' '+dt1+' '+dt2+' '+edtLat1.Text+' '+edtLat2.Text+' '+edtLon1.Text+' '+edtLon2.Text+' '+fname+' '+extVars+' '+extVarVals+' '+extVars2+' '+extVarVals2), nil, SW_HIDE);
-  //edit1.text:='python.exe' + Pchar(' ./script/python/plotDist.py '+tables+' '+vars+' '+dt1+' '+dt2+' '+edtLat1.Text+' '+edtLat2.Text+' '+edtLon1.Text+' '+edtLon2.Text+' '+fname+' '+extVars+' '+extVarVals+' '+extVars2+' '+extVarVals2);
+  exportflag:=inttostr(getExportDataFlag);
+  ShellExecute(0, nil, 'python.exe', Pchar(' ./script/python/plotDist.py '+tables+' '+vars+' '+dt1+' '+dt2+' '+edtLat1.Text+' '+edtLat2.Text+' '+edtLon1.Text+' '+edtLon2.Text+' '+fname+' '+exportflag+' '+extVars+' '+extVarVals+' '+extVars2+' '+extVarVals2), nil, SW_HIDE);
+  //edit1.text:='python.exe' + Pchar(' ./script/python/plotDist.py '+tables+' '+vars+' '+dt1+' '+dt2+' '+edtLat1.Text+' '+edtLat2.Text+' '+edtLon1.Text+' '+edtLon2.Text+' '+fname+' '+exportflag+' '+extVars+' '+extVarVals+' '+extVars2+' '+extVarVals2);
 
 
   DeleteFile('embed/'+fname+'.html');
@@ -663,7 +678,7 @@ end;
 
 procedure TfrmMain.barMonthlyClick(Sender: TObject);
 var
-  dt1, dt2, fname: String;
+  dt1, dt2, fname, exportflag: String;
   i, count:integer;
   Variable:TVar;
   vars, tables: String;
@@ -725,8 +740,9 @@ begin
     end;
   end;
   fname:='Monthly';
-  ShellExecute(0, nil, 'python.exe', Pchar(' ./script/python/plotMonthly.py '+tables+' '+vars+' '+edtLat1.Text+' '+edtLat2.Text+' '+edtLon1.Text+' '+edtLon2.Text+' '+fname+' '+extVars+' '+extVarVals+' '+extVars2+' '+extVarVals2), nil, SW_HIDE);
-  //edit1.text:='python.exe' + Pchar(' plotMonthly.py '+tables+' '+vars+' '+edtLat1.Text+' '+edtLat2.Text+' '+edtLon1.Text+' '+edtLon2.Text+' '+fname+' '+extVars+' '+extVarVals+' '+extVars2+' '+extVarVals2);
+  exportflag:=inttostr(getExportDataFlag);
+  ShellExecute(0, nil, 'python.exe', Pchar(' ./script/python/plotMonthly.py '+tables+' '+vars+' '+edtLat1.Text+' '+edtLat2.Text+' '+edtLon1.Text+' '+edtLon2.Text+' '+fname+' '+exportflag+' '+extVars+' '+extVarVals+' '+extVars2+' '+extVarVals2), nil, SW_HIDE);
+  //edit1.text:='python.exe' + Pchar(' plotMonthly.py '+tables+' '+vars+' '+edtLat1.Text+' '+edtLat2.Text+' '+edtLon1.Text+' '+edtLon2.Text+' '+fname+' '+exportflag+' '+extVars+' '+extVarVals+' '+extVars2+' '+extVarVals2);
 
 
   DeleteFile('embed/'+fname+'.html');
@@ -740,7 +756,7 @@ end;
 
 procedure TfrmMain.barplotXYClick(Sender: TObject);
 var
-  dt1, dt2, fname: String;
+  dt1, dt2, fname, exportflag: String;
   i, count:integer;
   Variable:TVar;
   vars, tables: String;
@@ -804,8 +820,9 @@ begin
     end;
   end;
   fname:='XY';
-  ShellExecute(0, nil, 'python.exe', Pchar(' ./script/python/plotXY.py '+tables+' '+vars+' '+dt1+' '+dt2+' '+edtLat1.Text+' '+edtLat2.Text+' '+edtLon1.Text+' '+edtLon2.Text+' '+fname+' '+extVars+' '+extVarVals+' '+extVars2+' '+extVarVals2), nil, SW_HIDE);
-  //edit1.text:='python.exe' + Pchar(' ./script/python/plotXY.py '+tables+' '+vars+' '+dt1+' '+dt2+' '+edtLat1.Text+' '+edtLat2.Text+' '+edtLon1.Text+' '+edtLon2.Text+' '+fname+' '+extVars+' '+extVarVals+' '+extVars2+' '+extVarVals2);
+  exportflag:=inttostr(getExportDataFlag);
+  ShellExecute(0, nil, 'python.exe', Pchar(' ./script/python/plotXY.py '+tables+' '+vars+' '+dt1+' '+dt2+' '+edtLat1.Text+' '+edtLat2.Text+' '+edtLon1.Text+' '+edtLon2.Text+' '+fname+' '+exportflag+' '+extVars+' '+extVarVals+' '+extVars2+' '+extVarVals2), nil, SW_HIDE);
+  //edit1.text:='python.exe' + Pchar(' ./script/python/plotXY.py '+tables+' '+vars+' '+dt1+' '+dt2+' '+edtLat1.Text+' '+edtLat2.Text+' '+edtLon1.Text+' '+edtLon2.Text+' '+fname+' '+exportflag+' '+extVars+' '+extVarVals+' '+extVars2+' '+extVarVals2);
 
 
   DeleteFile('embed/'+fname+'.html');
@@ -824,7 +841,7 @@ end;
 
 procedure TfrmMain.dxBarButton2Click(Sender: TObject);
 var
-  dt1, dt2, fname: String;
+  dt1, dt2, fname, exportflag: String;
   i, count:integer;
   Variable:TVar;
   vars, tables: String;
@@ -888,8 +905,9 @@ begin
     end;
   end;
   fname:='TS';
-  ShellExecute(0, nil, 'python.exe', Pchar(' ./script/python/plotTS.py '+tables+' '+vars+' '+dt1+' '+dt2+' '+edtLat1.Text+' '+edtLat2.Text+' '+edtLon1.Text+' '+edtLon2.Text+' '+fname+' '+extVars+' '+extVarVals+' '+extVars2+' '+extVarVals2), nil, SW_HIDE);
-  //edit1.text:='python.exe' + Pchar(' ./script/python/plotTS.py '+tables+' '+vars+' '+dt1+' '+dt2+' '+edtLat1.Text+' '+edtLat2.Text+' '+edtLon1.Text+' '+edtLon2.Text+' '+fname+' '+extVars+' '+extVarVals+' '+extVars2+' '+extVarVals2);
+  exportflag:=inttostr(getExportDataFlag);
+  ShellExecute(0, nil, 'python.exe', Pchar(' ./script/python/plotTS.py '+tables+' '+vars+' '+dt1+' '+dt2+' '+edtLat1.Text+' '+edtLat2.Text+' '+edtLon1.Text+' '+edtLon2.Text+' '+fname+' '+exportflag+' '+extVars+' '+extVarVals+' '+extVars2+' '+extVarVals2), nil, SW_HIDE);
+  //edit1.text:='python.exe' + Pchar(' ./script/python/plotTS.py '+tables+' '+vars+' '+dt1+' '+dt2+' '+edtLat1.Text+' '+edtLat2.Text+' '+edtLon1.Text+' '+edtLon2.Text+' '+fname+' '+exportflag+' '+extVars+' '+extVarVals+' '+extVars2+' '+extVarVals2);
 
 
   DeleteFile('embed/'+fname+'.html');
@@ -1038,6 +1056,11 @@ begin
   end;
   ShiftDrag := False;
   cbRegion.ItemIndex:=-1;
+end;
+
+procedure TfrmMain.MapResize(Sender: TObject);
+begin
+  prePosition;
 end;
 
 procedure TfrmMain.rtbLatMouseUp(Sender: TObject; Button: TMouseButton;
