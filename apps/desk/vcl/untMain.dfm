@@ -22,7 +22,6 @@ object frmMain: TfrmMain
     Height = 897
     Align = alClient
     TabOrder = 0
-    ExplicitWidth = 936
     object Map: TdxMapControl
       Left = 0
       Top = 0
@@ -36,7 +35,6 @@ object frmMain: TfrmMain
       OnMouseDown = MapMouseDown
       OnMouseUp = MapMouseUp
       OnResize = MapResize
-      ExplicitWidth = 929
       object dxMapControl1ImageTileLayer1: TdxMapImageTileLayer
         ProviderClassName = 'TdxMapControlBingMapImageryDataProvider'
         Provider.BingKey = 
@@ -75,7 +73,7 @@ object frmMain: TfrmMain
     object cxGroupBox1: TcxGroupBox
       Left = 8
       Top = 25
-      Caption = '1. Variables'
+      Caption = '1. Pick variables'
       ParentFont = False
       Style.Font.Charset = DEFAULT_CHARSET
       Style.Font.Color = clWindowText
@@ -144,7 +142,7 @@ object frmMain: TfrmMain
     object cxGroupBox2: TcxGroupBox
       Left = 8
       Top = 242
-      Caption = '2. Time window'
+      Caption = '2. Set time window'
       ParentFont = False
       Style.Font.Charset = DEFAULT_CHARSET
       Style.Font.Color = clWindowText
@@ -215,7 +213,7 @@ object frmMain: TfrmMain
     object cxGroupBox3: TcxGroupBox
       Left = 8
       Top = 502
-      Caption = '3. Spatial parameters'
+      Caption = '3. Set spatial domain'
       ParentFont = False
       Style.Font.Charset = DEFAULT_CHARSET
       Style.Font.Color = clWindowText
@@ -697,15 +695,12 @@ object frmMain: TfrmMain
     Height = 25
     Align = alBottom
     TabOrder = 6
-    ExplicitTop = 872
-    ExplicitWidth = 1250
     object cxProgressBar1: TcxProgressBar
       Left = 0
       Top = 0
       Align = alClient
       Properties.PeakValue = 80.000000000000000000
       TabOrder = 0
-      ExplicitWidth = 1248
       Width = 1489
     end
   end

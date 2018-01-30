@@ -70,11 +70,7 @@ def appendVar(cruiseTrack, t, y, yErr, variable, extV, extVV, extV2, extVV2):
 
 def exportData(cruiseTrack, t, y, yErr, cruiseName, table, variable, margin, extV, extVV, extV2, extVV2):
     df = cruiseTrack
-    #df[variable] = y
-    #df[variable+'_std'] = yErr
     df['margin'] = margin
-    #df[extV] = extVV
-    #df[extV2] = extVV2
     path = 'data/Cruise_' + cruiseName + '.csv'
     df.to_csv(path, index=False)    
     return
@@ -125,7 +121,6 @@ def plotAlongTrack(tables, variables, cruiseName, track, spMargin, extV, extVV, 
         p.append(p1)
     output_file("embed/" + fname + ".html", title="Along Track")
     show(column(p))
-
     if exportDataFlag:
         exportData(loadedTrack, ts, ys, y_stds, cruiseName, tables[i], variables[i], spMargin, extV[i], extVV[i], extV2[i], extVV2[i])    
     return
@@ -137,6 +132,7 @@ def plotAlongTrack(tables, variables, cruiseName, track, spMargin, extV, extVV, 
 DB = bool(int(sys.argv[1]))
 command = int(sys.argv[2])
 source = sys.argv[3]      
+print source
 cruise = sys.argv[4]      
 resampTau = sys.argv[5]
 fname = sys.argv[6] 
@@ -152,8 +148,7 @@ elif command == 2:      ## generates along track plot
     extV = sys.argv[11].split(',')       #extra condition: var_name
     extVV = sys.argv[12].split(',')       #extra condition: var_val
     extV2 = sys.argv[13].split(',')       #extra condition: var_name
-    extVV2 = sys.argv[14].split(',')       #extra condition: var_val
-    
+    extVV2 = sys.argv[14].split(',')       #extra condition: var_val  
     for i in range(len(tables)):
         if extV[i].find('ignore') != -1:
             extV[i]=None
@@ -163,6 +158,4 @@ elif command == 2:      ## generates along track plot
             extV2[i]=None
         if extVV2[i].find('ignore') != -1:
             extVV2[i]=None
-
-
     plotAlongTrack(tables, variables, cruise, df, spMargin, extV, extVV, extV2, extVV2, exportDataFlag, marker='-', msize=30, clr='darkturquoise')

@@ -235,9 +235,15 @@ end;
 {$R *.dfm}
 
 procedure TfrmCruise.Action1Execute(Sender: TObject);
+var
+  fname: string;
 begin
   if OpenDialog1.Execute then
-    bedtVirtualCruise.Text:=OpenDialog1.FileName;
+  begin
+    fname:=OpenDialog1.FileName;
+    fname:=stringreplace(fname, ' (MIT)', '', [rfReplaceAll, rfIgnoreCase]);
+    bedtVirtualCruise.Text:=fname;
+  end;
 end;
 
 procedure TfrmCruise.btnColocalizeClick(Sender: TObject);

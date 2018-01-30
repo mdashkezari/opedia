@@ -29,14 +29,14 @@ uses
   dxMapControl, dxMapItem, dxMapItemFileLayer,
   dxCustomMapItemLayer, dxMapItemLayer, ShellAPI,
   Vcl.StdCtrls, dxWheelPicker, dxActivityIndicator, cxCheckBox, dxToggleSwitch,
-  cxButtonEdit, cxLabel, Vcl.Menus, cxButtons, System.Actions, Vcl.ActnList;
+  cxButtonEdit, cxLabel, Vcl.Menus, cxButtons, System.Actions, Vcl.ActnList,
+  strUtils, DateUtils;
 
 
 type
   TfrmCruise = class(TForm)
     cbCruises: TcxComboBox;
     wpResample: TdxWheelPicker;
-    aiBusy: TdxActivityIndicator;
     tsCruiseDB: TdxToggleSwitch;
     bedtVirtualCruise: TcxButtonEdit;
     edtMargin: TcxTextEdit;
@@ -49,11 +49,13 @@ type
     btnCruiseTrack: TcxButton;
     cxLabel4: TcxLabel;
     btnColocalize: TcxButton;
+    aiBusy: TdxActivityIndicator;
     procedure FormShow(Sender: TObject);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
     procedure tsCruiseDBPropertiesEditValueChanged(Sender: TObject);
     procedure Action1Execute(Sender: TObject);
     procedure btnCruiseTrackClick(Sender: TObject);
+    procedure btnColocalizeClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -67,6 +69,12 @@ implementation
 
 uses
   untMain, untCommonDB;
+
+procedure frmCruise_Busy(Enable:Boolean);
+begin
+  frmCruise.aiBusy.Active:=Enable;
+  frmCruise.aiBusy.Visible:=Enable;
+end;
 
 function IsFileInUse(FileName: TFileName): Boolean;
 var
@@ -116,9 +124,9 @@ begin
   if Length(Trim(cruise))<1 then
     Exit;
   command:=1;
-  frmCruise.aiBusy.Active:=True;
-  ShellExecute(0, nil, 'python.exe', Pchar(' cruise.py '+inttostr(cruiseDB)+' '+inttostr(command)+' '+table+' '+cruise+' '+Resample+' '+fname), nil, SW_HIDE);
-  //frmCruise.Edit1.Text:='python.exe'+Pchar(' cruise.py '+inttostr(cruiseDB)+' '+inttostr(command)+' '+table+' '+cruise+' '+Resample+' '+fname;
+  frmCruise_Busy(True);
+  ShellExecute(0, nil, 'python.exe', Pchar(' ./script/python/plotCruise.py '+inttostr(cruiseDB)+' '+inttostr(command)+' '+table+' '+cruise+' '+Resample+' '+fname), nil, SW_HIDE);
+  //frmCruise.Edit1.Text:='python.exe'+Pchar(' ./script/python/plotCruise.py '+inttostr(cruiseDB)+' '+inttostr(command)+' '+table+' '+cruise+' '+Resample+' '+fname;
 
   DeleteFile('shape/'+fname+'.shp');
   repeat
@@ -139,7 +147,88 @@ begin
   FileLayer.LoadFromFile(fPath);
   FileLayer.Active:=True;
 
-  frmCruise.aiBusy.Active:=False;
+  frmCruise_Busy(False);
+end;
+
+
+
+procedure Colocalize(cruiseDB: integer; source, cruise, fname:string; spatialMargin:real);
+var
+  command: integer;
+  i, count:integer;
+  Variable:TVar;
+  vars, tables, exportflag: String;
+  extV, extVV, extVars, extVarVals: String;
+  extV2, extVV2, extVars2, extVarVals2: String;
+begin
+  if frmMain.ledtVars.Values.Count<1 then
+  begin
+    MessageDlg('Please pick at least one variable.', mtError, [mbok], 0);
+    Exit;
+  end;
+
+  frmCruise_Busy(True);
+  vars:='';
+  tables:='';
+  extVars:='';
+  extVarVals:='';
+  extVars2:='';
+  extVarVals2:='';
+  count:=frmMain.ledtVars.Values.Count-1;
+  for I := 0 to count do
+  begin
+    Variable:=GetVariable(frmMain.ledtVars.Values.Items[i].Tag);
+    tables:=tables+Variable.Table_Name;
+    vars:=vars+Variable.Short_Name;
+
+    extV:='ignore';
+    extVV:='ignore';
+    extV2:='ignore';
+    extVV2:='ignore';
+    if ContainsText(Variable.Table_Name, 'Wind') then
+    begin
+      extV:='hour';
+      extVV:=InttoStr(6*(Hourof(frmMain.dtwpTimeStart.DateTime) div 6));
+
+      extV2:='hour';
+      extVV2:=InttoStr(6*(Hourof(frmMain.dtwpTimeEnd.DateTime) div 6));
+    end
+    else if ContainsText(Variable.Table_Name, 'Pisces') then
+    begin
+      extV:='depth';
+      extVV:=frmMain.cbPiscesDepthStart.Text;
+    end;
+
+    extVars:=extVars+extV;
+    extVarVals:=extVarVals+extVV;
+
+    extVars2:=extVars2+extV2;
+    extVarVals2:=extVarVals2+extVV2;
+
+    if i<count then
+    begin
+      tables:=tables+',';
+      vars:=vars+',';
+      extVars:=extVars+',';
+      extVarVals:=extVarVals+',';
+      extVars2:=extVars2+',';
+      extVarVals2:=extVarVals2+',';
+    end;
+  end;
+  fname:='AlongTrack';
+  exportflag:=inttostr(getExportDataFlag);
+  command:=2;
+  ShellExecute(0, nil, 'python.exe', Pchar(' ./script/python/plotCruise.py '+inttostr(cruiseDB)+' '+inttostr(command)+' '+source+' '+cruise+' '+Resample+' '+fname+' '+exportflag+' '+FloatToStr(spatialMargin)+' '+tables+' '+vars+' '+extVars+' '+extVarVals+' '+extVars2+' '+extVarVals2), nil, SW_HIDE);
+  //frmMain.edit1.text:='python.exe'+ Pchar(' ./script/python/plotCruise.py '+inttostr(cruiseDB)+' '+inttostr(command)+' '+source+' '+cruise+' '+Resample+' '+fname+' '+exportflag+' '+FloatToStr(spatialMargin)+' '+tables+' '+vars+' '+extVars+' '+extVarVals+' '+extVars2+' '+extVarVals2);
+
+
+  DeleteFile('embed/'+fname+'.html');
+  sleep(1000);
+  repeat
+    Application.ProcessMessages;
+  until FileExists('embed/'+fname+'.html');
+
+  frmCruise_Busy(False);
 end;
 
 
@@ -149,6 +238,30 @@ procedure TfrmCruise.Action1Execute(Sender: TObject);
 begin
   if OpenDialog1.Execute then
     bedtVirtualCruise.Text:=OpenDialog1.FileName;
+end;
+
+procedure TfrmCruise.btnColocalizeClick(Sender: TObject);
+var
+  spatialMargin:Real;
+  cruiseDB:integer;
+  source, cruiseName:string;
+begin
+  spatialMargin:=StrToFloat(frmCruise.edtMargin.Text);
+
+  if frmCruise.tsCruiseDB.Checked then
+  begin
+    cruiseDB:=1;
+    source:='tblSeaFlow';
+    cruiseName:=cbCruises.Text;
+  end
+  else
+  begin
+    cruiseDB:=0;
+    source:=bedtVirtualCruise.Text;
+    cruiseName:=ExtractFileName(source);
+  end;
+
+  Colocalize(cruiseDB, source, cruiseName, 'AlongTrack', spatialMargin);
 end;
 
 procedure TfrmCruise.btnCruiseTrackClick(Sender: TObject);
