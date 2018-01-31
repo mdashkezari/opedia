@@ -117,6 +117,10 @@ type
     cxLabel8: TcxLabel;
     cbPiscesDepthEnd: TcxComboBox;
     cbDepthEnd: TcxComboBox;
+    cxLabel3: TcxLabel;
+    cxLabel10: TcxLabel;
+    cxLabel11: TcxLabel;
+    cxLabel12: TcxLabel;
     procedure rtbLatPropertiesChange(Sender: TObject);
     procedure rtbLonPropertiesChange(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -357,8 +361,8 @@ begin
           SetLatEdits(-90,90);
         end;
       1:begin      // North Pacific
-          SetLonEdits(-216,-126);
-          SetLatEdits(15,38);
+          SetLonEdits(-180,-126);
+          SetLatEdits(19,45);
         end;
       2:begin      // Tropical Pacific
           SetLonEdits(-234,-94);
@@ -411,6 +415,18 @@ begin
       14:begin      // North of Hawaii
           SetLonEdits(-170,-140);
           SetLatEdits(22.5,35);
+        end;
+      15:begin      // North Transition Zone (Gradients)
+          SetLonEdits(-160.5,-155.5);
+          SetLatEdits(40,45);
+        end;
+      16:begin      // Transition Zone (Gradients)
+          SetLonEdits(-160.5,-155.5);
+          SetLatEdits(30,35);
+        end;
+      17:begin      // South Transition Zone (Gradients)
+          SetLonEdits(-160.5,-155.5);
+          SetLatEdits(21,26);
         end;
 
     end;
@@ -475,6 +491,7 @@ begin
   //SetRangeTrackbar_Lon;
   LoadVars;      // loading Opedia variables from DB
   PrePosition;
+  SetRegion(frmMain.cbRegion.ItemIndex);
   frmMain.dtwpTimeStart.DateTime:=Now;
   frmMain.dtwpTimeEnd.DateTime:=Now;
 end;

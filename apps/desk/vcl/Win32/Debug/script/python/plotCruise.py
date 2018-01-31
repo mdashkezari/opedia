@@ -1,9 +1,8 @@
+import os
 import sys
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
-import geopandas as gpd
-from shapely.geometry import Point
 import db
 import timeSeries as TS
 from datetime import datetime, date, timedelta
@@ -71,7 +70,10 @@ def appendVar(cruiseTrack, t, y, yErr, variable, extV, extVV, extV2, extVV2):
 def exportData(cruiseTrack, t, y, yErr, cruiseName, table, variable, margin, extV, extVV, extV2, extVV2):
     df = cruiseTrack
     df['margin'] = margin
-    path = 'data/Cruise_' + cruiseName + '.csv'
+    dirPath = 'data/'
+    path = dirPath + 'Cruise_' + cruiseName + '.csv'
+    if not os.path.exists(dirPath):
+        os.makedirs(dirPath)    
     df.to_csv(path, index=False)    
     return
 
@@ -119,7 +121,11 @@ def plotAlongTrack(tables, variables, cruiseName, track, spMargin, extV, extVV, 
             )
         p1.xaxis.major_label_orientation = pi/4
         p.append(p1)
-    output_file("embed/" + fname + ".html", title="Along Track")
+
+    dirPath = 'embed/'
+    if not os.path.exists(dirPath):
+        os.makedirs(dirPath)    
+    output_file(dirPath + fname + ".html", title="Along Track")
     show(column(p))
     if exportDataFlag:
         exportData(loadedTrack, ts, ys, y_stds, cruiseName, tables[i], variables[i], spMargin, extV[i], extVV[i], extV2[i], extVV2[i])    
@@ -132,7 +138,6 @@ def plotAlongTrack(tables, variables, cruiseName, track, spMargin, extV, extVV, 
 DB = bool(int(sys.argv[1]))
 command = int(sys.argv[2])
 source = sys.argv[3]      
-print source
 cruise = sys.argv[4]      
 resampTau = sys.argv[5]
 fname = sys.argv[6] 
@@ -140,6 +145,8 @@ exportDataFlag = bool(int(sys.argv[7]))
 df = getCruiseTrack(DB, source, cruise)
 df = resample(df, resampTau)
 if command == 1:        ## generates cruise track shapefile
+    import geopandas as gpd
+    from shapely.geometry import Point    
     dumpCruiseShape(df, source, cruise, resampTau, fname)
 elif command == 2:      ## generates along track plot
     spMargin = float(sys.argv[8])         #spatial margin 

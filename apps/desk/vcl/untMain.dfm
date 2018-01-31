@@ -2,7 +2,7 @@ object frmMain: TfrmMain
   Left = 0
   Top = 0
   Caption = 'Opedia'
-  ClientHeight = 922
+  ClientHeight = 904
   ClientWidth = 1491
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -18,15 +18,17 @@ object frmMain: TfrmMain
   object scbMap: TcxScrollBox
     Left = 0
     Top = 0
-    Width = 1056
-    Height = 897
+    Width = 1088
+    Height = 879
     Align = alClient
     TabOrder = 0
+    ExplicitWidth = 1056
+    ExplicitHeight = 897
     object Map: TdxMapControl
       Left = 0
       Top = 0
-      Width = 1054
-      Height = 895
+      Width = 1086
+      Height = 877
       Align = alClient
       LookAndFeel.NativeStyle = False
       PopupMenu = dxRibbonRadialMenu1
@@ -35,6 +37,8 @@ object frmMain: TfrmMain
       OnMouseDown = MapMouseDown
       OnMouseUp = MapMouseUp
       OnResize = MapResize
+      ExplicitWidth = 1054
+      ExplicitHeight = 895
       object dxMapControl1ImageTileLayer1: TdxMapImageTileLayer
         ProviderClassName = 'TdxMapControlBingMapImageryDataProvider'
         Provider.BingKey = 
@@ -61,19 +65,21 @@ object frmMain: TfrmMain
     end
   end
   object scbSettingsPanel: TcxScrollBox
-    Left = 1056
+    Left = 1088
     Top = 0
-    Width = 435
-    Height = 897
+    Width = 403
+    Height = 879
     Align = alRight
     Color = clBtnFace
     ParentColor = False
     PopupMenu = dxRibbonRadialMenu1
     TabOrder = 1
+    ExplicitLeft = 1093
+    ExplicitTop = -5
+    ExplicitHeight = 873
     object cxGroupBox1: TcxGroupBox
       Left = 8
-      Top = 25
-      Caption = '1. Pick variables'
+      Top = 48
       ParentFont = False
       Style.Font.Charset = DEFAULT_CHARSET
       Style.Font.Color = clWindowText
@@ -82,12 +88,12 @@ object frmMain: TfrmMain
       Style.Font.Style = [fsBold]
       Style.IsFontAssigned = True
       TabOrder = 0
-      Height = 182
-      Width = 417
+      Height = 160
+      Width = 385
       object ledtVars: TAdvListEditor
         Left = 8
-        Top = 50
-        Width = 399
+        Top = 38
+        Width = 371
         Height = 111
         Appearance.Normal.ColorFrom = 16312028
         Appearance.Normal.ColorTo = 15847357
@@ -119,21 +125,21 @@ object frmMain: TfrmMain
         Version = '1.4.0.1'
       end
       object cxLabel9: TcxLabel
-        Left = 245
-        Top = 23
+        Left = 218
+        Top = 11
         Caption = 'Export Data'
         ParentFont = False
         Style.Font.Charset = DEFAULT_CHARSET
         Style.Font.Color = clWindowText
         Style.Font.Height = -13
         Style.Font.Name = 'Tahoma'
-        Style.Font.Style = [fsBold]
+        Style.Font.Style = []
         Style.IsFontAssigned = True
         Transparent = True
       end
       object tsExportData: TdxToggleSwitch
-        Left = 333
-        Top = 23
+        Left = 305
+        Top = 11
         Checked = False
         TabOrder = 2
         Transparent = True
@@ -141,8 +147,7 @@ object frmMain: TfrmMain
     end
     object cxGroupBox2: TcxGroupBox
       Left = 8
-      Top = 242
-      Caption = '2. Set time window'
+      Top = 265
       ParentFont = False
       Style.Font.Charset = DEFAULT_CHARSET
       Style.Font.Color = clWindowText
@@ -151,8 +156,8 @@ object frmMain: TfrmMain
       Style.Font.Style = [fsBold]
       Style.IsFontAssigned = True
       TabOrder = 1
-      Height = 227
-      Width = 417
+      Height = 213
+      Width = 385
       object dtwpTimeStart: TdxDateTimeWheelPicker
         Left = 8
         Top = 45
@@ -166,10 +171,10 @@ object frmMain: TfrmMain
         Style.IsFontAssigned = True
         TabOrder = 0
         Height = 156
-        Width = 194
+        Width = 182
       end
       object dtwpTimeEnd: TdxDateTimeWheelPicker
-        Left = 213
+        Left = 197
         Top = 45
         ParentFont = False
         Properties.Wheels = [pwYear, pwMonth, pwDay, pwHour]
@@ -181,7 +186,7 @@ object frmMain: TfrmMain
         Style.IsFontAssigned = True
         TabOrder = 1
         Height = 156
-        Width = 194
+        Width = 182
       end
       object cxLabel1: TcxLabel
         Left = 8
@@ -192,12 +197,12 @@ object frmMain: TfrmMain
         Style.Font.Color = clWindowText
         Style.Font.Height = -13
         Style.Font.Name = 'Tahoma'
-        Style.Font.Style = [fsBold]
+        Style.Font.Style = []
         Style.IsFontAssigned = True
         Transparent = True
       end
       object cxLabel2: TcxLabel
-        Left = 213
+        Left = 197
         Top = 19
         Caption = 'Date2'
         ParentFont = False
@@ -205,15 +210,14 @@ object frmMain: TfrmMain
         Style.Font.Color = clWindowText
         Style.Font.Height = -13
         Style.Font.Name = 'Tahoma'
-        Style.Font.Style = [fsBold]
+        Style.Font.Style = []
         Style.IsFontAssigned = True
         Transparent = True
       end
     end
     object cxGroupBox3: TcxGroupBox
       Left = 8
-      Top = 502
-      Caption = '3. Set spatial domain'
+      Top = 532
       ParentFont = False
       Style.Font.Charset = DEFAULT_CHARSET
       Style.Font.Color = clWindowText
@@ -222,24 +226,24 @@ object frmMain: TfrmMain
       Style.Font.Style = [fsBold]
       Style.IsFontAssigned = True
       TabOrder = 2
-      Height = 355
-      Width = 417
+      Height = 327
+      Width = 385
       object cxLabel6: TcxLabel
         Left = 8
-        Top = 30
+        Top = 11
         Caption = 'Preset Regions'
         ParentFont = False
         Style.Font.Charset = DEFAULT_CHARSET
         Style.Font.Color = clWindowText
         Style.Font.Height = -13
         Style.Font.Name = 'Tahoma'
-        Style.Font.Style = [fsBold]
+        Style.Font.Style = []
         Style.IsFontAssigned = True
         Transparent = True
       end
       object cbRegion: TcxComboBox
-        Left = 8
-        Top = 56
+        Left = 62
+        Top = 37
         ParentFont = False
         Properties.DropDownListStyle = lsFixedList
         Properties.Items.Strings = (
@@ -258,10 +262,10 @@ object frmMain: TfrmMain
           'Caspian Sea'
           'Gulf of Mexico'
           'N. Hawaii'
-          'Open Ocean: Global'
-          'Open Ocean: Northern Hemisphere'
-          'Open Ocean: Tropical'
-          'Open Ocean: Southern Hemisphere'
+          'N. Transition Zone (Gradients)'
+          'Transition Zone (Gradients)'
+          'S. Transition Zone (Gradients)'
+          ''
           '')
         Properties.OnChange = cbRegionPropertiesChange
         Style.Font.Charset = DEFAULT_CHARSET
@@ -272,24 +276,24 @@ object frmMain: TfrmMain
         Style.IsFontAssigned = True
         TabOrder = 1
         Text = 'North Pacific'
-        Width = 399
+        Width = 273
       end
       object cxLabel4: TcxLabel
         Left = 8
-        Top = 97
+        Top = 78
         Caption = 'Latitude Range'
         ParentFont = False
         Style.Font.Charset = DEFAULT_CHARSET
         Style.Font.Color = clWindowText
         Style.Font.Height = -13
         Style.Font.Name = 'Tahoma'
-        Style.Font.Style = [fsBold]
+        Style.Font.Style = []
         Style.IsFontAssigned = True
         Transparent = True
       end
       object rtbLat: TdxRangeTrackBar
-        Left = -3
-        Top = 115
+        Left = 49
+        Top = 96
         Properties.Max = 9000
         Properties.Min = -9000
         Properties.ShowTicks = False
@@ -300,11 +304,11 @@ object frmMain: TfrmMain
         Transparent = True
         OnMouseUp = rtbLatMouseUp
         Height = 27
-        Width = 420
+        Width = 292
       end
       object edtLat1: TcxTextEdit
-        Left = 8
-        Top = 140
+        Left = 59
+        Top = 121
         AutoSize = False
         ParentFont = False
         Properties.OnChange = edtLat1PropertiesChange
@@ -321,8 +325,8 @@ object frmMain: TfrmMain
         Width = 53
       end
       object edtLat2: TcxTextEdit
-        Left = 354
-        Top = 140
+        Left = 279
+        Top = 121
         AutoSize = False
         ParentFont = False
         Properties.OnChange = edtLat2PropertiesChange
@@ -340,20 +344,20 @@ object frmMain: TfrmMain
       end
       object cxLabel5: TcxLabel
         Left = 11
-        Top = 172
+        Top = 153
         Caption = 'Longitude Range'
         ParentFont = False
         Style.Font.Charset = DEFAULT_CHARSET
         Style.Font.Color = clWindowText
         Style.Font.Height = -13
         Style.Font.Name = 'Tahoma'
-        Style.Font.Style = [fsBold]
+        Style.Font.Style = []
         Style.IsFontAssigned = True
         Transparent = True
       end
       object rtbLon: TdxRangeTrackBar
-        Left = 6
-        Top = 198
+        Left = 55
+        Top = 179
         Properties.Max = 18000
         Properties.Min = -18000
         Properties.ShowTicks = False
@@ -364,11 +368,11 @@ object frmMain: TfrmMain
         Transparent = True
         OnMouseUp = rtbLonMouseUp
         Height = 26
-        Width = 411
+        Width = 286
       end
       object edtLon1: TcxTextEdit
-        Left = 11
-        Top = 223
+        Left = 62
+        Top = 204
         AutoSize = False
         ParentFont = False
         Properties.OnChange = edtLon1PropertiesChange
@@ -385,8 +389,8 @@ object frmMain: TfrmMain
         Width = 53
       end
       object edtLon2: TcxTextEdit
-        Left = 354
-        Top = 223
+        Left = 279
+        Top = 204
         AutoSize = False
         ParentFont = False
         Properties.OnChange = edtLon2PropertiesChange
@@ -403,21 +407,21 @@ object frmMain: TfrmMain
         Width = 53
       end
       object cxLabel7: TcxLabel
-        Left = 8
-        Top = 277
+        Left = 57
+        Top = 273
         Caption = 'Depth1 (m)'
         ParentFont = False
         Style.Font.Charset = DEFAULT_CHARSET
         Style.Font.Color = clWindowText
         Style.Font.Height = -13
         Style.Font.Name = 'Tahoma'
-        Style.Font.Style = [fsBold]
+        Style.Font.Style = []
         Style.IsFontAssigned = True
         Transparent = True
       end
       object cbPiscesDepthStart: TcxComboBox
-        Left = 106
-        Top = 273
+        Left = 141
+        Top = 254
         Properties.DropDownListStyle = lsFixedList
         Properties.Items.Strings = (
           '0.494024991989'
@@ -477,8 +481,8 @@ object frmMain: TfrmMain
         Width = 66
       end
       object cbDepthStart: TcxComboBox
-        Left = 11
-        Top = 303
+        Left = 60
+        Top = 293
         ParentFont = False
         Properties.DropDownListStyle = lsFixedList
         Properties.Items.Strings = (
@@ -542,24 +546,24 @@ object frmMain: TfrmMain
         Style.IsFontAssigned = True
         TabOrder = 12
         Text = '0'
-        Width = 161
+        Width = 114
       end
       object cxLabel8: TcxLabel
-        Left = 246
-        Top = 277
+        Left = 218
+        Top = 273
         Caption = 'Depth2 (m)'
         ParentFont = False
         Style.Font.Charset = DEFAULT_CHARSET
         Style.Font.Color = clWindowText
         Style.Font.Height = -13
         Style.Font.Name = 'Tahoma'
-        Style.Font.Style = [fsBold]
+        Style.Font.Style = []
         Style.IsFontAssigned = True
         Transparent = True
       end
       object cbPiscesDepthEnd: TcxComboBox
-        Left = 341
-        Top = 273
+        Left = 302
+        Top = 254
         Properties.DropDownListStyle = lsFixedList
         Properties.Items.Strings = (
           '0.494024991989'
@@ -619,8 +623,8 @@ object frmMain: TfrmMain
         Width = 66
       end
       object cbDepthEnd: TcxComboBox
-        Left = 246
-        Top = 303
+        Left = 218
+        Top = 293
         ParentFont = False
         Properties.DropDownListStyle = lsFixedList
         Properties.Items.Strings = (
@@ -684,17 +688,70 @@ object frmMain: TfrmMain
         Style.IsFontAssigned = True
         TabOrder = 15
         Text = '0'
-        Width = 161
+        Width = 114
       end
+      object cxLabel3: TcxLabel
+        Left = 11
+        Top = 246
+        Caption = 'Depth Range'
+        ParentFont = False
+        Style.Font.Charset = DEFAULT_CHARSET
+        Style.Font.Color = clWindowText
+        Style.Font.Height = -13
+        Style.Font.Name = 'Tahoma'
+        Style.Font.Style = []
+        Style.IsFontAssigned = True
+        Transparent = True
+      end
+    end
+    object cxLabel10: TcxLabel
+      Left = 8
+      Top = 508
+      Caption = '3. Set spatial domain'
+      ParentFont = False
+      Style.Font.Charset = DEFAULT_CHARSET
+      Style.Font.Color = clWindowText
+      Style.Font.Height = -13
+      Style.Font.Name = 'Tahoma'
+      Style.Font.Style = [fsBold]
+      Style.IsFontAssigned = True
+      Transparent = True
+    end
+    object cxLabel11: TcxLabel
+      Left = 8
+      Top = 242
+      Caption = '2. Set time window'
+      ParentFont = False
+      Style.Font.Charset = DEFAULT_CHARSET
+      Style.Font.Color = clWindowText
+      Style.Font.Height = -13
+      Style.Font.Name = 'Tahoma'
+      Style.Font.Style = [fsBold]
+      Style.IsFontAssigned = True
+      Transparent = True
+    end
+    object cxLabel12: TcxLabel
+      Left = 8
+      Top = 26
+      Caption = '1. Pick variables'
+      ParentFont = False
+      Style.Font.Charset = DEFAULT_CHARSET
+      Style.Font.Color = clWindowText
+      Style.Font.Height = -13
+      Style.Font.Name = 'Tahoma'
+      Style.Font.Style = [fsBold]
+      Style.IsFontAssigned = True
+      Transparent = True
     end
   end
   object cxScrollBox1: TcxScrollBox
     Left = 0
-    Top = 897
+    Top = 879
     Width = 1491
     Height = 25
     Align = alBottom
     TabOrder = 6
+    ExplicitTop = 897
     object cxProgressBar1: TcxProgressBar
       Left = 0
       Top = 0
