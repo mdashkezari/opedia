@@ -218,8 +218,8 @@ begin
   fname:='AlongTrack';
   exportflag:=inttostr(getExportDataFlag);
   command:=2;
-  ShellExecute(0, nil, 'python.exe', Pchar(' ./script/python/plotCruise.py '+inttostr(cruiseDB)+' '+inttostr(command)+' '+source+' '+cruise+' '+Resample+' '+fname+' '+exportflag+' '+FloatToStr(spatialMargin)+' '+tables+' '+vars+' '+extVars+' '+extVarVals+' '+extVars2+' '+extVarVals2), nil, SW_HIDE);
-  //frmMain.edit1.text:='python.exe'+ Pchar(' ./script/python/plotCruise.py '+inttostr(cruiseDB)+' '+inttostr(command)+' '+source+' '+cruise+' '+Resample+' '+fname+' '+exportflag+' '+FloatToStr(spatialMargin)+' '+tables+' '+vars+' '+extVars+' '+extVarVals+' '+extVars2+' '+extVarVals2);
+  ShellExecute(0, nil, 'python', Pchar(' ./script/python/plotCruise.py '+inttostr(cruiseDB)+' '+inttostr(command)+' '+source+' '+cruise+' '+Resample+' '+fname+' '+exportflag+' '+FloatToStr(spatialMargin)+' '+tables+' '+vars+' '+extVars+' '+extVarVals+' '+extVars2+' '+extVarVals2), nil, SW_HIDE);
+  //frmMain.edit1.text:='python'+ Pchar(' ./script/python/plotCruise.py '+inttostr(cruiseDB)+' '+inttostr(command)+' '+source+' '+cruise+' '+Resample+' '+fname+' '+exportflag+' '+FloatToStr(spatialMargin)+' '+tables+' '+vars+' '+extVars+' '+extVarVals+' '+extVars2+' '+extVarVals2);
 
 
   DeleteFile('embed/'+fname+'.html');

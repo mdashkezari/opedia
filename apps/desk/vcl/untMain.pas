@@ -111,10 +111,8 @@ type
     rtbLon: TdxRangeTrackBar;
     edtLon1: TcxTextEdit;
     edtLon2: TcxTextEdit;
-    cxLabel7: TcxLabel;
     cbPiscesDepthStart: TcxComboBox;
     cbDepthStart: TcxComboBox;
-    cxLabel8: TcxLabel;
     cbPiscesDepthEnd: TcxComboBox;
     cbDepthEnd: TcxComboBox;
     cxLabel3: TcxLabel;
@@ -124,10 +122,6 @@ type
     procedure rtbLatPropertiesChange(Sender: TObject);
     procedure rtbLonPropertiesChange(Sender: TObject);
     procedure FormShow(Sender: TObject);
-    procedure edtLat1PropertiesChange(Sender: TObject);
-    procedure edtLat2PropertiesChange(Sender: TObject);
-    procedure edtLon1PropertiesChange(Sender: TObject);
-    procedure edtLon2PropertiesChange(Sender: TObject);
     procedure MapMouseUp(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Integer);
     procedure MapMouseDown(Sender: TObject; Button: TMouseButton;
@@ -156,6 +150,10 @@ type
     procedure barHistogramClick(Sender: TObject);
     procedure barMonthlyClick(Sender: TObject);
     procedure MapResize(Sender: TObject);
+    procedure edtLat2Exit(Sender: TObject);
+    procedure edtLat1Exit(Sender: TObject);
+    procedure edtLon2Exit(Sender: TObject);
+    procedure edtLon1Exit(Sender: TObject);
   private
     { Private declarations }
   public
@@ -362,7 +360,7 @@ begin
         end;
       1:begin      // North Pacific
           SetLonEdits(-180,-126);
-          SetLatEdits(19,45);
+          SetLatEdits(20,45);
         end;
       2:begin      // Tropical Pacific
           SetLonEdits(-234,-94);
@@ -486,14 +484,18 @@ begin
   end;
 
   makeDirs;
-  frmMain.cbRegion.ItemIndex:=1;
   //SetRangeTrackbar_Lat;
   //SetRangeTrackbar_Lon;
   LoadVars;      // loading Opedia variables from DB
   PrePosition;
-  SetRegion(frmMain.cbRegion.ItemIndex);
+
   frmMain.dtwpTimeStart.DateTime:=Now;
   frmMain.dtwpTimeEnd.DateTime:=Now;
+
+  frmMain.cbRegion.ItemIndex:=1;
+  SetRegion(frmMain.cbRegion.ItemIndex);
+  SetRangeTrackbar_Lon;
+  SetRangeTrackbar_Lat;
 end;
 
 
@@ -532,7 +534,7 @@ begin
   fname:='DP';
   exportflag:=inttostr(getExportDataFlag);
   ShellExecute(0, nil, 'python.exe', Pchar(' ./script/python/plotDepthProfile.py '+tables+' '+vars+' '+dt+' '+edtLat1.Text+' '+edtLat2.Text+' '+edtLon1.Text+' '+edtLon2.Text+' '+fname+' '+exportflag+' '+cbPiscesDepthStart.Text+' '+cbPiscesDepthEnd.Text), nil, SW_HIDE);
-  //edit1.text:='python.exe'+ Pchar(' ./script/python/plotDepthProfile.py '+tables+' '+vars+' '+dt+' '+edtLat1.Text+' '+edtLat2.Text+' '+edtLon1.Text+' '+edtLon2.Text+' '+fname+' '+exportflag+' '+cbPiscesDepthStart.Text+' '+cbPiscesDepthEnd.Text);
+  //edit1.text:='python'+ Pchar(' ./script/python/plotDepthProfile.py '+tables+' '+vars+' '+dt+' '+edtLat1.Text+' '+edtLat2.Text+' '+edtLon1.Text+' '+edtLon2.Text+' '+fname+' '+exportflag+' '+cbPiscesDepthStart.Text+' '+cbPiscesDepthEnd.Text);
 
 
   DeleteFile('embed/'+fname+'.html');
@@ -600,8 +602,8 @@ begin
   end;
   fname:='RM';
   exportflag:=inttostr(getExportDataFlag);
-  ShellExecute(0, nil, 'python.exe', Pchar(' ./script/python/plotRegional.py '+tables+' '+vars+' '+dt+' '+edtLat1.Text+' '+edtLat2.Text+' '+edtLon1.Text+' '+edtLon2.Text+' '+fname+' '+exportflag+' '+extVars+' '+extVarVals), nil, SW_HIDE);
-  //edit1.text:='python.exe'+ Pchar(' ./script/python/plotRegional.py '+tables+' '+vars+' '+dt+' '+edtLat1.Text+' '+edtLat2.Text+' '+edtLon1.Text+' '+edtLon2.Text+' '+fname+' '+exportflag+' '+extVars+' '+extVarVals);
+  ShellExecute(0, nil, 'python', Pchar(' ./script/python/plotRegional.py '+tables+' '+vars+' '+dt+' '+edtLat1.Text+' '+edtLat2.Text+' '+edtLon1.Text+' '+edtLon2.Text+' '+fname+' '+exportflag+' '+extVars+' '+extVarVals), nil, SW_HIDE);
+  //edit1.text:='python'+ Pchar(' ./script/python/plotRegional.py '+tables+' '+vars+' '+dt+' '+edtLat1.Text+' '+edtLat2.Text+' '+edtLon1.Text+' '+edtLon2.Text+' '+fname+' '+exportflag+' '+extVars+' '+extVarVals);
 
 
   DeleteFile('embed/'+fname+'.html');
@@ -680,8 +682,8 @@ begin
   end;
   fname:='Dist';
   exportflag:=inttostr(getExportDataFlag);
-  ShellExecute(0, nil, 'python.exe', Pchar(' ./script/python/plotDist.py '+tables+' '+vars+' '+dt1+' '+dt2+' '+edtLat1.Text+' '+edtLat2.Text+' '+edtLon1.Text+' '+edtLon2.Text+' '+fname+' '+exportflag+' '+extVars+' '+extVarVals+' '+extVars2+' '+extVarVals2), nil, SW_HIDE);
-  //edit1.text:='python.exe' + Pchar(' ./script/python/plotDist.py '+tables+' '+vars+' '+dt1+' '+dt2+' '+edtLat1.Text+' '+edtLat2.Text+' '+edtLon1.Text+' '+edtLon2.Text+' '+fname+' '+exportflag+' '+extVars+' '+extVarVals+' '+extVars2+' '+extVarVals2);
+  ShellExecute(0, nil, 'python', Pchar(' ./script/python/plotDist.py '+tables+' '+vars+' '+dt1+' '+dt2+' '+edtLat1.Text+' '+edtLat2.Text+' '+edtLon1.Text+' '+edtLon2.Text+' '+fname+' '+exportflag+' '+extVars+' '+extVarVals+' '+extVars2+' '+extVarVals2), nil, SW_HIDE);
+  //edit1.text:='python' + Pchar(' ./script/python/plotDist.py '+tables+' '+vars+' '+dt1+' '+dt2+' '+edtLat1.Text+' '+edtLat2.Text+' '+edtLon1.Text+' '+edtLon2.Text+' '+fname+' '+exportflag+' '+extVars+' '+extVarVals+' '+extVars2+' '+extVarVals2);
 
 
   DeleteFile('embed/'+fname+'.html');
@@ -758,8 +760,8 @@ begin
   end;
   fname:='Monthly';
   exportflag:=inttostr(getExportDataFlag);
-  ShellExecute(0, nil, 'python.exe', Pchar(' ./script/python/plotMonthly.py '+tables+' '+vars+' '+edtLat1.Text+' '+edtLat2.Text+' '+edtLon1.Text+' '+edtLon2.Text+' '+fname+' '+exportflag+' '+extVars+' '+extVarVals+' '+extVars2+' '+extVarVals2), nil, SW_HIDE);
-  //edit1.text:='python.exe' + Pchar(' plotMonthly.py '+tables+' '+vars+' '+edtLat1.Text+' '+edtLat2.Text+' '+edtLon1.Text+' '+edtLon2.Text+' '+fname+' '+exportflag+' '+extVars+' '+extVarVals+' '+extVars2+' '+extVarVals2);
+  ShellExecute(0, nil, 'python', Pchar(' ./script/python/plotMonthly.py '+tables+' '+vars+' '+edtLat1.Text+' '+edtLat2.Text+' '+edtLon1.Text+' '+edtLon2.Text+' '+fname+' '+exportflag+' '+extVars+' '+extVarVals+' '+extVars2+' '+extVarVals2), nil, SW_HIDE);
+  //edit1.text:='python' + Pchar(' plotMonthly.py '+tables+' '+vars+' '+edtLat1.Text+' '+edtLat2.Text+' '+edtLon1.Text+' '+edtLon2.Text+' '+fname+' '+exportflag+' '+extVars+' '+extVarVals+' '+extVars2+' '+extVarVals2);
 
 
   DeleteFile('embed/'+fname+'.html');
@@ -838,8 +840,8 @@ begin
   end;
   fname:='XY';
   exportflag:=inttostr(getExportDataFlag);
-  ShellExecute(0, nil, 'python.exe', Pchar(' ./script/python/plotXY.py '+tables+' '+vars+' '+dt1+' '+dt2+' '+edtLat1.Text+' '+edtLat2.Text+' '+edtLon1.Text+' '+edtLon2.Text+' '+fname+' '+exportflag+' '+extVars+' '+extVarVals+' '+extVars2+' '+extVarVals2), nil, SW_HIDE);
-  //edit1.text:='python.exe' + Pchar(' ./script/python/plotXY.py '+tables+' '+vars+' '+dt1+' '+dt2+' '+edtLat1.Text+' '+edtLat2.Text+' '+edtLon1.Text+' '+edtLon2.Text+' '+fname+' '+exportflag+' '+extVars+' '+extVarVals+' '+extVars2+' '+extVarVals2);
+  ShellExecute(0, nil, 'python', Pchar(' ./script/python/plotXY.py '+tables+' '+vars+' '+dt1+' '+dt2+' '+edtLat1.Text+' '+edtLat2.Text+' '+edtLon1.Text+' '+edtLon2.Text+' '+fname+' '+exportflag+' '+extVars+' '+extVarVals+' '+extVars2+' '+extVarVals2), nil, SW_HIDE);
+  //edit1.text:='python' + Pchar(' ./script/python/plotXY.py '+tables+' '+vars+' '+dt1+' '+dt2+' '+edtLat1.Text+' '+edtLat2.Text+' '+edtLon1.Text+' '+edtLon2.Text+' '+fname+' '+exportflag+' '+extVars+' '+extVarVals+' '+extVars2+' '+extVarVals2);
 
 
   DeleteFile('embed/'+fname+'.html');
@@ -923,8 +925,8 @@ begin
   end;
   fname:='TS';
   exportflag:=inttostr(getExportDataFlag);
-  ShellExecute(0, nil, 'python.exe', Pchar(' ./script/python/plotTS.py '+tables+' '+vars+' '+dt1+' '+dt2+' '+edtLat1.Text+' '+edtLat2.Text+' '+edtLon1.Text+' '+edtLon2.Text+' '+fname+' '+exportflag+' '+extVars+' '+extVarVals+' '+extVars2+' '+extVarVals2), nil, SW_HIDE);
-  //edit1.text:='python.exe' + Pchar(' ./script/python/plotTS.py '+tables+' '+vars+' '+dt1+' '+dt2+' '+edtLat1.Text+' '+edtLat2.Text+' '+edtLon1.Text+' '+edtLon2.Text+' '+fname+' '+exportflag+' '+extVars+' '+extVarVals+' '+extVars2+' '+extVarVals2);
+  ShellExecute(0, nil, 'python', Pchar(' ./script/python/plotTS.py '+tables+' '+vars+' '+dt1+' '+dt2+' '+edtLat1.Text+' '+edtLat2.Text+' '+edtLon1.Text+' '+edtLon2.Text+' '+fname+' '+exportflag+' '+extVars+' '+extVarVals+' '+extVars2+' '+extVarVals2), nil, SW_HIDE);
+  //edit1.text:='python' + Pchar(' ./script/python/plotTS.py '+tables+' '+vars+' '+dt1+' '+dt2+' '+edtLat1.Text+' '+edtLat2.Text+' '+edtLon1.Text+' '+edtLon2.Text+' '+fname+' '+exportflag+' '+extVars+' '+extVarVals+' '+extVars2+' '+extVarVals2);
 
 
   DeleteFile('embed/'+fname+'.html');
@@ -952,13 +954,20 @@ begin
   cbPiscesDepthEnd.ItemIndex:=cbDepthEnd.ItemIndex;
 end;
 
+procedure TfrmMain.edtLat1Exit(Sender: TObject);
+begin
+  SetRangeTrackbar_Lat;
+end;
+
 procedure TfrmMain.edtLat1KeyDown(Sender: TObject; var Key: Word;
   Shift: TShiftState);
 begin
   cbRegion.ItemIndex:=-1;
+  if (Key = 13) then
+    SetRangeTrackbar_Lat;
 end;
 
-procedure TfrmMain.edtLat1PropertiesChange(Sender: TObject);
+procedure TfrmMain.edtLat2Exit(Sender: TObject);
 begin
   SetRangeTrackbar_Lat;
 end;
@@ -967,20 +976,24 @@ procedure TfrmMain.edtLat2KeyDown(Sender: TObject; var Key: Word;
   Shift: TShiftState);
 begin
   cbRegion.ItemIndex:=-1;
+  if (Key = 13) then
+    SetRangeTrackbar_Lat;
 end;
 
-procedure TfrmMain.edtLat2PropertiesChange(Sender: TObject);
+procedure TfrmMain.edtLon1Exit(Sender: TObject);
 begin
-  SetRangeTrackbar_Lat;
+  SetRangeTrackbar_Lon;
 end;
 
 procedure TfrmMain.edtLon1KeyDown(Sender: TObject; var Key: Word;
   Shift: TShiftState);
 begin
   cbRegion.ItemIndex:=-1;
+  if Key=13 then
+    SetRangeTrackbar_Lon;
 end;
 
-procedure TfrmMain.edtLon1PropertiesChange(Sender: TObject);
+procedure TfrmMain.edtLon2Exit(Sender: TObject);
 begin
   SetRangeTrackbar_Lon;
 end;
@@ -989,11 +1002,8 @@ procedure TfrmMain.edtLon2KeyDown(Sender: TObject; var Key: Word;
   Shift: TShiftState);
 begin
   cbRegion.ItemIndex:=-1;
-end;
-
-procedure TfrmMain.edtLon2PropertiesChange(Sender: TObject);
-begin
-  SetRangeTrackbar_Lon;
+  if Key=13 then
+    SetRangeTrackbar_Lon;
 end;
 
 procedure TfrmMain.FormShow(Sender: TObject);
