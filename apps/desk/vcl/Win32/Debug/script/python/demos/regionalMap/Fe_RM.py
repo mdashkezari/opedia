@@ -26,4 +26,5 @@ lat = df.lat.unique()
 lon = df.lon.unique()
 shape = (len(lat), len(lon))
 data = df[field].values.reshape(shape)
+#df.to_csv(field+'.csv', index=False)    # export data if needed!
 plot(lat, lon, data)

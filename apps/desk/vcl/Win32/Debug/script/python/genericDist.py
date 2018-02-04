@@ -14,14 +14,14 @@ def genericDist(table, field, startDate, endDate, lat1, lat2, lon1, lon2, extV, 
         dt = datetime.strptime(str, '%Y-%m-%d')
         return dt
     dist = np.array([])    
-    startDate = strToDate(startDate)
-    endDate = strToDate(endDate)
+    #startDate = strToDate(startDate)
+    #endDate = strToDate(endDate)
     ######### Stored Procedure Query ##########
     query = 'EXEC uspGenericDist ?, ?, ?, ?, ?, ?, ?, ?, ?, ?'
     args = [table, field, startDate, endDate, str(lat1), str(lat2), str(lon1), str(lon2), extV, extVV]
     df = db.dbFetchStoredProc(query, args)
     df = pd.DataFrame.from_records(df, columns=['lat', 'lon', field])
     ###########################################    
-    return df[field]
+    return df
 
 

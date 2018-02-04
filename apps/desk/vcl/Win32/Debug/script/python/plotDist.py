@@ -58,6 +58,7 @@ def plotDist(tables, variables, startDate, endDate, lat1, lat2, lon1, lon2, extV
     TOOLS = 'pan,wheel_zoom,zoom_in,zoom_out,box_zoom, undo,redo,reset,tap,save,box_select,poly_select,lasso_select'
     for i in range(len(tables)):
         y = gd.genericDist(tables[i], variables[i], startDate, endDate, lat1, lat2, lon1, lon2, extV[i], extVV[i], extV2[i], extVV2[i])
+        y = y[variables[i]]
         if exportDataFlag:
             exportData(y, tables[i], variables[i], startDate, endDate, lat1, lat2, lon1, lon2, extV[i], extVV[i], extV2[i], extVV2[i])
         hist, edges = np.histogram(y, density=True, bins=50)

@@ -6,7 +6,7 @@ import pandas.io.sql as sql
 
 def dbConnect():
     try:
-        #print('Connecting to Database ...')        
+        #print('Connecting to Opedia Database ...')        
         server = '128.208.239.15,1433'
         db = 'Opedia'
         Uid = 'ArmLab'

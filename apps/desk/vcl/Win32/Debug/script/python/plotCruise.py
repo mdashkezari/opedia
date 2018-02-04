@@ -56,6 +56,22 @@ def dumpCruiseShape(df, source, cruise, resampTau, fname):
     df.to_file('shape/%s.shp' % fname, driver='ESRI Shapefile')    
     return
 
+def resampleToTimeResolution(resampTau):
+    unit = resampTau[-1]
+    sp = resampTau.split(unit)
+    factor = sp[0]
+    if len(factor) == 0:
+        factor = 1
+    else:
+        factor = int(factor)
+    if unit == 'T':
+        dt = 1
+    elif unit == 'H':
+        dt = 60
+    elif unit == 'D':
+        dt = 24*60
+    dt = factor * dt            
+    return dt
 
 def appendVar(cruiseTrack, t, y, yErr, variable, extV, extVV, extV2, extVV2):
     df = cruiseTrack
@@ -80,6 +96,8 @@ def exportData(cruiseTrack, t, y, yErr, cruiseName, table, variable, margin, ext
 
 def plotAlongTrack(tables, variables, cruiseName, track, spMargin, extV, extVV, extV2, extVV2, exportDataFlag, marker='-', msize=30, clr='purple'):
     p = []
+    fmt = '%Y-%m-%d %H:%M:%S'
+    dt = resampleToTimeResolution(resampTau)         # time resolution (minutes)
     loadedTrack = pd.DataFrame(track)
     lw = 2
     w = 800
@@ -88,13 +106,13 @@ def plotAlongTrack(tables, variables, cruiseName, track, spMargin, extV, extVV, 
     for i in range(len(tables)):
         ts, ys, y_stds = [], np.array([]), np.array([])
         for j in range(len(track)):
-            startDate = track.iloc[j]['time'].strftime('%Y-%m-%d')
+            startDate = track.iloc[j]['time'].strftime(fmt)
             endDate = startDate
             lat1 = float(track.iloc[j]['lat']) - spMargin
             lat2 = float(track.iloc[j]['lat']) + spMargin
             lon1 = float(track.iloc[j]['lon']) - spMargin
-            lon2 = float(track.iloc[j]['lon']) + spMargin
-            t, y, y_std = TS.timeSeries(tables[i], variables[i], startDate, endDate, lat1, lat2, lon1, lon2, extV[i], extVV[i], extV2[i], extVV2[i])
+            lon2 = float(track.iloc[j]['lon']) + spMargin           
+            t, y, y_std = TS.timeSeries(tables[i], variables[i], startDate, endDate, lat1, lat2, lon1, lon2, extV[i], extVV[i], extV2[i], extVV2[i], fmt=fmt, dt=dt)
             ts.append(track.iloc[j]['time'])
             ys = np.append(ys, y[0])            
             y_stds = np.append(y_stds, y_std[0])
