@@ -46,7 +46,10 @@ def exportData(t, y, yErr, table, variable, lat1, lat2, lon1, lon2, extV, extVV,
     df['lon2'] = lon2
     df[extV] = extVV
     df[extV2] = extVV2
-    path = 'data/Monthly_' + table + '_' + variable + '.csv'
+    dirPath = 'data/'
+    if not os.path.exists(dirPath):
+        os.makedirs(dirPath)        
+    path = dirPath + 'Monthly_' + table + '_' + variable + '.csv'
     df.to_csv(path, index=False)    
     return
 
@@ -90,7 +93,10 @@ def plotMonthly(tables, variables, lat1, lat2, lon1, lon2, extV, extVV, extV2, e
         p1.line(months, monthly, line_color=clr, line_width=lw, legend=leg)
         p1.add_tools(HoverTool(tooltips=None, renderers=[cr], mode='hline'))
         p.append(p1)
-    output_file("embed/" + fname + ".html", title="Monthly Trend")
+    dirPath = 'embed/'
+    if not os.path.exists(dirPath):
+        os.makedirs(dirPath)        
+    output_file(dirPath + fname + ".html", title="Monthly Trend")
     show(column(p))
     return
 

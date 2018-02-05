@@ -58,11 +58,10 @@ def bulkInsertSeaFlow(tableName):
         bulkPath = ''
         bulkPath = makeBulkSeaFlow()
         #print('\t %s  Bulk %s %7.7d ready.' % (datetime.today(), dataTitle, itnum))
-        #dc.bulkInsert(bulkPath, tableName)
+        dc.bulkInsert(bulkPath, tableName)
     finally:
-        pass
-        #if bulkPath != '':
-        #    os.remove(bulkPath)    
+        if bulkPath != '':
+            os.remove(bulkPath)    
     print('%s  Done' % datetime.today())
     return
 

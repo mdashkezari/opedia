@@ -46,7 +46,10 @@ def exportData(z, y, yErr, table, variable, lat1, lat2, lon1, lon2):
     df['lat2'] = lat2
     df['lon1'] = lon1
     df['lon2'] = lon2
-    path = 'data/DP_' + table + '_' + variable + '.csv'
+    dirPath = 'data/'
+    if not os.path.exists(dirPath):
+        os.makedirs(dirPath)        
+    path = dirPath + 'DP_' + table + '_' + variable + '.csv'
     df.to_csv(path, index=False)    
     return
 
@@ -113,7 +116,10 @@ def plotDepthProfile(tables, variables, dt, lat1, lat2, lon1, lon2, depth1, dept
         p1.line(depths, y, line_color=clr, line_width=lw, legend=leg)
         p1.add_tools(HoverTool(tooltips=None, renderers=[cr], mode='hline'))
         p.append(p1)
-    output_file("embed/" + fname + ".html", title="Depth Profile")
+    dirPath = 'embed/'
+    if not os.path.exists(dirPath):
+        os.makedirs(dirPath)        
+    output_file(dirPath + fname + ".html", title="Depth Profile")
     show(column(p))    
     return
 

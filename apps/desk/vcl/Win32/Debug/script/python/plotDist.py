@@ -45,7 +45,10 @@ def exportData(y, table, variable, startDate, endDate, lat1, lat2, lon1, lon2, e
     df['lon2'] = lon2
     df[extV] = extVV
     df[extV2] = extVV2
-    path = 'data/Hist_' + table + '_' + variable + '.csv'
+    dirPath = 'data/'
+    if not os.path.exists(dirPath):
+        os.makedirs(dirPath)        
+    path = dirPath + 'Hist_' + table + '_' + variable + '.csv'
     df.to_csv(path, index=False)    
     return
 
@@ -74,7 +77,10 @@ def plotDist(tables, variables, startDate, endDate, lat1, lat2, lon1, lon2, extV
         cr = p1.quad(top=hist, bottom=0, left=edges[:-1], right=edges[1:], fill_color="dodgerblue", line_color=None, hover_fill_color="firebrick", fill_alpha=fill_alpha, hover_alpha=0.7, hover_line_color="white", legend=leg)
         p1.add_tools(HoverTool(tooltips=None, renderers=[cr], mode='mouse'))
         p.append(p1)
-    output_file("embed/" + fname + ".html", title="Histogram")
+    dirPath = 'embed/'
+    if not os.path.exists(dirPath):
+        os.makedirs(dirPath)        
+    output_file(dirPath + fname + ".html", title="Histogram")
     show(column(p))
     return
 

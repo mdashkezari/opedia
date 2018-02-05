@@ -39,7 +39,10 @@ def exportData(t1, y1, yErr1, t2, y2, yErr2, table1, variable1, table2, variable
     df[extV2_1] = extVV2_1
     df[extV_2] = extVV_2
     df[extV2_2] = extVV2_2
-    path = 'data/XY_' + table1 + '_' + variable1 + '_vs_' + table2 + '_' + variable2 + '.csv'
+    dirPath = 'data/'
+    if not os.path.exists(dirPath):
+        os.makedirs(dirPath)        
+    path = dirPath + 'XY_' + table1 + '_' + variable1 + '_vs_' + table2 + '_' + variable2 + '.csv'
     df.to_csv(path, index=False)    
     return
 
@@ -79,7 +82,10 @@ def plotXY(tables, variables, startDate, endDate, lat1, lat2, lon1, lon2,exportD
         p1.line(y1, y2, line_color=clr, line_width=lw, legend=leg)
         p1.add_tools(HoverTool(tooltips=None, renderers=[cr], mode='hline'))    
         p.append(p1)
-    output_file("embed/" + fname + ".html", title="XY")
+    dirPath = 'embed/'
+    if not os.path.exists(dirPath):
+        os.makedirs(dirPath)        
+    output_file(dirPath + fname + ".html", title="XY")
     show(column(p))
     return
 

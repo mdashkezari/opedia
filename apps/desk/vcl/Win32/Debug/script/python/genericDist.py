@@ -20,7 +20,7 @@ def genericDist(table, field, startDate, endDate, lat1, lat2, lon1, lon2, extV, 
     query = 'EXEC uspGenericDist ?, ?, ?, ?, ?, ?, ?, ?, ?, ?'
     args = [table, field, startDate, endDate, str(lat1), str(lat2), str(lon1), str(lon2), extV, extVV]
     df = db.dbFetchStoredProc(query, args)
-    df = pd.DataFrame.from_records(df, columns=['lat', 'lon', field])
+    df = pd.DataFrame.from_records(df, columns=['time', 'lat', 'lon', field])
     ###########################################    
     return df
 

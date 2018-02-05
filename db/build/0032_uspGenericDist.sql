@@ -15,7 +15,7 @@ AS
 BEGIN
 	DECLARE @query as NVARCHAR(MAX)
 	SET NOCOUNT ON;
-	SET @query = 'SELECT lat, lon, ' + RTRIM(LTRIM(@fields)) + ' FROM ' + RTRIM(LTRIM(@tableName)) + 
+	SET @query = 'SELECT [time], lat, lon, ' + RTRIM(LTRIM(@fields)) + ' FROM ' + RTRIM(LTRIM(@tableName)) + 
 	' WHERE [time] >= ''' + RTRIM(LTRIM(@dt1)) + '''' + ' AND [time] >= ''' + RTRIM(LTRIM(@dt2)) + '''' +
 	' AND lat >= ' + RTRIM(LTRIM(@lat1)) + ' AND lat <= ' + RTRIM(LTRIM(@lat2)) +
 	' AND lon >= ' + RTRIM(LTRIM(@lon1)) + ' AND lon <= ' + RTRIM(LTRIM(@lon2)) + 
@@ -23,7 +23,7 @@ BEGIN
 
 	IF @arg8_name IS NULL
 	BEGIN
-	SET @query = 'SELECT lat, lon, ' + RTRIM(LTRIM(@fields)) + ' FROM ' + RTRIM(LTRIM(@tableName)) + 
+	SET @query = 'SELECT [time], lat, lon, ' + RTRIM(LTRIM(@fields)) + ' FROM ' + RTRIM(LTRIM(@tableName)) + 
 	' WHERE [time] >= ''' + RTRIM(LTRIM(@dt1)) + '''' + ' AND [time] >= ''' + RTRIM(LTRIM(@dt2)) + '''' +
 	' AND lat >= ' + RTRIM(LTRIM(@lat1)) + ' AND lat <= ' + RTRIM(LTRIM(@lat2)) +
 	' AND lon >= ' + RTRIM(LTRIM(@lon1)) + ' AND lon <= ' + RTRIM(LTRIM(@lon2))

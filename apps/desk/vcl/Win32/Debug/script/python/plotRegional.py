@@ -1,4 +1,5 @@
 import sys
+import os
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -92,7 +93,10 @@ def bokehGM(data, subject, fname, lat, lon):
                         label_standoff=12, border_line_color=None, location=(0,0))
         p1.add_layout(color_bar, 'right')
         p.append(p1)
-    output_file("embed/" + fname + ".html", title="Regional Map")
+    dirPath = 'embed/'
+    if not os.path.exists(dirPath):
+        os.makedirs(dirPath)        
+    output_file(dirPath + fname + ".html", title="Regional Map")
     show(column(p))
     return
 

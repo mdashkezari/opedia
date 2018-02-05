@@ -45,7 +45,10 @@ def exportData(t, y, yErr, table, variable, lat1, lat2, lon1, lon2, extV, extVV,
     df['lon2'] = lon2
     df[extV] = extVV
     df[extV2] = extVV2
-    path = 'data/TS_' + table + '_' + variable + '.csv'
+    dirPath = 'data/'
+    if not os.path.exists(dirPath):
+        os.makedirs(dirPath)        
+    path = dirPath + 'TS_' + table + '_' + variable + '.csv'
     df.to_csv(path, index=False)    
     return
 
@@ -83,7 +86,10 @@ def plotTS(tables, variables, startDate, endDate, lat1, lat2, lon1, lon2, extV, 
         p1.xaxis.major_label_orientation = pi/4
         #p1.xaxis.visible = False
         p.append(p1)
-    output_file("embed/" + fname + ".html", title="TimeSeries")
+    dirPath = 'embed/'
+    if not os.path.exists(dirPath):
+        os.makedirs(dirPath)        
+    output_file(dirPath + fname + ".html", title="TimeSeries")
     show(column(p))
     return
 
