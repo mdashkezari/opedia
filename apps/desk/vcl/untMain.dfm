@@ -22,8 +22,6 @@ object frmMain: TfrmMain
     Height = 923
     Align = alClient
     TabOrder = 0
-    ExplicitWidth = 1056
-    ExplicitHeight = 897
     object Map: TdxMapControl
       Left = 0
       Top = 0
@@ -33,12 +31,10 @@ object frmMain: TfrmMain
       LookAndFeel.NativeStyle = False
       PopupMenu = dxRibbonRadialMenu1
       TabOrder = 0
-      ZoomLevel = 2.025000000000000000
+      ZoomLevel = 2.100000000000000000
       OnMouseDown = MapMouseDown
       OnMouseUp = MapMouseUp
       OnResize = MapResize
-      ExplicitWidth = 1054
-      ExplicitHeight = 895
       object dxMapControl1ImageTileLayer1: TdxMapImageTileLayer
         ProviderClassName = 'TdxMapControlBingMapImageryDataProvider'
         Provider.BingKey = 
@@ -63,6 +59,14 @@ object frmMain: TfrmMain
       Transparent = True
       Visible = False
     end
+    object Edit1: TEdit
+      Left = 16
+      Top = 744
+      Width = 1017
+      Height = 21
+      TabOrder = 2
+      Text = 'Edit1'
+    end
   end
   object scbSettingsPanel: TcxScrollBox
     Left = 1070
@@ -74,7 +78,6 @@ object frmMain: TfrmMain
     ParentColor = False
     PopupMenu = dxRibbonRadialMenu1
     TabOrder = 1
-    ExplicitLeft = 1069
     object cxGroupBox1: TcxGroupBox
       Left = 9
       Top = 32
@@ -721,15 +724,12 @@ object frmMain: TfrmMain
     Height = 25
     Align = alBottom
     TabOrder = 6
-    ExplicitTop = 897
-    ExplicitWidth = 1491
     object cxProgressBar1: TcxProgressBar
       Left = 0
       Top = 0
       Align = alClient
       Properties.PeakValue = 80.000000000000000000
       TabOrder = 0
-      ExplicitWidth = 1489
       Width = 1328
     end
   end

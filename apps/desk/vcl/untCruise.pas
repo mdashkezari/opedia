@@ -126,7 +126,7 @@ begin
   command:=1;
   frmCruise_Busy(True);
   ShellExecute(0, nil, 'python.exe', Pchar(' ./script/python/plotCruise.py '+inttostr(cruiseDB)+' '+inttostr(command)+' '+table+' '+cruise+' '+Resample+' '+fname), nil, SW_HIDE);
-  //frmCruise.Edit1.Text:='python.exe'+Pchar(' ./script/python/plotCruise.py '+inttostr(cruiseDB)+' '+inttostr(command)+' '+table+' '+cruise+' '+Resample+' '+fname;
+  frmMain.Edit1.Text:='python.exe'+Pchar(' ./script/python/plotCruise.py '+inttostr(cruiseDB)+' '+inttostr(command)+' '+table+' '+cruise+' '+Resample+' '+fname);
 
   DeleteFile('shape/'+fname+'.shp');
   repeat
@@ -219,7 +219,7 @@ begin
   exportflag:=inttostr(getExportDataFlag);
   command:=2;
   ShellExecute(0, nil, 'python', Pchar(' ./script/python/plotCruise.py '+inttostr(cruiseDB)+' '+inttostr(command)+' '+source+' '+cruise+' '+Resample+' '+fname+' '+exportflag+' '+FloatToStr(spatialMargin)+' '+tables+' '+vars+' '+extVars+' '+extVarVals+' '+extVars2+' '+extVarVals2), nil, SW_HIDE);
-  //frmMain.edit1.text:='python'+ Pchar(' ./script/python/plotCruise.py '+inttostr(cruiseDB)+' '+inttostr(command)+' '+source+' '+cruise+' '+Resample+' '+fname+' '+exportflag+' '+FloatToStr(spatialMargin)+' '+tables+' '+vars+' '+extVars+' '+extVarVals+' '+extVars2+' '+extVarVals2);
+  frmMain.edit1.text:='python'+ Pchar(' ./script/python/plotCruise.py '+inttostr(cruiseDB)+' '+inttostr(command)+' '+source+' '+cruise+' '+Resample+' '+fname+' '+exportflag+' '+FloatToStr(spatialMargin)+' '+tables+' '+vars+' '+extVars+' '+extVarVals+' '+extVars2+' '+extVarVals2);
 
 
   DeleteFile('embed/'+fname+'.html');

@@ -53,7 +53,10 @@ def dumpCruiseShape(df, source, cruise, resampTau, fname):
     del df['time']   
     df['geometry'] = df.apply(lambda x: Point((float(x.lon), float(x.lat))), axis=1)
     df = gpd.GeoDataFrame(df, geometry='geometry')
-    df.to_file('shape/%s.shp' % fname, driver='ESRI Shapefile')    
+    dirPath = 'shape/'
+    if not os.path.exists(dirPath):
+        os.makedirs(dirPath)       
+    df.to_file(dirPath + '%s.shp' % fname, driver='ESRI Shapefile')    
     return
 
 def resampleToTimeResolution(resampTau):
@@ -159,7 +162,6 @@ source = sys.argv[3]
 cruise = sys.argv[4]      
 resampTau = sys.argv[5]
 fname = sys.argv[6] 
-exportDataFlag = bool(int(sys.argv[7]))
 df = getCruiseTrack(DB, source, cruise)
 df = resample(df, resampTau)
 if command == 1:        ## generates cruise track shapefile
@@ -167,6 +169,7 @@ if command == 1:        ## generates cruise track shapefile
     from shapely.geometry import Point    
     dumpCruiseShape(df, source, cruise, resampTau, fname)
 elif command == 2:      ## generates along track plot
+    exportDataFlag = bool(int(sys.argv[7]))
     spMargin = float(sys.argv[8])         #spatial margin 
     tables = sys.argv[9].split(',')
     variables = sys.argv[10].split(',')   
