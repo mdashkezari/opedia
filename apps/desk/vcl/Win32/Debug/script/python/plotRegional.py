@@ -34,8 +34,16 @@ def getBounds(varName):
         bounds = (0, 5e-1)
     elif varName.find('O2') != -1:
         bounds = (200, 320)
+    elif varName.find('PHYC') != -1:
+        bounds = (0, 4)
+    elif varName.find('PP') != -1:
+        bounds = (0, 4e-2)
     elif varName.find('Si') != -1:
         bounds = (10, 30)
+    elif varName.find('NO3') != -1:
+        bounds = (0, 20)
+    elif varName.find('PO4') != -1:
+        bounds = (0, 1.5)
     elif varName.find('wind_stress') != -1:
         bounds = (0, 3e-1)
     elif varName.find('sst') != -1:
@@ -43,6 +51,32 @@ def getBounds(varName):
     elif varName.find('sla') != -1:
         bounds = (-0.3, 0.3)          
     return bounds
+
+def getPalette(varName):
+    paletteName = 'RdBu11'
+    if varName.find('Fe') != -1:
+        paletteName = 'Viridis256'
+    elif varName.find('O2') != -1:
+        paletteName = 'Viridis256'
+    elif varName.find('PHYC') != -1:
+        paletteName = 'Viridis256'
+    elif varName.find('PP') != -1:
+        paletteName = 'Viridis256'
+    elif varName.find('Si') != -1:
+        paletteName = 'Viridis256'
+    elif varName.find('NO3') != -1:
+        paletteName = 'Viridis256'
+    elif varName.find('PO4') != -1:
+        paletteName = 'Viridis256'
+    elif varName.find('chl') != -1:
+        paletteName = 'Viridis256'
+    elif varName.find('wind_stress') != -1:
+        paletteName = 'Plasma256'
+    elif varName.find('sst') != -1:
+        paletteName = 'Inferno256'
+    elif varName.find('sla') != -1:
+        paletteName = 'RdBu11'
+    return paletteName
 
 
 def exportData(df, path):
@@ -108,10 +142,11 @@ def bokehGM(data, subject, fname, lat, lon, variabels):
         p1.xaxis.axis_label = 'Longitude'
         p1.yaxis.axis_label = 'Latitude'
         bounds = getBounds(variabels[ind])
+        paletteName = getPalette(variabels[ind])
         if bounds[0]==None:
-            color_mapper = LinearColorMapper(palette="RdBu11")
-        else:    
-            color_mapper = LinearColorMapper(palette="RdBu11", low=bounds[0], high=bounds[1])     
+            color_mapper = LinearColorMapper(palette=paletteName)
+        else:   
+            color_mapper = LinearColorMapper(palette=paletteName, low=bounds[0], high=bounds[1])     
         p1.image(image=[data[ind]], color_mapper=color_mapper, x=np.min(lon), y=np.min(lat), dw=np.max(lon)-np.min(lon), dh=np.max(lat)-np.min(lat))
         color_bar = ColorBar(color_mapper=color_mapper, ticker=BasicTicker(),
                         label_standoff=12, border_line_color=None, location=(0,0))
