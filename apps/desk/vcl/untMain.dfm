@@ -59,14 +59,6 @@ object frmMain: TfrmMain
       Transparent = True
       Visible = False
     end
-    object Edit1: TEdit
-      Left = 16
-      Top = 744
-      Width = 1017
-      Height = 21
-      TabOrder = 2
-      Text = 'Edit1'
-    end
   end
   object scbSettingsPanel: TcxScrollBox
     Left = 1070

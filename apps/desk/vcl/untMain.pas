@@ -119,7 +119,6 @@ type
     cxLabel10: TcxLabel;
     cxLabel11: TcxLabel;
     cxLabel12: TcxLabel;
-    Edit1: TEdit;
     procedure rtbLatPropertiesChange(Sender: TObject);
     procedure rtbLonPropertiesChange(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -258,6 +257,48 @@ begin
   frmMain.aiBusy.Visible:=Enable;
 end;
 
+procedure SetRangeTrackbar_Lat;
+begin
+  with frmMain do
+  begin
+    try
+      if Trunc(StrToFloat(edtLat1.Text) * 100) < rtbLat.Range.Min then
+      begin
+        rtbLat.Range.Min := Trunc(StrToFloat(edtLat1.Text) * 100);
+        rtbLat.Range.Max := Trunc(StrToFloat(edtLat2.Text) * 100);
+      end
+      else
+      begin
+        rtbLat.Range.Max := Trunc(StrToFloat(edtLat2.Text) * 100);
+        rtbLat.Range.Min := Trunc(StrToFloat(edtLat1.Text) * 100);
+      end;
+    except
+      Application.ProcessMessages;
+    end;
+  end;
+end;
+
+procedure SetRangeTrackbar_Lon;
+begin
+  with frmMain do
+  begin
+    try
+      if Trunc(StrToFloat(edtLon1.Text) * 100) < rtbLon.Range.Min then
+      begin
+        rtbLon.Range.Min := Trunc(StrToFloat(edtLon1.Text) * 100);
+        rtbLon.Range.Max := Trunc(StrToFloat(edtLon2.Text) * 100);
+      end
+      else
+      begin
+        rtbLon.Range.Max := Trunc(StrToFloat(edtLon2.Text) * 100);
+        rtbLon.Range.Min := Trunc(StrToFloat(edtLon1.Text) * 100);
+      end
+    except
+      Application.ProcessMessages;
+    end;
+  end;
+end;
+
 procedure SetLatEdits(lat1, lat2: real);
 begin
   if lat2 < StrToFloat(frmMain.edtLat1.Text) then
@@ -270,6 +311,8 @@ begin
     frmMain.edtLat2.Text := FloatToStr(lat2);
     frmMain.edtLat1.Text := FloatToStr(lat1);
   end;
+
+  SetRangeTrackbar_Lat;
 end;
 
 procedure SetLonEdits(lon1, lon2: real);
@@ -285,33 +328,9 @@ begin
     frmMain.edtLon1.Text := FloatToStr(lon1);
   end;
 
+  SetRangeTrackbar_Lon;
 end;
 
-procedure SetRangeTrackbar_Lat;
-begin
-  with frmMain do
-  begin
-    try
-      rtbLat.Range.Min := Trunc(StrToFloat(edtLat1.Text) * 100);
-      rtbLat.Range.Max := Trunc(StrToFloat(edtLat2.Text) * 100);
-    except
-      Application.ProcessMessages;
-    end;
-  end;
-end;
-
-procedure SetRangeTrackbar_Lon;
-begin
-  with frmMain do
-  begin
-    try
-      rtbLon.Range.Min := Trunc(StrToFloat(edtLon1.Text) * 100);
-      rtbLon.Range.Max := Trunc(StrToFloat(edtLon2.Text) * 100);
-    except
-      Application.ProcessMessages;
-    end;
-  end;
-end;
 
 procedure LoadVars;
 var
@@ -604,7 +623,7 @@ begin
   fname:='RM';
   exportflag:=inttostr(getExportDataFlag);
   ShellExecute(0, nil, 'python', Pchar(' ./script/python/plotRegional.py '+tables+' '+vars+' '+dt+' '+edtLat1.Text+' '+edtLat2.Text+' '+edtLon1.Text+' '+edtLon2.Text+' '+fname+' '+exportflag+' '+extVars+' '+extVarVals), nil, SW_HIDE);
-  edit1.text:='python'+ Pchar(' ./script/python/plotRegional.py '+tables+' '+vars+' '+dt+' '+edtLat1.Text+' '+edtLat2.Text+' '+edtLon1.Text+' '+edtLon2.Text+' '+fname+' '+exportflag+' '+extVars+' '+extVarVals);
+  //edit1.text:='python'+ Pchar(' ./script/python/plotRegional.py '+tables+' '+vars+' '+dt+' '+edtLat1.Text+' '+edtLat2.Text+' '+edtLon1.Text+' '+edtLon2.Text+' '+fname+' '+exportflag+' '+extVars+' '+extVarVals);
 
 
   DeleteFile('embed/'+fname+'.html');
@@ -1082,6 +1101,10 @@ begin
     frmMain.edtLon2.Text := lon2;
     frmMain.edtLon1.Text := lon1;
   end;
+
+  SetLatEdits(StrToFloat(lat1), StrToFloat(lat2));
+  SetLonEdits(StrToFloat(lon1), StrToFloat(lon2));
+
   ShiftDrag := False;
   cbRegion.ItemIndex:=-1;
 end;
@@ -1099,8 +1122,8 @@ end;
 
 procedure TfrmMain.rtbLatPropertiesChange(Sender: TObject);
 begin
-  edtLat1.Text := FloattoStr(rtbLat.Range.Min/100);
-  edtLat2.Text := FloattoStr(rtbLat.Range.Max/100);
+  //edtLat1.Text := FloattoStr(rtbLat.Range.Min/100);
+  //edtLat2.Text := FloattoStr(rtbLat.Range.Max/100);
 end;
 
 procedure TfrmMain.rtbLonMouseUp(Sender: TObject; Button: TMouseButton;
@@ -1111,8 +1134,8 @@ end;
 
 procedure TfrmMain.rtbLonPropertiesChange(Sender: TObject);
 begin
-  edtLon1.Text := FloattoStr(rtbLon.Range.Min/100);
-  edtLon2.Text := FloattoStr(rtbLon.Range.Max/100);
+  //edtLon1.Text := FloattoStr(rtbLon.Range.Min/100);
+  //edtLon2.Text := FloattoStr(rtbLon.Range.Max/100);
 end;
 
 end.
