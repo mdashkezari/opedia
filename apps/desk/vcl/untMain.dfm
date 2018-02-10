@@ -1074,6 +1074,10 @@ object frmMain: TfrmMain
         item
           Visible = True
           ItemName = 'barMonthly'
+        end
+        item
+          Visible = True
+          ItemName = 'barSectionMap'
         end>
     end
     object dxBarButton1: TdxBarButton
@@ -1117,6 +1121,13 @@ object frmMain: TfrmMain
       Hint = 'Histogram'
       Visible = ivAlways
       OnClick = barHistogramClick
+    end
+    object barSectionMap: TdxBarButton
+      Caption = 'Section Map'
+      Category = 0
+      Hint = 'Section Map'
+      Visible = ivAlways
+      OnClick = barSectionMapClick
     end
   end
   object dxRibbonRadialMenu1: TdxRibbonRadialMenu

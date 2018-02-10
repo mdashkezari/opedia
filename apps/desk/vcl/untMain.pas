@@ -119,6 +119,7 @@ type
     cxLabel10: TcxLabel;
     cxLabel11: TcxLabel;
     cxLabel12: TcxLabel;
+    barSectionMap: TdxBarButton;
     procedure rtbLatPropertiesChange(Sender: TObject);
     procedure rtbLonPropertiesChange(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -154,6 +155,7 @@ type
     procedure edtLat1Exit(Sender: TObject);
     procedure edtLon2Exit(Sender: TObject);
     procedure edtLon1Exit(Sender: TObject);
+    procedure barSectionMapClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -862,6 +864,51 @@ begin
   exportflag:=inttostr(getExportDataFlag);
   ShellExecute(0, nil, 'python', Pchar(' ./script/python/plotXY.py '+tables+' '+vars+' '+dt1+' '+dt2+' '+edtLat1.Text+' '+edtLat2.Text+' '+edtLon1.Text+' '+edtLon2.Text+' '+fname+' '+exportflag+' '+extVars+' '+extVarVals+' '+extVars2+' '+extVarVals2), nil, SW_HIDE);
   //edit1.text:='python' + Pchar(' ./script/python/plotXY.py '+tables+' '+vars+' '+dt1+' '+dt2+' '+edtLat1.Text+' '+edtLat2.Text+' '+edtLon1.Text+' '+edtLon2.Text+' '+fname+' '+exportflag+' '+extVars+' '+extVarVals+' '+extVars2+' '+extVarVals2);
+
+
+  DeleteFile('embed/'+fname+'.html');
+  sleep(1000);
+  repeat
+    Application.ProcessMessages;
+  until FileExists('embed/'+fname+'.html');
+
+  Busy(False);
+end;
+
+procedure TfrmMain.barSectionMapClick(Sender: TObject);
+var
+  dt, fname, exportflag: String;
+  i, count:integer;
+  Variable:TVar;
+  vars, tables: String;
+begin
+  if ledtVars.Values.Count<1 then
+  begin
+    MessageDlg('Please pick at least one variable.', mtError, [mbok], 0);
+    Exit;
+  end;
+
+  Busy(True);
+  vars:='';
+  tables:='';
+  count:=ledtVars.Values.Count-1;
+  for I := 0 to count do
+  begin
+    Variable:=GetVariable(ledtVars.Values.Items[i].Tag);
+    dt:=FormatDateTime('yyyy-mm-dd',dtwpTimeStart.DateTime);
+    tables:=tables+Variable.Table_Name;
+    vars:=vars+Variable.Short_Name;
+
+    if i<count then
+    begin
+      tables:=tables+',';
+      vars:=vars+',';
+    end;
+  end;
+  fname:='Sec';
+  exportflag:=inttostr(getExportDataFlag);
+  ShellExecute(0, nil, 'python', Pchar(' ./script/python/plotSection.py '+tables+' '+vars+' '+dt+' '+edtLat1.Text+' '+edtLat2.Text+' '+edtLon1.Text+' '+edtLon2.Text+' '+fname+' '+exportflag+' '+cbPiscesDepthStart.Text+' '+cbPiscesDepthEnd.Text), nil, SW_HIDE);
+  //edit1.text:='python'+ Pchar(' ./script/python/plotSection.py '+tables+' '+vars+' '+dt+' '+edtLat1.Text+' '+edtLat2.Text+' '+edtLon1.Text+' '+edtLon2.Text+' '+fname+' '+exportflag+' '+cbPiscesDepthStart.Text+' '+cbPiscesDepthEnd.Text);
 
 
   DeleteFile('embed/'+fname+'.html');
