@@ -140,11 +140,11 @@ def bokehSec(data, subject, fname, lat, lon, depth, variabels):
             data = np.transpose(data)
             data = np.squeeze(data)
             p1.xaxis.axis_label = 'Longitude'
-            p1.image(image=[data], color_mapper=color_mapper, x=np.min(lon), y=np.min(depth), dw=np.max(lon)-np.min(lon), dh=np.max(depth)-np.min(depth))
+            p1.image(image=[data], color_mapper=color_mapper, x=np.min(lon), y=np.max(depth), dw=np.max(lon)-np.min(lon), dh=np.max(depth)-np.min(depth))
         else:
             p1 = figure(tools=TOOLS, toolbar_location="above", title=subject[ind], plot_width=w, plot_height=h, x_range=(np.min(lat), np.max(lat)), y_range=(np.min(depth), np.max(depth)))
             data = np.nanmean(data, axis=1)
-            data = np.transpose(data)
+            #data = np.transpose(data)
             data = np.squeeze(data)
             p1.xaxis.axis_label = 'Latitude'
             '''
