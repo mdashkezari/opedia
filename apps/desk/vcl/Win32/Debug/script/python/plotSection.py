@@ -144,7 +144,7 @@ def bokehSec(data, subject, fname, lat, lon, depth, variabels):
         else:
             p1 = figure(tools=TOOLS, toolbar_location="above", title=subject[ind], plot_width=w, plot_height=h, x_range=(np.min(lat), np.max(lat)), y_range=(np.min(depth), np.max(depth)))
             data = np.nanmean(data, axis=1)
-            #data = np.transpose(data)
+            data = np.transpose(data)
             data = np.squeeze(data)
             p1.xaxis.axis_label = 'Latitude'
             '''
