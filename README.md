@@ -1,5 +1,5 @@
 # Opedia
-Opedia is an ocean database service offering data explore, visualization, and analyses layers.
+Opedia is a database service to integrate, visualize, and analyze ocean datasets.
 
 # System Requirements
 * [Anaconda Distribution Pyhton 2.7](https://www.anaconda.com/download/)
