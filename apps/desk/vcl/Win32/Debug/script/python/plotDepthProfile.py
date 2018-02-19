@@ -28,16 +28,7 @@ def embedComponents(fname, data):
     f.close()
     return
 
-def prepareTimeSpaceQuery(table, date1, date2, lat1, lat2, lon1, lon2):
-    query = "SELECT AVG(sla) AS sla, AVG(sst) AS sst, AVG(u) AS u, AVG(v) as v FROM %s WHERE "
-    query = query + "[time]='%s' AND "
-    query = query + "lat>=%f AND lat<=%f AND "
-    query = query + "lon>=%f AND lon<=%f "
-    query = query % (table, date1, lat1, lat2, lon1, lon2)
-    return query
-
-
-def exportData(z, y, yErr, table, variable, lat1, lat2, lon1, lon2):
+def exportData(z, y, yErr, table, variable, lat1, lat2, lon1, lon2, fname):
     df = pd.DataFrame()
     df['depth'] = z
     df[variable] = y
@@ -49,21 +40,15 @@ def exportData(z, y, yErr, table, variable, lat1, lat2, lon1, lon2):
     dirPath = 'data/'
     if not os.path.exists(dirPath):
         os.makedirs(dirPath)        
-    path = dirPath + 'DP_' + table + '_' + variable + '.csv'
+    path = dirPath + fname + '_' + table + '_' + variable + '.csv'
     df.to_csv(path, index=False)    
     return
 
-def depthProfile(table, field, dt, lat1, lat2, lon1, lon2, depth1, depth2):
+def depthProfile(table, field, dt, lat1, lat2, lon1, lon2, depth1, depth2, fname):
     y = np.array([])
     y_std = np.array([])
     depths = depthLevels(depth1, depth2)
     for depth in depths:
-        '''
-        ############# App-Level Query #############
-        query = prepareTimeSpaceQuery(table, dtStamp, dtStamp, lat1, lat2, lon1, lon2)
-        df = db.dbFetch(query)
-        ###########################################
-        '''        
         ######### Stored Procedure Query ##########
         query = 'EXEC uspDepthProfile ?, ?, ?, ?, ?, ?, ?, ?'
         args = [table, field, dt, str(lat1), str(lat2), str(lon1), str(lon2), str(depth)]        
@@ -97,7 +82,7 @@ def depthProfile(table, field, dt, lat1, lat2, lon1, lon2, depth1, depth2):
         y_std = np.append(y_std, tempY_std)
 
     if exportDataFlag:
-        exportData(depths, y, y_std, table, field, lat1, lat2, lon1, lon2)    
+        exportData(depths, y, y_std, table, field, lat1, lat2, lon1, lon2, fname)    
     return depths, y, y_std
 
 def plotDepthProfile(tables, variables, dt, lat1, lat2, lon1, lon2, depth1, depth2, fname, marker='-', msize=30, clr='orangered'):
@@ -107,7 +92,7 @@ def plotDepthProfile(tables, variables, dt, lat1, lat2, lon1, lon2, depth1, dept
     h = 400
     TOOLS = 'pan,wheel_zoom,zoom_in,zoom_out,box_zoom, undo,redo,reset,tap,save,box_select,poly_select,lasso_select'
     for i in range(len(tables)):
-        depths, y, yErr = depthProfile(tables[i], variables[i], dt, lat1, lat2, lon1, lon2, depth1, depth2)
+        depths, y, yErr = depthProfile(tables[i], variables[i], dt, lat1, lat2, lon1, lon2, depth1, depth2, fname)
         p1 = figure(tools=TOOLS, toolbar_location="above", plot_width=w, plot_height=h)
         #p1.xaxis.axis_label = 'Depth'
         p1.yaxis.axis_label = variables[i] + ' [' + db.getVar(tables[i], variables[i]).iloc[0]['Unit'] + ']'

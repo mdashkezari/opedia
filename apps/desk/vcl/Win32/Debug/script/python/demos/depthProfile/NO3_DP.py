@@ -15,10 +15,12 @@ def plot(z, y, y_std):
 
 
 
+############# set parameters ###############
 table = 'tblPisces_NRT'
 field = 'NO3'
 dt = '2017-06-03'
 lat1, lat2, lon1, lon2 = 10, 55, -180, -100  
+############################################
 
 
 
