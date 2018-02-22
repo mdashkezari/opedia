@@ -24,7 +24,7 @@ def prepareQuery(args):
     return query
 
 
-
+############## set parameters ################
 table = 'tblPisces_NRT'
 field = 'Fe'
 dt1 = '2017-06-03'
@@ -32,6 +32,7 @@ dt2 = '2017-06-03'
 lat1, lat2, lon1, lon2 = 10, 55, -180, -100  
 depth1 = 0
 depth2 = 1
+##############################################
 args = (field, table, dt1, dt2, lat1, lat2, lon1, lon2, depth1, depth2)
 query = prepareQuery(args)
 df = db.dbFetch(query)        
