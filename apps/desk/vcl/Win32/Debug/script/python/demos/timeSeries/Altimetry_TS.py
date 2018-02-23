@@ -10,12 +10,12 @@ def plot(t, y):
     plt.show()
 
 
-#field = sla     # sea level anomaly
-#field = adt     # absolute dynamic topography
-#field = ugos   #absolute zonal velocity
-#field = vgos   #absolute meridional velocity
-#field = ugosa   #zonal velocity anomaly
-#field = vgosa   #meridional velocity anomaly
+#field = 'sla'     # sea level anomaly
+#field = 'adt'     # absolute dynamic topography
+#field = 'ugos'   #absolute zonal velocity
+#field = 'vgos'   #absolute meridional velocity
+#field = 'ugosa'   #zonal velocity anomaly
+#field = 'vgosa'   #meridional velocity anomaly
 table = 'tblAltimetry_REP'
 field = 'ugosa'
 startDate, endDate = '2016-01-19', '2016-02-19'
