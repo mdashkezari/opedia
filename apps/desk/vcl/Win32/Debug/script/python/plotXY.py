@@ -46,7 +46,7 @@ def exportData(t1, y1, yErr1, t2, y2, yErr2, table1, variable1, table2, variable
     df.to_csv(path, index=False)    
     return
 
-def plotXY(tables, variables, startDate, endDate, lat1, lat2, lon1, lon2,exportDataFlag, extV, extVV, extV2, extVV2, marker='-', msize=30, clr='green'):
+def plotXY(tables, variables, startDate, endDate, lat1, lat2, lon1, lon2,exportDataFlag, extV, extVV, extV2, extVV2, marker='-', msize=15, clr='green'):
     p = []
     lw = 2
     w = 500
@@ -75,11 +75,11 @@ def plotXY(tables, variables, startDate, endDate, lat1, lat2, lon1, lon2,exportD
             leg = leg + '   ' + extVPairs[i][1] + ': ' + ( '%d' % float(extVVPairs[i][1]) ) 
             if tablePairs[i][1].find('Pisces') != -1:
                 leg = leg + ' ' + 'm'
-        fill_alpha = 0.07        
-        if tablePairs[i][0].find('Pisces') != -1 or tablePairs[i][1].find('Pisces') != -1:
-            fill_alpha = 0.3
-        cr = p1.circle(y1, y2, fill_color="grey", hover_fill_color="firebrick", fill_alpha=fill_alpha, hover_alpha=0.3, line_color=None, hover_line_color="white", legend=leg, size=msize)
-        p1.line(y1, y2, line_color=clr, line_width=lw, legend=leg)
+        fill_alpha = 0.6        
+        #if tablePairs[i][0].find('Pisces') != -1 or tablePairs[i][1].find('Pisces') != -1:
+        #    fill_alpha = 0.3
+        cr = p1.circle(y1, y2, fill_color="grey", hover_fill_color="firebrick", fill_alpha=fill_alpha, hover_alpha=0.6, line_color=None, hover_line_color="white", legend=leg, size=msize)
+        #p1.line(y1, y2, line_color=clr, line_width=lw, legend=leg)
         p1.add_tools(HoverTool(tooltips=None, renderers=[cr], mode='hline'))    
         p.append(p1)
     dirPath = 'embed/'

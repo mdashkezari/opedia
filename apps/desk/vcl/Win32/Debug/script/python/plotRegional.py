@@ -32,6 +32,8 @@ def getBounds(varName):
         bounds = (0, 1e-4)
     elif varName.find('chl') != -1:
         bounds = (0, 5e-1)
+    elif varName.find('CHL') != -1:
+        bounds = (0, 5e-1)
     elif varName.find('O2') != -1:
         bounds = (200, 320)
     elif varName.find('PHYC') != -1:
@@ -50,6 +52,8 @@ def getBounds(varName):
         bounds = (0, 32)          
     elif varName.find('sla') != -1:
         bounds = (-0.3, 0.3)          
+    elif varName.find('vort') != -1:
+        bounds = (-4e-6, 4e6)          
     return bounds
 
 def getPalette(varName):
@@ -69,6 +73,8 @@ def getPalette(varName):
     elif varName.find('PO4') != -1:
         paletteName = 'Viridis256'
     elif varName.find('chl') != -1:
+        paletteName = 'Viridis256'
+    elif varName.find('CHL') != -1:
         paletteName = 'Viridis256'
     elif varName.find('wind_stress') != -1:
         paletteName = 'Plasma256'
