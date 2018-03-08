@@ -42,24 +42,14 @@ uses
 type
   TfrmMain = class(TForm)
     dxBarManager1: TdxBarManager;
-    barSingleDist: TdxBarButton;
-    barDoubleDist: TdxBarButton;
-    barGallery: TdxBarButton;
     barFilter: TdxBarButton;
-    barDataset: TdxBarSubItem;
-    barCores: TdxBarButton;
-    barTracks: TdxBarButton;
     barExportData: TdxBarSubItem;
     barCSV: TdxBarButton;
     barXLSX: TdxBarButton;
     barNPZ: TdxBarButton;
     barJSON: TdxBarButton;
     barHTML: TdxBarButton;
-    barRun: TdxBarSubItem;
-    barMonthly: TdxBarButton;
-    barGeneralRun: TdxBarButton;
     barMachineLearning: TdxBarSubItem;
-    barYearly: TdxBarButton;
     barExtraTrees: TdxBarButton;
     barBlank: TdxBarButton;
     barBlank2: TdxBarButton;
@@ -67,10 +57,6 @@ type
     barRandomForest: TdxBarButton;
     barGradientBoosting: TdxBarButton;
     barSVR: TdxBarButton;
-    barMonthlyStd: TdxBarButton;
-    barYearlyStd: TdxBarButton;
-    barMonthlyCorr: TdxBarButton;
-    barYearlyCorr: TdxBarButton;
     dxBarSubItem1: TdxBarSubItem;
     dxBarButton1: TdxBarButton;
     barGM: TdxBarButton;
@@ -120,6 +106,13 @@ type
     cxLabel11: TcxLabel;
     cxLabel12: TcxLabel;
     barSectionMap: TdxBarButton;
+    barSnapShot: TdxBarSubItem;
+    BarSubTimeSeries: TdxBarSubItem;
+    dxBarSubCruises: TdxBarSubItem;
+    dxBarSubLagrangian: TdxBarSubItem;
+    dxBarSubDataSets: TdxBarSubItem;
+    dxBarFilter: TdxBarButton;
+    BarTracerTrajectory: TdxBarButton;
     procedure rtbLatPropertiesChange(Sender: TObject);
     procedure rtbLonPropertiesChange(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -156,6 +149,7 @@ type
     procedure edtLon2Exit(Sender: TObject);
     procedure edtLon1Exit(Sender: TObject);
     procedure barSectionMapClick(Sender: TObject);
+    procedure BarTracerTrajectoryClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -919,6 +913,48 @@ begin
 
   Busy(False);
 end;
+
+procedure TfrmMain.BarTracerTrajectoryClick(Sender: TObject);
+var
+  FileLayer: TdxMapItemFileLayer;
+  fPath:String;
+  dt:integer;
+  dt1, dt2, lat, lon, fname:string;
+begin
+  Busy(True);
+
+  dt:=3600*24;  // seconds per day
+  dt1:=FormatDateTime('yyyy-mm-dd',dtwpTimeStart.DateTime);
+  dt2:=FormatDateTime('yyyy-mm-dd',dtwpTimeEnd.DateTime);
+  lat:=edtLat1.Text;
+  lon:=edtLon1.Text;
+  fname:='tracer';
+  ShellExecute(0, nil, 'python', Pchar(' ./script/python/Lagrangian.py '+inttostr(dt)+' '+dt1+' '+dt2+' '+lat+' '+lon+' '+fname), nil, SW_HIDE);
+  //frmMain.Edit1.Text:='python'+Pchar(' ./script/python/Lagrangian.py '+inttostr(dt)+' '+dt1+' '+dt2+' '+lat+' '+lon+' '+fname);
+
+  DeleteFile('shape/'+fname+'.shp');
+  repeat
+    Application.ProcessMessages;
+  until FileExists('shape/'+fname+'.shp');
+
+  FileLayer:=(frmMain.map.Layers[2] as TdxMapItemFileLayer);
+  FileLayer.Active:=False;
+  FileLayer.FileType:=miftShape;
+  fPath:='shape/'+fname+'.shp';
+
+  repeat
+    Application.ProcessMessages;
+    sleep(100);
+  until not IsFileInUse(fPath);
+
+  FileLayer.FileName:=fPath;
+  FileLayer.LoadFromFile(fPath);
+  FileLayer.Active:=True;
+
+  Busy(False);
+end;
+
+
 
 procedure TfrmMain.dxBarButton1Click(Sender: TObject);
 begin

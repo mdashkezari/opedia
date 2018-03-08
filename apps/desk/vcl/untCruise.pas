@@ -65,6 +65,10 @@ type
 var
   frmCruise: TfrmCruise;
 
+
+procedure ClearMapFileLayer;
+function IsFileInUse(FileName: TFileName): Boolean;
+
 implementation
 
 uses
@@ -125,8 +129,8 @@ begin
     Exit;
   command:=1;
   frmCruise_Busy(True);
-  ShellExecute(0, nil, 'python.exe', Pchar(' ./script/python/plotCruise.py '+inttostr(cruiseDB)+' '+inttostr(command)+' '+table+' '+cruise+' '+Resample+' '+fname), nil, SW_HIDE);
-  //frmMain.Edit1.Text:='python.exe'+Pchar(' ./script/python/plotCruise.py '+inttostr(cruiseDB)+' '+inttostr(command)+' '+table+' '+cruise+' '+Resample+' '+fname);
+  ShellExecute(0, nil, 'python', Pchar(' ./script/python/plotCruise.py '+inttostr(cruiseDB)+' '+inttostr(command)+' '+table+' '+cruise+' '+Resample+' '+fname), nil, SW_HIDE);
+  //frmMain.Edit1.Text:='python'+Pchar(' ./script/python/plotCruise.py '+inttostr(cruiseDB)+' '+inttostr(command)+' '+table+' '+cruise+' '+Resample+' '+fname);
 
   DeleteFile('shape/'+fname+'.shp');
   repeat

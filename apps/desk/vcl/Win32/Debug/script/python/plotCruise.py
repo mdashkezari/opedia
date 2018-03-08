@@ -50,7 +50,7 @@ def resample(df, resampTau):
 
 def dumpCruiseShape(df, source, cruise, resampTau, fname):
     df = resample(df, resampTau)
-    del df['time']   
+    del df['time']  
     df['geometry'] = df.apply(lambda x: Point((float(x.lon), float(x.lat))), axis=1)
     df = gpd.GeoDataFrame(df, geometry='geometry')
     dirPath = 'shape/'

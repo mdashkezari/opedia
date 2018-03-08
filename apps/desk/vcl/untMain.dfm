@@ -751,96 +751,16 @@ object frmMain: TfrmMain
       0
       0
       0)
-    object barSingleDist: TdxBarButton
-      Caption = 'Show Cores'
-      Category = 0
-      Hint = 'Show Cores'
-      Visible = ivAlways
-      ButtonStyle = bsChecked
-      CloseSubMenuOnClick = False
-      Down = True
-      ImageIndex = 6
-    end
-    object barDoubleDist: TdxBarButton
-      Caption = 'Double Dist.'
-      Category = 0
-      Hint = 'Double Distribution'
-      Visible = ivAlways
-      ImageIndex = 2
-    end
-    object barGallery: TdxBarButton
-      Caption = 'Gallery'
-      Category = 0
-      Hint = 'Gallery'
-      Visible = ivAlways
-      ImageIndex = 4
-    end
     object barFilter: TdxBarButton
       Caption = 'Catalog'
       Category = 0
       Hint = 'Catalog'
       Visible = ivAlways
-      ImageIndex = 21
+      ImageIndex = 27
       OnClick = barFilterClick
     end
-    object barDataset: TdxBarSubItem
-      Caption = 'Dataset'
-      Category = 0
-      Visible = ivAlways
-      ImageIndex = 19
-      ItemLinks = <
-        item
-          Visible = True
-          ItemName = 'barBlank'
-        end
-        item
-          Visible = True
-          ItemName = 'barBlank'
-        end
-        item
-          Visible = True
-          ItemName = 'barBlank'
-        end
-        item
-          Visible = True
-          ItemName = 'barTracks'
-        end
-        item
-          Visible = True
-          ItemName = 'barBlank2'
-        end
-        item
-          Visible = True
-          ItemName = 'barCores'
-        end
-        item
-          Visible = True
-          ItemName = 'barBlank'
-        end
-        item
-          Visible = True
-          ItemName = 'barBlank'
-        end>
-    end
-    object barCores: TdxBarButton
-      Caption = 'Cores'
-      Category = 0
-      Hint = 'Cores'
-      Visible = ivAlways
-      ButtonStyle = bsChecked
-      CloseSubMenuOnClick = False
-      Down = True
-    end
-    object barTracks: TdxBarButton
-      Caption = 'Tracks'
-      Category = 0
-      Hint = 'Tracks'
-      Visible = ivAlways
-      ButtonStyle = bsChecked
-      CloseSubMenuOnClick = False
-    end
     object barExportData: TdxBarSubItem
-      Caption = 'Export Data'
+      Caption = 'Export'
       Category = 0
       Visible = ivAlways
       ImageIndex = 8
@@ -896,54 +816,6 @@ object frmMain: TfrmMain
       Hint = 'HTML'
       Visible = ivAlways
     end
-    object barRun: TdxBarSubItem
-      Caption = 'Run'
-      Category = 0
-      Visible = ivAlways
-      ImageIndex = 7
-      ItemLinks = <
-        item
-          Visible = True
-          ItemName = 'barMonthlyCorr'
-        end
-        item
-          Visible = True
-          ItemName = 'barMonthlyStd'
-        end
-        item
-          Visible = True
-          ItemName = 'barMonthly'
-        end
-        item
-          Visible = True
-          ItemName = 'barGeneralRun'
-        end
-        item
-          Visible = True
-          ItemName = 'barYearly'
-        end
-        item
-          Visible = True
-          ItemName = 'barYearlyStd'
-        end
-        item
-          Visible = True
-          ItemName = 'barYearlyCorr'
-        end>
-    end
-    object barMonthly: TdxBarButton
-      Caption = 'Monthly'
-      Category = 0
-      Hint = 'Monthly'
-      Visible = ivAlways
-      OnClick = barMonthlyClick
-    end
-    object barGeneralRun: TdxBarButton
-      Caption = 'Run'
-      Category = 0
-      Hint = 'Run'
-      Visible = ivAlways
-    end
     object barMachineLearning: TdxBarSubItem
       Caption = 'Machine Learning'
       Category = 0
@@ -970,12 +842,6 @@ object frmMain: TfrmMain
           Visible = True
           ItemName = 'barSVR'
         end>
-    end
-    object barYearly: TdxBarButton
-      Caption = 'Yearly'
-      Category = 0
-      Hint = 'Yearly'
-      Visible = ivAlways
     end
     object barExtraTrees: TdxBarButton
       Caption = 'Extra Trees'
@@ -1017,67 +883,43 @@ object frmMain: TfrmMain
       Hint = 'Support Vector'
       Visible = ivAlways
     end
-    object barMonthlyStd: TdxBarButton
-      Caption = 'Monthly std'
-      Category = 0
-      Hint = 'Monthly std'
-      Visible = ivAlways
-    end
-    object barYearlyStd: TdxBarButton
-      Caption = 'Yearly std'
-      Category = 0
-      Hint = 'Yearly std'
-      Visible = ivAlways
-    end
-    object barMonthlyCorr: TdxBarButton
-      Caption = 'Monthly Corr.'
-      Category = 0
-      Hint = 'Monthly Corr.'
-      Visible = ivAlways
-    end
-    object barYearlyCorr: TdxBarButton
-      Caption = 'Yearly Corr.'
-      Category = 0
-      Hint = 'Yearly Corr.'
-      Visible = ivAlways
-    end
     object dxBarSubItem1: TdxBarSubItem
-      Caption = 'Plot'
+      Caption = 'Visualize'
       Category = 0
       Visible = ivAlways
       ImageIndex = 3
       ItemLinks = <
         item
           Visible = True
-          ItemName = 'barGM'
+          ItemName = 'dxBarSubLagrangian'
         end
         item
           Visible = True
-          ItemName = 'dxBarButton1'
+          ItemName = 'barBlank2'
         end
         item
           Visible = True
-          ItemName = 'dxBarButton2'
+          ItemName = 'barSnapShot'
         end
         item
           Visible = True
-          ItemName = 'barDepthProfile'
+          ItemName = 'barBlank2'
         end
         item
           Visible = True
-          ItemName = 'barplotXY'
+          ItemName = 'BarSubTimeSeries'
         end
         item
           Visible = True
-          ItemName = 'barHistogram'
+          ItemName = 'barBlank2'
         end
         item
           Visible = True
-          ItemName = 'barMonthly'
+          ItemName = 'dxBarSubCruises'
         end
         item
           Visible = True
-          ItemName = 'barSectionMap'
+          ItemName = 'barBlank2'
         end>
     end
     object dxBarButton1: TdxBarButton
@@ -1129,6 +971,131 @@ object frmMain: TfrmMain
       Visible = ivAlways
       OnClick = barSectionMapClick
     end
+    object barSnapShot: TdxBarSubItem
+      Caption = 'SnapShot'
+      Category = 0
+      Visible = ivAlways
+      ItemLinks = <
+        item
+          Visible = True
+          ItemName = 'barGM'
+        end
+        item
+          Visible = True
+          ItemName = 'barSectionMap'
+        end
+        item
+          Visible = True
+          ItemName = 'barDepthProfile'
+        end
+        item
+          Visible = True
+          ItemName = 'barBlank2'
+        end
+        item
+          Visible = True
+          ItemName = 'barBlank2'
+        end
+        item
+          Visible = True
+          ItemName = 'barBlank2'
+        end
+        item
+          Visible = True
+          ItemName = 'barBlank2'
+        end
+        item
+          Visible = True
+          ItemName = 'barBlank2'
+        end>
+    end
+    object BarSubTimeSeries: TdxBarSubItem
+      Caption = 'Time Series'
+      Category = 0
+      Visible = ivAlways
+      ItemLinks = <
+        item
+          Visible = True
+          ItemName = 'barBlank2'
+        end
+        item
+          Visible = True
+          ItemName = 'barBlank2'
+        end
+        item
+          Visible = True
+          ItemName = 'barBlank2'
+        end
+        item
+          Visible = True
+          ItemName = 'barBlank2'
+        end
+        item
+          Visible = True
+          ItemName = 'barBlank2'
+        end
+        item
+          Visible = True
+          ItemName = 'dxBarButton2'
+        end
+        item
+          Visible = True
+          ItemName = 'barplotXY'
+        end
+        item
+          Visible = True
+          ItemName = 'barHistogram'
+        end>
+    end
+    object dxBarSubCruises: TdxBarSubItem
+      Caption = 'Cruises'
+      Category = 0
+      Visible = ivAlways
+      ItemLinks = <
+        item
+          Visible = True
+          ItemName = 'dxBarButton1'
+        end>
+    end
+    object dxBarSubLagrangian: TdxBarSubItem
+      Caption = 'Lagrangian'
+      Category = 0
+      Visible = ivAlways
+      ItemLinks = <
+        item
+          Visible = True
+          ItemName = 'BarTracerTrajectory'
+        end>
+    end
+    object dxBarSubDataSets: TdxBarSubItem
+      Caption = 'DataSets'
+      Category = 0
+      Visible = ivAlways
+      ImageIndex = 19
+      ItemLinks = <
+        item
+          Visible = True
+          ItemName = 'dxBarFilter'
+        end
+        item
+          Visible = True
+          ItemName = 'barFilter'
+        end>
+    end
+    object dxBarFilter: TdxBarButton
+      Caption = 'Filter'
+      Category = 0
+      Hint = 'Filter'
+      Visible = ivAlways
+      ImageIndex = 21
+    end
+    object BarTracerTrajectory: TdxBarButton
+      Caption = 'Tracer Trajectory'
+      Category = 0
+      Hint = 'Tracer Trajectory'
+      Visible = ivAlways
+      OnClick = BarTracerTrajectoryClick
+    end
   end
   object dxRibbonRadialMenu1: TdxRibbonRadialMenu
     Glyph.Data = {
@@ -1144,15 +1111,11 @@ object frmMain: TfrmMain
     ItemLinks = <
       item
         Visible = True
-        ItemName = 'barRun'
+        ItemName = 'dxBarSubDataSets'
       end
       item
         Visible = True
-        ItemName = 'barFilter'
-      end
-      item
-        Visible = True
-        ItemName = 'barExportData'
+        ItemName = 'barBlank2'
       end
       item
         Visible = True
@@ -1160,19 +1123,23 @@ object frmMain: TfrmMain
       end
       item
         Visible = True
+        ItemName = 'barBlank2'
+      end
+      item
+        Visible = True
         ItemName = 'barMachineLearning'
       end
       item
         Visible = True
-        ItemName = 'barSingleDist'
+        ItemName = 'barBlank2'
       end
       item
         Visible = True
-        ItemName = 'barDataset'
+        ItemName = 'barExportData'
       end
       item
         Visible = True
-        ItemName = 'barGallery'
+        ItemName = 'barBlank2'
       end>
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
@@ -4763,6 +4730,139 @@ object frmMain: TfrmMain
           0000000000000000000000000000000000000000000000000000000000000000
           0000000000000000000000000000000000000000000000000000000000000000
           0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000}
+      end
+      item
+        Image.Data = {
+          36100000424D3610000000000000360000002800000020000000200000000100
+          2000000000000010000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          000000000000000000000000000000000000000000000000004F000000E90000
+          00FF000000FF000000FF000000FF000000FF000000FF000000FF000000FF0000
+          00FF000000FF000000FF000000FF000000FF000000FF000000E80000004D0000
+          0000000000000000000000000000000000000000000000000000000000000000
+          00000000000000000000000000000000000000000000000000EA000000FF0000
+          00FF000000FF000000FF000000FF000000FF000000FF000000FF000000FF0000
+          00FF000000FF000000FF000000FF000000FF000000FF000000FF000000E80000
+          0000000000000000000000000000000000000000000000000000000000000000
+          00000000000000000000000000000000000000000000000000FF000000FF0000
+          0000000000000000000000000000000000000000000000000000000000000000
+          00000000000000000000000000000000000000000000000000FF000000FF0000
+          0000000000000000000000000000000000000000000000000000000000000000
+          00000000000000000000000000000000000000000000000000FF000000FF0000
+          0000000000000000000000000000000000000000000000000000000000000000
+          00000000000000000000000000000000000000000000000000FF000000FF0000
+          0000000000000000000000000000000000000000000000000000000000000000
+          00000000000000000000000000000000000000000000000000FF000000FF0000
+          0000000000000000000000000000000000000000000000000000000000000000
+          00000000000000000000000000000000000000000000000000FF000000FF0000
+          0000000000000000000000000000000000000000000000000000000000000000
+          00000000000000000000000000000000000000000000000000FF000000FF0000
+          0000000000000000000000000000000000000000000000000000000000000000
+          00000000000000000000000000000000000000000000000000FF000000FF0000
+          0000000000000000000000000000000000000000000000000000000000000000
+          00000000000000000000000000000000000000000000000000FF000000FF0000
+          0000000000000000000000000000000000000000000000000000000000000000
+          00000000000000000000000000000000000000000000000000FF000000FF0000
+          0000000000000000000000000000000000000000000000000000000000000000
+          00000000000000000000000000000000000000000000000000FF000000FF0000
+          0000000000000000000000000000000000000000000000000000000000000000
+          00000000000000000000000000000000000000000000000000FF000000FF0000
+          0000000000000000000000000000000000000000000000000000000000000000
+          00000000000000000000000000000000000000000000000000FF000000FF0000
+          0000000000000000000000000000000000000000000000000000000000000000
+          00000000000000000000000000000000000000000000000000FF000000FF0000
+          0000000000000000000000000000000000000000000000000000000000000000
+          00000000000000000000000000000000000000000000000000FF000000FF0000
+          0000000000000000000000000000000000000000000000000000000000000000
+          00000000000000000000000000000000000000000000000000FF000000FF0000
+          0000000000000000000000000000000000000000000000000000000000000000
+          00000000000000000000000000000000000000000000000000FF000000FF0000
+          0000000000000000000000000000000000000000000000000000000000000000
+          00000000000000000000000000000000000000000000000000FF000000FF0000
+          0000000000000000000000000000000000000000000000000000000000000000
+          00000000000000000000000000000000000000000000000000FF000000FF0000
+          0000000000000000000000000000000000000000000000000000000000000000
+          00000000000000000000000000000000000000000000000000FF000000FF0000
+          0000000000000000000000000000000000000000000000000000000000000000
+          00000000000000000000000000000000000000000000000000FF000000FF0000
+          0000000000000000000000000000000000000000000000000000000000000000
+          00000000000000000000000000000000000000000000000000FF000000FF0000
+          0000000000000000000000000000000000000000000000000000000000000000
+          00000000000000000000000000000000000000000000000000FF000000FF0000
+          0000000000000000000000000000000000000000000000000000000000000000
+          00000000000000000000000000000000000000000000000000FF000000FF0000
+          0000000000000000000000000000000000000000000000000000000000000000
+          00000000000000000000000000000000000000000000000000FF000000FF0000
+          0000000000000000000000000000000000000000000000000000000000000000
+          00000000000000000000000000000000000000000000000000FF000000FF0000
+          0000000000000000000000000000000000000000000000000000000000000000
+          00000000000000000000000000000000000000000000000000FF000000FF0000
+          000000000000000000FF000000FF000000FF000000FF000000FF000000FF0000
+          00FF000000FF000000FF000000FF0000000000000000000000FF000000FF0000
+          0000000000000000000000000000000000000000000000000000000000000000
+          00000000000000000000000000000000000000000000000000FF000000FF0000
+          000000000000000000FF000000FF000000FF000000FF000000FF000000FF0000
+          00FF000000FF000000FF000000FF0000000000000000000000FF000000FF0000
+          0000000000000000000000000000000000000000000000000000000000000000
+          00000000000000000000000000000000000000000000000000FF000000FF0000
+          000000000000000000FF000000FF000000FF000000FF000000FF000000FF0000
+          00FF000000FF000000FF000000FF0000000000000000000000FF000000FF0000
+          0000000000000000000000000000000000000000000000000000000000000000
+          00000000000000000000000000000000000000000000000000E9000000FF0000
+          00FF000000FF000000FF000000FF000000FF000000FF000000370000003A0000
+          00FF000000FF000000FF000000FF000000FF000000FF000000FF000000E90000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000051000000E90000
+          00FF000000FF000000FF000000FF000000FF000000FF00000034000000370000
+          00FF000000FF000000FF000000FF000000FF000000FF000000EA0000004F0000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          000000000000000000000000000000000094000000FF000000FF000000FF0000
+          00FF0000008E0000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          00000000000000000000000000000000000800000095000000F2000000F10000
+          0092000000060000000000000000000000000000000000000000000000000000
           0000000000000000000000000000000000000000000000000000000000000000
           0000000000000000000000000000000000000000000000000000000000000000
           0000000000000000000000000000000000000000000000000000000000000000
