@@ -70,6 +70,8 @@ object frmMain: TfrmMain
     ParentColor = False
     PopupMenu = dxRibbonRadialMenu1
     TabOrder = 1
+    ExplicitLeft = 1075
+    ExplicitTop = -5
     object cxGroupBox1: TcxGroupBox
       Left = 9
       Top = 32
@@ -87,7 +89,7 @@ object frmMain: TfrmMain
         Left = 8
         Top = 38
         Width = 225
-        Height = 111
+        Height = 117
         Appearance.Normal.ColorFrom = 16312028
         Appearance.Normal.ColorTo = 15847357
         Appearance.Normal.BorderColor = 14124408
@@ -105,6 +107,7 @@ object frmMain: TfrmMain
         Font.Height = -13
         Font.Name = 'Tahoma'
         Font.Style = []
+        Font.Quality = fqClearTypeNatural
         Lookup = <>
         LookupMethod = lmFullDisplayAndValue
         LookupPopup.Font.Charset = DEFAULT_CHARSET

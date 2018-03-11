@@ -179,7 +179,7 @@ function getExportDataFlag:integer;
 implementation
 
 uses
-  untCommonDB, untBusy, untCruise, untFilter, untSignIn;
+  untCommonDB, untBusy, untCruise, untFilter, untSignIn, untLagrangian;
 
 
 Procedure WriteCoreDump(CoredumpBody:String);
@@ -921,6 +921,7 @@ var
   dt:integer;
   dt1, dt2, lat, lon, fname:string;
 begin
+{
   Busy(True);
 
   dt:=3600*24;  // seconds per day
@@ -952,6 +953,10 @@ begin
   FileLayer.Active:=True;
 
   Busy(False);
+}
+
+  frmLagrangian.Show;
+
 end;
 
 

@@ -67,7 +67,6 @@ var
 
 
 procedure ClearMapFileLayer;
-function IsFileInUse(FileName: TFileName): Boolean;
 
 implementation
 
@@ -80,23 +79,7 @@ begin
   frmCruise.aiBusy.Visible:=Enable;
 end;
 
-function IsFileInUse(FileName: TFileName): Boolean;
-var
-  HFileRes: HFILE;
-begin
-  Result := False;
-  if not FileExists(FileName) then Exit;
-  HFileRes := CreateFile(PChar(FileName),
-                         GENERIC_READ or GENERIC_WRITE,
-                         0,
-                         nil,
-                         OPEN_EXISTING,
-                         FILE_ATTRIBUTE_NORMAL,
-                         0);
-  Result := (HFileRes = INVALID_HANDLE_VALUE);
-  if not Result then
-    CloseHandle(HFileRes);
-end;
+
 
 procedure ClearMapFileLayer;
 var

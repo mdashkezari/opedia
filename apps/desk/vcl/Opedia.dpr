@@ -9,7 +9,8 @@ uses
   untFilter in 'untFilter.pas' {frmFilter},
   untSignIn in 'untSignIn.pas' {frmSignIn},
   untChangePassword in 'untChangePassword.pas' {frmChangePassword},
-  untRegistration in 'untRegistration.pas' {frmRegistration};
+  untRegistration in 'untRegistration.pas' {frmRegistration},
+  untLagrangian in 'untLagrangian.pas' {frmLagrangian};
 
 {$R *.res}
 
@@ -23,5 +24,6 @@ begin
   Application.CreateForm(TfrmSignIn, frmSignIn);
   Application.CreateForm(TfrmChangePassword, frmChangePassword);
   Application.CreateForm(TfrmRegistration, frmRegistration);
+  Application.CreateForm(TfrmLagrangian, frmLagrangian);
   Application.Run;
 end.
