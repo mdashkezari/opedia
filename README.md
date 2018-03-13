@@ -25,5 +25,6 @@ Make sure python is added to the system path.  Anaconda distribution covers the 
 	```
 	$ conda update --all
 	$ conda install pyodbc
+	$ conda install dropbox
 	$ conda install -c conda-forge geopandas
 	```

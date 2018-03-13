@@ -150,6 +150,7 @@ type
     procedure edtLon1Exit(Sender: TObject);
     procedure barSectionMapClick(Sender: TObject);
     procedure BarTracerTrajectoryClick(Sender: TObject);
+    procedure dxBarFilterClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -179,7 +180,8 @@ function getExportDataFlag:integer;
 implementation
 
 uses
-  untCommonDB, untBusy, untCruise, untFilter, untSignIn, untLagrangian;
+  untCommonDB, untBusy, untCruise, untCatalog, untFilter,
+  untSignIn, untLagrangian;
 
 
 Procedure WriteCoreDump(CoredumpBody:String);
@@ -564,7 +566,7 @@ end;
 
 procedure TfrmMain.barFilterClick(Sender: TObject);
 begin
-  frmFilter.Show;
+  frmCatalog.Show;
 end;
 
 procedure TfrmMain.barGMClick(Sender: TObject);
@@ -1046,6 +1048,11 @@ begin
   Busy(False);
 end;
 
+
+procedure TfrmMain.dxBarFilterClick(Sender: TObject);
+begin
+  frmFilter.Show;
+end;
 
 procedure TfrmMain.cbDepthStartPropertiesChange(Sender: TObject);
 begin

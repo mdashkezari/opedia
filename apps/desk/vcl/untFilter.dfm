@@ -4,7 +4,7 @@ object frmFilter: TfrmFilter
   AlphaBlendValue = 230
   BorderStyle = bsSizeToolWin
   Caption = 'Filter'
-  ClientHeight = 966
+  ClientHeight = 338
   ClientWidth = 1344
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -14,18 +14,18 @@ object frmFilter: TfrmFilter
   Font.Style = []
   OldCreateOrder = False
   Position = poOwnerFormCenter
-  OnClose = FormClose
   OnKeyPress = FormKeyPress
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
   object cxScrollBox1: TcxScrollBox
     Left = 0
-    Top = 806
+    Top = 159
     Width = 1344
     Height = 160
-    Align = alBottom
+    Align = alTop
     TabOrder = 0
+    ExplicitTop = 806
     object gbSLA: TcxGroupBox
       Left = 0
       Top = 0
@@ -1319,23 +1319,28 @@ object frmFilter: TfrmFilter
   end
   object cxSplitter1: TcxSplitter
     Left = 0
-    Top = 629
+    Top = 320
     Width = 1344
     Height = 9
     AlignSplitter = salBottom
+    Visible = False
+    ExplicitTop = 629
   end
   object cxScrollBox2: TcxScrollBox
     Left = 0
-    Top = 0
+    Top = 319
     Width = 1063
-    Height = 629
+    Height = 1
     Align = alClient
     TabOrder = 2
+    Visible = False
+    ExplicitTop = 0
+    ExplicitHeight = 629
     object grdVars: TcxGrid
       Left = 0
       Top = 0
-      Width = 1061
-      Height = 627
+      Width = 1044
+      Height = 0
       Align = alClient
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
@@ -1344,6 +1349,8 @@ object frmFilter: TfrmFilter
       Font.Style = []
       ParentFont = False
       TabOrder = 0
+      ExplicitWidth = 1061
+      ExplicitHeight = 627
       object grdVarsDBTableView1: TcxGridDBTableView
         Navigator.Buttons.CustomButtons = <>
         Navigator.Buttons.Prior.Visible = True
@@ -1432,11 +1439,14 @@ object frmFilter: TfrmFilter
   end
   object cxScrollBox3: TcxScrollBox
     Left = 1071
-    Top = 0
+    Top = 319
     Width = 273
-    Height = 629
+    Height = 1
     Align = alRight
     TabOrder = 3
+    Visible = False
+    ExplicitTop = 0
+    ExplicitHeight = 629
     object dbmemDataset_Description: TcxDBMemo
       Left = 6
       Top = 229
@@ -1654,18 +1664,22 @@ object frmFilter: TfrmFilter
   end
   object cxSplitter2: TcxSplitter
     Left = 1063
-    Top = 0
+    Top = 319
     Width = 8
-    Height = 629
+    Height = 1
     AlignSplitter = salRight
+    Visible = False
+    ExplicitTop = 0
+    ExplicitHeight = 629
   end
   object cxScrollBox5: TcxScrollBox
     Left = 0
-    Top = 647
+    Top = 0
     Width = 1344
     Height = 159
-    Align = alBottom
+    Align = alTop
     TabOrder = 5
+    ExplicitTop = 647
     object cxScrollBox4: TcxScrollBox
       Left = 0
       Top = 0
@@ -2307,10 +2321,12 @@ object frmFilter: TfrmFilter
   end
   object cxSplitter4: TcxSplitter
     Left = 0
-    Top = 638
+    Top = 329
     Width = 1344
     Height = 9
     AlignSplitter = salBottom
+    Visible = False
+    ExplicitTop = 638
   end
   object qryVars: TADOQuery
     Connection = frmMain.OpediaDB

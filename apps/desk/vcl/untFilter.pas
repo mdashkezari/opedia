@@ -213,7 +213,6 @@ type
     procedure ledtVarsValueDelete(Sender: TObject; Value: TAdvListValue;
       var Allow: Boolean);
     procedure FormShow(Sender: TObject);
-    procedure FormClose(Sender: TObject; var Action: TCloseAction);
   private
     { Private declarations }
   public
@@ -453,11 +452,6 @@ begin
   memReferences.Lines:=DatasetReferences(StrToInt(dbedtDataset_ID.Text));
 end;
 
-procedure TfrmFilter.FormClose(Sender: TObject; var Action: TCloseAction);
-begin
-  CloseDB;
-end;
-
 procedure TfrmFilter.FormKeyPress(Sender: TObject; var Key: Char);
 begin
   if (Key = #27) then
@@ -466,8 +460,7 @@ end;
 
 procedure TfrmFilter.FormShow(Sender: TObject);
 begin
-  OpenDB;
-  qryVars.Active:=True;
+  //qryVars.Active:=True;
 end;
 
 procedure TfrmFilter.grdVarsDBTableView1CellDblClick(

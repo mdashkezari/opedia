@@ -70,8 +70,6 @@ object frmMain: TfrmMain
     ParentColor = False
     PopupMenu = dxRibbonRadialMenu1
     TabOrder = 1
-    ExplicitLeft = 1075
-    ExplicitTop = -5
     object cxGroupBox1: TcxGroupBox
       Left = 9
       Top = 32
@@ -1091,6 +1089,7 @@ object frmMain: TfrmMain
       Hint = 'Filter'
       Visible = ivAlways
       ImageIndex = 21
+      OnClick = dxBarFilterClick
     end
     object BarTracerTrajectory: TdxBarButton
       Caption = 'Tracer Trajectory'
@@ -4893,6 +4892,7 @@ object frmMain: TfrmMain
     Top = 24
   end
   object OpediaDB: TADOConnection
+    Connected = True
     ConnectionString = 
       'Provider=SQLOLEDB.1;Password=Jazireie08;Persist Security Info=Tr' +
       'ue;User ID=sa;Initial Catalog=Opedia;Data Source=128.208.239.15,' +
