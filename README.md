@@ -6,7 +6,7 @@ Opedia is a database service to integrate, visualize, and analyze ocean datasets
 * Make sure python is in system path.
 * Additional python modules:
 	- pyodbc
-	- bokeh
+	- dropbox
 	- geopandas
 
 # Installation
@@ -19,7 +19,7 @@ Opedia is a database service to integrate, visualize, and analyze ocean datasets
 	$ brew install unixodbc
 	$ brew install freetds --with-unixodbc
 	```
-2. **Install [Anaconda Distribution Pyhton 2.7](https://www.anaconda.com/download/).**
+2. **Install [Anaconda Distribution Python 2.7](https://www.anaconda.com/download/).**
 Make sure python is added to the system path.  Anaconda distribution covers the majority of python modules used by Opedia. There are a few more required modules; run the following commands to install them.
 
 	```

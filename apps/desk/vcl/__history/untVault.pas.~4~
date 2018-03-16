@@ -1,0 +1,211 @@
+unit untVault;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ComCtrls, cxGraphics, cxControls,
+  cxLookAndFeels, cxLookAndFeelPainters, dxSkinsCore, dxSkinBlack, dxSkinBlue,
+  dxSkinBlueprint, dxSkinCaramel, dxSkinCoffee, dxSkinDarkRoom, dxSkinDarkSide,
+  dxSkinDevExpressDarkStyle, dxSkinDevExpressStyle, dxSkinFoggy,
+  dxSkinGlassOceans, dxSkinHighContrast, dxSkiniMaginary, dxSkinLilian,
+  dxSkinLiquidSky, dxSkinLondonLiquidSky, dxSkinMcSkin, dxSkinMetropolis,
+  dxSkinMetropolisDark, dxSkinMoneyTwins, dxSkinOffice2007Black,
+  dxSkinOffice2007Blue, dxSkinOffice2007Green, dxSkinOffice2007Pink,
+  dxSkinOffice2007Silver, dxSkinOffice2010Black, dxSkinOffice2010Blue,
+  dxSkinOffice2010Silver, dxSkinOffice2013DarkGray, dxSkinOffice2013LightGray,
+  dxSkinOffice2013White, dxSkinOffice2016Colorful, dxSkinOffice2016Dark,
+  dxSkinPumpkin, dxSkinSeven, dxSkinSevenClassic, dxSkinSharp, dxSkinSharpPlus,
+  dxSkinSilver, dxSkinSpringTime, dxSkinStardust, dxSkinSummer2008,
+  dxSkinTheAsphaltWorld, dxSkinsDefaultPainters, dxSkinValentine,
+  dxSkinVisualStudio2013Blue, dxSkinVisualStudio2013Dark,
+  dxSkinVisualStudio2013Light, dxSkinVS2010, dxSkinWhiteprint,
+  dxSkinXmas2008Blue, cxContainer, cxEdit, Vcl.Menus, Vcl.StdCtrls, cxButtons,
+  cxTextEdit, cxListView, System.ImageList, Vcl.ImgList, ShellApi, StrUtils,
+  dxActivityIndicator;
+
+type
+  TfrmVault = class(TForm)
+    ilVault: TcxImageList;
+    lvVault: TcxListView;
+    edtAddress: TcxTextEdit;
+    btnUpload: TcxButton;
+    OpenDialog1: TOpenDialog;
+    aiBusy: TdxActivityIndicator;
+    procedure lvVaultDblClick(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmVault: TfrmVault;
+
+implementation
+
+uses
+  untMain;
+
+procedure vaultBusy(Enable:Boolean);
+begin
+  Application.ProcessMessages;
+  frmVault.aiBusy.Active:=Enable;
+  frmVault.aiBusy.Visible:=Enable;
+end;
+
+function folderContents(path:string):TStringList;
+var
+  SR: TSearchRec;
+begin
+  Result:=TStringList.Create;
+  try
+    if FindFirst(Path + '*.*', faAnyFile, SR) = 0 then
+    begin
+      repeat
+          Result.Add(SR.Name);
+          Application.ProcessMessages;
+      until FindNext(SR) <> 0;
+      FindClose(SR);
+    end;
+  finally
+  end;
+end;
+
+
+function itemImageIndex(caption:string):integer;
+begin
+  caption:=Trim(caption);
+  Result:=-1;
+  if (caption='.') or (caption='..') then
+    Result:=-1
+  else if ContainsText(caption,'.') then
+    Result:=2
+  else
+    Result:=1;
+end;
+
+
+function goUp(path:string):string;
+var
+  i:integer;
+  stop:boolean;
+begin
+  if path='/' then
+  begin
+    path:='';
+    Exit
+  end;
+  i:=Length(path);
+  stop:=False;
+  repeat
+    dec(i);
+    if path[i]='/' then
+      stop:=True;
+  until stop;
+  delete(path, i+1, Length(path)-i);
+  Result:=path;
+end;
+
+procedure goHome;
+var
+  it:TListItem;
+begin
+  frmVault.lvVault.Clear;
+  it:=frmVault.lvVault.Items.Add();
+  it.Caption:='Opedia Vault';
+  it.ImageIndex:=0;
+  Application.ProcessMessages;
+end;
+
+{$R *.dfm}
+
+procedure TfrmVault.lvVaultDblClick(Sender: TObject);
+var
+  F: TextFile;
+  base, path, str, address:string;
+  it:TListItem;
+  contents:TStringList;
+  i:integer;
+begin
+  try
+    base:='./.struc';
+    if lvVault.Selected.Caption = 'Opedia Vault' then
+      edtAddress.Text:='/'
+    else if lvVault.Selected.Caption = '.' then
+      Exit
+    else if lvVault.Selected.Caption = '..' then
+      edtAddress.Text := goUp(edtAddress.Text)
+    else if ContainsText(lvVault.Selected.Caption, '.') then
+      Exit
+    else
+      edtAddress.Text:=edtAddress.Text+lvVault.Selected.Caption+'/';
+
+    if edtAddress.Text='' then
+    begin
+      goHome;
+      Exit
+    end;
+
+    address:=base+edtAddress.Text;
+    try
+      vaultBusy(True);
+      if not DirectoryExists(base) then
+      begin
+        makeVaultStruc;
+        repeat
+          Application.ProcessMessages;
+        until DirectoryExists(base);
+      end;
+
+      contents:=folderContents(address);
+
+      lvVault.Clear;
+      for I := 0 to contents.Count-1 do
+      begin
+        it:=lvVault.Items.Add();
+        it.Caption:=contents.Strings[i];
+        it.ImageIndex:=itemImageIndex(contents.Strings[i]);
+        Application.ProcessMessages;
+      end;
+    finally
+      vaultBusy(False);
+    end;
+  except
+    Application.ProcessMessages;
+  end;
+
+{
+  if lvVault.Selected.Caption = 'Opedia Vault' then
+    edtAddress.Text:='//'
+  else
+    edtAddress.Text:=edtAddress.Text+lvVault.Selected.Caption+'/';
+  ShellExecute(0, nil, 'python', Pchar(' ./script/python/vault.py '+edtAddress.Text), nil, SW_HIDE);
+
+
+  path:='./.struc.txt';
+  DeleteFile(path);
+  sleep(5000);
+  repeat
+    Application.ProcessMessages;
+  until FileExists(path);
+
+
+
+  lvVault.Clear;
+  AssignFile(F, path);
+  Reset(F);
+  while not Eof(F) do
+  begin
+    ReadLn(F, str);
+    it:=lvVault.Items.Add();
+    it.Caption:=str;
+    it.ImageIndex:=1;
+  end;
+  CloseFile(F);
+  DeleteFile(path);
+
+}
+end;
+
+end.

@@ -37,7 +37,7 @@ uses
   cxGrid, dxZoomTrackBar, dxDBZoomTrackBar, AdvListEditor, cxGeometry, ShellAPI, 
   StrUtils, DateUtils, Vcl.Samples.Gauges, cxProgressBar,
   cxGroupBox, dxCustomMapItemLayer, dxMapItemLayer, dxMapItemFileLayer,
-  dxActivityIndicator;
+  dxActivityIndicator, cxListView;
 
 type
   TfrmMain = class(TForm)
@@ -113,6 +113,8 @@ type
     dxBarSubDataSets: TdxBarSubItem;
     dxBarFilter: TdxBarButton;
     BarTracerTrajectory: TdxBarButton;
+    barImport: TdxBarButton;
+    barSubData: TdxBarSubItem;
     procedure rtbLatPropertiesChange(Sender: TObject);
     procedure rtbLonPropertiesChange(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -151,6 +153,7 @@ type
     procedure barSectionMapClick(Sender: TObject);
     procedure BarTracerTrajectoryClick(Sender: TObject);
     procedure dxBarFilterClick(Sender: TObject);
+    procedure barImportClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -176,12 +179,13 @@ procedure Busy(Enable:Boolean);
 procedure OpenDB();
 procedure CloseDB();
 function getExportDataFlag:integer;
+procedure makeVaultStruc();
 
 implementation
 
 uses
   untCommonDB, untBusy, untCruise, untCatalog, untFilter,
-  untSignIn, untLagrangian;
+  untSignIn, untLagrangian, untVault;
 
 
 Procedure WriteCoreDump(CoredumpBody:String);
@@ -491,6 +495,11 @@ begin
     Result:=True;
 end;
 
+procedure makeVaultStruc();
+begin
+  ShellExecute(0, nil, 'python', Pchar(' ./script/python/vault.py '), nil, SW_HIDE);
+end;
+
 procedure Initialize;
 begin
   Root := ExtractFileDir(Application.ExeName)+'\';
@@ -502,6 +511,7 @@ begin
   end;
 
   makeDirs;
+  makeVaultStruc;
   //SetRangeTrackbar_Lat;
   //SetRangeTrackbar_Lon;
   LoadVars;      // loading Opedia variables from DB
@@ -711,6 +721,11 @@ begin
   until FileExists('embed/'+fname+'.html');
 
   Busy(False);
+end;
+
+procedure TfrmMain.barImportClick(Sender: TObject);
+begin
+  frmVault.Show;
 end;
 
 procedure TfrmMain.barMonthlyClick(Sender: TObject);

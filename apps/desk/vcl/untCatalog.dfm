@@ -3,7 +3,7 @@ object frmCatalog: TfrmCatalog
   Top = 0
   BorderStyle = bsToolWindow
   Caption = 'Catalog'
-  ClientHeight = 842
+  ClientHeight = 634
   ClientWidth = 1328
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -21,7 +21,7 @@ object frmCatalog: TfrmCatalog
     Left = 0
     Top = 0
     Width = 1047
-    Height = 842
+    Height = 634
     Align = alClient
     TabOrder = 0
     ExplicitWidth = 1063
@@ -30,7 +30,7 @@ object frmCatalog: TfrmCatalog
       Left = 0
       Top = 0
       Width = 1045
-      Height = 840
+      Height = 632
       Align = alClient
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
@@ -60,6 +60,7 @@ object frmCatalog: TfrmCatalog
         FindPanel.ApplyInputDelay = 300
         FindPanel.DisplayMode = fpdmAlways
         FindPanel.InfoText = 'Enter any hint to look for variables...'
+        OnCellDblClick = grdVarsDBTableView1CellDblClick
         DataController.DataSource = dsVars
         DataController.Summary.DefaultGroupSummaryItems = <>
         DataController.Summary.FooterSummaryItems = <>
@@ -130,9 +131,10 @@ object frmCatalog: TfrmCatalog
     Left = 1055
     Top = 0
     Width = 273
-    Height = 842
+    Height = 634
     Align = alRight
     TabOrder = 1
+    ExplicitHeight = 842
     object dbmemDataset_Description: TcxDBMemo
       Left = 6
       Top = 229
@@ -352,7 +354,7 @@ object frmCatalog: TfrmCatalog
     Left = 1047
     Top = 0
     Width = 8
-    Height = 842
+    Height = 634
     AlignSplitter = salRight
     ExplicitLeft = 1063
     ExplicitHeight = 629

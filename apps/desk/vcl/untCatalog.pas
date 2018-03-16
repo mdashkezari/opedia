@@ -24,7 +24,7 @@ uses
   cxData, cxDataStorage, cxEdit, cxNavigator, Data.DB, cxDBData, cxContainer,
   Data.Win.ADODB, cxSplitter, cxLabel, cxMemo, cxDBEdit, cxTextEdit,
   cxGridLevel, cxGridCustomTableView, cxGridTableView, cxGridDBTableView,
-  cxClasses, cxGridCustomView, cxGrid, cxScrollBox;
+  cxClasses, cxGridCustomView, cxGrid, cxScrollBox, AdvListEditor;
 
 type
   TfrmCatalog = class(TForm)
@@ -65,6 +65,9 @@ type
     procedure FormKeyPress(Sender: TObject; var Key: Char);
     procedure FormShow(Sender: TObject);
     procedure dbedtDataset_IDPropertiesChange(Sender: TObject);
+    procedure grdVarsDBTableView1CellDblClick(Sender: TcxCustomGridTableView;
+      ACellViewInfo: TcxGridTableDataCellViewInfo; AButton: TMouseButton;
+      AShift: TShiftState; var AHandled: Boolean);
   private
     { Private declarations }
   public
@@ -79,7 +82,22 @@ var
 implementation
 
 uses
-  untCommonDB;
+  untMain, untCommonDB;
+
+
+procedure AddVariable(ID:integer; shortName, longName, keywords:string);
+var
+  ind:integer;
+  lv:TAdvListValue;
+begin
+  with frmMain do
+  begin
+    lv:=ledtVars.Values.Add;
+    lv.DisplayText:=shortName;
+    lv.Value:=longName + ' ' + keywords;
+    lv.Tag:=ID;
+  end;
+end;
 
 {$R *.dfm}
 
@@ -97,6 +115,17 @@ end;
 procedure TfrmCatalog.FormShow(Sender: TObject);
 begin
   qryVars.Active:=True;
+end;
+
+procedure TfrmCatalog.grdVarsDBTableView1CellDblClick(
+  Sender: TcxCustomGridTableView; ACellViewInfo: TcxGridTableDataCellViewInfo;
+  AButton: TMouseButton; AShift: TShiftState; var AHandled: Boolean);
+var
+  variable: TVar;
+begin
+  variable:=GetVariable(StrToInt(frmCatalog.dbedtVarID.Text));
+  AddVariable(variable.ID, variable.Short_Name, variable.Long_Name, variable.Keywords);
+  //ShowFilterPanel(variable.Short_Name, variable.Keywords);
 end;
 
 end.

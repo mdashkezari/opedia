@@ -130,7 +130,6 @@ nrt_armor3d_raw, rep_armor3d_raw, doc_armor3d_raw, code_armor3d_raw = leafStruc(
 nrt_armor3d_prefix = 'nrt_armor3d_'
 rep_armor3d_prefix = 'rep_armor3d_'
 
-
 col_raw = satellite_raw + 'col/'
 nrt_col_raw, rep_col_raw, doc_col_raw, code_col_raw = leafStruc(col_raw)
 nrt_col_RRS412_prefix = 'nrt_col_RRS412_'

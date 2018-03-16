@@ -761,10 +761,9 @@ object frmMain: TfrmMain
       OnClick = barFilterClick
     end
     object barExportData: TdxBarSubItem
-      Caption = 'Export'
+      Caption = 'Export Format'
       Category = 0
       Visible = ivAlways
-      ImageIndex = 8
       ItemLinks = <
         item
           Visible = True
@@ -1098,6 +1097,40 @@ object frmMain: TfrmMain
       Visible = ivAlways
       OnClick = BarTracerTrajectoryClick
     end
+    object barImport: TdxBarButton
+      Caption = 'Opedia Vault'
+      Category = 0
+      Hint = 'Opedia Vault'
+      Visible = ivAlways
+      OnClick = barImportClick
+    end
+    object barSubData: TdxBarSubItem
+      Caption = 'Data'
+      Category = 0
+      Visible = ivAlways
+      ImageIndex = 8
+      ItemLinks = <
+        item
+          Visible = True
+          ItemName = 'barExportData'
+        end
+        item
+          Visible = True
+          ItemName = 'barBlank2'
+        end
+        item
+          Visible = True
+          ItemName = 'barBlank2'
+        end
+        item
+          Visible = True
+          ItemName = 'barBlank2'
+        end
+        item
+          Visible = True
+          ItemName = 'barImport'
+        end>
+    end
   end
   object dxRibbonRadialMenu1: TdxRibbonRadialMenu
     Glyph.Data = {
@@ -1137,7 +1170,7 @@ object frmMain: TfrmMain
       end
       item
         Visible = True
-        ItemName = 'barExportData'
+        ItemName = 'barSubData'
       end
       item
         Visible = True
