@@ -1068,7 +1068,7 @@ object frmMain: TfrmMain
         end>
     end
     object dxBarSubDataSets: TdxBarSubItem
-      Caption = 'DataSets'
+      Caption = 'Catalog'
       Category = 0
       Visible = ivAlways
       ImageIndex = 19
@@ -1105,7 +1105,7 @@ object frmMain: TfrmMain
       OnClick = barImportClick
     end
     object barSubData: TdxBarSubItem
-      Caption = 'Data'
+      Caption = 'Import Export'
       Category = 0
       Visible = ivAlways
       ImageIndex = 8

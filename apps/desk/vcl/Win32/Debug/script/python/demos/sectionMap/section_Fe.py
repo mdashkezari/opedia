@@ -1,5 +1,4 @@
 
-
 ################### parameters to plot section map for a single variable ###################
 script = ' ../../plotSection.py'     # path to plotSection.py script
 tables = ' tblPisces_NRT'
