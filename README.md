@@ -1,5 +1,5 @@
 # Opedia
-Opedia is a database service to integrate, visualize, and analyze ocean datasets.
+Opedia is an open source database service to integrate, visualize, and analyze ocean datasets such as satellite data, in-situ observations, and model outputs. The project is supported by [Simons Foundation](https://www.simonsfoundation.org/).
 
 # System Requirements
 * [Anaconda Distribution Pyhton 2.7](https://www.anaconda.com/download/)
