@@ -3,8 +3,7 @@ This document describes the common file structure to store the data/meta-data pr
 
 
 ### Dataset Filename Convention
-Dataset filename: &lt;dataset_short_name&gt;**_**&lt;dataset_release_data&gt;**_v**&lt;dataset_version&gt;**.xlxs**
-Example: seaflow_2018-05-25_v1.0.xlxs
+Dataset filename: &lt;dataset_short_name&gt;**_**&lt;dataset_release_data&gt;**_v**&lt;dataset_version&gt;**.xlxs**<br>Example: seaflow_2018-05-25_v1.0.xlxs
 
 * &lt;dataset_short_name&gt;: short name of the dataset
 	- length: less than 50 characters
