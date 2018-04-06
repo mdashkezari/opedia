@@ -2,7 +2,7 @@
 This document describes the common file structure to store the data/meta-data produced by the labs funded by the Simons Foundation, Oceanography program. The file format is excel spreadsheet. Data is stored in the first sheet and the sheet title is "data". The second sheet stores the dataset meta-data and is called "dataset_meta_data". Meta-data associated with the variables in the dataset are kept in the third sheed, "vars_meta_data". An example template can be found [here](http://opedia.io/template). 
 
 
-### Dataset Filename Convention
+## Dataset Filename Convention
 Dataset filename: &lt;dataset_short_name&gt;**_**&lt;dataset_release_data&gt;**_v**&lt;dataset_version&gt;**.xlxs**<br>Example: seaflow_2018-05-25_v1.0.xlxs
 
 * &lt;dataset_short_name&gt;: short name of the dataset
