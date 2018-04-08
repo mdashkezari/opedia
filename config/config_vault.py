@@ -69,6 +69,14 @@ nrt_socat_raw, rep_socat_raw, doc_socat_raw, code_socat_raw = leafStruc(socat_ra
 seaflow_raw = cruise_raw + 'seaflow/'
 makedir(seaflow_raw)
 nrt_seaflow_raw, rep_seaflow_raw, doc_seaflow_raw, code_seaflow_raw = leafStruc(seaflow_raw)
+####  obs/in-situ/cruise/lineage  #####
+lineage_raw = cruise_raw + 'lineage/'
+makedir(lineage_raw)
+nrt_lineage_raw, rep_lineage_raw, doc_lineage_raw, code_lineage_raw = leafStruc(lineage_raw)
+####  obs/in-situ/cruise/tax16s  #####
+tax16s_raw = cruise_raw + 'tax16s/'
+makedir(tax16s_raw)
+nrt_tax16s_raw, rep_tax16s_raw, doc_tax16s_raw, code_tax16s_raw = leafStruc(tax16s_raw)
 
 
 ########  obs/remote/satellite  ########
