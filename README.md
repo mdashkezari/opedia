@@ -19,7 +19,7 @@ Opedia is an open source database service to integrate, visualize, and analyze o
 	$ brew install unixodbc
 	$ brew install freetds --with-unixodbc
 	```
-2. **Install [Anaconda Distribution Python 2.7](https://www.anaconda.com/download/).**
+2. **Install [Anaconda Distribution Python 2.7](https://www.anaconda.com/download/).**<br>
 Make sure python is added to the system path.  Anaconda distribution covers the majority of python modules used by Opedia. There are a few more required modules; run the following commands to install them.
 
 	```
