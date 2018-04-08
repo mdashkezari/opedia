@@ -10,8 +10,8 @@ Opedia is an open source database service to integrate, visualize, and analyze o
 	- geopandas
 
 # Installation
-1.  **Set up database drivers (only required on macOS).**
-	 install [homebrew](https://brew.sh/); a package manager for macOS.
+1.  **Set up database drivers (only required on macOS).**<br>
+	 install [homebrew](https://brew.sh/); a package manager for macOS.<br>
 	 ODBC driver provides the connection to the Opedia database.
 
 	```
