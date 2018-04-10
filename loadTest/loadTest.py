@@ -39,7 +39,7 @@ def plot(field, dt, lat, lon, data):
         fname = field + '_' + dt
         plt.tight_layout()
         makedir('./pics')
-        plt.savefig('./pics/%s.png' % fname, dpi=300, transparent=True)
+        plt.savefig('./pics/%s_%4d.png' % (fname, random.randint(1,101)), dpi=300, transparent=True)
         #plt.show(block=False)
     except Exception as e:
         print('Error in plot: ' + str(e))    
@@ -62,7 +62,7 @@ def call(table, field, dt1, dt2, lat1, lat2, lon1, lon2, extV, extVV, savePlot, 
     data = df[field].values.reshape(shape)
     if saveData:
         makedir('./data')
-        df.to_csv('./data/'+field+'_'+dt1+'.csv', index=False)    # export
+        df.to_csv('./data/%s_%s_%4d.csv' % (field, dt1, random.randint(1,101)), index=False)    # export
     if savePlot:    
         plot(field, dt1, lat, lon, data)     # plot    
     return elapsed
