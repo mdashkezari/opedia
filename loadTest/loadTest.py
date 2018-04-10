@@ -1,3 +1,4 @@
+import os
 import db
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -10,6 +11,10 @@ from multiprocessing import Process, Value, Array
 import atexit
 
 
+def makedir(directory):
+    	if not os.path.exists(directory):
+		os.makedirs(directory)
+	return
 
 def dateToDayn(dt):
     	dayn = int(format(dt, '%j'))
@@ -33,6 +38,7 @@ def plot(field, dt, lat, lon, data):
         #plt.colorbar()
         fname = field + '_' + dt
         plt.tight_layout()
+        makedir('./pics')
         plt.savefig('./pics/%s.png' % fname, dpi=300, transparent=True)
         #plt.show(block=False)
     except Exception as e:
@@ -55,6 +61,7 @@ def call(table, field, dt1, dt2, lat1, lat2, lon1, lon2, extV, extVV, savePlot, 
     shape = (len(lat), len(lon))
     data = df[field].values.reshape(shape)
     if saveData:
+        makedir('./data')
         df.to_csv('./data/'+field+'_'+dt1+'.csv', index=False)    # export
     if savePlot:    
         plot(field, dt1, lat, lon, data)     # plot    
@@ -113,7 +120,7 @@ def submitJobs(jobs):
 
 
 #########################################################################
-jobs = 100            # number of concurrent batch queries (each batch involves 4 regional queries)   
+jobs = 50            # number of concurrent batch queries (each batch involves 4 regional queries)   
 savePlot = False      # True to save plot on disk; False otherwise
 saveData = False      # True to save data on disk; False otherwise
 if __name__ == '__main__':          
