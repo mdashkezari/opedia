@@ -115,6 +115,9 @@ type
     BarTracerTrajectory: TdxBarButton;
     barImport: TdxBarButton;
     barSubData: TdxBarSubItem;
+    Edit1: TEdit;
+    barEddy: TdxBarButton;
+    barFTLE: TdxBarButton;
     procedure rtbLatPropertiesChange(Sender: TObject);
     procedure rtbLonPropertiesChange(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -154,6 +157,8 @@ type
     procedure BarTracerTrajectoryClick(Sender: TObject);
     procedure dxBarFilterClick(Sender: TObject);
     procedure barImportClick(Sender: TObject);
+    procedure barEddyClick(Sender: TObject);
+    procedure barFTLEClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -185,7 +190,7 @@ implementation
 
 uses
   untCommonDB, untBusy, untCruise, untCatalog, untFilter,
-  untSignIn, untLagrangian, untVault;
+  untSignIn, untLagrangian, untVault, untEddy, untFTLE;
 
 
 Procedure WriteCoreDump(CoredumpBody:String);
@@ -574,9 +579,19 @@ begin
   Busy(False);
 end;
 
+procedure TfrmMain.barEddyClick(Sender: TObject);
+begin
+  frmEddy.Show;
+end;
+
 procedure TfrmMain.barFilterClick(Sender: TObject);
 begin
   frmCatalog.Show;
+end;
+
+procedure TfrmMain.barFTLEClick(Sender: TObject);
+begin
+  frmFTLE.show();
 end;
 
 procedure TfrmMain.barGMClick(Sender: TObject);
@@ -1051,7 +1066,7 @@ begin
   fname:='TS';
   exportflag:=inttostr(getExportDataFlag);
   ShellExecute(0, nil, 'python', Pchar(' ./script/python/plotTS.py '+tables+' '+vars+' '+dt1+' '+dt2+' '+edtLat1.Text+' '+edtLat2.Text+' '+edtLon1.Text+' '+edtLon2.Text+' '+fname+' '+exportflag+' '+extVars+' '+extVarVals+' '+extVars2+' '+extVarVals2), nil, SW_HIDE);
-  //edit1.text:='python' + Pchar(' ./script/python/plotTS.py '+tables+' '+vars+' '+dt1+' '+dt2+' '+edtLat1.Text+' '+edtLat2.Text+' '+edtLon1.Text+' '+edtLon2.Text+' '+fname+' '+exportflag+' '+extVars+' '+extVarVals+' '+extVars2+' '+extVarVals2);
+  edit1.text:='python' + Pchar(' ./script/python/plotTS.py '+tables+' '+vars+' '+dt1+' '+dt2+' '+edtLat1.Text+' '+edtLat2.Text+' '+edtLon1.Text+' '+edtLon2.Text+' '+fname+' '+exportflag+' '+extVars+' '+extVarVals+' '+extVars2+' '+extVarVals2);
 
 
   DeleteFile('embed/'+fname+'.html');

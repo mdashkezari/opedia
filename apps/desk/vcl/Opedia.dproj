@@ -166,6 +166,14 @@
             <Form>frmVault</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="untEddy.pas">
+            <Form>frmEddy</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="untFTLE.pas">
+            <Form>frmFTLE</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

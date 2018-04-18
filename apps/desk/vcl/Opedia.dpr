@@ -12,7 +12,9 @@ uses
   untRegistration in 'untRegistration.pas' {frmRegistration},
   untLagrangian in 'untLagrangian.pas' {frmLagrangian},
   untCatalog in 'untCatalog.pas' {frmCatalog},
-  untVault in 'untVault.pas' {frmVault};
+  untVault in 'untVault.pas' {frmVault},
+  untEddy in 'untEddy.pas' {frmEddy},
+  untFTLE in 'untFTLE.pas' {frmFTLE};
 
 {$R *.res}
 
@@ -29,5 +31,7 @@ begin
   Application.CreateForm(TfrmLagrangian, frmLagrangian);
   Application.CreateForm(TfrmCatalog, frmCatalog);
   Application.CreateForm(TfrmVault, frmVault);
+  Application.CreateForm(TfrmEddy, frmEddy);
+  Application.CreateForm(TfrmFTLE, frmFTLE);
   Application.Run;
 end.

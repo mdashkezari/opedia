@@ -64,6 +64,7 @@ def plotDist(tables, variables, startDate, endDate, lat1, lat2, lon1, lon2, extV
         y = y[variables[i]]
         if exportDataFlag:
             exportData(y, tables[i], variables[i], startDate, endDate, lat1, lat2, lon1, lon2, extV[i], extVV[i], extV2[i], extVV2[i])
+        y = y[~np.isnan(y)]     # remove nans
         hist, edges = np.histogram(y, density=True, bins=50)
         p1 = figure(tools=TOOLS, toolbar_location="above", plot_width=w, plot_height=h)
         p1.yaxis.axis_label = 'Density'

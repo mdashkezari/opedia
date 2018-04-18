@@ -18,8 +18,8 @@ CREATE TABLE [dbo].[tblChelton](
 	[eddy_radius] [float] NOT NULL,
 	[eddy_A] [float] NOT NULL,
 	[eddy_U] [float] NOT NULL,
-	[eddy_lat] [float] NOT NULL,
-	[eddy_lon] [float] NOT NULL,
+	[lat] [float] NOT NULL,
+	[lon] [float] NOT NULL,
 	[phase_integ_fixed] [float] NULL,
 	[phase_integ_full] [float] NULL,
 	[phase_norm_fixed] [float] NULL,
@@ -203,19 +203,32 @@ CREATE CLUSTERED INDEX [IX_tblChelton_year_month_others] ON [dbo].[tblChelton]
 	[month] ASC,
 	[day] ASC,
 	[eddy_polarity] ASC,
-	[eddy_lat] ASC,
-	[eddy_lon] ASC
+	[lat] ASC,
+	[lon] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) 
 ON [FG1]
 GO
+
+
+CREATE UNIQUE NONCLUSTERED INDEX [IX_tblChelton_time_lat_lon] ON [dbo].[tblChelton]
+(
+	[time] ASC,
+	[lat] ASC,
+	[lon] ASC
+)
+INCLUDE ([eddy_polarity]) 
+WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON)
+ON [FG1]
+GO
+
 
 
 CREATE NONCLUSTERED INDEX [IX_tablChelton_polarity_radius_lat_lon] ON [dbo].[tblChelton]
 (
 	[eddy_polarity] ASC,
 	[eddy_radius] ASC,
-	[eddy_lat] ASC,
-	[eddy_lon] ASC
+	[lat] ASC,
+	[lon] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) 
 ON [FG1]
 GO

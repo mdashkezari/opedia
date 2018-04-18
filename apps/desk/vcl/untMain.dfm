@@ -59,6 +59,14 @@ object frmMain: TfrmMain
       Transparent = True
       Visible = False
     end
+    object Edit1: TEdit
+      Left = 24
+      Top = 732
+      Width = 1025
+      Height = 21
+      TabOrder = 2
+      Text = 'Edit1'
+    end
   end
   object scbSettingsPanel: TcxScrollBox
     Left = 1070
@@ -891,10 +899,6 @@ object frmMain: TfrmMain
       ItemLinks = <
         item
           Visible = True
-          ItemName = 'dxBarSubLagrangian'
-        end
-        item
-          Visible = True
           ItemName = 'barBlank2'
         end
         item
@@ -1048,13 +1052,25 @@ object frmMain: TfrmMain
         end>
     end
     object dxBarSubCruises: TdxBarSubItem
-      Caption = 'Cruises'
+      Caption = 'Geometry'
       Category = 0
       Visible = ivAlways
       ItemLinks = <
         item
           Visible = True
           ItemName = 'dxBarButton1'
+        end
+        item
+          Visible = True
+          ItemName = 'BarTracerTrajectory'
+        end
+        item
+          Visible = True
+          ItemName = 'barEddy'
+        end
+        item
+          Visible = True
+          ItemName = 'barFTLE'
         end>
     end
     object dxBarSubLagrangian: TdxBarSubItem
@@ -1130,6 +1146,20 @@ object frmMain: TfrmMain
           Visible = True
           ItemName = 'barImport'
         end>
+    end
+    object barEddy: TdxBarButton
+      Caption = 'Eddy'
+      Category = 0
+      Hint = 'Eddy'
+      Visible = ivAlways
+      OnClick = barEddyClick
+    end
+    object barFTLE: TdxBarButton
+      Caption = 'Front'
+      Category = 0
+      Hint = 'Front'
+      Visible = ivAlways
+      OnClick = barFTLEClick
     end
   end
   object dxRibbonRadialMenu1: TdxRibbonRadialMenu

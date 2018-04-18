@@ -1,5 +1,5 @@
 # Dataset File Strucure
-This document describes the common file structure to store the data/meta-data produced by the labs funded by the Simons Foundation, Oceanography program. The file format is excel spreadsheet. Data is stored in the first sheet and the sheet title is "data". The second sheet stores the dataset meta-data and is called "dataset_meta_data". Meta-data associated with the variables in the dataset are kept in the third sheed, "vars_meta_data". An example template can be found [here](http://opedia.io/template). 
+This document describes the common file structure to store the data/meta-data produced by the labs funded by the Simons Foundation, Oceanography program. The file format is excel spreadsheet. Data is stored in the first sheet and the sheet title is "data". The second sheet stores the dataset meta-data and is called "dataset_meta_data". Meta-data associated with the variables in the dataset are kept in the third sheet, "vars_meta_data". An example template can be found [here](http://opedia.io/template). 
 
 
 ## Dataset Filename Convention
@@ -14,7 +14,8 @@ Dataset filename: &lt;dataset_short_name&gt;**_**&lt;dataset_release_data&gt;**_
 	- length: less than 50 characters
 
 
-
+<br>
+<br>
 ## First Sheet: "data"
 Columns by order:
 
@@ -42,7 +43,8 @@ Columns by order:
 Add more columns similar to the last column, if dataset has more than one variable. 	
 
 
-
+<br>
+<br>
 ## Second Sheet: "dataset_meta_data"
 Columns by order:
 
@@ -70,21 +72,32 @@ Columns by order:
 	- type: string
 	- length: <100 chars
 
-7. **dataset_history**: notes regarding the evolution of the dataset with respect to the previous versions, if applicable
+7. **dataset_doi**: digital object identifier (doi) associated with the dataset. Below is an example list of entities that may issue and link your dataset to a unique doi:
+	- [Dryad](https://datadryad.org/) (only accepts published datsets)
+	- [FigShare](https://figshare.com/)
+	- [Zenodo](https://zenodo.org/) <br> 
+Alternatively, one may choose to submit their dataset to a domain-specific repository and link a doi to the dataset. Below are a few suggestions:
+	- [NCEI](https://www.nodc.noaa.gov/)
+	- [ORNL DAAC](https://daac.ornl.gov/)
+	- [EDI](https://portal.edirepository.org/nis/home.jsp)
+	- [PANGAEA](https://www.pangaea.de/)
+	- [NERC](https://nerc.ukri.org/research/sites/data/)
+8. **dataset_history**: notes regarding the evolution of the dataset with respect to the previous versions, if applicable
 	- type: string
 	- length: no limit
 	
-8. **dataset_description**: Any additional descritions
+9. **dataset_description**: any additional descriptions
 	- type: string
 	- length: no limit
 
-9. **dataset_references**: links/citations associated with the dataset documentations/publications (enter each ref. in a separate row)
+10. **dataset_references**: links/citations associated with the dataset documentations/publications (enter each ref. in a separate row)
 	- type: string
 	- length: <500 chars per item
 
 
 
-
+<br>
+<br>
 ## Third Sheet: "vars_meta_data"
 Columns by order:
 
@@ -120,12 +133,12 @@ Columns by order:
 	- length: <50 chars	
 	- examples: [Hourly, Daily, Irregular, ...]	
 
-8. **var_missing_vaue**: placeholder for missing values
+8. **var_missing_value**: placeholder for missing values
 	- type: string
 	- length: <50 chars	
 	- examples: [empty cell, "nan", "unknown", #FFFF, -999, ...]		
 
-9. **var_dicipline**: the closest dicipline(s) associated with the variable
+9. **var_discipline**: the closest discipline(s) associated with the variable
 	- type: string
 	- length: <100 chars	
 	- examples: [Physics, Chemistry, Biology, BioGeoChemistry, ...]		
@@ -135,6 +148,6 @@ Columns by order:
 	- length: <500 chars	
 	- examples: [field sample, Biology, abundance, synechococcus, ...]		
 
-11. **var_comment**: any other cooment about the variable
+11. **var_comment**: any other comment about the variable
 	- type: string
 	- length: no limit		

@@ -120,9 +120,9 @@ def submitJobs(jobs):
 
 
 #########################################################################
-jobs = 50            # number of concurrent batch queries (each batch involves 4 regional queries)   
+jobs = 10            # number of concurrent batch queries (each batch involves 4 regional queries)   
 savePlot = False      # True to save plot on disk; False otherwise
-saveData = False      # True to save data on disk; False otherwise
+saveData = True      # True to save data on disk; False otherwise
 if __name__ == '__main__':          
     itnum = Value('i', 0)
     print('%d batch queries runing concurrently ...' % (jobs)) 
