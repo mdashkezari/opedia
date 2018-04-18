@@ -73,7 +73,7 @@ Columns by order:
 	- [Dryad](https://datadryad.org/) (only accepts published datsets)
 	- [FigShare](https://figshare.com/)
 	- [Zenodo](https://zenodo.org/)
-	- [Open Science Foundation](https://osf.io/) ([more details](http://help.osf.io/m/faqs/l/726460-faqs))
+	- [Open Science Foundation](https://osf.io/) (more details [here](http://help.osf.io/m/faqs/l/726460-faqs))
 	- [Harvard Dataverse](https://dataverse.harvard.edu/)
 Alternatively, one may choose to obtain the dataset doi by submitting their dataset to a domain-specific repository. Note that each repository has its own submission requirements. Below are a few suggestions:
 	- [NCEI](https://www.nodc.noaa.gov/)
