@@ -73,11 +73,13 @@ Columns by order:
 	- [Dryad](https://datadryad.org/) (only accepts published datsets)
 	- [FigShare](https://figshare.com/)
 	- [Zenodo](https://zenodo.org/) <br> 
-Alternatively, one may choose to submit their dataset to a domain-specific repository and link a doi to the dataset. Below are a few suggestions:
+Alternatively, one may choose to submit their dataset to a domain-specific repository and link a doi to the dataset. Note that each repository has its own submission requirements. Below are a few suggestions:
 	- [NCEI](https://www.nodc.noaa.gov/)
 	- [ORNL DAAC](https://daac.ornl.gov/)
 	- [EDI](https://portal.edirepository.org/nis/home.jsp)
 	- [PANGAEA](https://www.pangaea.de/)
+	- [SEANOE](http://www.seanoe.org/)
+	- [NASA Goddard](https://disc.gsfc.nasa.gov/)
 	- [NERC](https://nerc.ukri.org/research/sites/data/)
 8. **dataset_history**: notes regarding the evolution of the dataset with respect to the previous versions, if applicable
 	- type: string
