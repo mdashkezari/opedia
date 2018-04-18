@@ -14,8 +14,6 @@ Dataset filename: &lt;dataset_short_name&gt;**_**&lt;dataset_release_data&gt;**_
 	- length: less than 50 characters
 
 
-<br>
-<br>
 ## First Sheet: "data"
 Columns by order:
 
@@ -43,8 +41,7 @@ Columns by order:
 Add more columns similar to the last column, if dataset has more than one variable. 	
 
 
-<br>
-<br>
+
 ## Second Sheet: "dataset_meta_data"
 Columns by order:
 
@@ -96,8 +93,6 @@ Alternatively, one may choose to submit their dataset to a domain-specific repos
 
 
 
-<br>
-<br>
 ## Third Sheet: "vars_meta_data"
 Columns by order:
 
