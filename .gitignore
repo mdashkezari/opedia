@@ -1,2 +1,3 @@
 .vscode/
-gantt/
+./gantt/
+*.pyc
