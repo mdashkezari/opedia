@@ -22,11 +22,11 @@ with open(path.join(here, 'README.md'), encoding='utf-8') as f:
 
 setup(
     name='opedia',
-    version='0.1.10',
+    version='0.1.11',
     description='Opedia is an open source database service to integrate, visualize, and analyze ocean datasets such as satellite data, in-situ observations, and model outputs.',
     long_description=long_description,
     long_description_content_type='text/markdown',
-    url='https://github.com/mdashkezari/opedia/pypi',
+    url='https://github.com/mdashkezari/opedia/tree/master/pypi',
     author='Mohammad D. Ashkezari',
     author_email='demo.80@gmail.com',
     classifiers=[
