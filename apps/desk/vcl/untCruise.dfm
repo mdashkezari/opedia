@@ -37,7 +37,7 @@ object frmCruise: TfrmCruise
   object wpResample: TdxWheelPicker
     Left = 19
     Top = 159
-    EditValue = #3#0#0#0
+    EditValue = #4#0#0#0
     ParentFont = False
     Properties.ImmediatePost = True
     Properties.LineAutoHeight = True

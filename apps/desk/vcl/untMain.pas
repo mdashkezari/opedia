@@ -522,8 +522,8 @@ begin
   LoadVars;      // loading Opedia variables from DB
   PrePosition;
 
-  frmMain.dtwpTimeStart.DateTime:=EncodeDateTime(2018,4,30,11,0,0,0);
-  frmMain.dtwpTimeEnd.DateTime:=Now;
+  frmMain.dtwpTimeStart.DateTime:=EncodeDateTime(2016,4,30,11,0,0,0);
+  frmMain.dtwpTimeEnd.DateTime:=EncodeDateTime(2016,4,30,11,0,0,0);
 
   frmMain.cbRegion.ItemIndex:=1;
   SetRegion(frmMain.cbRegion.ItemIndex);

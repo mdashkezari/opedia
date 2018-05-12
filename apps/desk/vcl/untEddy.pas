@@ -34,6 +34,7 @@ type
     btnEddyTrack: TcxButton;
     btnColocalize: TcxButton;
     aiBusy: TdxActivityIndicator;
+    dxToggleSwitch1: TdxToggleSwitch;
     procedure btnEddyTrackClick(Sender: TObject);
     procedure btnColocalizeClick(Sender: TObject);
   private

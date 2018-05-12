@@ -16,13 +16,13 @@ object frmEddy: TfrmEddy
   PixelsPerInch = 96
   TextHeight = 13
   object tsDirection: TdxToggleSwitch
-    Left = 55
-    Top = 31
+    Left = 93
+    Top = 34
     Checked = True
     ParentFont = False
     Properties.StateIndicator.Kind = sikText
-    Properties.StateIndicator.OffText = 'Backward in time'
-    Properties.StateIndicator.OnText = 'Forward in time'
+    Properties.StateIndicator.OffText = 'Cyclonic'
+    Properties.StateIndicator.OnText = 'AntiCyclonic'
     Style.Font.Charset = DEFAULT_CHARSET
     Style.Font.Color = clWindowText
     Style.Font.Height = -13
@@ -98,5 +98,22 @@ object frmEddy: TfrmEddy
     PropertiesClassName = 'TdxActivityIndicatorGravityDotsProperties'
     Transparent = True
     Visible = False
+  end
+  object dxToggleSwitch1: TdxToggleSwitch
+    Left = 63
+    Top = 8
+    Checked = True
+    ParentFont = False
+    Properties.StateIndicator.Kind = sikText
+    Properties.StateIndicator.OffText = 'Fixed Polarity'
+    Properties.StateIndicator.OnText = 'All Eddies'
+    Style.Font.Charset = DEFAULT_CHARSET
+    Style.Font.Color = clWindowText
+    Style.Font.Height = -13
+    Style.Font.Name = 'Tahoma'
+    Style.Font.Style = []
+    Style.IsFontAssigned = True
+    TabOrder = 6
+    Transparent = True
   end
 end

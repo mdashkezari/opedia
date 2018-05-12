@@ -12,7 +12,7 @@ def dbConnect(usr='ArmLab', psw='ArmLab2018', db='Opedia'):
             conn = pyodbc.connect('DRIVER={SQL Server};SERVER=' + server + ';DATABASE=' + db + ';Uid=' + usr + ';Pwd='+ psw )
         elif platform.system().lower().find('darwin') != -1:
             conn = pyodbc.connect('DRIVER=/usr/local/lib/libtdsodbc.so;SERVER=' + server + ';DATABASE=' + db + ';Uid=' + usr + ';Pwd='+ psw )
-        print('Successful Database Connection')
+        #print('Successful Database Connection')
     except Exception as e:
         print('Error in Database Connection. Error message: '+str(e))        
     return conn

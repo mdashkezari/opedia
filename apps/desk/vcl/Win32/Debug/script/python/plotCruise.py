@@ -14,6 +14,7 @@ from bokeh.models import DatetimeTickFormatter
 from bokeh.palettes import all_palettes
 from bokeh.models import HoverTool
 from bokeh.embed import components
+import itertools as itt
 
 
 def removeNA(df, subset):
@@ -150,10 +151,55 @@ def plotAlongTrack(tables, variables, cruiseName, track, spMargin, extV, extVV, 
     show(column(p))
     if exportDataFlag:
         exportData(loadedTrack, ts, ys, y_stds, cruiseName, tables[i], variables[i], spMargin, extV[i], extVV[i], extV2[i], extVV2[i])    
+    return loadedTrack
+
+
+def mutualTrends(loadedTrack, tables, variables, extV, extVV, extV2, extVV2, msize=20, fname='MutualTrends'):
+    if len(variables)<2:
+        print('Error: at least 2 variables are needed to plot mutual trends.')
+        return
+    tablePairs = list(itt.combinations(tables, 2))
+    variablePairs = list(itt.combinations(variables, 2))
+    extVPairs = list(itt.combinations(extV, 2))
+    extVVPairs = list(itt.combinations(extVV, 2))
+    extV2Pairs = list(itt.combinations(extV2, 2))
+    extVV2Pairs = list(itt.combinations(extVV2, 2))
+
+
+    p = []
+    lw = 2
+    w = 500
+    h = 500
+    TOOLS = 'pan,wheel_zoom,zoom_in,zoom_out,box_zoom, undo,redo,reset,tap,save,box_select,poly_select,lasso_select'
+    for i in range(len(tablePairs)):
+        t1, y1, y_std1 = loadedTrack['time'], loadedTrack[variablePairs[i][0]], loadedTrack[variablePairs[i][0] + '_std']
+        t2, y2, y_std2 = loadedTrack['time'], loadedTrack[variablePairs[i][1]], loadedTrack[variablePairs[i][1] + '_std']
+
+        p1 = figure(tools=TOOLS, toolbar_location="above", plot_width=w, plot_height=h)
+        p1.xaxis.axis_label = variablePairs[i][0] + ' [' + db.getVar(tablePairs[i][0], variablePairs[i][0]).iloc[0]['Unit'] + ']'
+        p1.yaxis.axis_label = variablePairs[i][1] + ' [' + db.getVar(tablePairs[i][1], variablePairs[i][1]).iloc[0]['Unit'] + ']'
+        leg = variablePairs[i][0] + ' / ' + variablePairs[i][1]
+        if extVPairs[i][0] != None:
+            leg = leg + '   ' + extVPairs[i][0] + ': ' + ( '%d' % float(extVVPairs[i][0]) ) 
+            if tablePairs[i][0].find('Pisces') != -1:
+                leg = leg + ' ' + 'm'
+        if extVPairs[i][1] != None:
+            leg = leg + '   ' + extVPairs[i][1] + ': ' + ( '%d' % float(extVVPairs[i][1]) ) 
+            if tablePairs[i][1].find('Pisces') != -1:
+                leg = leg + ' ' + 'm'
+        fill_alpha = 0.6        
+        #if tablePairs[i][0].find('Pisces') != -1 or tablePairs[i][1].find('Pisces') != -1:
+        #    fill_alpha = 0.3
+        cr = p1.circle(y1, y2, fill_color="grey", hover_fill_color="firebrick", fill_alpha=fill_alpha, hover_alpha=0.6, line_color=None, hover_line_color="white", legend=leg, size=msize)
+        #p1.line(y1, y2, line_color=clr, line_width=lw, legend=leg)
+        p1.add_tools(HoverTool(tooltips=None, renderers=[cr], mode='hline'))    
+        p.append(p1)
+    dirPath = 'embed/'
+    if not os.path.exists(dirPath):
+        os.makedirs(dirPath)        
+    output_file(dirPath + fname + ".html", title="Mutual Trends")
+    show(column(p))
     return
-
-
-
 
 
 DB = bool(int(sys.argv[1]))
@@ -186,4 +232,6 @@ elif command == 2:      ## generates along track plot
             extV2[i]=None
         if extVV2[i].find('ignore') != -1:
             extVV2[i]=None
-    plotAlongTrack(tables, variables, cruise, df, spMargin, extV, extVV, extV2, extVV2, exportDataFlag, marker='-', msize=30, clr='darkturquoise')
+    loadedTrack = plotAlongTrack(tables, variables, cruise, df, spMargin, extV, extVV, extV2, extVV2, exportDataFlag, marker='-', msize=30, clr='darkturquoise')
+    
+    mutualTrends(loadedTrack, tables, variables, extV, extVV, extV2, extVV2)
