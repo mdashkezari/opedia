@@ -1,3 +1,6 @@
+<img src="../CAD/caustics_grid.png"
+     style="float: left; margin-right: 10px;" />
+
 # Opedia
 Opedia is an open source database service to integrate, visualize, and analyze ocean datasets such as satellite data, in-situ observations, and model outputs. The project is supported by [Simons Foundation](https://www.simonsfoundation.org/).
 
