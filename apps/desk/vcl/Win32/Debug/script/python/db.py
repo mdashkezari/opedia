@@ -31,6 +31,7 @@ def dbFetch(query):
 def dbFetchStoredProc(query, args):
     conn = dbConnect()
     cur = conn.cursor()
+    args = [ str(a) if a is not None else a for a in args ]
     cur.execute(query, args)
     df = cur.fetchall()
     conn.close()
