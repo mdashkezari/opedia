@@ -36,7 +36,12 @@ Columns by order:
 	- unit: degree
 	- range: [-180, 180]
 
-3. **&lt;v_1&gt;**: first variable (short name)
+4. **depth**: depth
+    - type: float
+    - unit: meters
+    - range: [0, ∞] 
+
+5. **&lt;v_1&gt;**: first variable (short name)
 
 Add more columns similar to the last column, if dataset has more than one variable. 	
 
