@@ -31,7 +31,6 @@ def dbFetch(query):
 def dbFetchStoredProc(query, args):
     conn = dbConnect()
     cur = conn.cursor()
-    args = [ str(a) if a is not None else a for a in args ]
     cur.execute(query, args)
     df = cur.fetchall()
     conn.close()
@@ -48,6 +47,13 @@ def bulkInsert(filePath, tableName):
 
     
 def getVar(tableName, varName):
+    query = "SELECT * FROM tblVariables WHERE Table_Name='%s' AND Short_Name='%s'" % (tableName, varName)
+    df = dbFetch(query)
+    return df
+
+
+def getTableName(varName):
+    ## 
     query = "SELECT * FROM tblVariables WHERE Table_Name='%s' AND Short_Name='%s'" % (tableName, varName)
     df = dbFetch(query)
     return df
