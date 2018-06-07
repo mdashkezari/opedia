@@ -19,7 +19,7 @@ Columns by order:
 
 1. **time**: corresponding datetime
 	- type: datetime
-	- format: %Y-%m-%d %H:%M:%S [example: 2018-03-29 18:05:55]
+	- format: %Y-%m-%dT%H:%M:%S [example: 2018-03-29T18:05:55]
 	- time zone: UTC
 	- note: there is a blank space between date and time
 	- note: zero padding required
