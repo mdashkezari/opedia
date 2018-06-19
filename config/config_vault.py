@@ -48,6 +48,12 @@ makedir(darwin_raw)
 nrt_darwin_raw, rep_darwin_raw, doc_darwin_raw, code_darwin_raw = leafStruc(darwin_raw)
 nrt_darwin_prefix = 'darwin_'
 rep_darwin_prefix = 'darwin_'
+######## models/darwin_climatology ########
+darwin_clim_1992_2011_raw = model_raw + 'darwin_climatology_1992_2011/'
+makedir(darwin_clim_1992_2011_raw)
+nrt_darwin_clim_raw, rep_darwin_clim_raw, doc_darwin_clim_raw, code_darwin_clim_raw = leafStruc(darwin_clim_1992_2011_raw)
+nrt_darwin_clim_prefix = 'darwin_clim_'
+rep_darwin_clim_prefix = 'darwin_clim_'
 
 
 
@@ -77,6 +83,11 @@ nrt_lineage_raw, rep_lineage_raw, doc_lineage_raw, code_lineage_raw = leafStruc(
 tax16s_raw = cruise_raw + 'tax16s/'
 makedir(tax16s_raw)
 nrt_tax16s_raw, rep_tax16s_raw, doc_tax16s_raw, code_tax16s_raw = leafStruc(tax16s_raw)
+####  obs/in-situ/cruise/KM1314_cobalamine  #####
+KM1314_cobalamin_raw = cruise_raw + 'KM1314_cobalamin/'
+makedir(KM1314_cobalamin_raw)
+nrt_KM1314_cobalamin_raw, rep_KM1314_cobalamin_raw, doc_KM1314_cobalamin_raw, code_KM1314_cobalamin_raw = leafStruc(KM1314_cobalamin_raw)
+
 
 
 ########  obs/remote/satellite  ########

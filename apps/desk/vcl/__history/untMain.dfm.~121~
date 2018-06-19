@@ -1,7 +1,7 @@
 object frmMain: TfrmMain
   Left = 0
   Top = 0
-  Caption = 'Opedia'
+  Caption = 'Opedia 0.1.14'
   ClientHeight = 948
   ClientWidth = 1330
   Color = clBtnFace
@@ -59,13 +59,14 @@ object frmMain: TfrmMain
       Transparent = True
       Visible = False
     end
-    object Button1: TButton
-      Left = 56
-      Top = 641
-      Width = 75
-      Height = 25
-      Caption = 'Button1'
+    object Edit1: TEdit
+      Left = 24
+      Top = 732
+      Width = 1025
+      Height = 21
       TabOrder = 2
+      Text = 'Edit1'
+      Visible = False
     end
   end
   object scbSettingsPanel: TcxScrollBox
@@ -769,7 +770,7 @@ object frmMain: TfrmMain
       OnClick = barFilterClick
     end
     object barExportData: TdxBarSubItem
-      Caption = 'Export'
+      Caption = 'Export Format'
       Category = 0
       Visible = ivAlways
       ItemLinks = <
@@ -897,10 +898,6 @@ object frmMain: TfrmMain
       Visible = ivAlways
       ImageIndex = 3
       ItemLinks = <
-        item
-          Visible = True
-          ItemName = 'dxBarSubLagrangian'
-        end
         item
           Visible = True
           ItemName = 'barBlank2'
@@ -1056,13 +1053,25 @@ object frmMain: TfrmMain
         end>
     end
     object dxBarSubCruises: TdxBarSubItem
-      Caption = 'Cruises'
+      Caption = 'Geometry'
       Category = 0
       Visible = ivAlways
       ItemLinks = <
         item
           Visible = True
           ItemName = 'dxBarButton1'
+        end
+        item
+          Visible = True
+          ItemName = 'BarTracerTrajectory'
+        end
+        item
+          Visible = True
+          ItemName = 'barEddy'
+        end
+        item
+          Visible = True
+          ItemName = 'barFTLE'
         end>
     end
     object dxBarSubLagrangian: TdxBarSubItem
@@ -1076,7 +1085,7 @@ object frmMain: TfrmMain
         end>
     end
     object dxBarSubDataSets: TdxBarSubItem
-      Caption = 'DataSets'
+      Caption = 'Catalog'
       Category = 0
       Visible = ivAlways
       ImageIndex = 19
@@ -1106,14 +1115,14 @@ object frmMain: TfrmMain
       OnClick = BarTracerTrajectoryClick
     end
     object barImport: TdxBarButton
-      Caption = 'Import'
+      Caption = 'Opedia Vault'
       Category = 0
-      Hint = 'Import'
+      Hint = 'Opedia Vault'
       Visible = ivAlways
       OnClick = barImportClick
     end
     object barSubData: TdxBarSubItem
-      Caption = 'Data'
+      Caption = 'Import Export'
       Category = 0
       Visible = ivAlways
       ImageIndex = 8
@@ -1138,6 +1147,20 @@ object frmMain: TfrmMain
           Visible = True
           ItemName = 'barImport'
         end>
+    end
+    object barEddy: TdxBarButton
+      Caption = 'Eddy'
+      Category = 0
+      Hint = 'Eddy'
+      Visible = ivAlways
+      OnClick = barEddyClick
+    end
+    object barFTLE: TdxBarButton
+      Caption = 'Front'
+      Category = 0
+      Hint = 'Front'
+      Visible = ivAlways
+      OnClick = barFTLEClick
     end
   end
   object dxRibbonRadialMenu1: TdxRibbonRadialMenu

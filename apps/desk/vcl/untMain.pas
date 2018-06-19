@@ -646,7 +646,7 @@ begin
   fname:='RM';
   exportflag:=inttostr(getExportDataFlag);
   ShellExecute(0, nil, 'python', Pchar(' ./script/python/plotRegional.py '+tables+' '+vars+' '+dt+' '+edtLat1.Text+' '+edtLat2.Text+' '+edtLon1.Text+' '+edtLon2.Text+' '+fname+' '+exportflag+' '+extVars+' '+extVarVals), nil, SW_HIDE);
-  //edit1.text:='python'+ Pchar(' ./script/python/plotRegional.py '+tables+' '+vars+' '+dt+' '+edtLat1.Text+' '+edtLat2.Text+' '+edtLon1.Text+' '+edtLon2.Text+' '+fname+' '+exportflag+' '+extVars+' '+extVarVals);
+  edit1.text:='python'+ Pchar(' ./script/python/plotRegional.py '+tables+' '+vars+' '+dt+' '+edtLat1.Text+' '+edtLat2.Text+' '+edtLon1.Text+' '+edtLon2.Text+' '+fname+' '+exportflag+' '+extVars+' '+extVarVals);
 
 
   DeleteFile('embed/'+fname+'.html');

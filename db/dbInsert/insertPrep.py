@@ -39,3 +39,10 @@ def sortByDepthLatLon(df, export_path, lonName, latName, depthName):
     df.sort_values([depthName, latName, lonName], ascending=[True, True, True], inplace=True)
     df.to_csv(export_path, index=False)
     return 
+
+
+def sortByTimeLatLonDepth(df, export_path, timeName, latName, lonName, depthName):
+    df = pd.read_csv(export_path)
+    df.sort_values([timeName, latName, lonName, depthName], ascending=[True, True, True, True], inplace=True)
+    df.to_csv(export_path, index=False)
+    return     
