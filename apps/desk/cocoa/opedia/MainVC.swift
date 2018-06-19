@@ -77,6 +77,9 @@ class MainVC: NSViewController, MKMapViewDelegate {
     */
     
     func initUI() {
+        swtExport.isOn = false
+        swtExport.reloadLayer()
+
         dslLat.colorStyle = .aqua
         dslLat.knobStyle = .circular
         dslLat.minValue = -90
@@ -176,10 +179,7 @@ class MainVC: NSViewController, MKMapViewDelegate {
         dslLon.start = Double(lon1)!
         dslLon.end = Double(lon2)!
 
-        
-        print(lat1, lat2)
-        print(lon1, lon2)
-    }
+        }
     
     
     func startRegionSelect(_ location: NSPoint) {
@@ -263,8 +263,6 @@ class MainVC: NSViewController, MKMapViewDelegate {
     override func viewDidAppear() {
         //view.window?.makeFirstResponder(self)
     }
-    
-    
     
     /*
     override func flagsChanged(with event: NSEvent) {
