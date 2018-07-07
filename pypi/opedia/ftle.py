@@ -14,7 +14,7 @@ from bokeh.palettes import all_palettes
 from bokeh.models import HoverTool
 from bokeh.embed import components
 import matplotlib.pyplot as plt
-
+from tqdm import tqdm
 
    
 def plot_single_hist(data, clr='m', labelx='', labely='', leg='', yscale='linear', store_path='', bincount=50):   
@@ -151,13 +151,13 @@ def colocalize(ftleTable, ftleValue, tables, variables, startDate, lat1, lat2, l
     w = 800
     h = 400
     TOOLS = 'pan,wheel_zoom,zoom_in,zoom_out,box_zoom, undo,redo,reset,tap,save,box_select,poly_select,lasso_select'
-    for i in range(len(tables)):
+    for i in tqdm(range(len(tables))):
         df = match(ftleTable, tables[i], startDate, endDate, lat1, lat2, lon1, lon2, extV[i], extVV[i], ftleField, ftleValue, variables[i], spMargin)
         if i==0:
             loadedFTLE = pd.DataFrame(df)    
-        ts, ys, y_stds = df.time, df[variables[i]], np.array([])
+        ts, ys, y_stds = df.time, df[variables[i]], ''
         '''
-        for j in range(len(eddy)):
+        for j in tqdm(range(len(eddy))):
             startDate = eddy.iloc[j]['time']
             endDate = startDate
             lat1 = float(eddy.iloc[j]['lat']) - spMargin
@@ -204,6 +204,7 @@ def colocalize(ftleTable, ftleValue, tables, variables, startDate, lat1, lat2, l
     show(column(p))
     if exportDataFlag:
         exportData(loadedFTLE, ts, ys, y_stds, tables[i], variables[i], spMargin, extV[i], extVV[i], extV2[i], extVV2[i])    
+    print('')
     return df
 
 

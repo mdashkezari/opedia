@@ -13,7 +13,7 @@ from bokeh.models import DatetimeTickFormatter
 from bokeh.palettes import all_palettes
 from bokeh.models import HoverTool
 from bokeh.embed import components
-
+from tqdm import tqdm
    
 
 
@@ -152,9 +152,9 @@ def plotAlongTrack(dt, fmt, tables, variables, track, spMargin, extV, extVV, ext
     w = 800
     h = 400
     TOOLS = 'pan,wheel_zoom,zoom_in,zoom_out,box_zoom, undo,redo,reset,tap,save,box_select,poly_select,lasso_select'
-    for i in range(len(tables)):
+    for i in tqdm(range(len(tables))):
         ts, ys, y_stds = [], np.array([]), np.array([])
-        for j in range(len(track)):
+        for j in tqdm(range(len(track))):
             startDate = track.iloc[j]['time'].strftime(fmt)
             endDate = startDate
             lat1 = float(track.iloc[j]['lat']) - spMargin
@@ -196,6 +196,7 @@ def plotAlongTrack(dt, fmt, tables, variables, track, spMargin, extV, extVV, ext
     show(column(p))
     if exportDataFlag:
         exportData(loadedTrack, ts, ys, y_stds, tables[i], variables[i], spMargin, extV[i], extVV[i], extV2[i], extVV2[i])    
+    print('')
     return
 
 
@@ -220,7 +221,9 @@ lat0 = float(sys.argv[5])
 lon0 = float(sys.argv[6])
 shapeFlag = bool(int(sys.argv[7]))
 colocateFlag = bool(int(sys.argv[8]))
-ts, lats, lons = propagate(direction, startDate, endDate, lat0, lon0, fmt, dt)
+
+if shapeFlag or colocateFlag:
+    ts, lats, lons = propagate(direction, startDate, endDate, lat0, lon0, fmt, dt)
 
 if shapeFlag:                       # make shapefile for the tracer's trajectory
     import geopandas as gpd

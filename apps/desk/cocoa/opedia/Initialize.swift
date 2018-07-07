@@ -16,6 +16,6 @@ class Initializer {
         
         let url = URL(fileURLWithPath: Bundle.main.bundlePath)
         bundlePath = url.deletingLastPathComponent().path
-
-    }
+        
+        }
 }

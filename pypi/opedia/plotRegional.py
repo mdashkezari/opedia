@@ -1,3 +1,5 @@
+
+from docopt import docopt
 import sys
 import os
 import numpy as np
@@ -91,14 +93,6 @@ def exportData(df, path):
 
 
 def RegionalMap(tables, variabels, dt, lat1, lat2, lon1, lon2, arg8, arg9, fname, exportDataFlag):
-    '''
-    ############# App-Level Query #############
-    query = prepareGMQuery(table, dt)
-    df = db.dbFetch(query)
-    ###########################################
-    '''
-
-    ######### Stored Procedure Query ##########
     data = []
     subs = [] 
     for i in range(len(tables)):
@@ -181,5 +175,6 @@ arg9 = None
 if len(sys.argv)>11:
     arg8 = sys.argv[10]      #extra condition: var_name
     arg9 = sys.argv[11]      #extra condition: var_val
+
 
 RegionalMap(arg1.split(','), arg2.split(','), arg3, arg4, arg5, arg6, arg7, arg8.split(','), arg9.split(','), fname, exportDataFlag)

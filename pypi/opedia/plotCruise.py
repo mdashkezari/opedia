@@ -1,5 +1,6 @@
 import os
 import sys
+sys.dont_write_bytecode = True
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -43,10 +44,11 @@ def getCruiseTrack(DB, source, cruise):
     return df
 
 def resample(df, resampTau):
-    df = indexTime(df)
-    df = df.resample(resampTau).mean()
-    df.reset_index(level=0, inplace=True)
-    df = removeNA(df, ['lat', 'lon'])        
+    if resampTau != '0':
+        df = indexTime(df)
+        df = df.resample(resampTau).mean()
+        df.reset_index(level=0, inplace=True)
+        df = removeNA(df, ['lat', 'lon'])        
     return df
 
 def dumpCruiseShape(df, source, cruise, resampTau, fname):

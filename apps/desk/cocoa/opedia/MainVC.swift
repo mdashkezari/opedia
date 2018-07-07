@@ -32,6 +32,8 @@ class MainVC: NSViewController, MKMapViewDelegate {
     @IBOutlet weak var dslDepth: RangeSlider!
     @IBOutlet weak var mapView: MKMapView!
     
+
+    
     
     
     // actions
@@ -240,6 +242,24 @@ class MainVC: NSViewController, MKMapViewDelegate {
     }
 
     
+    func fileString()-> String! {
+        let file = bundlePath + "/data/catalog.csv"
+        print(1)
+        let fileURL = NSURL(string: file)
+        print(2)
+        do {
+            print(3)
+            let text = try String(contentsOf: fileURL! as URL, encoding: .utf8)
+            print(4)
+            print(text)
+        }
+        catch {/* error handling here */}
+        
+        return ""
+    }
+
+
+    
     
     // implemntation
     override func viewDidLoad() {
@@ -247,6 +267,10 @@ class MainVC: NSViewController, MKMapViewDelegate {
         Initializer().vcMainInitializer()
         initUI()
 
+        ///////// get cataloge /////////
+        runScript([pythonPath, "\(opediaAPI)getCatalog.py"])
+        ////////////////////////////////
+        
         /////// gesture recognizer /////
         let panRecognizer = NSPanGestureRecognizer(target: self, action: #selector(mapPanned))
         panRecognizer.buttonMask = 2
@@ -262,7 +286,14 @@ class MainVC: NSViewController, MKMapViewDelegate {
 
     override func viewDidAppear() {
         //view.window?.makeFirstResponder(self)
+       
+        fileString()
     }
+    
+
+    
+    
+    
     
     /*
     override func flagsChanged(with event: NSEvent) {

@@ -13,7 +13,7 @@ from bokeh.models import DatetimeTickFormatter
 from bokeh.palettes import all_palettes
 from bokeh.models import HoverTool
 from bokeh.embed import components
-
+from tqdm import tqdm
    
 
 def prepareQuery(table, startDate, endDate, lat1, lat2, lon1, lon2):
@@ -96,9 +96,9 @@ def colocalize(tables, variables, eddy, spMargin, extV, extVV, extV2, extVV2, ex
     w = 800
     h = 400
     TOOLS = 'pan,wheel_zoom,zoom_in,zoom_out,box_zoom, undo,redo,reset,tap,save,box_select,poly_select,lasso_select'
-    for i in range(len(tables)):
+    for i in tqdm(range(len(tables))):
         ts, ys, y_stds, track_ids = [], np.array([]), np.array([]), np.array([])
-        for j in range(len(eddy)):
+        for j in tqdm(range(len(eddy))):
             startDate = eddy.iloc[j]['time']
             endDate = startDate
             lat1 = float(eddy.iloc[j]['lat']) - spMargin
@@ -145,7 +145,8 @@ def colocalize(tables, variables, eddy, spMargin, extV, extVV, extV2, extVV2, ex
     output_file(dirPath + fname + ".html", title="Eddy")
     show(column(p))
     if exportDataFlag:
-        exportData(loadedEddy, ts, ys, y_stds, tables[i], variables[i], spMargin, extV[i], extVV[i], extV2[i], extVV2[i])    
+        exportData(loadedEddy, ts, ys, y_stds, tables[i], variables[i], spMargin, extV[i], extVV[i], extV2[i], extVV2[i])   
+    print('')     
     return
 
 

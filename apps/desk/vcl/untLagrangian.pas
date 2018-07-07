@@ -149,7 +149,7 @@ begin
   args:=args+exportflag+' '+margin+' '+tables+' '+vars+' '+extVars+' '+extVarVals+' '+extVars2+' '+extVarVals2+' '+colocateFname;
 
   ShellExecute(0, nil, 'python', Pchar(script + args), nil, SW_HIDE);
-  //frmMain.Edit1.Text:='python'+Pchar(script + args);
+  frmMain.Edit1.Text:='python'+Pchar(script + args);
 
   if shapeFlag then
     DeleteFile('shape/'+shapeFname+'.shp');

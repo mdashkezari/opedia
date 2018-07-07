@@ -1,11 +1,7 @@
-import sys
 import os
-import numpy as np
-import matplotlib.pyplot as plt
 import pandas as pd
 import db
-from datetime import datetime, timedelta
-import time
+
 
 
 def catQuery():
@@ -54,3 +50,8 @@ def catalog():
         os.makedirs(dirPath)                
     exportData(df, path=dirPath + 'catalog.csv')
     return
+
+
+
+
+catalog()

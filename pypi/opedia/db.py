@@ -1,20 +1,21 @@
 import platform
 import sys
+sys.dont_write_bytecode = True
 import pyodbc
 import pandas.io.sql as sql
 
 
-def dbConnect(usr='ArmLab', psw='ArmLab2018', db='Opedia'):
+
+def dbConnect(usr='ArmLab', psw='ArmLab2018', ip='128.208.239.15', port='1433', db='Opedia'):
     try:
-        #print('Connecting to Opedia Database ...')        
-        server = '128.208.239.15,1433'
+        server = ip + ',' + port
         if platform.system().lower().find('windows') != -1:
             conn = pyodbc.connect('DRIVER={SQL Server};SERVER=' + server + ';DATABASE=' + db + ';Uid=' + usr + ';Pwd='+ psw )
         elif platform.system().lower().find('darwin') != -1:
             conn = pyodbc.connect('DRIVER=/usr/local/lib/libtdsodbc.so;SERVER=' + server + ';DATABASE=' + db + ';Uid=' + usr + ';Pwd='+ psw )
-        #print('Successful Database Connection')
+        #print('Successful database connection')
     except Exception as e:
-        print('Error in Database Connection. Error message: '+str(e))        
+        print('Database connection error. Error message: '+str(e))        
     return conn
 
 
@@ -28,6 +29,8 @@ def dbFetch(query):
 def dbFetchStoredProc(query, args):
     conn = dbConnect()
     cur = conn.cursor()
+    if sys.version_info[0] >= 3:     # if python3 
+        args = [ str(a) if a is not None else a for a in args ]
     cur.execute(query, args)
     df = cur.fetchall()
     conn.close()
