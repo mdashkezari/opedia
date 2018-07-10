@@ -631,6 +631,11 @@ begin
     begin
       extV:='depth';
       extVV:=cbPiscesDepthStart.Text;
+    end
+    else if ContainsText(Variable.Table_Name, 'tblHOT_') then
+    begin
+      extV:='depth';
+      extVV:=cbDepthStart.Text;
     end;
 
     extVars:=extVars+extV;
@@ -705,7 +710,13 @@ begin
     begin
       extV:='depth';
       extVV:=cbPiscesDepthStart.Text;
+    end
+    else if ContainsText(Variable.Table_Name, 'tblHOT_') then
+    begin
+      extV:='depth';
+      extVV:=cbDepthStart.Text;
     end;
+
 
     extVars:=extVars+extV;
     extVarVals:=extVarVals+extVV;
@@ -868,6 +879,11 @@ begin
     begin
       extV:='depth';
       extVV:=cbPiscesDepthStart.Text;
+    end
+    else if ContainsText(Variable.Table_Name, 'tblHOT_') then
+    begin
+      extV:='depth';
+      extVV:=cbDepthStart.Text;
     end;
 
     extVars:=extVars+extV;
@@ -1045,6 +1061,16 @@ begin
     begin
       extV:='depth';
       extVV:=cbPiscesDepthStart.Text;
+    end
+    else if ContainsText(Variable.Table_Name, 'tblHOT_') then
+    begin
+      extV:='depth';
+      extVV:=cbDepthStart.Text;
+    end
+    else if ContainsText(Variable.Table_Name, 'tblHOT_') then
+    begin
+      extV:='depth';
+      extVV:=cbDepthStart.Text;
     end;
 
     extVars:=extVars+extV;

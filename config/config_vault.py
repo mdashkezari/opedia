@@ -89,6 +89,14 @@ makedir(KM1314_cobalamin_raw)
 nrt_KM1314_cobalamin_raw, rep_KM1314_cobalamin_raw, doc_KM1314_cobalamin_raw, code_KM1314_cobalamin_raw = leafStruc(KM1314_cobalamin_raw)
 
 
+#########  obs/in-situ/station  #########
+station_raw = in_situ_raw + 'station/'
+makedir(station_raw)
+####  obs/in-situ/station/hot  #####
+hot_raw = station_raw + 'hot/'
+makedir(hot_raw)
+nrt_hot_raw, rep_hot_raw, doc_hot_raw, code_hot_raw = leafStruc(hot_raw)
+
 
 ########  obs/remote/satellite  ########
 satellite_raw = remote_raw + 'satellite/'

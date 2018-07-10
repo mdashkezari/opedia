@@ -53,7 +53,7 @@ def exportData(t, y, yErr, table, variable, lat1, lat2, lon1, lon2, extV, extVV,
     return
 
 
-def plotTS(tables, variables, startDate, endDate, lat1, lat2, lon1, lon2, extV, extVV, extV2, extVV2, exportDataFlag, marker='-', msize=30, clr='purple'):
+def plotTS(tables, variables, startDate, endDate, lat1, lat2, lon1, lon2, extV, extVV, extV2, extVV2, exportDataFlag, marker='-', msize=20, clr='purple'):
     p = []
     lw = 2
     w = 800
@@ -71,7 +71,7 @@ def plotTS(tables, variables, startDate, endDate, lat1, lat2, lon1, lon2, extV, 
             leg = leg + '   ' + extV[i] + ': ' + ( '%d' % float(extVV[i]) ) 
             if tables[i].find('Pisces') != -1:
                 leg = leg + ' ' + 'm'
-        fill_alpha = 0.07        
+        fill_alpha = 0.3        
         if tables[i].find('Pisces') != -1:
             fill_alpha = 0.3
         cr = p1.circle(t, y, fill_color="grey", hover_fill_color="firebrick", fill_alpha=fill_alpha, hover_alpha=0.3, line_color=None, hover_line_color="white", legend=leg, size=msize)

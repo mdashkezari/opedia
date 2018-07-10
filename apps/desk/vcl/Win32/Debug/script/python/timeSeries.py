@@ -45,6 +45,8 @@ def iterative(table, field, dt):
         it = True
     if table.find('tblCHL_OI') != -1:
         it = True   
+    #if table.find('tblHOT_') != -1:
+    #    it = True   
     #if table.find('tblPisces') != -1:
     #    it = True
     return it
@@ -62,7 +64,7 @@ def timeSeries_iterative(table, field, startDate, endDate, lat1, lat2, lon1, lon
         ts.append(t)
         t1 = t
         t2 = t + timedelta(minutes=dt) + timedelta(seconds=-1)
-        df = gd.genericDist(table, field, t1, t2, lat1, lat2, lon1, lon2, extV, extVV, extV2, extVV2)        
+        df = gd.genericDist(table, field, t1, t2, lat1, lat2, lon1, lon2, extV, extVV, extV2, extVV2) 
         t = t + timedelta(minutes=dt)
         try:
             if len(df[field]) > 0:                

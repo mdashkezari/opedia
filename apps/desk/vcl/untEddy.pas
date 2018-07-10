@@ -125,6 +125,11 @@ begin
     begin
       extV:='depth';
       extVV:=frmMain.cbPiscesDepthStart.Text;
+    end
+    else if ContainsText(Variable.Table_Name, 'tblHOT_') then
+    begin
+      extV:='depth';
+      extVV:=frmMain.cbDepthStart.Text;
     end;
 
     extVars:=extVars+extV;
