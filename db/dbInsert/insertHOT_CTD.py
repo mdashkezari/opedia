@@ -41,7 +41,7 @@ def makeBulkCTD_HOT():
 
     df = convertJulians(df, ['julian'])
 
-    ## Are the below lat/lon values correct? PP measurements are cruise data?
+    ## Are the below lat/lon values correct?
     df['lat'] = 22.75
     df['lon'] = -158
     df['ID'] = None

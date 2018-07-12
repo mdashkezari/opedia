@@ -17,11 +17,11 @@ import math
 import insertPrep as ip
 
 
-
 def formatDate_Columns(df, dateLabels, fmt='%m%d%y'):
     date_len = 6    
     for dateLabel in dateLabels:
         date_ind = df.columns.get_loc(dateLabel)
+        df[dateLabel] =df[dateLabel].astype(int)
         df[dateLabel] =df[dateLabel].astype(str)
         df[dateLabel] = df[dateLabel].str.strip()
         for i in range(len(df)):        
@@ -29,20 +29,10 @@ def formatDate_Columns(df, dateLabels, fmt='%m%d%y'):
         df[dateLabel] =  pd.to_datetime(df[dateLabel], format=fmt)
     return df
 
-def formatTime_Columns(df, timeLabels, fmt='%H%M'):
-    time_len = 4
-    for timeLabel in timeLabels:
-        time_ind = df.columns.get_loc(timeLabel)
-        for i in range(len(df)):  
-            if len(df.iloc[i, time_ind]) > 1 : 
-                df.iloc[i, time_ind] = ('0'*(time_len-len(df.iloc[i, time_ind]))) + df.iloc[i, time_ind]
-        #df[timeLabel] =  pd.to_datetime(df[timeLabel], format=fmt, errors='ignore')
-    return df
 
-
-def makeBulkMacrozooplankton_HOT():
-    path = cfgv.rep_hot_raw + 'macrozooplankton.csv'    
-    prefix = 'mz_hot'
+def makeBulkBottle_HALE_HOT():
+    path = cfgv.rep_hot_raw + 'bottle_hale.csv'    
+    prefix = 'bot_hale_hot'
     missingValue = -9 
     df = pd.read_csv(path)   
     if ' ' in df.columns:
@@ -51,13 +41,14 @@ def makeBulkMacrozooplankton_HOT():
     df.columns = df.columns.str.replace(' ','')   
     df = df.apply(pd.to_numeric)
     df = df.replace(missingValue, '')
+    df = ip.removeMissings(['date'], df) 
 
     formatDate_Columns(df, ['date'])
-    #formatTime_Columns(df, ['stime', 'etime'])
 
-    ## Are the below lat/lon values correct?
-    df['lat'] = 22.75
-    df['lon'] = -158
+    ## Are the below lat/lon values correct? 
+    ## http://hahana.soest.hawaii.edu/hot/locations.html
+    df['lat'] = 22.458
+    df['lon'] = -158.13
     df['ID'] = None
     exportBase = cfgv.opedia_proj + 'db/dbInsert/export/'
     export_path = '%s%s.csv' % (exportBase, prefix)
@@ -66,12 +57,12 @@ def makeBulkMacrozooplankton_HOT():
 
 
 
-def bulkInsertMacrozooplankton_HOT(tableName):
-    dataTitle = 'HOT_Macrozooplankton'
+def bulkInsertBottle_HALE_HOT(tableName):
+    dataTitle = 'HOT_Bottle_HALE'
     print('%s  Inserting Bulk %s into %s.' % (datetime.today(), dataTitle, tableName))
     try:
         bulkPath = ''
-        bulkPath = makeBulkMacrozooplankton_HOT()
+        bulkPath = makeBulkBottle_HALE_HOT()
         dc.bulkInsert(bulkPath, tableName)
     finally:
         if bulkPath != '':
@@ -81,6 +72,6 @@ def bulkInsertMacrozooplankton_HOT(tableName):
 
 
 
-tableName = 'tblHOT_Macrozooplankton'
-bulkInsertMacrozooplankton_HOT(tableName)
+tableName = 'tblHOT_Bottle_HALE'
+bulkInsertBottle_HALE_HOT(tableName)
 

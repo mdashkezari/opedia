@@ -52,7 +52,7 @@ def makeBulkPP_HOT():
     formatDate_Columns(df, ['date'])
     #formatTime_Columns(df, ['stime', 'etime'])
 
-    ## Are the below lat/lon values correct? PP measurements are cruise data?
+    ## Are the below lat/lon values correct?
     df['lat'] = 22.75
     df['lon'] = -158
     df['ID'] = None

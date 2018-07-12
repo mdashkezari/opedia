@@ -16,12 +16,38 @@ import time
 import math
 import insertPrep as ip
 
+def stationLoc(station):
+    ## Are the below lat/lon values correct? has any one of them changed over years?
+    ## http://hahana.soest.hawaii.edu/hot/locations.html
+    if station == 'aloha':
+        station_lat = 22.75
+        station_lon = -158
+    elif station == 'hale':    
+        station_lat = 22.458
+        station_lon = -158.13
+    elif station == 'kahe':    
+        station_lat = 22.343
+        station_lon = -158.273
+    elif station == 'kaena':    
+        station_lat = 21.847
+        station_lon = -158.363
+    elif station == 'whots50':    
+        station_lat = 22.75
+        station_lon = -157.9
+    elif station == 'whots52':    
+        station_lat = 22.67
+        station_lon = -157.95
+    else:
+        print('ERROR: unknown station name: %s ' % station)
+        sys.exit()    
 
+    return station_lat, station_lon
 
 def formatDate_Columns(df, dateLabels, fmt='%m%d%y'):
     date_len = 6    
     for dateLabel in dateLabels:
         date_ind = df.columns.get_loc(dateLabel)
+        df[dateLabel] =df[dateLabel].astype(int)
         df[dateLabel] =df[dateLabel].astype(str)
         df[dateLabel] = df[dateLabel].str.strip()
         for i in range(len(df)):        
@@ -29,20 +55,9 @@ def formatDate_Columns(df, dateLabels, fmt='%m%d%y'):
         df[dateLabel] =  pd.to_datetime(df[dateLabel], format=fmt)
     return df
 
-def formatTime_Columns(df, timeLabels, fmt='%H%M'):
-    time_len = 4
-    for timeLabel in timeLabels:
-        time_ind = df.columns.get_loc(timeLabel)
-        for i in range(len(df)):  
-            if len(df.iloc[i, time_ind]) > 1 : 
-                df.iloc[i, time_ind] = ('0'*(time_len-len(df.iloc[i, time_ind]))) + df.iloc[i, time_ind]
-        #df[timeLabel] =  pd.to_datetime(df[timeLabel], format=fmt, errors='ignore')
-    return df
 
-
-def makeBulkMacrozooplankton_HOT():
-    path = cfgv.rep_hot_raw + 'macrozooplankton.csv'    
-    prefix = 'mz_hot'
+def makeBulkBottle_HOT(station):
+    path = cfgv.rep_hot_raw + 'bottle_%s.csv' % station    
     missingValue = -9 
     df = pd.read_csv(path)   
     if ' ' in df.columns:
@@ -51,13 +66,18 @@ def makeBulkMacrozooplankton_HOT():
     df.columns = df.columns.str.replace(' ','')   
     df = df.apply(pd.to_numeric)
     df = df.replace(missingValue, '')
-
+    df = ip.removeMissings(['date'], df) 
     formatDate_Columns(df, ['date'])
-    #formatTime_Columns(df, ['stime', 'etime'])
+    station_lat, station_lon = stationLoc(station)
+    df['lat'] = station_lat
+    df['lon'] = station_lon
+    return df
 
-    ## Are the below lat/lon values correct?
-    df['lat'] = 22.75
-    df['lon'] = -158
+    
+    
+def combine(dfs):
+    prefix = 'bot_hot'
+    df = pd.concat(dfs).reset_index(drop=True)
     df['ID'] = None
     exportBase = cfgv.opedia_proj + 'db/dbInsert/export/'
     export_path = '%s%s.csv' % (exportBase, prefix)
@@ -66,12 +86,16 @@ def makeBulkMacrozooplankton_HOT():
 
 
 
-def bulkInsertMacrozooplankton_HOT(tableName):
-    dataTitle = 'HOT_Macrozooplankton'
+def bulkInsertBottle_HOT(tableName):
+    dataTitle = 'HOT_Bottle'
     print('%s  Inserting Bulk %s into %s.' % (datetime.today(), dataTitle, tableName))
     try:
         bulkPath = ''
-        bulkPath = makeBulkMacrozooplankton_HOT()
+        stations = ['aloha', 'kahe', 'kaena', 'hale', 'whots50', 'whots52']
+        dfs = []
+        for station in stations:
+            dfs.append(makeBulkBottle_HOT(station))
+        bulkPath = combine(dfs) 
         dc.bulkInsert(bulkPath, tableName)
     finally:
         if bulkPath != '':
@@ -81,6 +105,6 @@ def bulkInsertMacrozooplankton_HOT(tableName):
 
 
 
-tableName = 'tblHOT_Macrozooplankton'
-bulkInsertMacrozooplankton_HOT(tableName)
+tableName = 'tblHOT_Bottle'
+bulkInsertBottle_HOT(tableName)
 
