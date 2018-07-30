@@ -97,6 +97,30 @@ hot_raw = station_raw + 'hot/'
 makedir(hot_raw)
 nrt_hot_raw, rep_hot_raw, doc_hot_raw, code_hot_raw = leafStruc(hot_raw)
 
+#########  obs/in-situ/float  #########
+float_raw = in_situ_raw + 'float/'
+makedir(float_raw)
+####  obs/in-situ/float/argo  #####
+argo_raw = float_raw + 'argo/'
+makedir(argo_raw)
+####  obs/in-situ/float/argo/index  #####
+index_argo_raw = argo_raw + 'index/'
+makedir(index_argo_raw)
+####  obs/in-situ/float/argo/prof  #####
+prof_argo_raw = argo_raw + 'prof/'
+makedir(prof_argo_raw)
+nrt_prof_argo_raw, rep_prof_argo_raw, doc_prof_argo_raw, code_prof_argo_raw = leafStruc(prof_argo_raw)
+####  obs/in-situ/float/argo/traj  #####
+traj_argo_raw = argo_raw + 'traj/'
+makedir(traj_argo_raw)
+nrt_traj_argo_raw, rep_traj_argo_raw, doc_traj_argo_raw, code_traj_argo_raw = leafStruc(traj_argo_raw)
+####  obs/in-situ/float/argo/merge  #####
+merge_argo_raw = argo_raw + 'merge/'
+makedir(merge_argo_raw)
+nrt_merge_argo_raw, rep_merge_argo_raw, doc_merge_argo_raw, code_merge_argo_raw = leafStruc(merge_argo_raw)
+
+
+
 
 ########  obs/remote/satellite  ########
 satellite_raw = remote_raw + 'satellite/'

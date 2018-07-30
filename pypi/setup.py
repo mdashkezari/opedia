@@ -1,34 +1,46 @@
-"""A setuptools based setup module.
-
-See:
-https://packaging.python.org/en/latest/distributing.html
-https://github.com/pypa/sampleproject
-"""
-
-# Always prefer setuptools over distutils
 from setuptools import setup, find_packages
-# To use a consistent encoding
 from codecs import open
+from setuptools.command.develop import develop
+from setuptools.command.install import install
 from os import path
 
 here = path.abspath(path.dirname(__file__))
-
 # Get the long description from the README file
 with open(path.join(here, 'README.md'), encoding='utf-8') as f:
     long_description = f.read()
 
-# Arguments marked as "Required" below must be included for upload to PyPI.
-# Fields marked as "Optional" may be commented out.
+
+def postPIP():
+    #f=open('E:/here.txt','w')
+    #f.write(here)
+    #f.close()
+    pass
+    return
+
+class PostDevelopCommand(develop):
+    def run(self):
+        postPIP()
+        develop.run(self)
+
+class PostInstallCommand(install):
+    def run(self):
+        postPIP()
+        install.run(self)
+        
 
 setup(
     name='opedia',
-    version='0.1.17',
+    version='0.1.22',
     description='Opedia is an open source database service to integrate, visualize, and analyze ocean datasets such as satellite data, in-situ observations, and model outputs.',
     long_description=long_description,
     long_description_content_type='text/markdown',
     url='https://github.com/mdashkezari/opedia/tree/master/pypi',
     author='Mohammad D. Ashkezari',
     author_email='demo.80@gmail.com',
+    cmdclass={
+        'develop': PostDevelopCommand,
+        'install': PostInstallCommand,
+    },
     classifiers=[
         'Development Status :: 3 - Alpha',
         'Intended Audience :: Science/Research',

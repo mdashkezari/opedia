@@ -27,13 +27,13 @@ Columns by order:
 2. **lat**: latitude
 	- type: float
 	- format: Decimal (not military grid system)
-	- unit: degree
+	- unit: degree north
 	- range: [-90, 90]
 
 3. **lon**: longitude
 	- type: float
 	- format: Decimal (not military grid system)
-	- unit: degree
+	- unit: degree east
 	- range: [-180, 180]
 
 4. **depth**: depth
