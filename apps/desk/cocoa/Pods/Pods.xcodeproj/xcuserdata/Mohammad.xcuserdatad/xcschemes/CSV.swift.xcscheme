@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "381887CAB67D2FE77DB313E7CA78009E"
-               BuildableName = "Pods_opedia.framework"
-               BlueprintName = "Pods-opedia"
+               BlueprintIdentifier = "701D4F02FAA85F5DE4F688FC7C082624"
+               BuildableName = "CSV.framework"
+               BlueprintName = "CSV.swift"
                ReferencedContainer = "container:Pods.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -45,9 +45,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "381887CAB67D2FE77DB313E7CA78009E"
-            BuildableName = "Pods_opedia.framework"
-            BlueprintName = "Pods-opedia"
+            BlueprintIdentifier = "701D4F02FAA85F5DE4F688FC7C082624"
+            BuildableName = "CSV.framework"
+            BlueprintName = "CSV.swift"
             ReferencedContainer = "container:Pods.xcodeproj">
          </BuildableReference>
       </MacroExpansion>

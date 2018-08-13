@@ -15,6 +15,9 @@ var opediaAPI: String = ""
 // bundle
 var bundlePath: String = ""
 
+// catalog file content
+var catalog: String = ""
+
 // query parameters
 var tables = ""
 var vars = ""

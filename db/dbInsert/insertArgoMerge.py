@@ -10,6 +10,13 @@ from netCDF4 import Dataset
 import netcdf as nc
 from datetime import datetime
 from datetime import timedelta 
+sys.path.append('../../lib')
+import dateLib as dl
+sys.path.append('../')
+import dbCore as dc
+import time
+
+
 
 
 def addParam(cols, param):
@@ -73,7 +80,7 @@ def mergeTemplate():
 
 
 
-def fillMergeDF(df, path):    
+def fillMergeDF(df, path, floatID_str, cycle_str):    
     net = Dataset(path, 'r')
     #dimensions
     N_PROF = net.dimensions['N_PROF'].size
@@ -180,7 +187,7 @@ def fillMergeDF(df, path):
         UNIQUE_PARAMS = UNIQUE_PARAMS + STATION_PARAMETERS[i]
     UNIQUE_PARAMS = list(set(UNIQUE_PARAMS))    
 
-
+   
     for param in UNIQUE_PARAMS:
         val = net.variables[param][:].flatten()
         val_qc = net.variables[param+'_QC'][:].flatten()
@@ -198,7 +205,6 @@ def fillMergeDF(df, path):
         df[param].replace(net.variables[param]._FillValue, replacement, inplace=True)
         df[param+'_ADJUSTED'].replace(net.variables[param+'_ADJUSTED']._FillValue, replacement, inplace=True)
         df[param+'_ADJUSTED_ERROR'].replace(net.variables[param+'_ADJUSTED_ERROR']._FillValue, replacement, inplace=True)
-    
 
     
     fmt= '%Y%m%d%H%M%S'
@@ -217,28 +223,49 @@ def fillMergeDF(df, path):
     ### remove all rows with empty PRES value
     df.dropna(subset=['PRES'], inplace=True) 
     ##########################################
-    '''
-    for param in UNIQUE_PARAMS:
-        df[param+'_QC'] = df[param+'_QC'].astype(float)
-        df[param+'_ADJUSTED_QC'] = df[param+'_ADJUSTED_QC'].astype(float)
-    '''
 
-    exportPath = 'C:/Users/Mohammad/Desktop/profs/%d_%d.csv' % (df['float_id'][0], df['cycle'][0])
+    ## remove all (potential) columns added after "ID". example: DOXY2 (duplicate sensors, see section 3.3.1 at user manual ver 3.2)
+    id_index = df.columns.get_loc("ID")
+    if len(df.columns)>id_index+1:
+        df.drop(df.columns[id_index+1:], axis=1, inplace=True)
+    ##########################################
+
+    exportBase = cfgv.opedia_proj + 'db/dbInsert/export/'
+    exportPath = '%s%s_%s.csv' % (exportBase, floatID_str, cycle_str)
+    #exportPath = '%sargo_merge.csv' % (exportBase)
     df.to_csv(exportPath, index=False)
     net.close()
     return df, exportPath
 
 
 
-profs = argo.loadArgoMerge(dataMode='D', ocean='all')
-for i in range(len(profs)):
-#for i in range(135, 136):
-    mergeDF = mergeTemplate()
-    fname = profs.iloc[i,0].split('/')[-1]
-    floatID = (fname.split('_')[0])[2:]
-    cycles = (fname.split('_')[1]).split('.')[0]
-    path = cfgv.rep_merge_argo_raw + fname 
-    print(i)   
-    #print(fname, floatID, cycles)
-    mergeDF, exportPath = fillMergeDF(mergeDF, path)
-    #print('-----------------')
+def bulkInsertArgoMerge(tableName):
+    profs = argo.loadArgoMerge(dataMode='D', ocean='all')
+    for i in range(len(profs)):
+        mergeDF = mergeTemplate()
+        fname = profs.iloc[i,0].split('/')[-1]
+        floatID = (fname.split('_')[0])[2:]
+        cycle = (fname.split('_')[1]).split('.')[0]
+        path = cfgv.rep_merge_argo_raw + fname
+        mergeDF, bulkPath = fillMergeDF(mergeDF, path, floatID, cycle)
+
+        print('%s  Argo_Merge profile (index: %d, name: %s)' % (datetime.today(), i, fname))
+        try:
+            dc.bulkInsert(bulkPath, tableName)
+        finally:
+            removed = False
+            while not removed:
+                try:
+                    os.remove(bulkPath)    
+                    removed = True
+                except:
+                    time.sleep(3)
+                    removed = False
+        print('%s  Done' % datetime.today())
+    return
+
+
+
+
+tableName = 'tblArgoMerge_REP'
+bulkInsertArgoMerge(tableName)

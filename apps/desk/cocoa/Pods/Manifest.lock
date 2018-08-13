@@ -1,16 +1,20 @@
 PODS:
+  - CSV.swift (2.2.1)
   - OGSwitch (1.0)
 
 DEPENDENCIES:
+  - CSV.swift (~> 2.2.1)
   - OGSwitch
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
+    - CSV.swift
     - OGSwitch
 
 SPEC CHECKSUMS:
+  CSV.swift: 5bf3338aff82371cb51cc6dc559d7b45a74bab14
   OGSwitch: 8874954f408834e8b7f9d8e69bcfa7ad6fd270fa
 
-PODFILE CHECKSUM: a3fb895d468908b6bd1c5705c47c62f087392fb0
+PODFILE CHECKSUM: 112c0ea9d2fb67293247667418ea47cfedeaa60a
 
 COCOAPODS: 1.5.3

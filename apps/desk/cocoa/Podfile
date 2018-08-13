@@ -7,5 +7,5 @@ target 'opedia' do
 
   # Pods for opedia
   pod 'OGSwitch'
-
+  pod 'CSV.swift', '~> 2.2.1'
 end

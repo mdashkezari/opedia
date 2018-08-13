@@ -8,6 +8,7 @@
 
 import Cocoa
 import OGSwitch
+import CSV
 import MapKit
 import QuartzCore
 
@@ -242,23 +243,25 @@ class MainVC: NSViewController, MKMapViewDelegate {
     }
 
     
-    func fileString()-> String! {
+    func readCatalog()-> CSVReader {
+        //https://github.com/yaslab/CSV.swift
         let file = bundlePath + "/data/catalog.csv"
-        print(1)
-        let fileURL = NSURL(string: file)
-        print(2)
-        do {
-            print(3)
-            let text = try String(contentsOf: fileURL! as URL, encoding: .utf8)
-            print(4)
-            print(text)
+        let stream = InputStream(fileAtPath: file)!
+        let csv = try! CSVReader(stream: stream, hasHeaderRow: true)
+        /*
+        let header = csv.headerRow
+        var counts = 0
+        while let row = csv.next() {
+            //print("\(row)")
+            //print(row[0])
+            //counts += 1
         }
-        catch {/* error handling here */}
-        
-        return ""
+        */
+        return csv
     }
-
-
+    
+    
+    
     
     
     // implemntation
@@ -268,7 +271,7 @@ class MainVC: NSViewController, MKMapViewDelegate {
         initUI()
 
         ///////// get cataloge /////////
-        runScript([pythonPath, "\(opediaAPI)getCatalog.py"])
+        runScript([pythonPath, "\(opediaAPI)getCatalog.py", bundlePath])
         ////////////////////////////////
         
         /////// gesture recognizer /////
@@ -287,7 +290,10 @@ class MainVC: NSViewController, MKMapViewDelegate {
     override func viewDidAppear() {
         //view.window?.makeFirstResponder(self)
        
-        fileString()
+        //TODO
+        //note that this going to run before the new "catalog" file is retrieved
+        //(currently, itis reading the last catalog file)
+        readCatalog()
     }
     
 
