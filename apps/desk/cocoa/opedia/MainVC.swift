@@ -13,7 +13,7 @@ import MapKit
 import QuartzCore
 
 class MainVC: NSViewController, MKMapViewDelegate {
-    // variables
+    // MARK: - variables
     var isRunning = false
     var outputPipe:Pipe!
     var proc:Process!
@@ -22,7 +22,7 @@ class MainVC: NSViewController, MKMapViewDelegate {
     var shapeLayer : CAShapeLayer!
 
     
-    // outlets
+    // MARK: - outlets
     @IBOutlet weak var spnBusy: NSProgressIndicator!
     //@IBOutlet var txvConsole: NSTextView!
     @IBOutlet weak var dpcStartDate: NSDatePicker!
@@ -32,12 +32,13 @@ class MainVC: NSViewController, MKMapViewDelegate {
     @IBOutlet weak var dslLon: RangeSlider!
     @IBOutlet weak var dslDepth: RangeSlider!
     @IBOutlet weak var mapView: MKMapView!
+    @IBOutlet var acCatalog: NSArrayController!
     
 
     
     
     
-    // actions
+    // MARK: - actions
     @IBAction func stopProc(_ sender: Any) {
         if isRunning {
             proc.terminate()
@@ -243,11 +244,33 @@ class MainVC: NSViewController, MKMapViewDelegate {
     }
 
     
-    func readCatalog()-> CSVReader {
+    func loadCatalog()-> CSVReader {
         //https://github.com/yaslab/CSV.swift
         let file = bundlePath + "/data/catalog.csv"
         let stream = InputStream(fileAtPath: file)!
         let csv = try! CSVReader(stream: stream, hasHeaderRow: true)
+                
+        while let row = csv.next() {
+            self.acCatalog.addObject(
+                CatalogVar(short_name: row[0],
+                           long_name: row[1],
+                           unit: row[2],
+                           make: row[3],
+                           sensor: row[4],
+                           process_level: row[5],
+                           study_domain: row[6],
+                           temporal_resolution: row[7],
+                           spatial_resolution: row[8],
+                           dataset_name: row[10],
+                           data_source: row[11],
+                           distributor: row[12],
+                           id: row[15],
+                           table_name: row[16],
+                           keywords: row[17]
+            )
+            )
+        }
+        
         /*
         let header = csv.headerRow
         var counts = 0
@@ -264,14 +287,14 @@ class MainVC: NSViewController, MKMapViewDelegate {
     
     
     
-    // implemntation
+    // MARK: - implemntation
     override func viewDidLoad() {
         super.viewDidLoad()
         Initializer().vcMainInitializer()
         initUI()
 
         ///////// get cataloge /////////
-        runScript([pythonPath, "\(opediaAPI)getCatalog.py", bundlePath])
+        //runScript([pythonPath, "\(opediaAPI)getCatalog.py", bundlePath])
         ////////////////////////////////
         
         /////// gesture recognizer /////
@@ -290,10 +313,10 @@ class MainVC: NSViewController, MKMapViewDelegate {
     override func viewDidAppear() {
         //view.window?.makeFirstResponder(self)
        
-        //TODO
-        //note that this going to run before the new "catalog" file is retrieved
+        // TODO: note that this going to run before the new "catalog" file is retrieved
         //(currently, itis reading the last catalog file)
-        readCatalog()
+        loadCatalog()
+        
     }
     
 

@@ -21,7 +21,9 @@ def catQuery():
     query = query + "RTRIM(LTRIM(Distributor)) AS [Distributor], "
     query = query + "RTRIM(LTRIM(Description)) AS [Dataset Description], "
     query = query + "[tblVariables].Dataset_ID AS [Dataset_ID], "
-    query = query + "[tblVariables].ID AS [ID] "
+    query = query + "[tblVariables].ID AS [ID], "
+    query = query + "[tblVariables].Table_Name AS [Table_Name], "
+    query = query + "[tblVariables].Keywords AS [Keywords] "
     
     query = query + "FROM tblVariables "
     query = query + "JOIN tblDatasets ON [tblVariables].Dataset_ID=[tblDatasets].ID "
