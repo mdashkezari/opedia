@@ -4,6 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
 import db
+import climatology as clim
 from datetime import datetime, timedelta
 import time
 from bokeh.plotting import figure, show, output_file
@@ -18,12 +19,6 @@ def embedComponents(fname, data):
     f.write(data)
     f.close()
     return
-
-def prepareGMQuery(table, dt):
-    query = "SELECT * FROM %s WHERE "
-    query = query + "[time]='%s' ORDER BY lat, lon"
-    query = query % (table, dt)
-    return query
 
 
 def getBounds(varName):
@@ -79,27 +74,45 @@ def getPalette(varName):
     return paletteName
 
 
+def prepareSectionQuery(table, field, date1, lat1, lat2, lon1, lon2, depth1, depth2):
+    if clim.isClimatology(table, field):
+        query = "SELECT [month], lat, lon, depth, %s FROM %s WHERE "
+        query = query + "[month]=%d AND "
+    else:
+        query = "SELECT [time], lat, lon, depth, %s FROM %s WHERE "
+        query = query + "[time]='%s' AND "
+    query = query + "lat BETWEEN %f AND %f AND "
+    query = query + "lon  BETWEEN %f AND %f AND "
+    query = query + "depth BETWEEN %f AND %f "
+    query = query + "ORDER BY lat, lon, depth "
+
+    if clim.isClimatology(table, field):
+        month = clim.timeToMonth(date1)
+        query = query % (field, table, month, float(lat1), float(lat2), float(lon1), float(lon2), float(depth1), float(depth2))
+    else:
+        query = query % (field, table, date1, float(lat1), float(lat2), float(lon1), float(lon2), float(depth1), float(depth2))
+    return query
+
+
 def exportData(df, path):
     df.to_csv(path, index=False)    
     return
 
 
 def sectionMap(tables, variabels, dt, lat1, lat2, lon1, lon2, depth1, depth2, fname, exportDataFlag):
-    '''
-    ############# App-Level Query #############
-    query = prepareGMQuery(table, dt)
-    df = db.dbFetch(query)
-    ###########################################
-    '''
-
-    ######### Stored Procedure Query ##########
     data = []
     subs = [] 
     for i in range(len(tables)):
+        '''
+        ######### Stored Procedure Query ##########
         args = [tables[i], variabels[i], dt, lat1, lat2, lon1, lon2, depth1, depth2]
         query = 'EXEC uspSectionMap ?, ?, ?, ?, ?, ?, ?, ?, ?'
         df = db.dbFetchStoredProc(query, args)        
         df = pd.DataFrame.from_records(df, columns=['time', 'lat', 'lon', 'depth', variabels[i]])
+        '''
+        query = prepareSectionQuery(tables[i], variabels[i], dt, lat1, lat2, lon1, lon2, depth1, depth2)
+        df = db.dbFetch(query)
+
         lat = df.lat.unique()
         lon = df.lon.unique()
         depth = df.depth.unique()

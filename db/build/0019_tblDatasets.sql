@@ -13,6 +13,7 @@ CREATE TABLE [dbo].[tblDatasets](
 	[Dataset_Name] [nvarchar](100) NOT NULL,
 	[Dataset_Long_Name] [nvarchar](500) NULL,
 	[Variables] [nvarchar](500) NULL,
+	[Climatology] [bit] NULL,
 	[Data_Source] [nvarchar](100) NULL,
 	[Distributor] [nvarchar](50) NULL,
 	[Description] [nvarchar](max) NULL,

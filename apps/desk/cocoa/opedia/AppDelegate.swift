@@ -19,6 +19,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         guard let window = NSApplication.shared.windows.first else { return }
         window.isOpaque = false
         window.backgroundColor = NSColor(red: 0.1, green:0.1, blue:0.1, alpha: 0.9)
+        //window.titlebarAppearsTransparent = false
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {

@@ -4,6 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
 import db
+import climatology as clim
 from datetime import datetime, timedelta
 import time
 from math import pi
@@ -28,11 +29,16 @@ def embedComponents(fname, data):
     f.close()
     return
 
-def exportData(z, y, yErr, table, variable, lat1, lat2, lon1, lon2, fname):
-    df = pd.DataFrame()
+def exportData(z, y, yErr, table, variable, date1, lat1, lat2, lon1, lon2, fname):
+    df = pd.DataFrame()    
     df['depth'] = z
     df[variable] = y
     df[variable+'_std'] = yErr
+    if clim.isClimatology(table, variable):
+        month = clim.timeToMonth(date1)   
+        df['month'] = month 
+    else:
+        df['time'] = date1
     df['lat1'] = lat1
     df['lat2'] = lat2
     df['lon1'] = lon1
@@ -44,7 +50,8 @@ def exportData(z, y, yErr, table, variable, lat1, lat2, lon1, lon2, fname):
     df.to_csv(path, index=False)    
     return
 
-def depthProfile(table, field, dt, lat1, lat2, lon1, lon2, depth1, depth2, fname):
+
+def depthProfile_iterative(table, field, dt, lat1, lat2, lon1, lon2, depth1, depth2, fname):
     y = np.array([])
     y_std = np.array([])
     depths = depthLevels(depth1, depth2)
@@ -84,6 +91,35 @@ def depthProfile(table, field, dt, lat1, lat2, lon1, lon2, depth1, depth2, fname
     if exportDataFlag:
         exportData(depths, y, y_std, table, field, lat1, lat2, lon1, lon2, fname)    
     return depths, y, y_std
+
+def prepareDepthProfileQuery(table, field, date1, lat1, lat2, lon1, lon2, depth1, depth2):
+    query = "SELECT AVG(lat) AS lat, AVG(lon) AS lon, AVG(%s) AS %s, STDEV(%s) AS %s_std, depth FROM %s WHERE "
+    if clim.isClimatology(table, field):
+        query = query + "[month]=%d AND "
+    else:
+        query = query + "[time]='%s' AND "
+    query = query + "lat BETWEEN %f AND %f AND "
+    query = query + "lon  BETWEEN %f AND %f AND "
+    query = query + "depth BETWEEN %f AND %f AND "
+    query = query + "ABS(%s) < 1e30 "           ## removing potential outliers (mostly in PISCES model)
+    query = query + "GROUP BY depth "
+    query = query + "ORDER BY depth "
+
+    if clim.isClimatology(table, field):
+        month = clim.timeToMonth(date1)
+        query = query % (field, field, field, field, table, month, lat1, lat2, lon1, lon2, depth1, depth2, field)
+    else:
+        query = query % (field, field, field, field, table, date1, lat1, lat2, lon1, lon2, depth1, depth2, field)
+    return query
+
+
+def depthProfile(table, field, date1, lat1, lat2, lon1, lon2, depth1, depth2, fname):
+    query = prepareDepthProfileQuery(table, field, date1, lat1, lat2, lon1, lon2, depth1, depth2)
+    df = db.dbFetch(query)
+    if exportDataFlag:
+        exportData(df['depth'], df[field], df[field + '_std'], table, field, date1, lat1, lat2, lon1, lon2, fname)    
+    return df['depth'], df[field], df[field + '_std']
+
 
 def plotDepthProfile(tables, variables, dt, lat1, lat2, lon1, lon2, depth1, depth2, fname, marker='-', msize=30, clr='orangered'):
     p = []

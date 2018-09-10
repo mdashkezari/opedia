@@ -12,7 +12,18 @@ import CSV
 import MapKit
 import QuartzCore
 
-class MainVC: NSViewController, MKMapViewDelegate {
+class MainVC: NSViewController, MKMapViewDelegate, NSTokenFieldCellDelegate, NSTokenFieldDelegate {
+    // MARK: - strucs
+    struct cat {
+        var short_name: String
+        var long_name: String
+        var make: String
+        var sensor: String
+        var table_name: String
+        var keywords: String
+        var ID: Int
+    }
+
     // MARK: - variables
     var isRunning = false
     var outputPipe:Pipe!
@@ -20,7 +31,8 @@ class MainVC: NSViewController, MKMapViewDelegate {
     var startPoint : NSPoint!
     var startCoord, endCoord : CLLocationCoordinate2D!
     var shapeLayer : CAShapeLayer!
-
+    var catItems = [cat]()
+    
     
     // MARK: - outlets
     @IBOutlet weak var spnBusy: NSProgressIndicator!
@@ -33,6 +45,7 @@ class MainVC: NSViewController, MKMapViewDelegate {
     @IBOutlet weak var dslDepth: RangeSlider!
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet var acCatalog: NSArrayController!
+    @IBOutlet weak var tokenField: NSTokenField!
     
 
     
@@ -57,7 +70,33 @@ class MainVC: NSViewController, MKMapViewDelegate {
         runScript([pythonPath, "\(opediaAPI)plotRegional.py", tables, vars, date1, lat1, lat2, lon1, lon2, fname, exportFlag, extV1, extVV1, bundlePath])
     }
 
+    @IBAction func plotMutualTrend(_ sender: Any) {
+        spnBusy.startAnimation(self)
+        updateQueryParams()
+        runScript([pythonPath, "\(opediaAPI)plotXY.py", tables, vars, date1, date2, lat1, lat2, lon1, lon2, fname, exportFlag, extV1, extVV1, extV2, extVV2, bundlePath])
+    }
+
+
+    @IBAction func plotHist(_ sender: Any) {
+        spnBusy.startAnimation(self)
+        updateQueryParams()
+        runScript([pythonPath, "\(opediaAPI)plotDist.py", tables, vars, date1, date2, lat1, lat2, lon1, lon2, fname, exportFlag, extV1, extVV1, extV2, extVV2, bundlePath])
+    }
     
+
+    @IBAction func plotDepthProfile(_ sender: Any) {
+        spnBusy.startAnimation(self)
+        updateQueryParams()
+        runScript([pythonPath, "\(opediaAPI)plotDepthProfile.py", tables, vars, date1, lat1, lat2, lon1, lon2, fname, exportFlag, depth1, depth2, bundlePath])
+    }
+
+    
+    @IBAction func plotSection(_ sender: Any) {
+        spnBusy.startAnimation(self)
+        updateQueryParams()
+        runScript([pythonPath, "\(opediaAPI)plotSection.py", tables, vars, date1, lat1, lat2, lon1, lon2, fname, exportFlag, depth1, depth2, bundlePath])
+    }
+
     
     /*
     func consoleOutput(_ task:Process) {
@@ -84,6 +123,8 @@ class MainVC: NSViewController, MKMapViewDelegate {
         swtExport.isOn = false
         swtExport.reloadLayer()
 
+        tokenField.objectValue = []
+        
         dslLat.colorStyle = .aqua
         dslLat.knobStyle = .circular
         dslLat.minValue = -90
@@ -111,7 +152,8 @@ class MainVC: NSViewController, MKMapViewDelegate {
         let taskQueue = DispatchQueue.global(qos: DispatchQoS.QoSClass.background)
         taskQueue.async {
             guard let path = Bundle.main.path(forResource: "BashScript",ofType:"command") else {
-                print("Unable to locate BashScript.command")
+                let answer = Initializer().msgDialog(headline: "Unable to locate BashScript.command", text: "")
+                //print("Unable to locate BashScript.command")
                 return
             }
             self.proc = Process()
@@ -123,6 +165,8 @@ class MainVC: NSViewController, MKMapViewDelegate {
                     //self.btnOpedia.isEnabled = true
                     self.spnBusy.stopAnimation(self)
                     self.isRunning = false
+                    //// process finished; check if it was asking for catalog
+                    if arguments[1].contains("getCatalog") { self.loadCatalog() }
                 })
             }
             
@@ -135,10 +179,8 @@ class MainVC: NSViewController, MKMapViewDelegate {
     
     func updateQueryParams() {
         let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd"
-
-        tables = "tblSST_AVHRR_OI_NRT"
-        vars = "sst"
+        formatter.dateFormat = "yyyy-MM-dd"        
+        (vars, tables, extV1, extVV1, extV2, extVV2) = parseTokens()
         date1 = formatter.string(from: dpcStartDate.dateValue)
         date2 = formatter.string(from: dpcEndDate.dateValue)
         lat1 = "\(dslLat.start)"
@@ -154,10 +196,6 @@ class MainVC: NSViewController, MKMapViewDelegate {
             exportFlag = "0"
         }
         exportFormat = "csv"
-        extV1 = "ignore"
-        extVV1 = "ignore"
-        extV2 = "ignore"
-        extVV2 = "ignore"
     }
 
     
@@ -249,8 +287,13 @@ class MainVC: NSViewController, MKMapViewDelegate {
         let file = bundlePath + "/data/catalog.csv"
         let stream = InputStream(fileAtPath: file)!
         let csv = try! CSVReader(stream: stream, hasHeaderRow: true)
-                
+        //let header = csv.headerRow
+        
         while let row = csv.next() {
+            // fill cat struct
+            catItems.append(cat(short_name: row[0], long_name: row[1], make: row[3], sensor: row[4], table_name: row[16], keywords: row[17], ID: Int(row[15])! ))
+            /*
+            // fill catalog array controller
             self.acCatalog.addObject(
                 CatalogVar(short_name: row[0],
                            long_name: row[1],
@@ -269,22 +312,93 @@ class MainVC: NSViewController, MKMapViewDelegate {
                            keywords: row[17]
             )
             )
+             */
         }
-        
-        /*
-        let header = csv.headerRow
-        var counts = 0
-        while let row = csv.next() {
-            //print("\(row)")
-            //print(row[0])
-            //counts += 1
-        }
-        */
         return csv
     }
     
     
+    func extractTokenID(_ tokenValue: String)->Int? {
+        let prefix = " ID("
+        if tokenValue.contains(prefix) == false {return nil}
+        let start = tokenValue.range(of: prefix)?.upperBound
+        let end = tokenValue.index(before: tokenValue.endIndex)
+        let ID = tokenValue[start!..<end]
+        return Int(ID)
+    }
     
+    func getTokenIDs() -> [Int]{
+        var res = [Int]()
+        let tokenCounts = (tokenField.objectValue as! NSArray).count
+        if tokenCounts<1 {return res}
+        for i in 0...tokenCounts-1 {
+            if let ID = extractTokenID((tokenField.objectValue as! NSArray)[i] as! String) {
+                res.append(ID)
+            } else {continue}
+        }
+        return res
+    }
+    
+    func parseTokens() -> (String, String, String, String, String, String) {
+        var vars: String = ""
+        var tables: String = ""
+        var extVs: String = ""
+        var extVVs: String = ""
+        var extVs2: String = ""
+        var extVVs2: String = ""
+
+        var extV: String = ""
+        var extVV: String = ""
+        var extV2: String = ""
+        var extVV2: String = ""
+
+        let IDs = getTokenIDs()
+        if IDs.count<1 {return (vars, tables, extVs, extVVs, extVs2, extVVs2)}
+        
+        for i in 0...IDs.count-1 {
+            let token = catItems.filter({return $0.ID == IDs[i]})
+            vars += token[0].short_name
+            tables += token[0].table_name
+            
+            extV = "ignore"
+            extVV = "ignore"
+            extV2 = "ignore"
+            extVV2 = "ignore"
+            if token[0].table_name.contains("Wind") {
+                extV = "hour"
+                extVV = "12"
+                extV2 = "hour"
+                extVV2 = "12"
+            }
+            if token[0].table_name.contains("Pisces") ||
+               token[0].table_name.contains("Darwin") ||
+               token[0].table_name.contains("tblHOT_") ||
+               token[0].table_name.contains("tblCobalamin") ||
+               token[0].table_name.contains("tblArgo") {
+                
+                extV = "depth"
+                extVV = "\(dslDepth.start)"
+                extV2 = "depth"
+                extVV2 = "\(dslDepth.end)"
+            }
+
+            extVs += extV
+            extVVs += extVV
+            extVs2 += extV2
+            extVVs2 += extVV2
+            
+            if i<IDs.count-1 {
+                vars += ","
+                tables += ","
+                extVs += ","
+                extVVs += ","
+                extVs2 += ","
+                extVVs2 += ","
+
+            }
+        }
+        return (vars, tables, extVs, extVVs, extVs2, extVVs2)
+    }
     
     
     // MARK: - implemntation
@@ -294,7 +408,8 @@ class MainVC: NSViewController, MKMapViewDelegate {
         initUI()
 
         ///////// get cataloge /////////
-        //runScript([pythonPath, "\(opediaAPI)getCatalog.py", bundlePath])
+        spnBusy.startAnimation(self)
+        runScript([pythonPath, "\(opediaAPI)getCatalog.py", bundlePath])
         ////////////////////////////////
         
         /////// gesture recognizer /////
@@ -312,14 +427,21 @@ class MainVC: NSViewController, MKMapViewDelegate {
 
     override func viewDidAppear() {
         //view.window?.makeFirstResponder(self)
-       
-        // TODO: note that this going to run before the new "catalog" file is retrieved
-        //(currently, itis reading the last catalog file)
-        loadCatalog()
-        
+        // loadCatalog()
     }
     
 
+    func tokenField(_ tokenField: NSTokenField, completionsForSubstring substring: String, indexOfToken tokenIndex: Int, indexOfSelectedItem selectedIndex: UnsafeMutablePointer<Int>?) -> [Any]? {
+        var res = [String]()
+        res = catItems.filter({ return $0.keywords.lowercased().contains(substring.lowercased())}).map({$0.short_name + ": " + $0.long_name + " ID(" + String($0.ID) + ")"})
+        res.insert(substring, at: 0)
+        return res
+        //return (catShortNames as NSArray).filtered(using: NSPredicate(format: "SELF beginswith[cd] %@", substring)) as [Any]
+    }
+    
+    func tokenField(_ tokenField: NSTokenField, hasMenuForRepresentedObject representedObject: Any) -> Bool {
+        return true
+    }
     
     
     
@@ -335,9 +457,6 @@ class MainVC: NSViewController, MKMapViewDelegate {
     }
     
     */
-    
-
-    
-    
+        
 }
 
