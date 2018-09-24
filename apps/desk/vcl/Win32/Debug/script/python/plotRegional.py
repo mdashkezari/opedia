@@ -1,3 +1,5 @@
+
+from docopt import docopt
 import sys
 import os
 import numpy as np
@@ -12,18 +14,6 @@ from bokeh.palettes import all_palettes
 from bokeh.models import LinearColorMapper, BasicTicker, ColorBar
 from bokeh.embed import components
 
-
-def embedComponents(fname, data):
-    f = open(fname, 'w')
-    f.write(data)
-    f.close()
-    return
-
-def prepareGMQuery(table, dt):
-    query = "SELECT * FROM %s WHERE "
-    query = query + "[time]='%s' ORDER BY lat, lon"
-    query = query % (table, dt)
-    return query
 
 
 def getBounds(varName):
@@ -53,7 +43,7 @@ def getBounds(varName):
     elif varName.find('sla') != -1:
         bounds = (-0.3, 0.3)          
     elif varName.find('vort') != -1:
-        bounds = (-4e-6, 4e6)          
+        bounds = (-4e-6, 4e-6)          
     return bounds
 
 def getPalette(varName):
@@ -90,51 +80,53 @@ def exportData(df, path):
     return
 
 
-def RegionalMap(tables, variabels, dt, lat1, lat2, lon1, lon2, arg8, arg9, fname, exportDataFlag):
-    '''
-    ############# App-Level Query #############
-    query = prepareGMQuery(table, dt)
-    df = db.dbFetch(query)
-    ###########################################
-    '''
+def RegionalMap(tables, variabels, dt1, dt2, lat1, lat2, lon1, lon2, depth1, depth2, fname, exportDataFlag):
+    data, lats, lons, subs, frameVars = [], [], [], [], []
+    for i in range(len(tables)):
+        args = [tables[i], variabels[i], dt1, dt2, lat1, lat2, lon1, lon2, depth1, depth2]
+        query = 'EXEC uspTimeSpace ?, ?, ?, ?, ?, ?, ?, ?, ?, ?'
+        df = db.dbFetchStoredProc(query, args)   
+        if len(df) < 1:
+            continue
+        times = df[df.columns[0]].unique()  
+        lats = df.lat.unique()
+        lons = df.lon.unique()
+        shape = (len(lats), len(lons))
+       
+        depths, hours =  [None], [None]
+        if 'depth' in df.columns:
+            depths = df.depth.unique()
+        if 'hour' in df.columns:
+            hours = df.hour.unique()
 
-    ######### Stored Procedure Query ##########
-    data = []
-    subs = [] 
-    for i in range(len(tables)):
-        if arg8[i].find('ignore') != -1:
-            arg8[i]=None
-        if arg9[i].find('ignore') != -1:
-            arg9[i]=None
-    for i in range(len(tables)):
-        args = [tables[i], variabels[i], dt, lat1, lat2, lon1, lon2, arg8[i], arg9[i]]
-        query = 'EXEC uspRegionalMap ?, ?, ?, ?, ?, ?, ?, ?, ?'
-        df = db.dbFetchStoredProc(query, args)        
-        df = pd.DataFrame.from_records(df, columns=['time', 'lat', 'lon', variabels[i]])
-        lat = df.lat.unique()
-        lon = df.lon.unique()
-        shape = (len(lat), len(lon))
-        
-        if tables[i].find('Vort') != -1: 
-            data.append(np.transpose(df[variabels[i]].values.reshape(shape)))
-        else:    
-            data.append(df[variabels[i]].values.reshape(shape))
-        
         unit =  ' [' + db.getVar(tables[i], variabels[i]).iloc[0]['Unit'] + ']'
-        if arg8[i] != None:
-            if tables[i].find('Wind') != -1:
-                sub = variabels[i] + unit + ' ' + dt + ' ' + arg9[i] + 'H'
-            if tables[i].find('Pisces') != -1:
-                sub = variabels[i] + unit + ' ' + dt + ' Depth: ' + arg9[i] + ' m'
-        else:
-            sub = variabels[i] + unit + ' ' + dt    
-        subs.append(sub)
-        if exportDataFlag:      # export data
-            dirPath = 'data/'
-            if not os.path.exists(dirPath):
-                os.makedirs(dirPath)                
-            exportData(df, path=dirPath + 'RM_' + tables[i] + '_' + variabels[i] + '.csv')
-    bokehGM(data=data, subject=subs, fname=fname, lat=lat, lon=lon, variabels=variabels)
+        for t in times:
+            for h in hours:
+                for z in depths:
+                    exportPathExtension = ''                    
+                    frame = df[df[df.columns[0]] == t]
+                    sub = variabels[i] + unit + ', ' + df.columns[0] + ': ' + str(t) 
+                    exportPathExtension +=  '_' + df.columns[0] + '_' + str(t)
+                    if h != None:
+                        frame = frame[frame['hour'] == h]
+                        sub = sub + ', hour: ' + str(h) + 'hr'
+                        exportPathExtension += '_Hour_' + str(h)
+                    if z != None:
+                        frame = frame[frame['depth'] == z] 
+                        sub = sub + ', depth: %2.2f' % z + ' [m]'  
+                        exportPathExtension += '_depth_' + str(z) 
+                    shot = frame[variabels[i]].values.reshape(shape)
+                    data.append(shot)
+                    frameVars.append(variabels[i])
+                    subs.append(sub)
+                    if exportDataFlag:      # export data
+                        dirPath = 'data/'
+                        if not os.path.exists(dirPath):
+                            os.makedirs(dirPath)     
+                        exportPath = dirPath + 'RM_' + tables[i] + '_' + variabels[i]               
+                        exportData(frame, path=exportPath + exportPathExtension + '.csv')
+
+    bokehGM(data=data, subject=subs, fname=fname, lat=lats, lon=lons, variabels=frameVars)
     return
 
 
@@ -167,19 +159,21 @@ def bokehGM(data, subject, fname, lat, lon, variabels):
 
 
 
-arg1 = sys.argv[1]      #tables
-arg2 = sys.argv[2]      #variables
-arg3 = sys.argv[3]      #dt
-arg4 = sys.argv[4]      #lat1
-arg5 = sys.argv[5]      #lat2
-arg6 = sys.argv[6]      #lon1
-arg7 = sys.argv[7]      #lon2
-fname = sys.argv[8]
-exportDataFlag = bool(int(sys.argv[9]))
-arg8 = None
-arg9 = None
-if len(sys.argv)>11:
-    arg8 = sys.argv[10]      #extra condition: var_name
-    arg9 = sys.argv[11]      #extra condition: var_val
 
-RegionalMap(arg1.split(','), arg2.split(','), arg3, arg4, arg5, arg6, arg7, arg8.split(','), arg9.split(','), fname, exportDataFlag)
+
+
+tables = sys.argv[1]      
+variables = sys.argv[2]      
+dt1 = sys.argv[3]      
+dt2 = sys.argv[4]      
+lat1 = sys.argv[5]      
+lat2 = sys.argv[6]      
+lon1 = sys.argv[7]      
+lon2 = sys.argv[8]      
+depth1 = sys.argv[9]      
+depth2 = sys.argv[10]      
+fname = sys.argv[11]
+exportDataFlag = bool(int(sys.argv[12]))
+
+
+RegionalMap(tables.split(','), variables.split(','), dt1, dt2, lat1, lat2, lon1, lon2, depth1, depth2, fname, exportDataFlag)

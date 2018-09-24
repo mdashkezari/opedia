@@ -1,8 +1,8 @@
 object frmMain: TfrmMain
   Left = 0
   Top = 0
-  Caption = 'Opedia 0.1.14'
-  ClientHeight = 948
+  Caption = 'Opedia 0.1.31'
+  ClientHeight = 967
   ClientWidth = 1330
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -19,14 +19,15 @@ object frmMain: TfrmMain
     Left = 0
     Top = 0
     Width = 1070
-    Height = 923
+    Height = 942
     Align = alClient
     TabOrder = 0
+    ExplicitHeight = 923
     object Map: TdxMapControl
       Left = 0
       Top = 0
       Width = 1068
-      Height = 921
+      Height = 940
       Align = alClient
       LookAndFeel.NativeStyle = False
       PopupMenu = dxRibbonRadialMenu1
@@ -35,6 +36,7 @@ object frmMain: TfrmMain
       OnMouseDown = MapMouseDown
       OnMouseUp = MapMouseUp
       OnResize = MapResize
+      ExplicitHeight = 921
       object dxMapControl1ImageTileLayer1: TdxMapImageTileLayer
         ProviderClassName = 'TdxMapControlBingMapImageryDataProvider'
         Provider.BingKey = 
@@ -73,12 +75,13 @@ object frmMain: TfrmMain
     Left = 1070
     Top = 0
     Width = 260
-    Height = 923
+    Height = 942
     Align = alRight
     Color = clBtnFace
     ParentColor = False
     PopupMenu = dxRibbonRadialMenu1
     TabOrder = 1
+    ExplicitHeight = 923
     object cxGroupBox1: TcxGroupBox
       Left = 9
       Top = 32
@@ -159,13 +162,12 @@ object frmMain: TfrmMain
       Style.Font.Style = [fsBold]
       Style.IsFontAssigned = True
       TabOrder = 1
-      Height = 396
+      Height = 420
       Width = 241
       object dtwpTimeStart: TdxDateTimeWheelPicker
         Left = 8
-        Top = 29
+        Top = 30
         ParentFont = False
-        Properties.Wheels = [pwYear, pwMonth, pwDay, pwHour]
         Style.Font.Charset = DEFAULT_CHARSET
         Style.Font.Color = clWindowText
         Style.Font.Height = -11
@@ -173,14 +175,13 @@ object frmMain: TfrmMain
         Style.Font.Style = []
         Style.IsFontAssigned = True
         TabOrder = 0
-        Height = 163
+        Height = 175
         Width = 220
       end
       object dtwpTimeEnd: TdxDateTimeWheelPicker
         Left = 8
-        Top = 221
+        Top = 238
         ParentFont = False
-        Properties.Wheels = [pwYear, pwMonth, pwDay, pwHour]
         Style.Font.Charset = DEFAULT_CHARSET
         Style.Font.Color = clWindowText
         Style.Font.Height = -11
@@ -188,7 +189,7 @@ object frmMain: TfrmMain
         Style.Font.Style = []
         Style.IsFontAssigned = True
         TabOrder = 1
-        Height = 163
+        Height = 175
         Width = 220
       end
       object cxLabel1: TcxLabel
@@ -206,7 +207,7 @@ object frmMain: TfrmMain
       end
       object cxLabel2: TcxLabel
         Left = 6
-        Top = 200
+        Top = 217
         Caption = 'End Date'
         ParentFont = False
         Style.Font.Charset = DEFAULT_CHARSET
@@ -220,7 +221,7 @@ object frmMain: TfrmMain
     end
     object cxGroupBox3: TcxGroupBox
       Left = 5
-      Top = 668
+      Top = 692
       ParentFont = False
       Style.Font.Charset = DEFAULT_CHARSET
       Style.Font.Color = clWindowText
@@ -681,7 +682,7 @@ object frmMain: TfrmMain
     end
     object cxLabel10: TcxLabel
       Left = 5
-      Top = 639
+      Top = 663
       Caption = 'III. Spatial domain'
       ParentFont = False
       Style.Font.Charset = DEFAULT_CHARSET
@@ -721,11 +722,12 @@ object frmMain: TfrmMain
   end
   object cxScrollBox1: TcxScrollBox
     Left = 0
-    Top = 923
+    Top = 942
     Width = 1330
     Height = 25
     Align = alBottom
     TabOrder = 6
+    ExplicitTop = 923
     object cxProgressBar1: TcxProgressBar
       Left = 0
       Top = 0

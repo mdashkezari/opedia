@@ -531,6 +531,72 @@ begin
   SetRangeTrackbar_Lat;
 end;
 
+procedure runPython(script, tables, vars, dt1, dt2, lat1, lat2, lon1, lon2, depth1, depth2, fname, exportflag:string);
+var
+  opediaPath:string;
+begin
+  opediaPath:='./script/python/';
+  opediaPath:='C:\\Users\\Mohammad\\Anaconda2\\lib\\site-packages\\opedia\\';
+  // >>> import site
+  // >>> site.getsitepackages()
+  ShellExecute(0, nil, 'python', Pchar(' '+opediaPath+script+' '+tables+' '+vars+' '+dt1+' '+dt2+' '+lat1+' '+lat2+' '+lon1+' '+lon2+' '+depth1+' '+depth2+' '+fname+' '+exportflag), nil, SW_HIDE);
+  //frmMain.edit1.text:='python' + Pchar(' '+opediaPath+script+' '+tables+' '+vars+' '+dt1+' '+dt2+' '+lat1+' '+lat2+' '+lon1+' '+lon2+' '+depth1+' '+depth2+' '+fname+' '+exportflag);
+end;
+
+procedure callOpedia(script:string; minVar:integer; fname:string);
+var
+  dt1, dt2, lat1, lat2, lon1, lon2, depth1, depth2, exportflag: String;
+  i, count:integer;
+  Variable:TVar;
+  vars, tables: String;
+begin
+  if frmMain.ledtVars.Values.Count<minVar then
+  begin
+    if minVar>1 then
+      MessageDlg('Please pick at least '+inttostr(minVar)+' variables.', mtError, [mbok], 0)
+    else
+      MessageDlg('Please pick at least '+inttostr(minVar)+' variable.', mtError, [mbok], 0);
+    Exit;
+  end;
+
+  Busy(True);
+  vars:='';
+  tables:='';
+  count:=frmMain.ledtVars.Values.Count-1;
+  for I := 0 to count do
+  begin
+    Variable:=GetVariable(frmMain.ledtVars.Values.Items[i].Tag);
+    tables:=tables+Variable.Table_Name;
+    vars:=vars+Variable.Short_Name;
+    dt1:=FormatDateTime('yyyy-mm-dd',frmMain.dtwpTimeStart.DateTime);
+    dt2:=FormatDateTime('yyyy-mm-dd',frmMain.dtwpTimeEnd.DateTime);
+    lat1:=frmMain.edtLat1.Text;
+    lat2:=frmMain.edtLat2.Text;
+    lon1:=frmMain.edtLon1.Text;
+    lon2:=frmMain.edtLon2.Text;
+    depth1:=frmMain.cbPiscesDepthStart.Text;
+    depth2:=frmMain.cbPiscesDepthEnd.Text;
+
+    if i<count then
+    begin
+      tables:=tables+',';
+      vars:=vars+',';
+    end;
+  end;
+
+  exportflag:=inttostr(getExportDataFlag);
+  runPython(script, tables, vars, dt1, dt2, lat1, lat2, lon1, lon2, depth1, depth2, fname, exportflag);
+
+  DeleteFile('embed/'+fname+'.html');
+  sleep(1000);
+  repeat
+    Application.ProcessMessages;
+  until FileExists('embed/'+fname+'.html');
+
+  Busy(False);
+end;
+
+
 
 {$R *.dfm}
 
@@ -601,6 +667,11 @@ var
   Variable:TVar;
   vars, tables, extV, extVV, extVars, extVarVals: String;
 begin
+
+  callOpedia('plotRegional.py', 1, 'RM');
+
+
+  {
   if ledtVars.Values.Count<1 then
   begin
     MessageDlg('Please pick at least one variable.', mtError, [mbok], 0);
@@ -661,6 +732,7 @@ begin
   until FileExists('embed/'+fname+'.html');
 
   Busy(False);
+  }
 end;
 
 procedure TfrmMain.barHistogramClick(Sender: TObject);

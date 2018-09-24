@@ -3,7 +3,7 @@ import sys
 sys.dont_write_bytecode = True
 import pyodbc
 import pandas.io.sql as sql
-
+from pandas import DataFrame
 
 
 def dbConnect(usr='ArmLab', psw='ArmLab2018', ip='128.208.239.15', port='1433', db='Opedia'):
@@ -33,6 +33,10 @@ def dbFetchStoredProc(query, args):
         args = [ str(a) if a is not None else a for a in args ]
     cur.execute(query, args)
     df = cur.fetchall()
+
+    cols = [column[0] for column in cur.description]
+    df = DataFrame.from_records(df, columns=cols)
+
     conn.close()
     return df
 
@@ -50,3 +54,18 @@ def getVar(tableName, varName):
     query = "SELECT * FROM tblVariables WHERE Table_Name='%s' AND Short_Name='%s'" % (tableName, varName)
     df = dbFetch(query)
     return df
+
+def getTableName(varName):
+    ## 
+    query = "SELECT * FROM tblVariables WHERE Table_Name='%s' AND Short_Name='%s'" % (tableName, varName)
+    df = dbFetch(query)
+    return df
+
+def hasField(tableName, field):
+    query = "SELECT COL_LENGTH('%s', '%s') AS RESULT " % (tableName, field)
+    df = dbFetch(query)
+    return False if df['RESULT'][0] == None else True
+
+
+def isClimatology(tableName):
+    return True if tableName.find('_Climatology') != -1 else False    
