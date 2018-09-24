@@ -67,7 +67,7 @@ class MainVC: NSViewController, MKMapViewDelegate, NSTokenFieldCellDelegate, NST
     @IBAction func plotRegionalMap(_ sender: Any) {
         spnBusy.startAnimation(self)
         updateQueryParams()
-        runScript([pythonPath, "\(opediaAPI)plotRegional.py", tables, vars, date1, lat1, lat2, lon1, lon2, fname, exportFlag, extV1, extVV1, bundlePath])
+        runScript([pythonPath, "\(opediaAPI)plotRegional.py", tables, vars, date1, date2, lat1, lat2, lon1, lon2, depth1, depth2, fname, exportFlag, bundlePath])
     }
 
     @IBAction func plotMutualTrend(_ sender: Any) {
