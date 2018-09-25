@@ -536,11 +536,14 @@ var
   opediaPath:string;
 begin
   opediaPath:='./script/python/';
-  opediaPath:='C:\\Users\\Mohammad\\Anaconda2\\lib\\site-packages\\opedia\\';
+  opediaPath:='H:\\Dropbox\\projects\\opedia\\pypi\\opedia\\';
+  //opediaPath:='C:\\Users\\Mohammad\\Anaconda2\\lib\\site-packages\\opedia\\';
+
   // >>> import site
   // >>> site.getsitepackages()
+
   ShellExecute(0, nil, 'python', Pchar(' '+opediaPath+script+' '+tables+' '+vars+' '+dt1+' '+dt2+' '+lat1+' '+lat2+' '+lon1+' '+lon2+' '+depth1+' '+depth2+' '+fname+' '+exportflag), nil, SW_HIDE);
-  //frmMain.edit1.text:='python' + Pchar(' '+opediaPath+script+' '+tables+' '+vars+' '+dt1+' '+dt2+' '+lat1+' '+lat2+' '+lon1+' '+lon2+' '+depth1+' '+depth2+' '+fname+' '+exportflag);
+  frmMain.edit1.text:='python' + Pchar(' '+opediaPath+script+' '+tables+' '+vars+' '+dt1+' '+dt2+' '+lat1+' '+lat2+' '+lon1+' '+lon2+' '+depth1+' '+depth2+' '+fname+' '+exportflag);
 end;
 
 procedure callOpedia(script:string; minVar:integer; fname:string);
@@ -661,164 +664,13 @@ begin
 end;
 
 procedure TfrmMain.barGMClick(Sender: TObject);
-var
-  dt, fname, exportflag: String;
-  i, count:integer;
-  Variable:TVar;
-  vars, tables, extV, extVV, extVars, extVarVals: String;
 begin
-
   callOpedia('plotRegional.py', 1, 'RM');
-
-
-  {
-  if ledtVars.Values.Count<1 then
-  begin
-    MessageDlg('Please pick at least one variable.', mtError, [mbok], 0);
-    Exit;
-  end;
-
-  Busy(True);
-  vars:='';
-  tables:='';
-  extVars:='';
-  extVarVals:='';
-  count:=ledtVars.Values.Count-1;
-  for I := 0 to count do
-  begin
-    Variable:=GetVariable(ledtVars.Values.Items[i].Tag);
-    dt:=FormatDateTime('yyyy-mm-dd',dtwpTimeStart.DateTime);
-    tables:=tables+Variable.Table_Name;
-    vars:=vars+Variable.Short_Name;
-
-    extV:='ignore';
-    extVV:='ignore';
-    if ContainsText(Variable.Table_Name, 'Wind') then
-    begin
-      extV:='hour';
-      extVV:=InttoStr(6*(Hourof(dtwpTimeStart.DateTime) div 6));
-    end
-    else if ContainsText(Variable.Table_Name, 'Pisces') then
-    begin
-      extV:='depth';
-      extVV:=cbPiscesDepthStart.Text;
-    end
-    else if ContainsText(Variable.Table_Name, 'tblHOT_') then
-    begin
-      extV:='depth';
-      extVV:=cbDepthStart.Text;
-    end;
-
-    extVars:=extVars+extV;
-    extVarVals:=extVarVals+extVV;
-    if i<count then
-    begin
-      tables:=tables+',';
-      vars:=vars+',';
-      extVars:=extVars+',';
-      extVarVals:=extVarVals+',';
-    end;
-  end;
-  fname:='RM';
-  exportflag:=inttostr(getExportDataFlag);
-  ShellExecute(0, nil, 'python', Pchar(' ./script/python/plotRegional.py '+tables+' '+vars+' '+dt+' '+edtLat1.Text+' '+edtLat2.Text+' '+edtLon1.Text+' '+edtLon2.Text+' '+fname+' '+exportflag+' '+extVars+' '+extVarVals), nil, SW_HIDE);
-  edit1.text:='python'+ Pchar(' ./script/python/plotRegional.py '+tables+' '+vars+' '+dt+' '+edtLat1.Text+' '+edtLat2.Text+' '+edtLon1.Text+' '+edtLon2.Text+' '+fname+' '+exportflag+' '+extVars+' '+extVarVals);
-
-
-  DeleteFile('embed/'+fname+'.html');
-  sleep(1000);
-  repeat
-    Application.ProcessMessages;
-  until FileExists('embed/'+fname+'.html');
-
-  Busy(False);
-  }
 end;
 
 procedure TfrmMain.barHistogramClick(Sender: TObject);
-var
-  dt1, dt2, fname, exportflag: String;
-  i, count:integer;
-  Variable:TVar;
-  vars, tables: String;
-  extV, extVV, extVars, extVarVals: String;
-  extV2, extVV2, extVars2, extVarVals2: String;
 begin
-  if ledtVars.Values.Count<1 then
-  begin
-    MessageDlg('Please pick at least one variable.', mtError, [mbok], 0);
-    Exit;
-  end;
-
-  Busy(True);
-  vars:='';
-  tables:='';
-  extVars:='';
-  extVarVals:='';
-  extVars2:='';
-  extVarVals2:='';
-  count:=ledtVars.Values.Count-1;
-  for I := 0 to count do
-  begin
-    Variable:=GetVariable(ledtVars.Values.Items[i].Tag);
-    dt1:=FormatDateTime('yyyy-mm-dd',dtwpTimeStart.DateTime);
-    dt2:=FormatDateTime('yyyy-mm-dd',dtwpTimeEnd.DateTime);
-    tables:=tables+Variable.Table_Name;
-    vars:=vars+Variable.Short_Name;
-
-    extV:='ignore';
-    extVV:='ignore';
-    extV2:='ignore';
-    extVV2:='ignore';
-    if ContainsText(Variable.Table_Name, 'Wind') then
-    begin
-      extV:='hour';
-      extVV:=InttoStr(6*(Hourof(dtwpTimeStart.DateTime) div 6));
-
-      extV2:='hour';
-      extVV2:=InttoStr(6*(Hourof(dtwpTimeEnd.DateTime) div 6));
-    end
-    else if ContainsText(Variable.Table_Name, 'Pisces') then
-    begin
-      extV:='depth';
-      extVV:=cbPiscesDepthStart.Text;
-    end
-    else if ContainsText(Variable.Table_Name, 'tblHOT_') then
-    begin
-      extV:='depth';
-      extVV:=cbDepthStart.Text;
-    end;
-
-
-    extVars:=extVars+extV;
-    extVarVals:=extVarVals+extVV;
-
-    extVars2:=extVars2+extV2;
-    extVarVals2:=extVarVals2+extVV2;
-
-    if i<count then
-    begin
-      tables:=tables+',';
-      vars:=vars+',';
-      extVars:=extVars+',';
-      extVarVals:=extVarVals+',';
-      extVars2:=extVars2+',';
-      extVarVals2:=extVarVals2+',';
-    end;
-  end;
-  fname:='Dist';
-  exportflag:=inttostr(getExportDataFlag);
-  ShellExecute(0, nil, 'python', Pchar(' ./script/python/plotDist.py '+tables+' '+vars+' '+dt1+' '+dt2+' '+edtLat1.Text+' '+edtLat2.Text+' '+edtLon1.Text+' '+edtLon2.Text+' '+fname+' '+exportflag+' '+extVars+' '+extVarVals+' '+extVars2+' '+extVarVals2), nil, SW_HIDE);
-  //edit1.text:='python' + Pchar(' ./script/python/plotDist.py '+tables+' '+vars+' '+dt1+' '+dt2+' '+edtLat1.Text+' '+edtLat2.Text+' '+edtLon1.Text+' '+edtLon2.Text+' '+fname+' '+exportflag+' '+extVars+' '+extVarVals+' '+extVars2+' '+extVarVals2);
-
-
-  DeleteFile('embed/'+fname+'.html');
-  sleep(1000);
-  repeat
-    Application.ProcessMessages;
-  until FileExists('embed/'+fname+'.html');
-
-  Busy(False);
+  callOpedia('plotDist.py', 1, 'Dist');
 end;
 
 procedure TfrmMain.barImportClick(Sender: TObject);
@@ -905,88 +757,8 @@ begin
 end;
 
 procedure TfrmMain.barplotXYClick(Sender: TObject);
-var
-  dt1, dt2, fname, exportflag: String;
-  i, count:integer;
-  Variable:TVar;
-  vars, tables: String;
-  extV, extVV, extVars, extVarVals: String;
-  extV2, extVV2, extVars2, extVarVals2: String;
 begin
-  if ledtVars.Values.Count<2 then
-  begin
-    MessageDlg('Please pick at least two variables.', mtError, [mbok], 0);
-    Exit;
-  end;
-
-  Busy(True);
-  vars:='';
-  tables:='';
-  extVars:='';
-  extVarVals:='';
-  extVars2:='';
-  extVarVals2:='';
-  count:=ledtVars.Values.Count-1;
-  for I := 0 to count do
-  begin
-    Variable:=GetVariable(ledtVars.Values.Items[i].Tag);
-    dt1:=FormatDateTime('yyyy-mm-dd',dtwpTimeStart.DateTime);
-    dt2:=FormatDateTime('yyyy-mm-dd',dtwpTimeEnd.DateTime);
-    tables:=tables+Variable.Table_Name;
-    vars:=vars+Variable.Short_Name;
-
-    extV:='ignore';
-    extVV:='ignore';
-    extV2:='ignore';
-    extVV2:='ignore';
-    if ContainsText(Variable.Table_Name, 'Wind') then
-    begin
-      extV:='hour';
-      extVV:=InttoStr(6*(Hourof(dtwpTimeStart.DateTime) div 6));
-
-      extV2:='hour';
-      extVV2:=InttoStr(6*(Hourof(dtwpTimeEnd.DateTime) div 6));
-    end
-    else if ContainsText(Variable.Table_Name, 'Pisces') then
-    begin
-      extV:='depth';
-      extVV:=cbPiscesDepthStart.Text;
-    end
-    else if ContainsText(Variable.Table_Name, 'tblHOT_') then
-    begin
-      extV:='depth';
-      extVV:=cbDepthStart.Text;
-    end;
-
-    extVars:=extVars+extV;
-    extVarVals:=extVarVals+extVV;
-
-    extVars2:=extVars2+extV2;
-    extVarVals2:=extVarVals2+extVV2;
-
-    if i<count then
-    begin
-      tables:=tables+',';
-      vars:=vars+',';
-      extVars:=extVars+',';
-      extVarVals:=extVarVals+',';
-      extVars2:=extVars2+',';
-      extVarVals2:=extVarVals2+',';
-    end;
-  end;
-  fname:='XY';
-  exportflag:=inttostr(getExportDataFlag);
-  ShellExecute(0, nil, 'python', Pchar(' ./script/python/plotXY.py '+tables+' '+vars+' '+dt1+' '+dt2+' '+edtLat1.Text+' '+edtLat2.Text+' '+edtLon1.Text+' '+edtLon2.Text+' '+fname+' '+exportflag+' '+extVars+' '+extVarVals+' '+extVars2+' '+extVarVals2), nil, SW_HIDE);
-  //edit1.text:='python' + Pchar(' ./script/python/plotXY.py '+tables+' '+vars+' '+dt1+' '+dt2+' '+edtLat1.Text+' '+edtLat2.Text+' '+edtLon1.Text+' '+edtLon2.Text+' '+fname+' '+exportflag+' '+extVars+' '+extVarVals+' '+extVars2+' '+extVarVals2);
-
-
-  DeleteFile('embed/'+fname+'.html');
-  sleep(1000);
-  repeat
-    Application.ProcessMessages;
-  until FileExists('embed/'+fname+'.html');
-
-  Busy(False);
+  callOpedia('plotXY.py', 2, 'XY');
 end;
 
 procedure TfrmMain.barSectionMapClick(Sender: TObject);
@@ -1087,93 +859,8 @@ begin
 end;
 
 procedure TfrmMain.dxBarButton2Click(Sender: TObject);
-var
-  dt1, dt2, fname, exportflag: String;
-  i, count:integer;
-  Variable:TVar;
-  vars, tables: String;
-  extV, extVV, extVars, extVarVals: String;
-  extV2, extVV2, extVars2, extVarVals2: String;
 begin
-  if ledtVars.Values.Count<1 then
-  begin
-    MessageDlg('Please pick at least one variable.', mtError, [mbok], 0);
-    Exit;
-  end;
-
-  Busy(True);
-  vars:='';
-  tables:='';
-  extVars:='';
-  extVarVals:='';
-  extVars2:='';
-  extVarVals2:='';
-  count:=ledtVars.Values.Count-1;
-  for I := 0 to count do
-  begin
-    Variable:=GetVariable(ledtVars.Values.Items[i].Tag);
-    dt1:=FormatDateTime('yyyy-mm-dd',dtwpTimeStart.DateTime);
-    dt2:=FormatDateTime('yyyy-mm-dd',dtwpTimeEnd.DateTime);
-    tables:=tables+Variable.Table_Name;
-    vars:=vars+Variable.Short_Name;
-
-    extV:='ignore';
-    extVV:='ignore';
-    extV2:='ignore';
-    extVV2:='ignore';
-    if ContainsText(Variable.Table_Name, 'Wind') then
-    begin
-      extV:='hour';
-      extVV:=InttoStr(6*(Hourof(dtwpTimeStart.DateTime) div 6));
-
-      extV2:='hour';
-      extVV2:=InttoStr(6*(Hourof(dtwpTimeEnd.DateTime) div 6));
-    end
-    else if ContainsText(Variable.Table_Name, 'Pisces') then
-    begin
-      extV:='depth';
-      extVV:=cbPiscesDepthStart.Text;
-    end
-    else if ContainsText(Variable.Table_Name, 'tblHOT_') then
-    begin
-      extV:='depth';
-      extVV:=cbDepthStart.Text;
-    end
-    else if ContainsText(Variable.Table_Name, 'tblHOT_') then
-    begin
-      extV:='depth';
-      extVV:=cbDepthStart.Text;
-    end;
-
-    extVars:=extVars+extV;
-    extVarVals:=extVarVals+extVV;
-
-    extVars2:=extVars2+extV2;
-    extVarVals2:=extVarVals2+extVV2;
-
-    if i<count then
-    begin
-      tables:=tables+',';
-      vars:=vars+',';
-      extVars:=extVars+',';
-      extVarVals:=extVarVals+',';
-      extVars2:=extVars2+',';
-      extVarVals2:=extVarVals2+',';
-    end;
-  end;
-  fname:='TS';
-  exportflag:=inttostr(getExportDataFlag);
-  ShellExecute(0, nil, 'python', Pchar(' ./script/python/plotTS.py '+tables+' '+vars+' '+dt1+' '+dt2+' '+edtLat1.Text+' '+edtLat2.Text+' '+edtLon1.Text+' '+edtLon2.Text+' '+fname+' '+exportflag+' '+extVars+' '+extVarVals+' '+extVars2+' '+extVarVals2), nil, SW_HIDE);
-  edit1.text:='python' + Pchar(' ./script/python/plotTS.py '+tables+' '+vars+' '+dt1+' '+dt2+' '+edtLat1.Text+' '+edtLat2.Text+' '+edtLon1.Text+' '+edtLon2.Text+' '+fname+' '+exportflag+' '+extVars+' '+extVarVals+' '+extVars2+' '+extVarVals2);
-
-
-  DeleteFile('embed/'+fname+'.html');
-  sleep(1000);
-  repeat
-    Application.ProcessMessages;
-  until FileExists('embed/'+fname+'.html');
-
-  Busy(False);
+  callOpedia('plotTS.py', 1, 'TS');
 end;
 
 

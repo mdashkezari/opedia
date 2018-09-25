@@ -1,0 +1,1372 @@
+unit untMain;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, cxGraphics, cxControls,
+  cxLookAndFeels, cxLookAndFeelPainters, dxSkinsCore, dxSkinBlack, dxSkinBlue,
+  dxSkinBlueprint, dxSkinCaramel, dxSkinCoffee, dxSkinDarkRoom, dxSkinDarkSide,
+  dxSkinDevExpressDarkStyle, dxSkinDevExpressStyle, dxSkinFoggy,
+  dxSkinGlassOceans, dxSkinHighContrast, dxSkiniMaginary, dxSkinLilian,
+  dxSkinLiquidSky, dxSkinLondonLiquidSky, dxSkinMcSkin, dxSkinMetropolis,
+  dxSkinMetropolisDark, dxSkinMoneyTwins, dxSkinOffice2007Black,
+  dxSkinOffice2007Blue, dxSkinOffice2007Green, dxSkinOffice2007Pink,
+  dxSkinOffice2007Silver, dxSkinOffice2010Black, dxSkinOffice2010Blue,
+  dxSkinOffice2010Silver, dxSkinOffice2013DarkGray, dxSkinOffice2013LightGray,
+  dxSkinOffice2013White, dxSkinOffice2016Colorful, dxSkinOffice2016Dark,
+  dxSkinPumpkin, dxSkinSeven, dxSkinSevenClassic, dxSkinSharp, dxSkinSharpPlus,
+  dxSkinSilver, dxSkinSpringTime, dxSkinStardust, dxSkinSummer2008,
+  dxSkinTheAsphaltWorld, dxSkinsDefaultPainters, dxSkinValentine,
+  dxSkinVisualStudio2013Blue, dxSkinVisualStudio2013Dark,
+  dxSkinVisualStudio2013Light, dxSkinVS2010, dxSkinWhiteprint,
+  dxSkinXmas2008Blue, dxMapControlTypes, dxMapControl, cxContainer, cxEdit,
+  dxWheelPicker, dxNumericWheelPicker, dxDateTimeWheelPicker, cxTrackBar,
+  dxRangeTrackBar, Vcl.StdCtrls, Vcl.ComCtrls,
+  cxDropDownEdit, cxCalc, cxSpinEdit, cxTimeEdit, cxMaskEdit, cxTextEdit,
+  cxButtonEdit, cxCheckBox, dxToggleSwitch,
+  dxCore, cxDateUtils, cxCalendar, Vcl.Grids, Vcl.ValEdit, cxLabel,
+  dxMapControlBingMapImageryDataProvider, cxClasses,
+  dxMapLayer, dxMapImageTileLayer, dxSkinsdxBarPainter, System.ImageList,
+  Vcl.ImgList, dxBar, dxRibbonRadialMenu, cxScrollBox, dxSkinsForm, Vcl.Menus,
+  cxButtons, cxFilterControl, dxBreadcrumbEdit, dxDBBreadcrumbEdit, dxSparkline,
+  dxDBSparkline, cxNavigator, cxDBNavigator, Data.DB, Data.Win.ADODB,
+  Vcl.DBGrids, cxCustomData, cxStyles, cxCustomPivotGrid, cxDBPivotGrid,
+  dxSkinscxPCPainter, cxFilter, cxData, cxDataStorage, cxDBData, cxGridLevel,
+  cxGridCustomView, cxGridCustomTableView, cxGridTableView, cxGridDBTableView,
+  cxGrid, dxZoomTrackBar, dxDBZoomTrackBar, AdvListEditor, cxGeometry, ShellAPI, 
+  StrUtils, DateUtils, Vcl.Samples.Gauges, cxProgressBar,
+  cxGroupBox, dxCustomMapItemLayer, dxMapItemLayer, dxMapItemFileLayer,
+  dxActivityIndicator, cxListView;
+
+type
+  TfrmMain = class(TForm)
+    dxBarManager1: TdxBarManager;
+    barFilter: TdxBarButton;
+    barExportData: TdxBarSubItem;
+    barCSV: TdxBarButton;
+    barXLSX: TdxBarButton;
+    barNPZ: TdxBarButton;
+    barJSON: TdxBarButton;
+    barHTML: TdxBarButton;
+    barMachineLearning: TdxBarSubItem;
+    barExtraTrees: TdxBarButton;
+    barBlank: TdxBarButton;
+    barBlank2: TdxBarButton;
+    barFeatures: TdxBarButton;
+    barRandomForest: TdxBarButton;
+    barGradientBoosting: TdxBarButton;
+    barSVR: TdxBarButton;
+    dxBarSubItem1: TdxBarSubItem;
+    dxBarButton1: TdxBarButton;
+    barGM: TdxBarButton;
+    dxBarButton2: TdxBarButton;
+    dxRibbonRadialMenu1: TdxRibbonRadialMenu;
+    cxImageList1: TcxImageList;
+    scbMap: TcxScrollBox;
+    Map: TdxMapControl;
+    dxMapControl1ImageTileLayer1: TdxMapImageTileLayer;
+    scbSettingsPanel: TcxScrollBox;
+    dxSkinController1: TdxSkinController;
+    cxScrollBox1: TcxScrollBox;
+    OpediaDB: TADOConnection;
+    cxProgressBar1: TcxProgressBar;
+    barDepthProfile: TdxBarButton;
+    MapItemLayer1: TdxMapItemLayer;
+    MapItemFileLayer1: TdxMapItemFileLayer;
+    barplotXY: TdxBarButton;
+    aiBusy: TdxActivityIndicator;
+    barHistogram: TdxBarButton;
+    cxGroupBox1: TcxGroupBox;
+    cxGroupBox2: TcxGroupBox;
+    cxGroupBox3: TcxGroupBox;
+    ledtVars: TAdvListEditor;
+    cxLabel9: TcxLabel;
+    tsExportData: TdxToggleSwitch;
+    dtwpTimeStart: TdxDateTimeWheelPicker;
+    dtwpTimeEnd: TdxDateTimeWheelPicker;
+    cxLabel1: TcxLabel;
+    cxLabel2: TcxLabel;
+    cxLabel6: TcxLabel;
+    cbRegion: TcxComboBox;
+    cxLabel4: TcxLabel;
+    rtbLat: TdxRangeTrackBar;
+    edtLat1: TcxTextEdit;
+    edtLat2: TcxTextEdit;
+    cxLabel5: TcxLabel;
+    rtbLon: TdxRangeTrackBar;
+    edtLon1: TcxTextEdit;
+    edtLon2: TcxTextEdit;
+    cbPiscesDepthStart: TcxComboBox;
+    cbDepthStart: TcxComboBox;
+    cbPiscesDepthEnd: TcxComboBox;
+    cbDepthEnd: TcxComboBox;
+    cxLabel3: TcxLabel;
+    cxLabel10: TcxLabel;
+    cxLabel11: TcxLabel;
+    cxLabel12: TcxLabel;
+    barSectionMap: TdxBarButton;
+    barSnapShot: TdxBarSubItem;
+    BarSubTimeSeries: TdxBarSubItem;
+    dxBarSubCruises: TdxBarSubItem;
+    dxBarSubLagrangian: TdxBarSubItem;
+    dxBarSubDataSets: TdxBarSubItem;
+    dxBarFilter: TdxBarButton;
+    BarTracerTrajectory: TdxBarButton;
+    barImport: TdxBarButton;
+    barSubData: TdxBarSubItem;
+    Edit1: TEdit;
+    barEddy: TdxBarButton;
+    barFTLE: TdxBarButton;
+    procedure rtbLatPropertiesChange(Sender: TObject);
+    procedure rtbLonPropertiesChange(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure MapMouseUp(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; X, Y: Integer);
+    procedure MapMouseDown(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; X, Y: Integer);
+    procedure barGMClick(Sender: TObject);
+    procedure cbRegionPropertiesChange(Sender: TObject);
+    procedure edtLat1KeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure edtLat2KeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure edtLon1KeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure edtLon2KeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure rtbLatMouseUp(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; X, Y: Integer);
+    procedure rtbLonMouseUp(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; X, Y: Integer);
+    procedure dxBarButton2Click(Sender: TObject);
+    procedure cbDepthStartPropertiesChange(Sender: TObject);
+    procedure cxComboBox1PropertiesChange(Sender: TObject);
+    procedure barDepthProfileClick(Sender: TObject);
+    procedure dxBarButton1Click(Sender: TObject);
+    procedure barplotXYClick(Sender: TObject);
+    procedure barFilterClick(Sender: TObject);
+    procedure barHistogramClick(Sender: TObject);
+    procedure barMonthlyClick(Sender: TObject);
+    procedure MapResize(Sender: TObject);
+    procedure edtLat2Exit(Sender: TObject);
+    procedure edtLat1Exit(Sender: TObject);
+    procedure edtLon2Exit(Sender: TObject);
+    procedure edtLon1Exit(Sender: TObject);
+    procedure barSectionMapClick(Sender: TObject);
+    procedure BarTracerTrajectoryClick(Sender: TObject);
+    procedure dxBarFilterClick(Sender: TObject);
+    procedure barImportClick(Sender: TObject);
+    procedure barEddyClick(Sender: TObject);
+    procedure barFTLEClick(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+Type
+  AnsiChar_Structure=Record
+    Value:AnsiChar;
+end;
+
+
+var
+  frmMain: TfrmMain;
+  ShiftDrag:Boolean;
+  Sel_GeoPoint1, Sel_GeoPoint2: TdxMapControlGeoPoint;
+  Root, DefaultPassword:String;
+  UserName, FirstName:String;
+  UserID:integer;
+
+Procedure WriteCoreDump(CoredumpBody:String);
+procedure Busy(Enable:Boolean);
+procedure OpenDB();
+procedure CloseDB();
+function getExportDataFlag:integer;
+procedure makeVaultStruc();
+
+implementation
+
+uses
+  untCommonDB, untBusy, untCruise, untCatalog, untFilter,
+  untSignIn, untLagrangian, untVault, untEddy, untFTLE;
+
+
+Procedure WriteCoreDump(CoredumpBody:String);
+var
+  F:TextFile;
+begin
+    CoredumpBody:=DateTimeToStr(Now)+Char(13)+Char(10)+CoredumpBody+Char(13)+Char(10)+'***************************************************';
+    AssignFile(F,Root+'\coredump.txt');
+    if not(FileExists(Root+'\coredump.txt')) then
+      Rewrite(F)
+    else
+      Append(F);
+    Writeln(F,CoredumpBody);
+    CloseFile(F);
+end;
+
+function Get_ConnStr(Connfile:String):String;
+var
+  F:File of AnsiChar_Structure;
+  FR:AnsiChar_Structure;
+  i:integer;
+begin
+  Connfile:=Root+Connfile;
+  AssignFile(F,Connfile);
+  Reset(F);
+  Result:='';
+  for i:=0 to FileSize(F)-1 do
+  begin
+    Seek(F,i);
+    Read(F,FR);
+    if FR.Value<>Char(0) then
+    Result:=Result+FR.Value;
+  end;
+  CloseFile(F);
+end;
+
+procedure OpenDB();
+begin
+
+  Exit;
+
+  try
+    frmMain.OpediaDB.Close;
+    //frmMain.EddyConnection.ConnectionString:=Get_ConnStr('Connection.txt');
+    //frmMain.EddyConnection.ConnectionString:=Get_ConnStr('CloudConnection.txt');
+    frmMain.OpediaDB.Open;
+  Except
+    //frmScreen.sspbDBLED.SkinData.
+  end;
+  Application.ProcessMessages;
+end;
+
+procedure CloseDB();
+begin
+
+  Exit;
+
+  try
+    frmMain.OpediaDB.Close;
+  Except
+    //frmScreen.sspbDBLED.SkinData.
+  end;
+  Application.ProcessMessages;
+end;
+
+
+procedure Busy(Enable:Boolean);
+begin
+  Application.ProcessMessages;
+  frmMain.aiBusy.Active:=Enable;
+  frmMain.aiBusy.Visible:=Enable;
+end;
+
+procedure SetRangeTrackbar_Lat;
+begin
+  with frmMain do
+  begin
+    try
+      if Trunc(StrToFloat(edtLat1.Text) * 100) < rtbLat.Range.Min then
+      begin
+        rtbLat.Range.Min := Trunc(StrToFloat(edtLat1.Text) * 100);
+        rtbLat.Range.Max := Trunc(StrToFloat(edtLat2.Text) * 100);
+      end
+      else
+      begin
+        rtbLat.Range.Max := Trunc(StrToFloat(edtLat2.Text) * 100);
+        rtbLat.Range.Min := Trunc(StrToFloat(edtLat1.Text) * 100);
+      end;
+    except
+      Application.ProcessMessages;
+    end;
+  end;
+end;
+
+procedure SetRangeTrackbar_Lon;
+begin
+  with frmMain do
+  begin
+    try
+      if Trunc(StrToFloat(edtLon1.Text) * 100) < rtbLon.Range.Min then
+      begin
+        rtbLon.Range.Min := Trunc(StrToFloat(edtLon1.Text) * 100);
+        rtbLon.Range.Max := Trunc(StrToFloat(edtLon2.Text) * 100);
+      end
+      else
+      begin
+        rtbLon.Range.Max := Trunc(StrToFloat(edtLon2.Text) * 100);
+        rtbLon.Range.Min := Trunc(StrToFloat(edtLon1.Text) * 100);
+      end
+    except
+      Application.ProcessMessages;
+    end;
+  end;
+end;
+
+procedure SetLatEdits(lat1, lat2: real);
+begin
+  if lat2 < StrToFloat(frmMain.edtLat1.Text) then
+  begin
+    frmMain.edtLat1.Text := FloatToStr(lat1);
+    frmMain.edtLat2.Text := FloatToStr(lat2);
+  end
+  else
+  begin
+    frmMain.edtLat2.Text := FloatToStr(lat2);
+    frmMain.edtLat1.Text := FloatToStr(lat1);
+  end;
+
+  SetRangeTrackbar_Lat;
+end;
+
+procedure SetLonEdits(lon1, lon2: real);
+begin
+  if lon2 < StrToFloat(frmMain.edtLon1.Text) then
+  begin
+    frmMain.edtLon1.Text := FloatToStr(lon1);
+    frmMain.edtLon2.Text := FloatToStr(lon2);
+  end
+  else
+  begin
+    frmMain.edtLon2.Text := FloatToStr(lon2);
+    frmMain.edtLon1.Text := FloatToStr(lon1);
+  end;
+
+  SetRangeTrackbar_Lon;
+end;
+
+
+procedure LoadVars;
+var
+  qryDynamic: TADOQuery;
+  lv:TAdvListValue;
+begin
+  OpenDB;
+  frmMain.ledtVars.Lookup.Clear;
+  try
+    qryDynamic:=TADOQuery.Create(nil);
+    qryDynamic.Connection:=frmMain.OpediaDB;
+    with qryDynamic do
+    begin
+      try
+        SQL.Text:='SELECT id, short_name, long_name, keywords FROM tblVariables';
+        Open;
+        First;
+        while not(Eof) do
+        begin
+          lv:=frmMain.ledtVars.Lookup.Add;
+          lv.DisplayText:=FieldValues['short_name'];
+          lv.Value:=FieldValues['long_name'] + ' ' + FieldValues['keywords'];
+          lv.Tag:=FieldValues['id'];
+          Next;
+        end;
+      finally
+        Close;
+      end;
+    end;
+    frmFilter.ledtVars.Lookup:=frmMain.ledtVars.Lookup;
+  finally
+    qryDynamic.Free;
+    CloseDB;
+  end;
+
+end;
+
+
+procedure SetRegion(RegionID:integer);
+begin
+  with frmMain do
+  begin
+    case RegionID of
+      0:begin
+          SetLonEdits(-180,180);
+          SetLatEdits(-90,90);
+        end;
+      1:begin      // North Pacific
+          SetLonEdits(-180,-126);
+          SetLatEdits(20,45);
+        end;
+      2:begin      // Tropical Pacific
+          SetLonEdits(-234,-94);
+          SetLatEdits(-15,15);
+        end;
+      3:begin      // South Pacific
+          SetLonEdits(-204,-81);
+          SetLatEdits(-50,-15);
+        end;
+      4:begin      // North Atlantic
+          SetLonEdits(-67,-20);
+          SetLatEdits(22,41);
+        end;
+      5:begin      // Tropical Atlantic
+          SetLonEdits(-32.6,-17.7);
+          SetLatEdits(-10,10);
+        end;
+      6:begin      // South Atlantic
+          SetLonEdits(-38,9);
+          SetLatEdits(-15,-38);
+        end;
+      7:begin      // Tropical Indian
+          SetLonEdits(52,97);
+          SetLatEdits(-13,5);
+        end;
+      8:begin      // Indian Ocean
+          SetLonEdits(52.5,108.7);
+          SetLatEdits(-37,-13);
+        end;
+      9:begin      // Southern Ocean
+          SetLonEdits(-180,180);
+          SetLatEdits(-80,-50);
+        end;
+      10:begin      //  Mediterranean Sea
+          SetLonEdits(-5.7,36.9);
+          SetLatEdits(29.4,41.4);
+        end;
+      11:begin      //  Black Sea
+          SetLonEdits(26.3,43.5);
+          SetLatEdits(40.6,47.5);
+        end;
+      12:begin      //  Caspian Sea
+          SetLonEdits(46.45,54.77);
+          SetLatEdits(36.5,47.5);
+        end;
+      13:begin      // Gulf of Mexico
+          SetLonEdits(-99.3,-81.4);
+          SetLatEdits(18.1,30.8);
+        end;
+      14:begin      // North of Hawaii
+          SetLonEdits(-170,-140);
+          SetLatEdits(22.5,35);
+        end;
+      15:begin      // North Transition Zone (Gradients)
+          SetLonEdits(-160.5,-155.5);
+          SetLatEdits(40,45);
+        end;
+      16:begin      // Transition Zone (Gradients)
+          SetLonEdits(-160.5,-155.5);
+          SetLatEdits(30,35);
+        end;
+      17:begin      // South Transition Zone (Gradients)
+          SetLonEdits(-160.5,-155.5);
+          SetLatEdits(21,26);
+        end;
+
+    end;
+  end;
+end;
+
+function getExportDataFlag:integer;
+begin
+  Result:=0;
+  if frmMain.tsExportData.Checked then
+    Result:=1
+end;
+
+procedure makeDirectory(path:string);
+begin
+  if not DirectoryExists(path) then
+    CreateDir(path);
+end;
+
+procedure makeDirs;
+begin
+  makeDirectory('embed');
+  makeDirectory('script');
+  makeDirectory('script/python');
+  makeDirectory('data');
+  makeDirectory('ML');
+  makeDirectory('shape');
+end;
+
+procedure prePosition;
+begin
+  with frmMain do
+  begin
+    aiBusy.Left:=Trunc((scbMap.Width-aiBusy.Width)/2);
+    aiBusy.Top:=Trunc((scbMap.Height-aiBusy.Height)/2);
+  end;
+end;
+
+
+function SignIn:Boolean;
+begin
+  Result:=False;
+  frmSignIn.ShowModal;
+
+  if frmSignIn.ModalResult=mrOk then
+    Result:=True;
+end;
+
+procedure makeVaultStruc();
+begin
+  ShellExecute(0, nil, 'python', Pchar(' ./script/python/vault.py '), nil, SW_HIDE);
+end;
+
+procedure Initialize;
+begin
+  Root := ExtractFileDir(Application.ExeName)+'\';
+  DefaultPassword:='jZi75@1';
+  if not SignIn then
+  begin
+    Application.Terminate;
+    Application.ProcessMessages;
+  end;
+
+  makeDirs;
+  makeVaultStruc;
+  //SetRangeTrackbar_Lat;
+  //SetRangeTrackbar_Lon;
+  LoadVars;      // loading Opedia variables from DB
+  PrePosition;
+
+  frmMain.dtwpTimeStart.DateTime:=EncodeDateTime(2016,4,30,11,0,0,0);
+  frmMain.dtwpTimeEnd.DateTime:=EncodeDateTime(2016,4,30,11,0,0,0);
+
+  frmMain.cbRegion.ItemIndex:=1;
+  SetRegion(frmMain.cbRegion.ItemIndex);
+  SetRangeTrackbar_Lon;
+  SetRangeTrackbar_Lat;
+end;
+
+procedure runPython(script, tables, vars, dt1, dt2, lat1, lat2, lon1, lon2, depth1, depth2, fname, exportflag:string);
+var
+  opediaPath:string;
+begin
+  opediaPath:='./script/python/';
+  opediaPath:='H:\\Dropbox\\projects\\opedia\\pypi\\opedia\\';
+  //opediaPath:='C:\\Users\\Mohammad\\Anaconda2\\lib\\site-packages\\opedia\\';
+
+  // >>> import site
+  // >>> site.getsitepackages()
+
+  ShellExecute(0, nil, 'python', Pchar(' '+opediaPath+script+' '+tables+' '+vars+' '+dt1+' '+dt2+' '+lat1+' '+lat2+' '+lon1+' '+lon2+' '+depth1+' '+depth2+' '+fname+' '+exportflag), nil, SW_HIDE);
+  frmMain.edit1.text:='python' + Pchar(' '+opediaPath+script+' '+tables+' '+vars+' '+dt1+' '+dt2+' '+lat1+' '+lat2+' '+lon1+' '+lon2+' '+depth1+' '+depth2+' '+fname+' '+exportflag);
+end;
+
+procedure callOpedia(script:string; minVar:integer; fname:string);
+var
+  dt1, dt2, lat1, lat2, lon1, lon2, depth1, depth2, exportflag: String;
+  i, count:integer;
+  Variable:TVar;
+  vars, tables: String;
+begin
+  if frmMain.ledtVars.Values.Count<minVar then
+  begin
+    if minVar>1 then
+      MessageDlg('Please pick at least '+inttostr(minVar)+' variables.', mtError, [mbok], 0)
+    else
+      MessageDlg('Please pick at least '+inttostr(minVar)+' variable.', mtError, [mbok], 0);
+    Exit;
+  end;
+
+  Busy(True);
+  vars:='';
+  tables:='';
+  count:=frmMain.ledtVars.Values.Count-1;
+  for I := 0 to count do
+  begin
+    Variable:=GetVariable(frmMain.ledtVars.Values.Items[i].Tag);
+    tables:=tables+Variable.Table_Name;
+    vars:=vars+Variable.Short_Name;
+    dt1:=FormatDateTime('yyyy-mm-dd',frmMain.dtwpTimeStart.DateTime);
+    dt2:=FormatDateTime('yyyy-mm-dd',frmMain.dtwpTimeEnd.DateTime);
+    lat1:=frmMain.edtLat1.Text;
+    lat2:=frmMain.edtLat2.Text;
+    lon1:=frmMain.edtLon1.Text;
+    lon2:=frmMain.edtLon2.Text;
+    depth1:=frmMain.cbPiscesDepthStart.Text;
+    depth2:=frmMain.cbPiscesDepthEnd.Text;
+
+    if i<count then
+    begin
+      tables:=tables+',';
+      vars:=vars+',';
+    end;
+  end;
+
+  exportflag:=inttostr(getExportDataFlag);
+  runPython(script, tables, vars, dt1, dt2, lat1, lat2, lon1, lon2, depth1, depth2, fname, exportflag);
+
+  DeleteFile('embed/'+fname+'.html');
+  sleep(1000);
+  repeat
+    Application.ProcessMessages;
+  until FileExists('embed/'+fname+'.html');
+
+  Busy(False);
+end;
+
+
+
+{$R *.dfm}
+
+procedure TfrmMain.barDepthProfileClick(Sender: TObject);
+var
+  dt, fname, exportflag: String;
+  i, count:integer;
+  Variable:TVar;
+  vars, tables: String;
+begin
+  if ledtVars.Values.Count<1 then
+  begin
+    MessageDlg('Please pick at least one variable.', mtError, [mbok], 0);
+    Exit;
+  end;
+
+  Busy(True);
+  vars:='';
+  tables:='';
+  count:=ledtVars.Values.Count-1;
+  for I := 0 to count do
+  begin
+    Variable:=GetVariable(ledtVars.Values.Items[i].Tag);
+    dt:=FormatDateTime('yyyy-mm-dd',dtwpTimeStart.DateTime);
+    tables:=tables+Variable.Table_Name;
+    vars:=vars+Variable.Short_Name;
+
+    if i<count then
+    begin
+      tables:=tables+',';
+      vars:=vars+',';
+    end;
+  end;
+  fname:='DP';
+  exportflag:=inttostr(getExportDataFlag);
+  ShellExecute(0, nil, 'python.exe', Pchar(' ./script/python/plotDepthProfile.py '+tables+' '+vars+' '+dt+' '+edtLat1.Text+' '+edtLat2.Text+' '+edtLon1.Text+' '+edtLon2.Text+' '+fname+' '+exportflag+' '+cbPiscesDepthStart.Text+' '+cbPiscesDepthEnd.Text), nil, SW_HIDE);
+  //edit1.text:='python'+ Pchar(' ./script/python/plotDepthProfile.py '+tables+' '+vars+' '+dt+' '+edtLat1.Text+' '+edtLat2.Text+' '+edtLon1.Text+' '+edtLon2.Text+' '+fname+' '+exportflag+' '+cbPiscesDepthStart.Text+' '+cbPiscesDepthEnd.Text);
+
+
+  DeleteFile('embed/'+fname+'.html');
+  sleep(1000);
+  repeat
+    Application.ProcessMessages;
+  until FileExists('embed/'+fname+'.html');
+
+  Busy(False);
+end;
+
+procedure TfrmMain.barEddyClick(Sender: TObject);
+begin
+  frmEddy.Show;
+end;
+
+procedure TfrmMain.barFilterClick(Sender: TObject);
+begin
+  frmCatalog.Show;
+end;
+
+procedure TfrmMain.barFTLEClick(Sender: TObject);
+begin
+  frmFTLE.show();
+end;
+
+procedure TfrmMain.barGMClick(Sender: TObject);
+var
+  dt, fname, exportflag: String;
+  i, count:integer;
+  Variable:TVar;
+  vars, tables, extV, extVV, extVars, extVarVals: String;
+begin
+
+  callOpedia('plotRegional.py', 1, 'RM');
+
+
+  {
+  if ledtVars.Values.Count<1 then
+  begin
+    MessageDlg('Please pick at least one variable.', mtError, [mbok], 0);
+    Exit;
+  end;
+
+  Busy(True);
+  vars:='';
+  tables:='';
+  extVars:='';
+  extVarVals:='';
+  count:=ledtVars.Values.Count-1;
+  for I := 0 to count do
+  begin
+    Variable:=GetVariable(ledtVars.Values.Items[i].Tag);
+    dt:=FormatDateTime('yyyy-mm-dd',dtwpTimeStart.DateTime);
+    tables:=tables+Variable.Table_Name;
+    vars:=vars+Variable.Short_Name;
+
+    extV:='ignore';
+    extVV:='ignore';
+    if ContainsText(Variable.Table_Name, 'Wind') then
+    begin
+      extV:='hour';
+      extVV:=InttoStr(6*(Hourof(dtwpTimeStart.DateTime) div 6));
+    end
+    else if ContainsText(Variable.Table_Name, 'Pisces') then
+    begin
+      extV:='depth';
+      extVV:=cbPiscesDepthStart.Text;
+    end
+    else if ContainsText(Variable.Table_Name, 'tblHOT_') then
+    begin
+      extV:='depth';
+      extVV:=cbDepthStart.Text;
+    end;
+
+    extVars:=extVars+extV;
+    extVarVals:=extVarVals+extVV;
+    if i<count then
+    begin
+      tables:=tables+',';
+      vars:=vars+',';
+      extVars:=extVars+',';
+      extVarVals:=extVarVals+',';
+    end;
+  end;
+  fname:='RM';
+  exportflag:=inttostr(getExportDataFlag);
+  ShellExecute(0, nil, 'python', Pchar(' ./script/python/plotRegional.py '+tables+' '+vars+' '+dt+' '+edtLat1.Text+' '+edtLat2.Text+' '+edtLon1.Text+' '+edtLon2.Text+' '+fname+' '+exportflag+' '+extVars+' '+extVarVals), nil, SW_HIDE);
+  edit1.text:='python'+ Pchar(' ./script/python/plotRegional.py '+tables+' '+vars+' '+dt+' '+edtLat1.Text+' '+edtLat2.Text+' '+edtLon1.Text+' '+edtLon2.Text+' '+fname+' '+exportflag+' '+extVars+' '+extVarVals);
+
+
+  DeleteFile('embed/'+fname+'.html');
+  sleep(1000);
+  repeat
+    Application.ProcessMessages;
+  until FileExists('embed/'+fname+'.html');
+
+  Busy(False);
+  }
+end;
+
+procedure TfrmMain.barHistogramClick(Sender: TObject);
+var
+  dt1, dt2, fname, exportflag: String;
+  i, count:integer;
+  Variable:TVar;
+  vars, tables: String;
+  extV, extVV, extVars, extVarVals: String;
+  extV2, extVV2, extVars2, extVarVals2: String;
+begin
+  if ledtVars.Values.Count<1 then
+  begin
+    MessageDlg('Please pick at least one variable.', mtError, [mbok], 0);
+    Exit;
+  end;
+
+  Busy(True);
+  vars:='';
+  tables:='';
+  extVars:='';
+  extVarVals:='';
+  extVars2:='';
+  extVarVals2:='';
+  count:=ledtVars.Values.Count-1;
+  for I := 0 to count do
+  begin
+    Variable:=GetVariable(ledtVars.Values.Items[i].Tag);
+    dt1:=FormatDateTime('yyyy-mm-dd',dtwpTimeStart.DateTime);
+    dt2:=FormatDateTime('yyyy-mm-dd',dtwpTimeEnd.DateTime);
+    tables:=tables+Variable.Table_Name;
+    vars:=vars+Variable.Short_Name;
+
+    extV:='ignore';
+    extVV:='ignore';
+    extV2:='ignore';
+    extVV2:='ignore';
+    if ContainsText(Variable.Table_Name, 'Wind') then
+    begin
+      extV:='hour';
+      extVV:=InttoStr(6*(Hourof(dtwpTimeStart.DateTime) div 6));
+
+      extV2:='hour';
+      extVV2:=InttoStr(6*(Hourof(dtwpTimeEnd.DateTime) div 6));
+    end
+    else if ContainsText(Variable.Table_Name, 'Pisces') then
+    begin
+      extV:='depth';
+      extVV:=cbPiscesDepthStart.Text;
+    end
+    else if ContainsText(Variable.Table_Name, 'tblHOT_') then
+    begin
+      extV:='depth';
+      extVV:=cbDepthStart.Text;
+    end;
+
+
+    extVars:=extVars+extV;
+    extVarVals:=extVarVals+extVV;
+
+    extVars2:=extVars2+extV2;
+    extVarVals2:=extVarVals2+extVV2;
+
+    if i<count then
+    begin
+      tables:=tables+',';
+      vars:=vars+',';
+      extVars:=extVars+',';
+      extVarVals:=extVarVals+',';
+      extVars2:=extVars2+',';
+      extVarVals2:=extVarVals2+',';
+    end;
+  end;
+  fname:='Dist';
+  exportflag:=inttostr(getExportDataFlag);
+  ShellExecute(0, nil, 'python', Pchar(' ./script/python/plotDist.py '+tables+' '+vars+' '+dt1+' '+dt2+' '+edtLat1.Text+' '+edtLat2.Text+' '+edtLon1.Text+' '+edtLon2.Text+' '+fname+' '+exportflag+' '+extVars+' '+extVarVals+' '+extVars2+' '+extVarVals2), nil, SW_HIDE);
+  //edit1.text:='python' + Pchar(' ./script/python/plotDist.py '+tables+' '+vars+' '+dt1+' '+dt2+' '+edtLat1.Text+' '+edtLat2.Text+' '+edtLon1.Text+' '+edtLon2.Text+' '+fname+' '+exportflag+' '+extVars+' '+extVarVals+' '+extVars2+' '+extVarVals2);
+
+
+  DeleteFile('embed/'+fname+'.html');
+  sleep(1000);
+  repeat
+    Application.ProcessMessages;
+  until FileExists('embed/'+fname+'.html');
+
+  Busy(False);
+end;
+
+procedure TfrmMain.barImportClick(Sender: TObject);
+begin
+  frmVault.Show;
+end;
+
+procedure TfrmMain.barMonthlyClick(Sender: TObject);
+var
+  dt1, dt2, fname, exportflag: String;
+  i, count:integer;
+  Variable:TVar;
+  vars, tables: String;
+  extV, extVV, extVars, extVarVals: String;
+  extV2, extVV2, extVars2, extVarVals2: String;
+begin
+  if ledtVars.Values.Count<1 then
+  begin
+    MessageDlg('Please pick at least one variable.', mtError, [mbok], 0);
+    Exit;
+  end;
+
+  Busy(True);
+  vars:='';
+  tables:='';
+  extVars:='';
+  extVarVals:='';
+  extVars2:='';
+  extVarVals2:='';
+  count:=ledtVars.Values.Count-1;
+  for I := 0 to count do
+  begin
+    Variable:=GetVariable(ledtVars.Values.Items[i].Tag);
+    tables:=tables+Variable.Table_Name;
+    vars:=vars+Variable.Short_Name;
+
+    extV:='ignore';
+    extVV:='ignore';
+    extV2:='ignore';
+    extVV2:='ignore';
+    if ContainsText(Variable.Table_Name, 'Wind') then
+    begin
+      extV:='hour';
+      extVV:=InttoStr(6*(Hourof(dtwpTimeStart.DateTime) div 6));
+
+      extV2:='hour';
+      extVV2:=InttoStr(6*(Hourof(dtwpTimeEnd.DateTime) div 6));
+    end
+    else if ContainsText(Variable.Table_Name, 'Pisces') then
+    begin
+      extV:='depth';
+      extVV:=cbPiscesDepthStart.Text;
+    end;
+
+    extVars:=extVars+extV;
+    extVarVals:=extVarVals+extVV;
+
+    extVars2:=extVars2+extV2;
+    extVarVals2:=extVarVals2+extVV2;
+
+    if i<count then
+    begin
+      tables:=tables+',';
+      vars:=vars+',';
+      extVars:=extVars+',';
+      extVarVals:=extVarVals+',';
+      extVars2:=extVars2+',';
+      extVarVals2:=extVarVals2+',';
+    end;
+  end;
+  fname:='Monthly';
+  exportflag:=inttostr(getExportDataFlag);
+  ShellExecute(0, nil, 'python', Pchar(' ./script/python/plotMonthly.py '+tables+' '+vars+' '+edtLat1.Text+' '+edtLat2.Text+' '+edtLon1.Text+' '+edtLon2.Text+' '+fname+' '+exportflag+' '+extVars+' '+extVarVals+' '+extVars2+' '+extVarVals2), nil, SW_HIDE);
+  //edit1.text:='python' + Pchar(' plotMonthly.py '+tables+' '+vars+' '+edtLat1.Text+' '+edtLat2.Text+' '+edtLon1.Text+' '+edtLon2.Text+' '+fname+' '+exportflag+' '+extVars+' '+extVarVals+' '+extVars2+' '+extVarVals2);
+
+
+  DeleteFile('embed/'+fname+'.html');
+  sleep(1000);
+  repeat
+    Application.ProcessMessages;
+  until FileExists('embed/'+fname+'.html');
+
+  Busy(False);
+end;
+
+procedure TfrmMain.barplotXYClick(Sender: TObject);
+var
+  dt1, dt2, fname, exportflag: String;
+  i, count:integer;
+  Variable:TVar;
+  vars, tables: String;
+  extV, extVV, extVars, extVarVals: String;
+  extV2, extVV2, extVars2, extVarVals2: String;
+begin
+  if ledtVars.Values.Count<2 then
+  begin
+    MessageDlg('Please pick at least two variables.', mtError, [mbok], 0);
+    Exit;
+  end;
+
+  Busy(True);
+  vars:='';
+  tables:='';
+  extVars:='';
+  extVarVals:='';
+  extVars2:='';
+  extVarVals2:='';
+  count:=ledtVars.Values.Count-1;
+  for I := 0 to count do
+  begin
+    Variable:=GetVariable(ledtVars.Values.Items[i].Tag);
+    dt1:=FormatDateTime('yyyy-mm-dd',dtwpTimeStart.DateTime);
+    dt2:=FormatDateTime('yyyy-mm-dd',dtwpTimeEnd.DateTime);
+    tables:=tables+Variable.Table_Name;
+    vars:=vars+Variable.Short_Name;
+
+    extV:='ignore';
+    extVV:='ignore';
+    extV2:='ignore';
+    extVV2:='ignore';
+    if ContainsText(Variable.Table_Name, 'Wind') then
+    begin
+      extV:='hour';
+      extVV:=InttoStr(6*(Hourof(dtwpTimeStart.DateTime) div 6));
+
+      extV2:='hour';
+      extVV2:=InttoStr(6*(Hourof(dtwpTimeEnd.DateTime) div 6));
+    end
+    else if ContainsText(Variable.Table_Name, 'Pisces') then
+    begin
+      extV:='depth';
+      extVV:=cbPiscesDepthStart.Text;
+    end
+    else if ContainsText(Variable.Table_Name, 'tblHOT_') then
+    begin
+      extV:='depth';
+      extVV:=cbDepthStart.Text;
+    end;
+
+    extVars:=extVars+extV;
+    extVarVals:=extVarVals+extVV;
+
+    extVars2:=extVars2+extV2;
+    extVarVals2:=extVarVals2+extVV2;
+
+    if i<count then
+    begin
+      tables:=tables+',';
+      vars:=vars+',';
+      extVars:=extVars+',';
+      extVarVals:=extVarVals+',';
+      extVars2:=extVars2+',';
+      extVarVals2:=extVarVals2+',';
+    end;
+  end;
+  fname:='XY';
+  exportflag:=inttostr(getExportDataFlag);
+  ShellExecute(0, nil, 'python', Pchar(' ./script/python/plotXY.py '+tables+' '+vars+' '+dt1+' '+dt2+' '+edtLat1.Text+' '+edtLat2.Text+' '+edtLon1.Text+' '+edtLon2.Text+' '+fname+' '+exportflag+' '+extVars+' '+extVarVals+' '+extVars2+' '+extVarVals2), nil, SW_HIDE);
+  //edit1.text:='python' + Pchar(' ./script/python/plotXY.py '+tables+' '+vars+' '+dt1+' '+dt2+' '+edtLat1.Text+' '+edtLat2.Text+' '+edtLon1.Text+' '+edtLon2.Text+' '+fname+' '+exportflag+' '+extVars+' '+extVarVals+' '+extVars2+' '+extVarVals2);
+
+
+  DeleteFile('embed/'+fname+'.html');
+  sleep(1000);
+  repeat
+    Application.ProcessMessages;
+  until FileExists('embed/'+fname+'.html');
+
+  Busy(False);
+end;
+
+procedure TfrmMain.barSectionMapClick(Sender: TObject);
+var
+  dt, fname, exportflag: String;
+  i, count:integer;
+  Variable:TVar;
+  vars, tables: String;
+begin
+  if ledtVars.Values.Count<1 then
+  begin
+    MessageDlg('Please pick at least one variable.', mtError, [mbok], 0);
+    Exit;
+  end;
+
+  Busy(True);
+  vars:='';
+  tables:='';
+  count:=ledtVars.Values.Count-1;
+  for I := 0 to count do
+  begin
+    Variable:=GetVariable(ledtVars.Values.Items[i].Tag);
+    dt:=FormatDateTime('yyyy-mm-dd',dtwpTimeStart.DateTime);
+    tables:=tables+Variable.Table_Name;
+    vars:=vars+Variable.Short_Name;
+
+    if i<count then
+    begin
+      tables:=tables+',';
+      vars:=vars+',';
+    end;
+  end;
+  fname:='Sec';
+  exportflag:=inttostr(getExportDataFlag);
+  ShellExecute(0, nil, 'python', Pchar(' ./script/python/plotSection.py '+tables+' '+vars+' '+dt+' '+edtLat1.Text+' '+edtLat2.Text+' '+edtLon1.Text+' '+edtLon2.Text+' '+fname+' '+exportflag+' '+cbPiscesDepthStart.Text+' '+cbPiscesDepthEnd.Text), nil, SW_HIDE);
+  //edit1.text:='python'+ Pchar(' ./script/python/plotSection.py '+tables+' '+vars+' '+dt+' '+edtLat1.Text+' '+edtLat2.Text+' '+edtLon1.Text+' '+edtLon2.Text+' '+fname+' '+exportflag+' '+cbPiscesDepthStart.Text+' '+cbPiscesDepthEnd.Text);
+
+
+  DeleteFile('embed/'+fname+'.html');
+  sleep(1000);
+  repeat
+    Application.ProcessMessages;
+  until FileExists('embed/'+fname+'.html');
+
+  Busy(False);
+end;
+
+procedure TfrmMain.BarTracerTrajectoryClick(Sender: TObject);
+var
+  FileLayer: TdxMapItemFileLayer;
+  fPath:String;
+  dt:integer;
+  dt1, dt2, lat, lon, fname:string;
+begin
+{
+  Busy(True);
+
+  dt:=3600*24;  // seconds per day
+  dt1:=FormatDateTime('yyyy-mm-dd',dtwpTimeStart.DateTime);
+  dt2:=FormatDateTime('yyyy-mm-dd',dtwpTimeEnd.DateTime);
+  lat:=edtLat1.Text;
+  lon:=edtLon1.Text;
+  fname:='tracer';
+  ShellExecute(0, nil, 'python', Pchar(' ./script/python/Lagrangian.py '+inttostr(dt)+' '+dt1+' '+dt2+' '+lat+' '+lon+' '+fname), nil, SW_HIDE);
+  //frmMain.Edit1.Text:='python'+Pchar(' ./script/python/Lagrangian.py '+inttostr(dt)+' '+dt1+' '+dt2+' '+lat+' '+lon+' '+fname);
+
+  DeleteFile('shape/'+fname+'.shp');
+  repeat
+    Application.ProcessMessages;
+  until FileExists('shape/'+fname+'.shp');
+
+  FileLayer:=(frmMain.map.Layers[2] as TdxMapItemFileLayer);
+  FileLayer.Active:=False;
+  FileLayer.FileType:=miftShape;
+  fPath:='shape/'+fname+'.shp';
+
+  repeat
+    Application.ProcessMessages;
+    sleep(100);
+  until not IsFileInUse(fPath);
+
+  FileLayer.FileName:=fPath;
+  FileLayer.LoadFromFile(fPath);
+  FileLayer.Active:=True;
+
+  Busy(False);
+}
+
+  frmLagrangian.Show;
+
+end;
+
+
+
+procedure TfrmMain.dxBarButton1Click(Sender: TObject);
+begin
+  frmCruise.Show;
+end;
+
+procedure TfrmMain.dxBarButton2Click(Sender: TObject);
+var
+  dt1, dt2, fname, exportflag: String;
+  i, count:integer;
+  Variable:TVar;
+  vars, tables: String;
+  extV, extVV, extVars, extVarVals: String;
+  extV2, extVV2, extVars2, extVarVals2: String;
+begin
+
+  callOpedia('plotTS.py', 1, 'TS');
+
+  {
+  if ledtVars.Values.Count<1 then
+  begin
+    MessageDlg('Please pick at least one variable.', mtError, [mbok], 0);
+    Exit;
+  end;
+
+  Busy(True);
+  vars:='';
+  tables:='';
+  extVars:='';
+  extVarVals:='';
+  extVars2:='';
+  extVarVals2:='';
+  count:=ledtVars.Values.Count-1;
+  for I := 0 to count do
+  begin
+    Variable:=GetVariable(ledtVars.Values.Items[i].Tag);
+    dt1:=FormatDateTime('yyyy-mm-dd',dtwpTimeStart.DateTime);
+    dt2:=FormatDateTime('yyyy-mm-dd',dtwpTimeEnd.DateTime);
+    tables:=tables+Variable.Table_Name;
+    vars:=vars+Variable.Short_Name;
+
+    extV:='ignore';
+    extVV:='ignore';
+    extV2:='ignore';
+    extVV2:='ignore';
+    if ContainsText(Variable.Table_Name, 'Wind') then
+    begin
+      extV:='hour';
+      extVV:=InttoStr(6*(Hourof(dtwpTimeStart.DateTime) div 6));
+
+      extV2:='hour';
+      extVV2:=InttoStr(6*(Hourof(dtwpTimeEnd.DateTime) div 6));
+    end
+    else if ContainsText(Variable.Table_Name, 'Pisces') then
+    begin
+      extV:='depth';
+      extVV:=cbPiscesDepthStart.Text;
+    end
+    else if ContainsText(Variable.Table_Name, 'tblHOT_') then
+    begin
+      extV:='depth';
+      extVV:=cbDepthStart.Text;
+    end
+    else if ContainsText(Variable.Table_Name, 'tblHOT_') then
+    begin
+      extV:='depth';
+      extVV:=cbDepthStart.Text;
+    end;
+
+    extVars:=extVars+extV;
+    extVarVals:=extVarVals+extVV;
+
+    extVars2:=extVars2+extV2;
+    extVarVals2:=extVarVals2+extVV2;
+
+    if i<count then
+    begin
+      tables:=tables+',';
+      vars:=vars+',';
+      extVars:=extVars+',';
+      extVarVals:=extVarVals+',';
+      extVars2:=extVars2+',';
+      extVarVals2:=extVarVals2+',';
+    end;
+  end;
+  fname:='TS';
+  exportflag:=inttostr(getExportDataFlag);
+  ShellExecute(0, nil, 'python', Pchar(' ./script/python/plotTS.py '+tables+' '+vars+' '+dt1+' '+dt2+' '+edtLat1.Text+' '+edtLat2.Text+' '+edtLon1.Text+' '+edtLon2.Text+' '+fname+' '+exportflag+' '+extVars+' '+extVarVals+' '+extVars2+' '+extVarVals2), nil, SW_HIDE);
+  edit1.text:='python' + Pchar(' ./script/python/plotTS.py '+tables+' '+vars+' '+dt1+' '+dt2+' '+edtLat1.Text+' '+edtLat2.Text+' '+edtLon1.Text+' '+edtLon2.Text+' '+fname+' '+exportflag+' '+extVars+' '+extVarVals+' '+extVars2+' '+extVarVals2);
+
+
+  DeleteFile('embed/'+fname+'.html');
+  sleep(1000);
+  repeat
+    Application.ProcessMessages;
+  until FileExists('embed/'+fname+'.html');
+
+  Busy(False);
+  }
+end;
+
+
+procedure TfrmMain.dxBarFilterClick(Sender: TObject);
+begin
+  frmFilter.Show;
+end;
+
+procedure TfrmMain.cbDepthStartPropertiesChange(Sender: TObject);
+begin
+  cbPiscesDepthStart.ItemIndex:=cbDepthStart.ItemIndex;
+end;
+
+procedure TfrmMain.cbRegionPropertiesChange(Sender: TObject);
+begin
+  SetRegion(cbRegion.ItemIndex);
+end;
+
+procedure TfrmMain.cxComboBox1PropertiesChange(Sender: TObject);
+begin
+  cbPiscesDepthEnd.ItemIndex:=cbDepthEnd.ItemIndex;
+end;
+
+procedure TfrmMain.edtLat1Exit(Sender: TObject);
+begin
+  SetRangeTrackbar_Lat;
+end;
+
+procedure TfrmMain.edtLat1KeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  cbRegion.ItemIndex:=-1;
+  if (Key = 13) then
+    SetRangeTrackbar_Lat;
+end;
+
+procedure TfrmMain.edtLat2Exit(Sender: TObject);
+begin
+  SetRangeTrackbar_Lat;
+end;
+
+procedure TfrmMain.edtLat2KeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  cbRegion.ItemIndex:=-1;
+  if (Key = 13) then
+    SetRangeTrackbar_Lat;
+end;
+
+procedure TfrmMain.edtLon1Exit(Sender: TObject);
+begin
+  SetRangeTrackbar_Lon;
+end;
+
+procedure TfrmMain.edtLon1KeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  cbRegion.ItemIndex:=-1;
+  if Key=13 then
+    SetRangeTrackbar_Lon;
+end;
+
+procedure TfrmMain.edtLon2Exit(Sender: TObject);
+begin
+  SetRangeTrackbar_Lon;
+end;
+
+procedure TfrmMain.edtLon2KeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  cbRegion.ItemIndex:=-1;
+  if Key=13 then
+    SetRangeTrackbar_Lon;
+end;
+
+procedure TfrmMain.FormShow(Sender: TObject);
+begin
+  Initialize;
+end;
+
+procedure TfrmMain.MapMouseDown(Sender: TObject; Button: TMouseButton;
+  Shift: TShiftState; X, Y: Integer);
+begin
+  Sel_GeoPoint1 := Map.Layers[0].ScreenPointToGeoPoint(dxPointDouble(10e20, 10e20));
+  Sel_GeoPoint2 := Map.Layers[0].ScreenPointToGeoPoint(dxPointDouble(10e20, 10e20));
+
+  if not(ssShift in Shift) then
+    Exit;
+  inherited;
+  Sel_GeoPoint1 := Map.Layers[0].ScreenPointToGeoPoint(dxPointDouble(X, Y));
+  ShiftDrag := True;
+end;
+
+procedure TfrmMain.MapMouseUp(Sender: TObject; Button: TMouseButton;
+  Shift: TShiftState; X, Y: Integer);
+var
+  AGeoPoint: TdxMapControlGeoPoint;
+  RejectThreshold: Real;
+  lat1, lat2, lon1, lon2: string;
+begin
+  if not(ShiftDrag) then
+    Exit;
+  RejectThreshold:=10e10;
+  if (Sel_GeoPoint1.Latitude>RejectThreshold) or (Sel_GeoPoint2.Latitude>RejectThreshold) or (Sel_GeoPoint1.Longitude>RejectThreshold) or (Sel_GeoPoint2.Longitude>RejectThreshold) then
+    Exit;
+
+  inherited;
+  Sel_GeoPoint2 := Map.Layers[0].ScreenPointToGeoPoint(dxPointDouble(X, Y));
+
+  if Sel_GeoPoint1.Latitude < Sel_GeoPoint2.Latitude then
+  begin
+    lat1 :=  Format('%f', [Sel_GeoPoint1.Latitude]);
+    lat2 :=  Format('%f', [Sel_GeoPoint2.Latitude]);
+  end
+  else
+  begin
+    lat2 :=  Format('%f', [Sel_GeoPoint1.Latitude]);
+    lat1 :=  Format('%f', [Sel_GeoPoint2.Latitude]);
+  end;
+  if Sel_GeoPoint1.Longitude < Sel_GeoPoint2.Longitude then
+  begin
+    lon1 :=  Format('%f', [Sel_GeoPoint1.Longitude]);
+    lon2 :=  Format('%f', [Sel_GeoPoint2.Longitude]);
+  end
+  else
+  begin
+    lon2 :=  Format('%f', [Sel_GeoPoint1.Longitude]);
+    lon1 :=  Format('%f', [Sel_GeoPoint2.Longitude]);
+  end;
+
+  if StrToFloat(lat2) < StrToFloat(frmMain.edtLat1.Text) then
+  begin
+    frmMain.edtLat1.Text := lat1;
+    frmMain.edtLat2.Text := lat2;
+  end
+  else
+  begin
+    frmMain.edtLat2.Text := lat2;
+    frmMain.edtLat1.Text := lat1;
+  end;
+  if StrToFloat(lon2) < StrToFloat(frmMain.edtLon1.Text) then
+  begin
+    frmMain.edtLon1.Text := lon1;
+    frmMain.edtLon2.Text := lon2;
+  end
+  else
+  begin
+    frmMain.edtLon2.Text := lon2;
+    frmMain.edtLon1.Text := lon1;
+  end;
+
+  SetLatEdits(StrToFloat(lat1), StrToFloat(lat2));
+  SetLonEdits(StrToFloat(lon1), StrToFloat(lon2));
+
+  ShiftDrag := False;
+  cbRegion.ItemIndex:=-1;
+end;
+
+procedure TfrmMain.MapResize(Sender: TObject);
+begin
+  prePosition;
+end;
+
+procedure TfrmMain.rtbLatMouseUp(Sender: TObject; Button: TMouseButton;
+  Shift: TShiftState; X, Y: Integer);
+begin
+  cbRegion.ItemIndex:=-1;
+end;
+
+procedure TfrmMain.rtbLatPropertiesChange(Sender: TObject);
+begin
+  //edtLat1.Text := FloattoStr(rtbLat.Range.Min/100);
+  //edtLat2.Text := FloattoStr(rtbLat.Range.Max/100);
+end;
+
+procedure TfrmMain.rtbLonMouseUp(Sender: TObject; Button: TMouseButton;
+  Shift: TShiftState; X, Y: Integer);
+begin
+  cbRegion.ItemIndex:=-1;
+end;
+
+procedure TfrmMain.rtbLonPropertiesChange(Sender: TObject);
+begin
+  //edtLon1.Text := FloattoStr(rtbLon.Range.Min/100);
+  //edtLon2.Text := FloattoStr(rtbLon.Range.Max/100);
+end;
+
+end.

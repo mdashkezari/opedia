@@ -1,7 +1,7 @@
 object frmMain: TfrmMain
   Left = 0
   Top = 0
-  Caption = 'Opedia 0.1.31'
+  Caption = 'Opedia 0.1.33'
   ClientHeight = 967
   ClientWidth = 1330
   Color = clBtnFace
@@ -22,7 +22,6 @@ object frmMain: TfrmMain
     Height = 942
     Align = alClient
     TabOrder = 0
-    ExplicitHeight = 923
     object Map: TdxMapControl
       Left = 0
       Top = 0
@@ -36,7 +35,6 @@ object frmMain: TfrmMain
       OnMouseDown = MapMouseDown
       OnMouseUp = MapMouseUp
       OnResize = MapResize
-      ExplicitHeight = 921
       object dxMapControl1ImageTileLayer1: TdxMapImageTileLayer
         ProviderClassName = 'TdxMapControlBingMapImageryDataProvider'
         Provider.BingKey = 
@@ -63,7 +61,7 @@ object frmMain: TfrmMain
     end
     object Edit1: TEdit
       Left = 24
-      Top = 732
+      Top = 730
       Width = 1025
       Height = 21
       TabOrder = 2
@@ -81,7 +79,6 @@ object frmMain: TfrmMain
     ParentColor = False
     PopupMenu = dxRibbonRadialMenu1
     TabOrder = 1
-    ExplicitHeight = 923
     object cxGroupBox1: TcxGroupBox
       Left = 9
       Top = 32
@@ -727,7 +724,6 @@ object frmMain: TfrmMain
     Height = 25
     Align = alBottom
     TabOrder = 6
-    ExplicitTop = 923
     object cxProgressBar1: TcxProgressBar
       Left = 0
       Top = 0

@@ -6,6 +6,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
 import db
+import subset
 from datetime import datetime, timedelta
 import time
 from bokeh.plotting import figure, show, output_file
@@ -83,11 +84,19 @@ def exportData(df, path):
 def RegionalMap(tables, variabels, dt1, dt2, lat1, lat2, lon1, lon2, depth1, depth2, fname, exportDataFlag):
     data, lats, lons, subs, frameVars = [], [], [], [], []
     for i in range(len(tables)):
-        args = [tables[i], variabels[i], dt1, dt2, lat1, lat2, lon1, lon2, depth1, depth2]
-        query = 'EXEC uspTimeSpace ?, ?, ?, ?, ?, ?, ?, ?, ?, ?'
-        df = db.dbFetchStoredProc(query, args)   
+        df = subset.spaceTime(tables[i], variabels[i], dt1, dt2, lat1, lat2, lon1, lon2, depth1, depth2)
         if len(df) < 1:
             continue
+
+        ############### export retrieved data ###############
+        if exportDataFlag:      
+            dirPath = 'data/'
+            if not os.path.exists(dirPath):
+                os.makedirs(dirPath)     
+            exportPath = dirPath + 'RM_' + tables[i] + '_' + variabels[i]               
+            exportData(df, path=exportPath + '.csv')
+        #####################################################
+
         times = df[df.columns[0]].unique()  
         lats = df.lat.unique()
         lons = df.lon.unique()
@@ -103,28 +112,21 @@ def RegionalMap(tables, variabels, dt1, dt2, lat1, lat2, lon1, lon2, depth1, dep
         for t in times:
             for h in hours:
                 for z in depths:
-                    exportPathExtension = ''                    
                     frame = df[df[df.columns[0]] == t]
                     sub = variabels[i] + unit + ', ' + df.columns[0] + ': ' + str(t) 
-                    exportPathExtension +=  '_' + df.columns[0] + '_' + str(t)
                     if h != None:
                         frame = frame[frame['hour'] == h]
                         sub = sub + ', hour: ' + str(h) + 'hr'
-                        exportPathExtension += '_Hour_' + str(h)
                     if z != None:
                         frame = frame[frame['depth'] == z] 
                         sub = sub + ', depth: %2.2f' % z + ' [m]'  
-                        exportPathExtension += '_depth_' + str(z) 
-                    shot = frame[variabels[i]].values.reshape(shape)
+                    try:    
+                        shot = frame[variabels[i]].values.reshape(shape)
+                    except Exception as e:
+                        continue    
                     data.append(shot)
                     frameVars.append(variabels[i])
                     subs.append(sub)
-                    if exportDataFlag:      # export data
-                        dirPath = 'data/'
-                        if not os.path.exists(dirPath):
-                            os.makedirs(dirPath)     
-                        exportPath = dirPath + 'RM_' + tables[i] + '_' + variabels[i]               
-                        exportData(frame, path=exportPath + exportPathExtension + '.csv')
 
     bokehGM(data=data, subject=subs, fname=fname, lat=lats, lon=lons, variabels=frameVars)
     return

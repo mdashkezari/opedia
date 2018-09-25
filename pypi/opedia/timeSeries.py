@@ -5,7 +5,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
 import db
-import genericDist as gd
+import subset
 from datetime import datetime, timedelta
 import time
 
@@ -42,17 +42,16 @@ def iterative(table, field, dt):
     it = False
     if dt != 24*60:
         it = True
-    if table.find('tblWind') != -1:
-        it = True
-    if table.find('tblCHL_OI') != -1:
-        it = True   
-    #if table.find('tblPisces') != -1:
+    #if table.find('tblWind') != -1:
     #    it = True
+    #if table.find('tblCHL_OI') != -1:
+    #    it = True   
+    ##if table.find('tblPisces') != -1:
+    ##    it = True
     return it
 
 
-def timeSeries_iterative(table, field, startDate, endDate, lat1, lat2, lon1, lon2, extV, extVV, extV2, extVV2, fmt='%Y-%m-%d', dt=24*60):
-    #dt = 24*60         # time resolution (minutes)    
+def timeSeries_iterative(table, field, startDate, endDate, lat1, lat2, lon1, lon2, depth1, depth2, fmt='%Y-%m-%d', dt=24*60):
     y = np.array([])
     y_std = np.array([])
     ts = []    
@@ -63,7 +62,7 @@ def timeSeries_iterative(table, field, startDate, endDate, lat1, lat2, lon1, lon
         ts.append(t)
         t1 = t
         t2 = t + timedelta(minutes=dt) + timedelta(seconds=-1)
-        df = gd.genericDist(table, field, t1, t2, lat1, lat2, lon1, lon2, extV, extVV, extV2, extVV2)        
+        df = subset.spaceTime(table, field, t1, t2, lat1, lat2, lon1, lon2, depth1, depth2)  
         t = t + timedelta(minutes=dt)
         try:
             if len(df[field]) > 0:                
@@ -93,18 +92,15 @@ def timeSeries_iterative(table, field, startDate, endDate, lat1, lat2, lon1, lon
     return ts, y, y_std
 
 
-def timeSeries(table, field, startDate, endDate, lat1, lat2, lon1, lon2, extV, extVV, extV2, extVV2, fmt='%Y-%m-%d', dt=24*60):    
+def timeSeries(table, field, startDate, endDate, lat1, lat2, lon1, lon2, depth1, depth2, fmt='%Y-%m-%d', dt=24*60):    
     if iterative(table, field, dt):
-        ts, y, y_std = timeSeries_iterative(table, field, startDate, endDate, lat1, lat2, lon1, lon2, extV, extVV, extV2, extVV2, fmt, dt)
+        ts, y, y_std = timeSeries_iterative(table, field, startDate, endDate, lat1, lat2, lon1, lon2, depth1, depth2, fmt, dt)
     else:   
-        ######### Stored Procedure Query ##########
-        query = 'EXEC uspTimeSeries ?, ?, ?, ?, ?, ?, ?, ?, ?, ?'
-        args = [table, field, startDate, endDate, str(lat1), str(lat2), str(lon1), str(lon2), extV, extVV]
-        df = db.dbFetchStoredProc(query, args)
-        df = pd.DataFrame.from_records(df, columns=['time', 'lat', 'lon', field, field+'_std'])
-        ts, y, y_std = pd.to_datetime(df['time']), df[field], df[field+'_std']
-        ###########################################   
-
-        ts, y, y_std = fillGaps(ts, y, y_std, startDate, endDate, fmt, dt)
+        df = subset.timeSeries(table, field, startDate, endDate, lat1, lat2, lon1, lon2, depth1, depth2)
+        if not db.isClimatology(table):
+            ts, y, y_std = pd.to_datetime(df[df.columns[0]]), df[field], df[field+'_std']
+            ts, y, y_std = fillGaps(ts, y, y_std, startDate, endDate, fmt, dt)
+        else:    
+            ts, y, y_std = df[df.columns[0]], df[field], df[field+'_std']
     return ts, y, y_std
 
