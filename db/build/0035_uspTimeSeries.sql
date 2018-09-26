@@ -66,7 +66,7 @@ BEGIN
 		@depthQuery + ' GROUP BY ' + RTRIM(LTRIM(@timeField)) + ' ORDER BY ' + RTRIM(LTRIM(@timeField));
 	END
 	-------------------------------------------------
-	PRINT(@query)
+	
 	EXEC(@query)
 END
 GO

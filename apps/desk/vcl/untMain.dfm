@@ -1,7 +1,7 @@
 object frmMain: TfrmMain
   Left = 0
   Top = 0
-  Caption = 'Opedia 0.1.33'
+  Caption = 'Opedia 0.1.34'
   ClientHeight = 967
   ClientWidth = 1330
   Color = clBtnFace

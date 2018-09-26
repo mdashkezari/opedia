@@ -16,25 +16,6 @@ from bokeh.models import HoverTool
 from bokeh.embed import components
 
 
-def embedComponents(fname, data):
-    f = open(fname, 'w')
-    f.write(data)
-    f.close()
-    return
-
-
-def prepareTimeSpaceQuery(table, date1, date2, lat1, lat2, lon1, lon2):
-    query = "SELECT AVG(sla) AS sla, AVG(sst) AS sst, AVG(u) AS u, AVG(v) as v FROM %s WHERE "
-    #query = query + "[time]>='%s' AND [time]<='%s' AND "
-    query = query + "[time]='%s' AND "
-    query = query + "lat>=%f AND lat<=%f AND "
-    query = query + "lon>=%f AND lon<=%f "
-    #query = query % (table, date1, date2, lat1, lat2, lon1, lon2)
-    query = query % (table, date1, lat1, lat2, lon1, lon2)
-    return query
-
-
-
 def exportData(t, y, yErr, table, variable, lat1, lat2, lon1, lon2, extV, extVV, extV2, extVV2):
     df = pd.DataFrame()
     df['month'] = t

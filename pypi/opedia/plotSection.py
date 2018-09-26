@@ -4,6 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
 import db
+import subset
 import climatology as clim
 from datetime import datetime, timedelta
 import time
@@ -12,13 +13,6 @@ from bokeh.layouts import column
 from bokeh.palettes import all_palettes
 from bokeh.models import LinearColorMapper, BasicTicker, ColorBar
 from bokeh.embed import components
-
-
-def embedComponents(fname, data):
-    f = open(fname, 'w')
-    f.write(data)
-    f.close()
-    return
 
 
 def getBounds(varName):
@@ -99,35 +93,54 @@ def exportData(df, path):
     return
 
 
-def sectionMap(tables, variabels, dt, lat1, lat2, lon1, lon2, depth1, depth2, fname, exportDataFlag):
-    data = []
-    subs = [] 
+def sectionMap(tables, variabels, dt1, dt2, lat1, lat2, lon1, lon2, depth1, depth2, fname, exportDataFlag):
+    data, lats, lons, subs, frameVars = [], [], [], [], []
     for i in range(len(tables)):
-        '''
-        ######### Stored Procedure Query ##########
-        args = [tables[i], variabels[i], dt, lat1, lat2, lon1, lon2, depth1, depth2]
-        query = 'EXEC uspSectionMap ?, ?, ?, ?, ?, ?, ?, ?, ?'
-        df = db.dbFetchStoredProc(query, args)        
-        df = pd.DataFrame.from_records(df, columns=['time', 'lat', 'lon', 'depth', variabels[i]])
-        '''
-        query = prepareSectionQuery(tables[i], variabels[i], dt, lat1, lat2, lon1, lon2, depth1, depth2)
-        df = db.dbFetch(query)
+        if not db.hasField(tables[i], 'depth'):
+            continue        
+        #query = prepareSectionQuery(tables[i], variabels[i], dt, lat1, lat2, lon1, lon2, depth1, depth2)
+        #df = db.dbFetch(query)
 
-        lat = df.lat.unique()
-        lon = df.lon.unique()
-        depth = df.depth.unique()
-        shape = (len(lat), len(lon), len(depth))
-        data.append(df[variabels[i]].values.reshape(shape))
-        
-        unit =  ' [' + db.getVar(tables[i], variabels[i]).iloc[0]['Unit'] + ']'
-        sub = variabels[i] + unit + ' ' + dt    
-        subs.append(sub)
+        df = subset.section(tables[i], variabels[i], dt1, dt2, lat1, lat2, lon1, lon2, depth1, depth2)
+        if len(df) < 1:
+            continue
+
+        ############### export retrieved data ###############
         if exportDataFlag:      # export data
             dirPath = 'data/'
             if not os.path.exists(dirPath):
                 os.makedirs(dirPath)                
             exportData(df, path=dirPath + fname + '_' + tables[i] + '_' + variabels[i] + '.csv')
-    bokehSec(data=data, subject=subs, fname=fname, lat=lat, lon=lon, depth=depth, variabels=variabels)
+        #####################################################
+
+        times = df[df.columns[0]].unique() 
+        lats = df.lat.unique()
+        lons = df.lon.unique()
+        depths = df.depth.unique()
+        shape = (len(lats), len(lons), len(depths))
+
+        hours =  [None]
+        if 'hour' in df.columns:
+            hours = df.hour.unique()
+
+        unit =  ' [' + db.getVar(tables[i], variabels[i]).iloc[0]['Unit'] + ']'
+
+        for t in times:
+            for h in hours:
+                frame = df[df[df.columns[0]] == t]
+                sub = variabels[i] + unit + ', ' + df.columns[0] + ': ' + str(t) 
+                if h != None:
+                    frame = frame[frame['hour'] == h]
+                    sub = sub + ', hour: ' + str(h) + 'hr'
+                try:    
+                    shot = frame[variabels[i]].values.reshape(shape)
+                except Exception as e:
+                    continue    
+                data.append(shot)
+                frameVars.append(variabels[i])
+                subs.append(sub)
+
+    bokehSec(data=data, subject=subs, fname=fname, lat=lats, lon=lons, depth=depths, variabels=frameVars)
     return
 
 
@@ -181,17 +194,22 @@ def bokehSec(data, subject, fname, lat, lon, depth, variabels):
     return
 
 
+def main():
+    tables = sys.argv[1]      
+    variables = sys.argv[2]      
+    dt1 = sys.argv[3]      
+    dt2 = sys.argv[4]      
+    lat1 = sys.argv[5]      
+    lat2 = sys.argv[6]      
+    lon1 = sys.argv[7]      
+    lon2 = sys.argv[8]      
+    depth1 = sys.argv[9]      
+    depth2 = sys.argv[10]      
+    fname = sys.argv[11]
+    exportDataFlag = bool(int(sys.argv[12]))
 
-arg1 = sys.argv[1]      #tables
-arg2 = sys.argv[2]      #variables
-arg3 = sys.argv[3]      #dt
-arg4 = sys.argv[4]      #lat1
-arg5 = sys.argv[5]      #lat2
-arg6 = sys.argv[6]      #lon1
-arg7 = sys.argv[7]      #lon2
-fname = sys.argv[8]
-exportDataFlag = bool(int(sys.argv[9]))
-arg8 = sys.argv[10]      #depth1
-arg9 = sys.argv[11]      #depth2
+    sectionMap(tables.split(','), variables.split(','), dt1, dt2, lat1, lat2, lon1, lon2, depth1, depth2, fname, exportDataFlag)
 
-sectionMap(arg1.split(','), arg2.split(','), arg3, arg4, arg5, arg6, arg7, arg8, arg9, fname, exportDataFlag)
+
+if __name__ == '__main__':
+    main()    

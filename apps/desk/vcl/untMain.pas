@@ -610,6 +610,9 @@ var
   Variable:TVar;
   vars, tables: String;
 begin
+  callOpedia('plotDepthProfile.py', 1, 'DepthPro');
+
+  {
   if ledtVars.Values.Count<1 then
   begin
     MessageDlg('Please pick at least one variable.', mtError, [mbok], 0);
@@ -646,6 +649,7 @@ begin
   until FileExists('embed/'+fname+'.html');
 
   Busy(False);
+  }
 end;
 
 procedure TfrmMain.barEddyClick(Sender: TObject);
@@ -762,93 +766,13 @@ begin
 end;
 
 procedure TfrmMain.barSectionMapClick(Sender: TObject);
-var
-  dt, fname, exportflag: String;
-  i, count:integer;
-  Variable:TVar;
-  vars, tables: String;
 begin
-  if ledtVars.Values.Count<1 then
-  begin
-    MessageDlg('Please pick at least one variable.', mtError, [mbok], 0);
-    Exit;
-  end;
-
-  Busy(True);
-  vars:='';
-  tables:='';
-  count:=ledtVars.Values.Count-1;
-  for I := 0 to count do
-  begin
-    Variable:=GetVariable(ledtVars.Values.Items[i].Tag);
-    dt:=FormatDateTime('yyyy-mm-dd',dtwpTimeStart.DateTime);
-    tables:=tables+Variable.Table_Name;
-    vars:=vars+Variable.Short_Name;
-
-    if i<count then
-    begin
-      tables:=tables+',';
-      vars:=vars+',';
-    end;
-  end;
-  fname:='Sec';
-  exportflag:=inttostr(getExportDataFlag);
-  ShellExecute(0, nil, 'python', Pchar(' ./script/python/plotSection.py '+tables+' '+vars+' '+dt+' '+edtLat1.Text+' '+edtLat2.Text+' '+edtLon1.Text+' '+edtLon2.Text+' '+fname+' '+exportflag+' '+cbPiscesDepthStart.Text+' '+cbPiscesDepthEnd.Text), nil, SW_HIDE);
-  //edit1.text:='python'+ Pchar(' ./script/python/plotSection.py '+tables+' '+vars+' '+dt+' '+edtLat1.Text+' '+edtLat2.Text+' '+edtLon1.Text+' '+edtLon2.Text+' '+fname+' '+exportflag+' '+cbPiscesDepthStart.Text+' '+cbPiscesDepthEnd.Text);
-
-
-  DeleteFile('embed/'+fname+'.html');
-  sleep(1000);
-  repeat
-    Application.ProcessMessages;
-  until FileExists('embed/'+fname+'.html');
-
-  Busy(False);
+  callOpedia('plotSection.py', 1, 'Sec');
 end;
 
 procedure TfrmMain.BarTracerTrajectoryClick(Sender: TObject);
-var
-  FileLayer: TdxMapItemFileLayer;
-  fPath:String;
-  dt:integer;
-  dt1, dt2, lat, lon, fname:string;
 begin
-{
-  Busy(True);
-
-  dt:=3600*24;  // seconds per day
-  dt1:=FormatDateTime('yyyy-mm-dd',dtwpTimeStart.DateTime);
-  dt2:=FormatDateTime('yyyy-mm-dd',dtwpTimeEnd.DateTime);
-  lat:=edtLat1.Text;
-  lon:=edtLon1.Text;
-  fname:='tracer';
-  ShellExecute(0, nil, 'python', Pchar(' ./script/python/Lagrangian.py '+inttostr(dt)+' '+dt1+' '+dt2+' '+lat+' '+lon+' '+fname), nil, SW_HIDE);
-  //frmMain.Edit1.Text:='python'+Pchar(' ./script/python/Lagrangian.py '+inttostr(dt)+' '+dt1+' '+dt2+' '+lat+' '+lon+' '+fname);
-
-  DeleteFile('shape/'+fname+'.shp');
-  repeat
-    Application.ProcessMessages;
-  until FileExists('shape/'+fname+'.shp');
-
-  FileLayer:=(frmMain.map.Layers[2] as TdxMapItemFileLayer);
-  FileLayer.Active:=False;
-  FileLayer.FileType:=miftShape;
-  fPath:='shape/'+fname+'.shp';
-
-  repeat
-    Application.ProcessMessages;
-    sleep(100);
-  until not IsFileInUse(fPath);
-
-  FileLayer.FileName:=fPath;
-  FileLayer.LoadFromFile(fPath);
-  FileLayer.Active:=True;
-
-  Busy(False);
-}
-
   frmLagrangian.Show;
-
 end;
 
 
