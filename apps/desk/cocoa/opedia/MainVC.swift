@@ -61,7 +61,7 @@ class MainVC: NSViewController, MKMapViewDelegate, NSTokenFieldCellDelegate, NST
     @IBAction func plotTimeSeries(_ sender: Any) {
         spnBusy.startAnimation(self)
         updateQueryParams()
-        runScript([pythonPath, "\(opediaAPI)plotTS.py", tables, vars, date1, date2, lat1, lat2, lon1, lon2, fname, exportFlag, extV1, extVV1, extV2, extVV2, bundlePath])
+        runScript([pythonPath, "\(opediaAPI)plotTS.py", tables, vars, date1, date2, lat1, lat2, lon1, lon2, depth1, depth2, fname, exportFlag, bundlePath])
     }
     
     @IBAction func plotRegionalMap(_ sender: Any) {
@@ -80,21 +80,21 @@ class MainVC: NSViewController, MKMapViewDelegate, NSTokenFieldCellDelegate, NST
     @IBAction func plotHist(_ sender: Any) {
         spnBusy.startAnimation(self)
         updateQueryParams()
-        runScript([pythonPath, "\(opediaAPI)plotDist.py", tables, vars, date1, date2, lat1, lat2, lon1, lon2, fname, exportFlag, extV1, extVV1, extV2, extVV2, bundlePath])
+        runScript([pythonPath, "\(opediaAPI)plotDist.py", tables, vars, date1, date2, lat1, lat2, lon1, lon2, depth1, depth2, fname, exportFlag, bundlePath])
     }
     
 
     @IBAction func plotDepthProfile(_ sender: Any) {
         spnBusy.startAnimation(self)
         updateQueryParams()
-        runScript([pythonPath, "\(opediaAPI)plotDepthProfile.py", tables, vars, date1, lat1, lat2, lon1, lon2, fname, exportFlag, depth1, depth2, bundlePath])
+        runScript([pythonPath, "\(opediaAPI)plotDepthProfile.py", tables, vars, date1, date2, lat1, lat2, lon1, lon2, depth1, depth2, fname, exportFlag, bundlePath])
     }
 
     
     @IBAction func plotSection(_ sender: Any) {
         spnBusy.startAnimation(self)
         updateQueryParams()
-        runScript([pythonPath, "\(opediaAPI)plotSection.py", tables, vars, date1, lat1, lat2, lon1, lon2, fname, exportFlag, depth1, depth2, bundlePath])
+        runScript([pythonPath, "\(opediaAPI)plotSection.py", tables, vars, date1, date2, lat1, lat2, lon1, lon2, depth1, depth2, fname, exportFlag, bundlePath])
     }
 
     
@@ -147,12 +147,11 @@ class MainVC: NSViewController, MKMapViewDelegate, NSTokenFieldCellDelegate, NST
         dslDepth.end = 5727
     }
     
-    func runScript(_ arguments:[String]) {
-        isRunning = true
-        let taskQueue = DispatchQueue.global(qos: DispatchQoS.QoSClass.background)
-        taskQueue.async {
+    
+    func runScript(_ arguments:[String], _ async: Bool=true) {
+        func runProc() {
             guard let path = Bundle.main.path(forResource: "BashScript",ofType:"command") else {
-                let answer = Initializer().msgDialog(headline: "Unable to locate BashScript.command", text: "")
+                _ = Initializer().msgDialog(headline: "Unable to locate BashScript.command", text: "")
                 //print("Unable to locate BashScript.command")
                 return
             }
@@ -169,13 +168,23 @@ class MainVC: NSViewController, MKMapViewDelegate, NSTokenFieldCellDelegate, NST
                     if arguments[1].contains("getCatalog") { self.loadCatalog() }
                 })
             }
-            
-            
             //self.consoleOutput(self.proc)     //console output handling
             self.proc.launch()
             self.proc.waitUntilExit()
         }
+        
+        ///////////////////////////////////
+        isRunning = true
+        let taskQueue = DispatchQueue.global(qos: DispatchQoS.QoSClass.background)
+        if async {
+            taskQueue.async { runProc() }
+        }
+        else {
+            taskQueue.sync { runProc() }
+        }
+        ///////////////////////////////////
     }
+    
     
     func updateQueryParams() {
         let formatter = DateFormatter()
@@ -401,11 +410,43 @@ class MainVC: NSViewController, MKMapViewDelegate, NSTokenFieldCellDelegate, NST
     }
     
     
+    func opediaPathScript() -> String {
+        return """
+        import site
+        file = open("out.txt","w")
+        path = site.getsitepackages()[-1]
+        file.write(path + "/opedia/")
+        """
+    }
+    
+    
+    func setOpediaAPI() {
+        ///////// set opediaAPI (path to opedia python package) /////////
+        let opPackScript: String = bundlePath+"/opPack.py"
+        Initializer().writeFile(text: opediaPathScript(), to: opPackScript)
+        runScript([pythonPath, opPackScript, bundlePath], false)
+        opediaAPI = try! NSString(contentsOfFile: bundlePath+"/out.txt", encoding: String.Encoding.utf8.rawValue) as String
+        do {
+            let fm = FileManager.default
+            try fm.removeItem(atPath: bundlePath+"/out.txt")
+            try fm.removeItem(atPath: bundlePath+"/opPack.py")
+        }
+        catch let error as NSError {
+            print("Error while deleteing python file: \(error)")
+        }
+    }
+    
+    
+    
+    
+    
     // MARK: - implemntation
     override func viewDidLoad() {
         super.viewDidLoad()
-        Initializer().vcMainInitializer()
         initUI()
+        Initializer().setBundlePath()
+        Initializer().setPythonPath()
+        setOpediaAPI()
 
         ///////// get cataloge /////////
         spnBusy.startAnimation(self)

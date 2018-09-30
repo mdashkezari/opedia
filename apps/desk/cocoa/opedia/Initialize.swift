@@ -33,8 +33,10 @@ class Initializer {
         return alert.runModal() == .alertFirstButtonReturn
     }
     
-    func vcMainInitializer(){
-        
+  
+
+    func setBundlePath(){
+        /*
         let pythonPath2 = "/anaconda2/bin/python"
         let opediaAPI2 = "/anaconda2/lib/python2.7/site-packages/opedia/"
         
@@ -46,7 +48,7 @@ class Initializer {
             if exists(opediaAPI3).0 {
                 opediaAPI = opediaAPI3
             } else {
-                let answer = msgDialog(headline: "Opedia python package not found. \n $ pip install opedia", text: "Expecting: \n" + opediaAPI3)
+                _ = msgDialog(headline: "Opedia python package not found. \n $ pip install opedia", text: "Expecting: \n" + opediaAPI3)
                 NSApplication.shared.terminate(self)
             }
         } else if exists(pythonPath2).1 {
@@ -54,16 +56,40 @@ class Initializer {
             if exists(opediaAPI2).0 {
                 opediaAPI = opediaAPI2
             } else {
-                let answer = msgDialog(headline: "Opedia python package not found. \n $ pip install opedia", text: "Expecting: \n" + opediaAPI2)
+                _ = msgDialog(headline: "Opedia python package not found. \n $ pip install opedia", text: "Expecting: \n" + opediaAPI2)
                 NSApplication.shared.terminate(self)
             }
         } else {
-            let answer = msgDialog(headline: "Unable to locate any anaconda distribution. \n Install python anaconda distribution.", text: "Expecting either: \n" + pythonPath2 + " \n or \n " + pythonPath3)
+            _ = msgDialog(headline: "Unable to locate any anaconda distribution. \n Install python anaconda distribution.", text: "Expecting either: \n" + pythonPath2 + " \n or \n " + pythonPath3)
             NSApplication.shared.terminate(self)
         }
+        */
         
         let url = URL(fileURLWithPath: Bundle.main.bundlePath)
         bundlePath = url.deletingLastPathComponent().path
         
     }
+    
+        
+    func setPythonPath() {
+        let pythonPath2 = "/anaconda2/bin/python"
+        let pythonPath3 = "/anaconda3/bin/python"
+        
+        if exists(pythonPath3).1 {
+            pythonPath = pythonPath3
+        } else if exists(pythonPath2).1 {
+            pythonPath = pythonPath2
+        } else {
+            _ = msgDialog(headline: "Unable to locate any anaconda distribution. \n Install python anaconda distribution.", text: "Expecting either: \n" + pythonPath2 + " \n or \n " + pythonPath3)
+            NSApplication.shared.terminate(self)
+        }
+        
+    }
+    
+    
+    func writeFile(text: String, to filePath: String) {
+        try? text.write(to: URL(fileURLWithPath: filePath), atomically: false, encoding: String.Encoding.utf8)
+    }
+
+    
 }

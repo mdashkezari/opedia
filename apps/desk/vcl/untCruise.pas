@@ -112,8 +112,13 @@ begin
     Exit;
   command:=1;
   frmCruise_Busy(True);
-  ShellExecute(0, nil, 'python', Pchar(' ./script/python/plotCruise.py '+inttostr(cruiseDB)+' '+inttostr(command)+' '+table+' '+cruise+' '+Resample+' '+fname), nil, SW_HIDE);
+
+  ShellExecute(0, nil, 'python', Pchar(' '+opediaPath+'plotCruise.py'+' '+inttostr(cruiseDB)+' '+inttostr(command)+' '+table+' '+cruise+' '+Resample+' '+fname), nil, SW_HIDE);
+  frmMain.Edit1.Text:='python'+Pchar(' '+opediaPath+'plotCruise.py'+' '+inttostr(cruiseDB)+' '+inttostr(command)+' '+table+' '+cruise+' '+Resample+' '+fname);
+
+  //ShellExecute(0, nil, 'python', Pchar(' ./script/python/plotCruise.py '+inttostr(cruiseDB)+' '+inttostr(command)+' '+table+' '+cruise+' '+Resample+' '+fname), nil, SW_HIDE);
   //frmMain.Edit1.Text:='python'+Pchar(' ./script/python/plotCruise.py '+inttostr(cruiseDB)+' '+inttostr(command)+' '+table+' '+cruise+' '+Resample+' '+fname);
+
 
   DeleteFile('shape/'+fname+'.shp');
   repeat
@@ -148,6 +153,7 @@ var
   extV, extVV, extVars, extVarVals: String;
   extV2, extVV2, extVars2, extVarVals2: String;
 begin
+
   if frmMain.ledtVars.Values.Count<1 then
   begin
     MessageDlg('Please pick at least one variable.', mtError, [mbok], 0);
@@ -205,8 +211,9 @@ begin
   fname:='AlongTrack';
   exportflag:=inttostr(getExportDataFlag);
   command:=2;
-  ShellExecute(0, nil, 'python', Pchar(' ./script/python/plotCruise.py '+inttostr(cruiseDB)+' '+inttostr(command)+' '+source+' '+cruise+' '+Resample+' '+fname+' '+exportflag+' '+FloatToStr(spatialMargin)+' '+tables+' '+vars+' '+extVars+' '+extVarVals+' '+extVars2+' '+extVarVals2), nil, SW_HIDE);
-  //frmMain.edit1.text:='python'+ Pchar(' ./script/python/plotCruise.py '+inttostr(cruiseDB)+' '+inttostr(command)+' '+source+' '+cruise+' '+Resample+' '+fname+' '+exportflag+' '+FloatToStr(spatialMargin)+' '+tables+' '+vars+' '+extVars+' '+extVarVals+' '+extVars2+' '+extVarVals2);
+
+  ShellExecute(0, nil, 'python', Pchar(' '+opediaPath+'plotCruise.py'+' '+inttostr(cruiseDB)+' '+inttostr(command)+' '+source+' '+cruise+' '+Resample+' '+fname+' '+exportflag+' '+FloatToStr(spatialMargin)+' '+tables+' '+vars+' '+extVars+' '+extVarVals+' '+extVars2+' '+extVarVals2), nil, SW_HIDE);
+  frmMain.edit1.text:='python'+ Pchar(' '+opediaPath+'plotCruise.py'+' '+inttostr(cruiseDB)+' '+inttostr(command)+' '+source+' '+cruise+' '+Resample+' '+fname+' '+exportflag+' '+FloatToStr(spatialMargin)+' '+tables+' '+vars+' '+extVars+' '+extVarVals+' '+extVars2+' '+extVarVals2);
 
 
   DeleteFile('embed/'+fname+'.html');
@@ -216,6 +223,7 @@ begin
   until FileExists('embed/'+fname+'.html');
 
   frmCruise_Busy(False);
+
 end;
 
 

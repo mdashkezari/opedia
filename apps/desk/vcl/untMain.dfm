@@ -66,7 +66,6 @@ object frmMain: TfrmMain
       Height = 21
       TabOrder = 2
       Text = 'Edit1'
-      Visible = False
     end
   end
   object scbSettingsPanel: TcxScrollBox

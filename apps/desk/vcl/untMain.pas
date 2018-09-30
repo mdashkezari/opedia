@@ -175,7 +175,7 @@ var
   frmMain: TfrmMain;
   ShiftDrag:Boolean;
   Sel_GeoPoint1, Sel_GeoPoint2: TdxMapControlGeoPoint;
-  Root, DefaultPassword:String;
+  Root, opediaPath, DefaultPassword:String;
   UserName, FirstName:String;
   UserID:integer;
 
@@ -185,6 +185,9 @@ procedure OpenDB();
 procedure CloseDB();
 function getExportDataFlag:integer;
 procedure makeVaultStruc();
+procedure terminalPipe(const ACommand, AParameters: String; AMemo: TMemo);
+function getOpediaPath():string;
+procedure callOpedia(script:string; minVar:integer; fname:string);
 
 implementation
 
@@ -515,6 +518,8 @@ begin
     Application.ProcessMessages;
   end;
 
+  opediaPath:=getOpediaPath();
+
   makeDirs;
   makeVaultStruc;
   //SetRangeTrackbar_Lat;
@@ -531,17 +536,127 @@ begin
   SetRangeTrackbar_Lat;
 end;
 
-procedure runPython(script, tables, vars, dt1, dt2, lat1, lat2, lon1, lon2, depth1, depth2, fname, exportflag:string);
+
+
+procedure terminalPipe(const ACommand, AParameters: String; AMemo: TMemo);
+ const
+   CReadBuffer = 2400;
+ var
+   saSecurity: TSecurityAttributes;
+   hRead: THandle;
+   hWrite: THandle;
+   suiStartup: TStartupInfo;
+   piProcess: TProcessInformation;
+   pBuffer: array[0..CReadBuffer] of AnsiChar;
+   dRead: DWord;
+   dRunning: DWord;
+ begin
+   saSecurity.nLength := SizeOf(TSecurityAttributes);
+   saSecurity.bInheritHandle := True;
+   saSecurity.lpSecurityDescriptor := nil;
+
+   if CreatePipe(hRead, hWrite, @saSecurity, 0) then
+   begin
+     FillChar(suiStartup, SizeOf(TStartupInfo), #0);
+     suiStartup.cb := SizeOf(TStartupInfo);
+     suiStartup.hStdInput := hRead;
+     suiStartup.hStdOutput := hWrite;
+     suiStartup.hStdError := hWrite;
+     suiStartup.dwFlags := STARTF_USESTDHANDLES or STARTF_USESHOWWINDOW;
+     suiStartup.wShowWindow := SW_HIDE;
+
+     if CreateProcess(nil, PChar(ACommand + ' ' + AParameters), @saSecurity,
+       @saSecurity, True, NORMAL_PRIORITY_CLASS, nil, nil, suiStartup, piProcess)
+       then
+     begin
+       repeat
+         dRunning  := WaitForSingleObject(piProcess.hProcess, 100);
+         Application.ProcessMessages();
+         repeat
+           dRead := 0;
+           ReadFile(hRead, pBuffer[0], CReadBuffer, dRead, nil);
+           pBuffer[dRead] := #0;
+
+           OemToAnsi(pBuffer, pBuffer);
+           AMemo.Lines.Add(String(pBuffer));
+         until (dRead < CReadBuffer);
+       until (dRunning <> WAIT_TIMEOUT);
+       CloseHandle(piProcess.hProcess);
+       CloseHandle(piProcess.hThread);
+     end;
+
+     CloseHandle(hRead);
+     CloseHandle(hWrite);
+   end;
+end;
+
+function fileInUse(path:string):boolean;
 var
-  opediaPath:string;
+  F:TextFile;
+  t, timeOut: LongInt;
 begin
-  opediaPath:='./script/python/';
-  opediaPath:='H:\\Dropbox\\projects\\opedia\\pypi\\opedia\\';
-  //opediaPath:='C:\\Users\\Mohammad\\Anaconda2\\lib\\site-packages\\opedia\\';
+  Result:=True;
+  timeOut:=5000;
+  t:=GetTickCount;
+  repeat
+    Result:=False;
+    AssignFile(F,path);
+    try
+      try
+        Reset(f);
+      finally
+        CloseFile(F);
+      end;
+    except
+      Result:=True
+    end;
+  until (not Result) or (GetTickCount-t>timeOut);
+end;
 
-  // >>> import site
-  // >>> site.getsitepackages()
+function getOpediaPath():string;
+var
+  F:TextFile;
+  pyScript, code, outPath: string;
+  t: LongInt;
+begin
+  try
+    pyScript := Root + '\opPack.py';
+    outPath:=Root+'out.txt';
+    DeleteFile(outPath);
+    AssignFile(F, pyScript);
+    Rewrite(F);
+    Writeln(F,'import site');
+    Writeln(F,'file = open("out.txt","w")');
+    writeln(F,'path = site.getsitepackages()[1]');
+    writeln(F,'path = path.replace("\\","/")');
+    Writeln(F,'file.write(path + "/opedia/")');
+    code := 'file.close()';
+    Writeln(F,code);
+    CloseFile(F);
 
+    ShellExecute(0, nil, 'python', Pchar('"'+Root+'opPack.py"'), nil, SW_HIDE);
+    //terminalPipe('python ', '"'+Root+'opPack.py"', frmMain.memTerminal);
+    t:=GetTickCount;
+    repeat
+      Application.ProcessMessages;
+    until (FileExists(outPath)) or (GetTickCount-t>5000);
+    repeat
+      Application.ProcessMessages;
+    until (not fileInUse(outPath)) or (GetTickCount-t>5000);
+
+    AssignFile(F, outPath);
+    Reset(F);
+    ReadLn(F, Result);
+    CloseFile(F);
+  finally
+    DeleteFile(pyScript);
+    DeleteFile(outPath);
+  end;
+
+end;
+
+procedure runPython(script, tables, vars, dt1, dt2, lat1, lat2, lon1, lon2, depth1, depth2, fname, exportflag:string);
+begin
   ShellExecute(0, nil, 'python', Pchar(' '+opediaPath+script+' '+tables+' '+vars+' '+dt1+' '+dt2+' '+lat1+' '+lat2+' '+lon1+' '+lon2+' '+depth1+' '+depth2+' '+fname+' '+exportflag), nil, SW_HIDE);
   frmMain.edit1.text:='python' + Pchar(' '+opediaPath+script+' '+tables+' '+vars+' '+dt1+' '+dt2+' '+lat1+' '+lat2+' '+lon1+' '+lon2+' '+depth1+' '+depth2+' '+fname+' '+exportflag);
 end;
