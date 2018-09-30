@@ -164,7 +164,7 @@ object frmCruise: TfrmCruise
   object cxLabel3: TcxLabel
     Left = 19
     Top = 79
-    Caption = 'Margin (+/- degree)'
+    Caption = 'Spatial Tolerance (+/- degree)'
     ParentFont = False
     Style.Font.Charset = DEFAULT_CHARSET
     Style.Font.Color = clWindowText

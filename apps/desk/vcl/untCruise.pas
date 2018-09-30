@@ -110,14 +110,19 @@ var
 begin
   if Length(Trim(cruise))<1 then
     Exit;
+
+  if cruise='' then
+  begin
+    MessageDlg('Please select a cruise (real or virtual).', mtError, [mbok], 0);
+    Exit;
+  end;
+
+
   command:=1;
   frmCruise_Busy(True);
 
   ShellExecute(0, nil, 'python', Pchar(' '+opediaPath+'plotCruise.py'+' '+inttostr(cruiseDB)+' '+inttostr(command)+' '+table+' '+cruise+' '+Resample+' '+fname), nil, SW_HIDE);
   frmMain.Edit1.Text:='python'+Pchar(' '+opediaPath+'plotCruise.py'+' '+inttostr(cruiseDB)+' '+inttostr(command)+' '+table+' '+cruise+' '+Resample+' '+fname);
-
-  //ShellExecute(0, nil, 'python', Pchar(' ./script/python/plotCruise.py '+inttostr(cruiseDB)+' '+inttostr(command)+' '+table+' '+cruise+' '+Resample+' '+fname), nil, SW_HIDE);
-  //frmMain.Edit1.Text:='python'+Pchar(' ./script/python/plotCruise.py '+inttostr(cruiseDB)+' '+inttostr(command)+' '+table+' '+cruise+' '+Resample+' '+fname);
 
 
   DeleteFile('shape/'+fname+'.shp');
@@ -150,8 +155,6 @@ var
   i, count:integer;
   Variable:TVar;
   vars, tables, exportflag: String;
-  extV, extVV, extVars, extVarVals: String;
-  extV2, extVV2, extVars2, extVarVals2: String;
 begin
 
   if frmMain.ledtVars.Values.Count<1 then
@@ -160,13 +163,17 @@ begin
     Exit;
   end;
 
+
+  if cruise='' then
+  begin
+    MessageDlg('Please select a cruise (real or virtual).', mtError, [mbok], 0);
+    Exit;
+  end;
+
+
   frmCruise_Busy(True);
   vars:='';
   tables:='';
-  extVars:='';
-  extVarVals:='';
-  extVars2:='';
-  extVarVals2:='';
   count:=frmMain.ledtVars.Values.Count-1;
   for I := 0 to count do
   begin
@@ -174,46 +181,18 @@ begin
     tables:=tables+Variable.Table_Name;
     vars:=vars+Variable.Short_Name;
 
-    extV:='ignore';
-    extVV:='ignore';
-    extV2:='ignore';
-    extVV2:='ignore';
-    if ContainsText(Variable.Table_Name, 'Wind') then
-    begin
-      extV:='hour';
-      extVV:=InttoStr(6*(Hourof(frmMain.dtwpTimeStart.DateTime) div 6));
-
-      extV2:='hour';
-      extVV2:=InttoStr(6*(Hourof(frmMain.dtwpTimeEnd.DateTime) div 6));
-    end
-    else if ContainsText(Variable.Table_Name, 'Pisces') then
-    begin
-      extV:='depth';
-      extVV:=frmMain.cbPiscesDepthStart.Text;
-    end;
-
-    extVars:=extVars+extV;
-    extVarVals:=extVarVals+extVV;
-
-    extVars2:=extVars2+extV2;
-    extVarVals2:=extVarVals2+extVV2;
-
     if i<count then
     begin
       tables:=tables+',';
       vars:=vars+',';
-      extVars:=extVars+',';
-      extVarVals:=extVarVals+',';
-      extVars2:=extVars2+',';
-      extVarVals2:=extVarVals2+',';
     end;
   end;
   fname:='AlongTrack';
   exportflag:=inttostr(getExportDataFlag);
   command:=2;
 
-  ShellExecute(0, nil, 'python', Pchar(' '+opediaPath+'plotCruise.py'+' '+inttostr(cruiseDB)+' '+inttostr(command)+' '+source+' '+cruise+' '+Resample+' '+fname+' '+exportflag+' '+FloatToStr(spatialMargin)+' '+tables+' '+vars+' '+extVars+' '+extVarVals+' '+extVars2+' '+extVarVals2), nil, SW_HIDE);
-  frmMain.edit1.text:='python'+ Pchar(' '+opediaPath+'plotCruise.py'+' '+inttostr(cruiseDB)+' '+inttostr(command)+' '+source+' '+cruise+' '+Resample+' '+fname+' '+exportflag+' '+FloatToStr(spatialMargin)+' '+tables+' '+vars+' '+extVars+' '+extVarVals+' '+extVars2+' '+extVarVals2);
+  ShellExecute(0, nil, 'python', Pchar(' '+opediaPath+'plotCruise.py'+' '+inttostr(cruiseDB)+' '+inttostr(command)+' '+source+' '+cruise+' '+Resample+' '+fname+' '+exportflag+' '+FloatToStr(spatialMargin)+' '+tables+' '+vars), nil, SW_HIDE);
+  frmMain.edit1.text:='python'+ Pchar(' '+opediaPath+'plotCruise.py'+' '+inttostr(cruiseDB)+' '+inttostr(command)+' '+source+' '+cruise+' '+Resample+' '+fname+' '+exportflag+' '+FloatToStr(spatialMargin)+' '+tables+' '+vars);
 
 
   DeleteFile('embed/'+fname+'.html');
