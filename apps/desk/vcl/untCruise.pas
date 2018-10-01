@@ -102,11 +102,11 @@ begin
   end;
 end;
 
-procedure showTrack(cruiseDB: integer; table, cruise, fname:string);
+procedure showTrack(cruiseDB: integer; source, cruise, fname:string);
 var
   FileLayer: TdxMapItemFileLayer;
   fPath:String;
-  command:integer;
+  shapeFlag, colocalizeFlag: string;
 begin
   if Length(Trim(cruise))<1 then
     Exit;
@@ -117,13 +117,12 @@ begin
     Exit;
   end;
 
-
-  command:=1;
   frmCruise_Busy(True);
+  shapeFlag:=inttostr(1);
+  colocalizeFlag:=inttostr(0);
 
-  ShellExecute(0, nil, 'python', Pchar(' '+opediaPath+'plotCruise.py'+' '+inttostr(cruiseDB)+' '+inttostr(command)+' '+table+' '+cruise+' '+Resample+' '+fname), nil, SW_HIDE);
-  frmMain.Edit1.Text:='python'+Pchar(' '+opediaPath+'plotCruise.py'+' '+inttostr(cruiseDB)+' '+inttostr(command)+' '+table+' '+cruise+' '+Resample+' '+fname);
-
+  ShellExecute(0, nil, 'python', Pchar(' '+opediaPath+'plotCruise.py'+' '+inttostr(cruiseDB)+' '+source+' '+cruise+' '+Resample+' '+shapeFlag+' '+colocalizeFlag+' '+fname), nil, SW_HIDE);
+  frmMain.edit1.text:='python'+ Pchar(' '+opediaPath+'plotCruise.py'+' '+inttostr(cruiseDB)+' '+source+' '+cruise+' '+Resample+' '+shapeFlag+' '+colocalizeFlag+' '+fname);
 
   DeleteFile('shape/'+fname+'.shp');
   repeat
@@ -151,7 +150,7 @@ end;
 
 procedure Colocalize(cruiseDB: integer; source, cruise, fname:string; spatialMargin:real);
 var
-  command: integer;
+  shapeFlag, colocalizeFlag: string;
   i, count:integer;
   Variable:TVar;
   vars, tables, exportflag: String;
@@ -187,13 +186,12 @@ begin
       vars:=vars+',';
     end;
   end;
-  fname:='AlongTrack';
   exportflag:=inttostr(getExportDataFlag);
-  command:=2;
+  shapeFlag:=inttostr(0);
+  colocalizeFlag:=inttostr(1);
 
-  ShellExecute(0, nil, 'python', Pchar(' '+opediaPath+'plotCruise.py'+' '+inttostr(cruiseDB)+' '+inttostr(command)+' '+source+' '+cruise+' '+Resample+' '+fname+' '+exportflag+' '+FloatToStr(spatialMargin)+' '+tables+' '+vars), nil, SW_HIDE);
-  frmMain.edit1.text:='python'+ Pchar(' '+opediaPath+'plotCruise.py'+' '+inttostr(cruiseDB)+' '+inttostr(command)+' '+source+' '+cruise+' '+Resample+' '+fname+' '+exportflag+' '+FloatToStr(spatialMargin)+' '+tables+' '+vars);
-
+  ShellExecute(0, nil, 'python', Pchar(' '+opediaPath+'plotCruise.py'+' '+inttostr(cruiseDB)+' '+source+' '+cruise+' '+Resample+' '+shapeFlag+' '+colocalizeFlag+' '+fname+' '+tables+' '+vars+' '+FloatToStr(spatialMargin)+' '+exportflag), nil, SW_HIDE);
+  frmMain.edit1.text:='python'+ Pchar(' '+opediaPath+'plotCruise.py'+' '+inttostr(cruiseDB)+' '+source+' '+cruise+' '+Resample+' '+shapeFlag+' '+colocalizeFlag+' '+fname+' '+tables+' '+vars+' '+FloatToStr(spatialMargin)+' '+exportflag);
 
   DeleteFile('embed/'+fname+'.html');
   sleep(1000);

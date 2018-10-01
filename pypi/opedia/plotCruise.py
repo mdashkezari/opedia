@@ -51,15 +51,16 @@ def resample(df, resampTau):
         df = removeNA(df, ['lat', 'lon'])        
     return df
 
-def dumpCruiseShape(df, source, cruise, fname):
-    #df = resample(df, resampTau)
-    del df['time']  
-    df['geometry'] = df.apply(lambda x: Point((float(x.lon), float(x.lat))), axis=1)
-    df = gpd.GeoDataFrame(df, geometry='geometry')
+def dumpCruiseShape(dfShape, source, cruise, fname):
+    import geopandas as gpd
+    from shapely.geometry import Point 
+    del dfShape['time']  
+    dfShape['geometry'] = dfShape.apply(lambda x: Point((float(x.lon), float(x.lat))), axis=1)
+    dfShape = gpd.GeoDataFrame(dfShape, geometry='geometry')
     dirPath = 'shape/'
     if not os.path.exists(dirPath):
         os.makedirs(dirPath)       
-    df.to_file(dirPath + '%s.shp' % fname, driver='ESRI Shapefile')    
+    dfShape.to_file(dirPath + '%s.shp' % fname, driver='ESRI Shapefile')    
     return
 
 def resampleToTimeStep(resampTau):
@@ -158,7 +159,6 @@ def mutualTrends(loadedTrack, tables, variables, cruise, msize=20):
     fname = 'MutualTrends_AlongTrack_' + cruise    
     tablePairs = list(itt.combinations(tables, 2))
     variablePairs = list(itt.combinations(variables, 2))
-
     p = []
     lw = 2
     w = 500
@@ -186,27 +186,43 @@ def mutualTrends(loadedTrack, tables, variables, cruise, msize=20):
 
 
 def main():
-    DB_Cruise = bool(int(sys.argv[1]))
-    shapeFlag = int(sys.argv[2])
-    source = sys.argv[3]      
-    cruise = sys.argv[4]      
-    resampTau = sys.argv[5]
-    fname = sys.argv[6] 
-    df = getCruiseTrack(DB_Cruise, source, cruise)
-    df = resample(df, resampTau)
-    if shapeFlag == 1:        ## generates cruise track shapefile
-        import geopandas as gpd
-        from shapely.geometry import Point    
-        dumpCruiseShape(df, source, cruise, fname)
-    elif shapeFlag == 2:               ## generates along track plot
-        exportDataFlag = bool(int(sys.argv[7]))
-        spMargin = float(sys.argv[8])         #spatial margin 
-        tables = sys.argv[9].split(',')
-        variables = sys.argv[10].split(',')      
+    DB_Cruise = bool(int(sys.argv[1]))                 # argument1: < 1 > if cruise trajectory already exists in DB. < 0 > if arbiturary cruise file (e.g. virtual) 
+    source = sys.argv[2]                               # argument2: cruise table name or path to csv trajectory file    
+    cruise = sys.argv[3]                               # argument3: cruise name, or file name of the csv trajectory file     
+    resampTau = sys.argv[4]                            # argument4: resample the cruise trajectory making trajectory time-space resolution coarser: e.g. '6H' (6 hourly), '3T' (3 minutes), ... '0' (ignore)  
+    shapeFlag = bool(int(sys.argv[5]))                 # argument5: < 1 > to generate cruise trajectory shape file; < 0 > ignore
+    colocateFlag = bool(int(sys.argv[6]))              # argument6: < 1 > to colocalize selected variables along the cruise trajectory; < 0 > ignore
+    fname = sys.argv[7]                                # argument7: figure filename (and/or shape filename)
+    
+    if shapeFlag or colocateFlag:
+        df = getCruiseTrack(DB_Cruise, source, cruise)
+        df = resample(df, resampTau) 
+
+    ## generates cruise track shapefile 
+    if shapeFlag:    
+        try:            
+            dumpCruiseShape(df.copy(), source, cruise, fname)
+        except Exception as e:              
+            print("The following error occurred while generating the cruise shape file: ")
+            print(e)
+
+
+    ## generates along track plot
+    if colocateFlag: 
+        tables = sys.argv[8].split(',')                # argument8: comma-separated list of varaible table names                                     
+        variables = sys.argv[9].split(',')             # argument9: comma-separated list of variable names
+        spatialTolerance = float(sys.argv[10])         # argument10: colocalizer spatial tolerance (+/- degrees) 
         depth1 = 0
-        depth2 = 5
-        loadedTrack = plotAlongTrack(tables, variables, cruise, resampTau, df, spMargin, depth1, depth2, fname, exportDataFlag, marker='-', msize=30, clr='darkturquoise')
+        depth2 = 5        
+        exportDataFlag = bool(int(sys.argv[11]))       # argument11: < 1 > export the cruise trajectory and colocalized data on disk; < 0 > ignore 
+        loadedTrack = plotAlongTrack(tables, variables, cruise, resampTau, df, spatialTolerance, depth1, depth2, fname, exportDataFlag, marker='-', msize=30, clr='darkturquoise')
         mutualTrends(loadedTrack, tables, variables, cruise)
+
+
+
+
+
+
 
 
 
