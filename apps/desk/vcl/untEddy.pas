@@ -62,21 +62,12 @@ var
   FileLayer: TdxMapItemFileLayer;
   fPath:String;
   dt, dir, sFlag, cFlag, count, i:integer;
-  eddyTable, dt1, dt2, lat1, lat2, lon1, lon2, shapeFname, colocateFname:string;
-  script, args, margin:string;
+  eddyTable, dt1, dt2, lat1, lat2, lon1, lon2, fname:string;
+  script, args, spatialTolerance:string;
   Variable:TVar;
   vars, tables, exportflag: String;
-  extV, extVV, extVars, extVarVals: String;
-  extV2, extVV2, extVars2, extVarVals2: String;
-
 begin
   frmEddy_Busy(True);
-
-//  dt:=3600*24;  // seconds per day
-//  if frmLagrangian.tsDirection.Checked then
-//    dir:=1
-//  else
-//    dir:=-1;
 
   dt1:=FormatDateTime('yyyy-mm-dd',frmMain.dtwpTimeStart.DateTime);
   dt2:=FormatDateTime('yyyy-mm-dd',frmMain.dtwpTimeEnd.DateTime);
@@ -84,8 +75,7 @@ begin
   lon1:=frmMain.edtLon1.Text;
   lat2:=frmMain.edtLat2.Text;
   lon2:=frmMain.edtLon2.Text;
-  shapeFname:='eddy';
-  colocateFname:='eddy';
+  fname:='eddy';
   sFlag:=0;
   cFlag:=0;
   if shapeFlag then
@@ -93,15 +83,11 @@ begin
   if colocateFlag then
     cFlag:=1;
   exportflag:=inttostr(getExportDataFlag);
-  margin:=frmEddy.edtMargin.Text;
+  spatialTolerance:=frmEddy.edtMargin.Text;
 
 
   vars:='';
   tables:='';
-  extVars:='';
-  extVarVals:='';
-  extVars2:='';
-  extVarVals2:='';
   count:=frmMain.ledtVars.Values.Count-1;
   for I := 0 to count do
   begin
@@ -109,70 +95,34 @@ begin
     tables:=tables+Variable.Table_Name;
     vars:=vars+Variable.Short_Name;
 
-    extV:='ignore';
-    extVV:='ignore';
-    extV2:='ignore';
-    extVV2:='ignore';
-    if ContainsText(Variable.Table_Name, 'Wind') then
-    begin
-      extV:='hour';
-      extVV:=InttoStr(6*(Hourof(frmMain.dtwpTimeStart.DateTime) div 6));
-
-      extV2:='hour';
-      extVV2:=InttoStr(6*(Hourof(frmMain.dtwpTimeEnd.DateTime) div 6));
-    end
-    else if ContainsText(Variable.Table_Name, 'Pisces') then
-    begin
-      extV:='depth';
-      extVV:=frmMain.cbPiscesDepthStart.Text;
-    end
-    else if ContainsText(Variable.Table_Name, 'tblHOT_') then
-    begin
-      extV:='depth';
-      extVV:=frmMain.cbDepthStart.Text;
-    end;
-
-    extVars:=extVars+extV;
-    extVarVals:=extVarVals+extVV;
-
-    extVars2:=extVars2+extV2;
-    extVarVals2:=extVarVals2+extVV2;
-
     if i<count then
     begin
       tables:=tables+',';
       vars:=vars+',';
-      extVars:=extVars+',';
-      extVarVals:=extVarVals+',';
-      extVars2:=extVars2+',';
-      extVarVals2:=extVarVals2+',';
     end;
   end;
-
-
-  script:=' ./script/python/eddy.py ';
   eddyTable:='tblChelton';
-  args:=eddyTable+' '+dt1+' '+dt2+' '+lat1+' '+lat2+' '+lon1+' '+lon2+' '+inttostr(sFlag)+' '+inttostr(cFlag)+' '+shapeFname+' ';
-  args:=args+exportflag+' '+margin+' '+tables+' '+vars+' '+extVars+' '+extVarVals+' '+extVars2+' '+extVarVals2+' '+colocateFname;
 
-  ShellExecute(0, nil, 'python', Pchar(script + args), nil, SW_HIDE);
-  frmMain.Edit1.Text:='python'+Pchar(script + args);
+
+  ShellExecute(0, nil, 'python', Pchar(' '+opediaPath+'eddy.py'+' '+eddyTable+' '+dt1+' '+dt2+' '+lat1+' '+lat2+' '+lon1+' '+lon2+' '+inttostr(sFlag)+' '+inttostr(cFlag)+' '+fname+' '+tables+' '+vars+' '+spatialTolerance+' '+exportflag), nil, SW_HIDE);
+  frmMain.edit1.text:='python'+ Pchar(' '+opediaPath+'eddy.py'+' '+eddyTable+' '+dt1+' '+dt2+' '+lat1+' '+lat2+' '+lon1+' '+lon2+' '+inttostr(sFlag)+' '+inttostr(cFlag)+' '+fname+' '+tables+' '+vars+' '+spatialTolerance+' '+exportflag);
+
 
   if shapeFlag then
-    DeleteFile('shape/'+shapeFname+'.shp');
+    DeleteFile('shape/'+fname+'.shp');
   if colocateFlag then
-    DeleteFile('embed/'+colocateFname+'.html');
+    DeleteFile('embed/'+fname+'.html');
 
   if shapeFlag then
   begin
     repeat
       Application.ProcessMessages;
-    until FileExists('shape/'+shapeFname+'.shp');
+    until FileExists('shape/'+fname+'.shp');
 
     FileLayer:=(frmMain.map.Layers[2] as TdxMapItemFileLayer);
     FileLayer.Active:=False;
     FileLayer.FileType:=miftShape;
-    fPath:='shape/'+shapeFname+'.shp';
+    fPath:='shape/'+fname+'.shp';
 
     repeat
       Application.ProcessMessages;
@@ -189,7 +139,7 @@ begin
   begin
     repeat
       Application.ProcessMessages;
-    until FileExists('embed/'+colocateFname+'.html');
+    until FileExists('embed/'+fname+'.html');
   end;
 
   frmEddy_Busy(False);

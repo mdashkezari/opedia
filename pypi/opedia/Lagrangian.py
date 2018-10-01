@@ -225,9 +225,9 @@ def main():
         tables = sys.argv[10].split(',')                # argument10: comma-separated list of varaible table names                                     
         variables = sys.argv[11].split(',')             # argument11: comma-separated list of variable names
         spatialTolerance = float(sys.argv[12])          # argument12: colocalizer spatial tolerance (+/- degrees) 
+        exportDataFlag = bool(int(sys.argv[13]))        # argument13: < 1 > export the tracer trajectory and colocalized data on disk; < 0 > ignore 
         depth1 = 0
         depth2 = 5        
-        exportDataFlag = bool(int(sys.argv[13]))        # argument13: < 1 > export the cruise trajectory and colocalized data on disk; < 0 > ignore 
 
         df = pd.DataFrame()
         df['time'] = ts

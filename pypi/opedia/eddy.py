@@ -35,6 +35,8 @@ def getEddies(table, startDate, endDate, lat1, lat2, lon1, lon2):
 
 
 def dumpEddyShape(lats, lons, fname):
+    import geopandas as gpd
+    from shapely.geometry import Point 
     df = pd.DataFrame()
     df['lat'] = lats
     df['lon'] = lons
@@ -46,18 +48,14 @@ def dumpEddyShape(lats, lons, fname):
     df.to_file(dirPath + '%s.shp' % fname, driver='ESRI Shapefile')    
     return
 
-def appendVar(track, t, y, yErr, variable, extV, extVV, extV2, extVV2):
+def appendVar(track, t, y, yErr, variable):
     df = track
     df[variable] = y
     df[variable+'_std'] = yErr
-    if extV != None:
-        df[extV] = extVV
-    if extV2 != None:
-        df[extV2] = extVV2
     return df
 
 
-def exportData(cruiseTrack, t, y, yErr, table, variable, margin, extV, extVV, extV2, extVV2):
+def exportData(cruiseTrack, t, y, yErr, table, variable, margin):
     df = cruiseTrack
     df['margin'] = margin
     dirPath = 'data/'
@@ -79,7 +77,7 @@ def findFirstAndLast(arr, x) :
         last = i
     return first, last     
 
-def colocalize(tables, variables, eddy, spMargin, extV, extVV, extV2, extVV2, exportDataFlag, fname, marker='-'):
+def colocalize(tables, variables, eddy, spMargin, depth1, depth2, exportDataFlag, fname, marker='-'):
     def spectrum(ind):
         colList = ['grey', 'purple', 'darkturquoise', 'black', 'red', 'blue', 'pink', 'lime', 'green', 'orange']
         ind = ind % len(colList)
@@ -105,23 +103,17 @@ def colocalize(tables, variables, eddy, spMargin, extV, extVV, extV2, extVV2, ex
             lat2 = float(eddy.iloc[j]['lat']) + spMargin
             lon1 = float(eddy.iloc[j]['lon']) - spMargin
             lon2 = float(eddy.iloc[j]['lon']) + spMargin           
-            t, y, y_std = TS.timeSeries(tables[i], variables[i], startDate, endDate, lat1, lat2, lon1, lon2, extV[i], extVV[i], extV2[i], extVV2[i], fmt=fmt, dt=dt)
+            t, y, y_std = TS.timeSeries(tables[i], variables[i], startDate, endDate, lat1, lat2, lon1, lon2, depth1, depth2, fmt=fmt, dt=dt)
             ts.append( datetime.strptime(eddy.iloc[j]['time'], fmt) )
             ys = np.append(ys, y[0])            
             y_stds = np.append(y_stds, y_std[0])
             track_ids = np.append(track_ids, eddy.iloc[j]['track'])
-        loadedEddy = appendVar(loadedEddy, ts, ys, y_stds, variables[i], extV[i], extVV[i], extV2[i], extVV2[i])            
+        loadedEddy = appendVar(loadedEddy, ts, ys, y_stds, variables[i])            
         p1 = figure(tools=TOOLS, toolbar_location="above", plot_width=w, plot_height=h)
         #p1.xaxis.axis_label = 'Time'
         p1.yaxis.axis_label = variables[i] + ' [' + db.getVar(tables[i], variables[i]).iloc[0]['Unit'] + ']'
         leg = 'Eddy Centric ' + variables[i]
-        if extV[i] != None:
-            leg = leg + '   ' + extV[i] + ': ' + ( '%d' % float(extVV[i]) ) 
-            if tables[i].find('Pisces') != -1:
-                leg = leg + ' ' + 'm'
-        fill_alpha = 0.7        
-        if tables[i].find('Pisces') != -1:
-            fill_alpha = 0.7
+        fill_alpha = 0.7
 
         for ind in range(len(tracks)):
             track = tracks[ind]
@@ -145,70 +137,49 @@ def colocalize(tables, variables, eddy, spMargin, extV, extVV, extV2, extVV2, ex
     output_file(dirPath + fname + ".html", title="Eddy")
     show(column(p))
     if exportDataFlag:
-        exportData(loadedEddy, ts, ys, y_stds, tables[i], variables[i], spMargin, extV[i], extVV[i], extV2[i], extVV2[i])   
+        exportData(loadedEddy, ts, ys, y_stds, tables[i], variables[i], spMargin)   
     print('')     
     return
 
 
+def main():
+    eddyTable = sys.argv[1]                                     # argument1: eddy table name
+    startDate = sys.argv[2]                                     # argument2: eddy cores within the delimited space-time (start date)
+    endDate = sys.argv[3]                                       # argument3: eddy cores within the delimited space-time (end date)   
+    lat1 = float(sys.argv[4])                                   # argument4: eddy cores within the delimited space-time (start lat)
+    lat2 = float(sys.argv[5])                                   # argument5: eddy cores within the delimited space-time (end lat)               
+    lon1 = float(sys.argv[6])                                   # argument6: eddy cores within the delimited space-time (start lon)
+    lon2 = float(sys.argv[7])                                   # argument7: eddy cores within the delimited space-time (end lon)
+    shapeFlag = bool(int(sys.argv[8]))                          # argument8: < 1 > to generate eddy trajectory shape file; < 0 > ignore 
+    colocateFlag = bool(int(sys.argv[9]))                       # argument9: < 1 > to colocalize selected variables along the eddy trajectories; < 0 > ignore
+    fname = sys.argv[10]                                        # argument10: figure filename (and/or shape filename)
+
+    if shapeFlag or colocateFlag:
+        cores = getEddies(eddyTable, startDate, endDate, lat1, lat2, lon1, lon2)
+
+    # make shapefile for the eddy trajectories
+    if shapeFlag:                       
+        try:
+            dumpEddyShape(cores.lat, cores.lon, fname)
+        except Exception as e:              
+            print("The following error occurred while generating the eddy shape file: ")
+            print(e)
+
+    # colocate the eddy trajectories on varialble fields
+    if colocateFlag:                    
+        tables = sys.argv[11].split(',')                        # argument11: comma-separated list of varaible table names                          
+        variables = sys.argv[12].split(',')                     # argument12: comma-separated list of variable names
+        spatialTolerance = float(sys.argv[13])                  # argument13: colocalizer spatial tolerance (+/- degrees)  
+        exportDataFlag = bool(int(sys.argv[14]))                # argument14: < 1 > export the eddy trajectories and colocalized data on disk; < 0 > ignore 
+        depth1 = 0
+        depth2 = 5        
+        colocalize(tables, variables, cores, spatialTolerance, depth1, depth2, exportDataFlag, fname, marker='-')
 
 
 
 
 
-
-
-
-
-
-
-
-eddyTable = sys.argv[1]
-startDate = sys.argv[2]
-endDate = sys.argv[3]
-lat1 = float(sys.argv[4])
-lat2 = float(sys.argv[5])
-lon1 = float(sys.argv[6])
-lon2 = float(sys.argv[7])
-shapeFlag = bool(int(sys.argv[8]))
-colocateFlag = bool(int(sys.argv[9]))
-cores = getEddies(eddyTable, startDate, endDate, lat1, lat2, lon1, lon2)
-
-if shapeFlag:                       # make shapefile for the tracer's trajectory
-    import geopandas as gpd
-    from shapely.geometry import Point 
-    ### shapefile params
-    shapeFname = sys.argv[10]
-    ##########################
-    dumpEddyShape(cores.lat, cores.lon, shapeFname)
-
-if colocateFlag:                    # colocate the tracer's trajectory on varialble fields
-    #### colocalization params
-    exportDataFlag = bool(int(sys.argv[11]))
-    spMargin = float(sys.argv[12])         #spatial margin 
-    tables = sys.argv[13].split(',')
-    variables = sys.argv[14].split(',')   
-    extV = sys.argv[15].split(',')        #extra condition: var_name
-    extVV = sys.argv[16].split(',')       #extra condition: var_val
-    extV2 = sys.argv[17].split(',')       #extra condition: var_name
-    extVV2 = sys.argv[18].split(',')      #extra condition: var_val  
-    fname = sys.argv[19]
-    for i in range(len(tables)):
-        if extV[i].find('ignore') != -1:
-            extV[i]=None
-        if extVV[i].find('ignore') != -1:
-            extVV[i]=None
-        if extV2[i].find('ignore') != -1:
-            extV2[i]=None
-        if extVV2[i].find('ignore') != -1:
-            extVV2[i]=None
-    #############################
-
-    colocalize(tables, variables, cores, spMargin, extV, extVV, extV2, extVV2, exportDataFlag, fname, marker='-')
-
-
-
-
-
-
+if __name__ == '__main__':
+    main()
 
 

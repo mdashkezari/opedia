@@ -108,22 +108,8 @@ begin
     end;
   end;
 
-  {
-  script:=' ./script/python/Lagrangian.py ';
-  args:=inttostr(dt)+' '+inttostr(dir)+' '+dt1+' '+dt2+' '+lat+' '+lon+' '+inttostr(sFlag)+' '+inttostr(cFlag)+' '+shapeFname+' ';
-  args:=args+exportflag+' '+margin+' '+tables+' '+vars+' '+extVars+' '+extVarVals+' '+extVars2+' '+extVarVals2+' '+colocateFname;
-
-
-
-  ShellExecute(0, nil, 'python', Pchar(script + args), nil, SW_HIDE);
-  frmMain.Edit1.Text:='python'+Pchar(script + args);
-  }
-
   ShellExecute(0, nil, 'python', Pchar(' '+opediaPath+'Lagrangian.py'+' '+inttostr(dt)+' '+inttostr(dir)+' '+dt1+' '+dt2+' '+lat+' '+lon+' '+inttostr(sFlag)+' '+inttostr(cFlag)+' '+fname+' '+tables+' '+vars+' '+spatialTolerance+' '+exportflag), nil, SW_HIDE);
   frmMain.edit1.text:='python'+ Pchar(' '+opediaPath+'Lagrangian.py'+' '+inttostr(dt)+' '+inttostr(dir)+' '+dt1+' '+dt2+' '+lat+' '+lon+' '+inttostr(sFlag)+' '+inttostr(cFlag)+' '+fname+' '+tables+' '+vars+' '+spatialTolerance+' '+exportflag);
-
-
-
 
   if shapeFlag then
     DeleteFile('shape/'+fname+'.shp');
