@@ -26,7 +26,6 @@ def loadArgoMerge(dataMode='all', ocean='all'):
         mergeDF = mergeDF[mergeDF['ocean'].str.contains(ocean)]
     ###############
 
-    #####################################################
     ########## TODO: exclude the profiles in the greylist
     #indexFname = cfgv.index_argo_raw + argo.grey_csv
     #greyDF = pd.read_csv(indexFname)

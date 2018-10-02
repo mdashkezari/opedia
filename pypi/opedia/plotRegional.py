@@ -39,6 +39,8 @@ def getBounds(varName):
         bounds = (0, 1.5)
     elif varName.find('wind_stress') != -1:
         bounds = (0, 3e-1)
+    elif varName.find('eastward_wind') != -1:
+        bounds = (0, 2)
     elif varName.find('sst') != -1:
         bounds = (0, 32)          
     elif varName.find('sla') != -1:

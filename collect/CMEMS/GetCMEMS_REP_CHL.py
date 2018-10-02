@@ -35,6 +35,8 @@ c1 = 'python motu-client.py -u mdehghaniashkez -p Jazireie08 -m http://cmems-oc.
 c3 = '" -T "'
 c4 = '" -v CHL -v CHL_error -o %s -f ' % cfgv.rep_chl_raw
 
+
+
 #for index in range(startDay,endDay+1):
 index = startDay
 while index <= endDay:
