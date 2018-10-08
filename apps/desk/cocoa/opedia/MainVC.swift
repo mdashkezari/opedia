@@ -37,12 +37,41 @@ class MainVC: NSViewController, MKMapViewDelegate, NSTokenFieldCellDelegate, NST
     // MARK: - outlets
     @IBOutlet weak var spnBusy: NSProgressIndicator!
     //@IBOutlet var txvConsole: NSTextView!
+    
+    // space-time tab objects
     @IBOutlet weak var dpcStartDate: NSDatePicker!
     @IBOutlet weak var dpcEndDate: NSDatePicker!
     @IBOutlet weak var swtExport: OGSwitch!
     @IBOutlet weak var dslLat: RangeSlider!
     @IBOutlet weak var dslLon: RangeSlider!
     @IBOutlet weak var dslDepth: RangeSlider!
+    @IBOutlet weak var pupStartDepth: NSPopUpButton!
+    @IBOutlet weak var pupEndDepth: NSPopUpButton!
+    
+    // cruise tab objects
+    @IBOutlet weak var swtCruise: OGSwitch!
+    @IBOutlet weak var pupRegisteredCruise: NSPopUpButton!
+    @IBOutlet weak var txfSpatialToleranceCruise: NSTextField!
+    @IBOutlet weak var pupSamplingRate: NSPopUpButton!
+    
+    // lagrangian tab objects
+    @IBOutlet weak var swtTracer: OGSwitch!
+    @IBOutlet weak var txtSpatialToleranceTracer: NSTextField!
+    
+    // eddy tab objects
+    @IBOutlet weak var swtAllEddies: OGSwitch!
+    @IBOutlet weak var swtEddyPolarity: OGSwitch!
+    @IBOutlet weak var txfSpatialToleranceEddy: NSTextField!
+    
+    // front tab objects
+    @IBOutlet weak var swtFTLEType: OGSwitch!
+    @IBOutlet weak var swtFTLEBackgroud: OGSwitch!
+    @IBOutlet weak var txfSpatialToleranceFTLE: NSTextField!
+    @IBOutlet weak var txfFTLEFilter: NSTextField!
+    
+    // colocalize tab objects
+    
+
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet var acCatalog: NSArrayController!
     @IBOutlet weak var tokenField: NSTokenField!
@@ -98,7 +127,135 @@ class MainVC: NSViewController, MKMapViewDelegate, NSTokenFieldCellDelegate, NST
     }
 
     
+    @IBAction func btnCruiseTrack(_ sender: Any) {
+        plotCruise(shapeFlag: "1", colocalizeFlag: "0")
+    }
     
+    
+    @IBAction func btnCruiseColocalize(_ sender: Any) {
+        if (tokenField.objectValue as! NSArray).count < 1 {
+            _ = Initializer().msgDialog(headline: "Please pick at least one variable!", text: "")
+            
+        } else {
+            plotCruise(shapeFlag: "0", colocalizeFlag: "1")
+        }
+     }
+    
+    
+
+    @IBAction func btnLagrangianTrack(_ sender: Any) {
+        plotLagrangian(shapeFlag: "1", colocalizeFlag: "0")
+    }
+    
+    
+    @IBAction func btnLagrangianColocalize(_ sender: Any) {
+        if (tokenField.objectValue as! NSArray).count < 1 {
+            _ = Initializer().msgDialog(headline: "Please pick at least one variable!", text: "")
+            
+        } else {
+            plotLagrangian(shapeFlag: "0", colocalizeFlag: "1")
+        }
+    }
+    
+    
+    
+    @IBAction func btnEddyTrack(_ sender: Any) {
+        plotEddy(shapeFlag: "1", colocalizeFlag: "0")
+    }
+
+    
+    @IBAction func btnEddyColocalize(_ sender: Any) {
+        if (tokenField.objectValue as! NSArray).count < 1 {
+            _ = Initializer().msgDialog(headline: "Please pick at least one variable!", text: "")
+            
+        } else {
+            plotEddy(shapeFlag: "0", colocalizeFlag: "1")
+        }
+    }
+    
+    
+    @IBAction func btnFTLETrack(_ sender: Any) {
+        plotFTLE(shapeFlag: "1", colocalizeFlag: "0")
+    }
+    
+    
+    @IBAction func btnFTLEColocalize(_ sender: Any) {
+        if (tokenField.objectValue as! NSArray).count < 1 {
+            _ = Initializer().msgDialog(headline: "Please pick at least one variable!", text: "")
+            
+        } else {
+            plotFTLE(shapeFlag: "0", colocalizeFlag: "1")
+        }
+    }
+    
+
+
+    func plotFTLE(shapeFlag:String, colocalizeFlag:String) {
+        let ftleTable = "tblLCS_REP"
+        let ftleValue = txfFTLEFilter.stringValue
+        let spatialTolerance = txfSpatialToleranceFTLE.stringValue
+        var fteField = "ftle_fw_sla"
+        if swtFTLEType.isOn {fteField = "ftle_fw_sla"} else {fteField = "ftle_bw_sla"}
+        var bkgComparison = "0"
+        if swtFTLEBackgroud.isOn {bkgComparison = "1"} else {bkgComparison = "0"}
+        
+        spnBusy.startAnimation(self)
+        updateQueryParams()
+        runScript([pythonPath, "\(opediaAPI)ftle.py", ftleTable, fteField, ftleValue, bkgComparison, date1, date2, lat1, lat2, lon1, lon2, shapeFlag, colocalizeFlag, fname, tables, vars, spatialTolerance, exportFlag, bundlePath])
+    }
+
+    
+    
+    func plotEddy(shapeFlag:String, colocalizeFlag:String) {
+        let eddyTable = "tblChelton"
+        let spatialTolerance = txfSpatialToleranceEddy.stringValue
+        
+        spnBusy.startAnimation(self)
+        updateQueryParams()
+        runScript([pythonPath, "\(opediaAPI)eddy.py", eddyTable, date1, date2, lat1, lat2, lon1, lon2, shapeFlag, colocalizeFlag, fname, tables, vars, spatialTolerance, exportFlag, bundlePath])
+    }
+    
+    
+    func plotLagrangian(shapeFlag:String, colocalizeFlag:String) {
+        let dt = "\(3600*24)"
+        var direction = "1"
+        if swtTracer.isOn {
+            direction = "1"
+        } else {
+            direction = "-1"
+        }
+        let spatialTolerance = txtSpatialToleranceTracer.stringValue
+        
+        
+        spnBusy.startAnimation(self)
+        updateQueryParams()
+        runScript([pythonPath, "\(opediaAPI)Lagrangian.py", dt, direction, date1, date2, lat1, lon1, shapeFlag, colocalizeFlag, fname, tables, vars, spatialTolerance, exportFlag, bundlePath])
+    }
+    
+    
+    func plotCruise(shapeFlag:String, colocalizeFlag:String) {
+        var cruiseDB = "1"
+        var source = "tblSeaFlow"
+        var cruise = pupRegisteredCruise.title
+        if swtCruise.isOn {
+            cruiseDB="1"
+            source = "tblSeaFlow"
+            cruise = pupRegisteredCruise.title
+        } else {
+            cruiseDB="0"
+            //source = pupRegisteredCruise.title
+            //cruise = pupRegisteredCruise.title
+        }
+        let Resample = pupSamplingRate.title
+        let spatialTolerance = txfSpatialToleranceCruise.stringValue
+        
+        
+        spnBusy.startAnimation(self)
+        updateQueryParams()
+        runScript([pythonPath, "\(opediaAPI)plotCruise.py", cruiseDB, source, cruise, Resample, shapeFlag, colocalizeFlag, fname, tables, vars, spatialTolerance, exportFlag, bundlePath])
+        
+    }
+
     /*
     func consoleOutput(_ task:Process) {
         outputPipe = Pipe()
@@ -146,6 +303,9 @@ class MainVC: NSViewController, MKMapViewDelegate, NSTokenFieldCellDelegate, NST
         dslDepth.maxValue = 5727
         dslDepth.start = 0
         dslDepth.end = 5727
+
+        swtFTLEBackgroud.isOn = false
+        swtFTLEBackgroud.reloadLayer()
     }
     
     
@@ -197,8 +357,10 @@ class MainVC: NSViewController, MKMapViewDelegate, NSTokenFieldCellDelegate, NST
         lat2 = "\(dslLat.end)"
         lon1 = "\(dslLon.start)"
         lon2 = "\(dslLon.end)"
-        depth1 = "\(dslDepth.start)"
-        depth2 = "\(dslDepth.end)"
+        //depth1 = "\(dslDepth.start)"
+        //depth2 = "\(dslDepth.end)"
+        depth1 = "\(pupStartDepth.title)"
+        depth2 = "\(pupEndDepth.title)"
         fname = "untitle"
         if swtExport.isOn {
             exportFlag = "1"
