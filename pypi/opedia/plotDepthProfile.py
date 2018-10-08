@@ -86,7 +86,7 @@ def depthProfile(table, field, dt1, dt2, lat1, lat2, lon1, lon2, depth1, depth2,
     return df['depth'], df[field], df[field + '_std']
 
 
-def plotDepthProfile(tables, variables, dt1, dt2, lat1, lat2, lon1, lon2, depth1, depth2, fname, exportDataFlag, marker='-', msize=30, clr='orangered'):
+def plotDepthProfile(tables, variables, dt1, dt2, lat1, lat2, lon1, lon2, depth1, depth2, fname, exportDataFlag, marker='-', msize=25, clr='orangered'):
     p = []
     lw = 2
     w = 800
@@ -103,7 +103,7 @@ def plotDepthProfile(tables, variables, dt1, dt2, lat1, lat2, lon1, lon2, depth1
         #p1.xaxis.axis_label = 'Depth'
         p1.yaxis.axis_label = variables[i] + ' [' + db.getVar(tables[i], variables[i]).iloc[0]['Unit'] + ']'
         leg = variables[i]
-        cr = p1.circle(depths, y, fill_color="grey", hover_fill_color="firebrick", fill_alpha=0.07, hover_alpha=0.3, line_color=None, hover_line_color="white", legend=leg, size=msize)
+        cr = p1.circle(depths, y, fill_color="grey", hover_fill_color="firebrick", fill_alpha=0.25, hover_alpha=0.3, line_color=None, hover_line_color="white", legend=leg, size=msize)
         p1.line(depths, y, line_color=clr, line_width=lw, legend=leg)
         p1.add_tools(HoverTool(tooltips=None, renderers=[cr], mode='hline'))
         p.append(p1)

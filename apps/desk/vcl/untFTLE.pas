@@ -69,17 +69,8 @@ var
   Variable:TVar;
   ftleTable, ftleField, ftleValue, bkgComparison:string;
   vars, tables, exportflag: String;
-  extV, extVV, extVars, extVarVals: String;
-  extV2, extVV2, extVars2, extVarVals2: String;
-
 begin
   frmFTLE_Busy(True);
-
-//  dt:=3600*24;  // seconds per day
-//  if frmLagrangian.tsDirection.Checked then
-//    dir:=1
-//  else
-//    dir:=-1;
 
   dt1:=FormatDateTime('yyyy-mm-dd',frmMain.dtwpTimeStart.DateTime);
   dt2:=FormatDateTime('yyyy-mm-dd',frmMain.dtwpTimeEnd.DateTime);
@@ -110,10 +101,6 @@ begin
 
   vars:='';
   tables:='';
-  extVars:='';
-  extVarVals:='';
-  extVars2:='';
-  extVarVals2:='';
   count:=frmMain.ledtVars.Values.Count-1;
   for I := 0 to count do
   begin
@@ -121,52 +108,18 @@ begin
     tables:=tables+Variable.Table_Name;
     vars:=vars+Variable.Short_Name;
 
-    extV:='ignore';
-    extVV:='ignore';
-    extV2:='ignore';
-    extVV2:='ignore';
-    if ContainsText(Variable.Table_Name, 'Wind') then
-    begin
-      extV:='hour';
-      extVV:=InttoStr(6*(Hourof(frmMain.dtwpTimeStart.DateTime) div 6));
-
-      extV2:='hour';
-      extVV2:=InttoStr(6*(Hourof(frmMain.dtwpTimeEnd.DateTime) div 6));
-    end
-    else if ContainsText(Variable.Table_Name, 'Pisces') then
-    begin
-      extV:='depth';
-      extVV:=frmMain.cbPiscesDepthStart.Text;
-    end
-    else if ContainsText(Variable.Table_Name, 'tblHOT_') then
-    begin
-      extV:='depth';
-      extVV:=frmMain.cbDepthStart.Text;
-    end;
-
-
-    extVars:=extVars+extV;
-    extVarVals:=extVarVals+extVV;
-
-    extVars2:=extVars2+extV2;
-    extVarVals2:=extVarVals2+extVV2;
-
     if i<count then
     begin
       tables:=tables+',';
       vars:=vars+',';
-      extVars:=extVars+',';
-      extVarVals:=extVarVals+',';
-      extVars2:=extVars2+',';
-      extVarVals2:=extVarVals2+',';
     end;
   end;
 
 
-  script:=' ./script/python/ftle.py ';
+  script:=' '+opediaPath+'ftle.py ';
   ftleTable:='tblLCS_REP';
   args:=ftleTable+ ' ' + ftleField + ' '+ ftleValue + ' ' + bkgComparison + ' ' + dt1+' '+dt2+' '+lat1+' '+lat2+' '+lon1+' '+lon2+' '+inttostr(sFlag)+' '+inttostr(cFlag)+' '+shapeFname+' ';
-  args:=args+exportflag+' '+margin+' '+tables+' '+vars+' '+ extVars+' '+extVarVals+' '+extVars2+' '+extVarVals2+' '+colocateFname;
+  args:=args+tables+' '+vars+' '+margin+' '+exportflag;
 
   ShellExecute(0, nil, 'python', Pchar(script + args), nil, SW_HIDE);
   frmMain.Edit1.Text:='python'+Pchar(script + args);

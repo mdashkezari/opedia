@@ -66,25 +66,11 @@ def getFronts(table, startDate, endDate, lat1, lat2, lon1, lon2, ftleField, ftle
     return df
 
 
-def match(geomTable, bkgTable, startDate, enDate, lat1, lat2, lon1, lon2, extV, extVV, ftleField, ftleValue, bkgField, margin):       
-    ######### Stored Procedure Query ##########
-    query = 'EXEC uspftleMatch ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?'
-    args = [geomTable, ftleField, ftleValue, bkgTable, bkgField, startDate, endDate, str(lat1), str(lat2), str(lon1), str(lon2), str(margin), extV, extVV]
+def match(geomTable, bkgTable, startDate, endDate, lat1, lat2, lon1, lon2, depth1, depth2, ftleField, ftleValue, bkgField, margin, bkgFlag):       
+    query = 'EXEC uspftleMatch ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?'
+    args = [geomTable, ftleField, str(ftleValue), bkgTable, bkgField, startDate, endDate, str(lat1), str(lat2), str(lon1), str(lon2), str(depth1), str(depth2), str(margin), bkgFlag]
     df = db.dbFetchStoredProc(query, args)
-    df = pd.DataFrame.from_records(df, columns=['time', 'lat', 'lon', bkgField])
-    ###########################################   
     return df
-
-
-def bkg(geomTable, bkgTable, startDate, enDate, lat1, lat2, lon1, lon2, extV, extVV, ftleField, ftleValue, bkgField, margin):       
-    ######### Stored Procedure Query ##########
-    query = 'EXEC uspftleBkg ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?'
-    args = [geomTable, ftleField, ftleValue, bkgTable, bkgField, startDate, endDate, str(lat1), str(lat2), str(lon1), str(lon2), str(margin), extV, extVV]
-    df = db.dbFetchStoredProc(query, args)
-    df = pd.DataFrame.from_records(df, columns=['time', 'lat', 'lon', bkgField])
-    ###########################################   
-    return df
-
 
 def match_temptable(geomTable, bkgTable, startDate, lat1, lat2, lon1, lon2, ftleField, ftleValue, bkgField, margin):
     args = (geomTable, startDate, lat1, lat2, lon1, lon2, ftleField, ftleValue, bkgTable, startDate, lat1, lat2, lon1, lon2, bkgField, margin, margin)
@@ -103,6 +89,8 @@ def match_temptable(geomTable, bkgTable, startDate, lat1, lat2, lon1, lon2, ftle
 
 
 def dumpFrontShape(lats, lons, fname):
+    import geopandas as gpd
+    from shapely.geometry import Point 
     df = pd.DataFrame()
     df['lat'] = lats
     df['lon'] = lons
@@ -114,18 +102,14 @@ def dumpFrontShape(lats, lons, fname):
     df.to_file(dirPath + '%s.shp' % fname, driver='ESRI Shapefile')    
     return
 
-def appendVar(track, t, y, yErr, variable, extV, extVV, extV2, extVV2):
+def appendVar(track, t, y, yErr, variable):
     df = track
     df[variable] = y
     df[variable+'_std'] = yErr
-    if extV != None:
-        df[extV] = extVV
-    if extV2 != None:
-        df[extV2] = extVV2
     return df
 
 
-def exportData(cruiseTrack, t, y, yErr, table, variable, margin, extV, extVV, extV2, extVV2):
+def exportData(cruiseTrack, t, y, yErr, table, variable, margin):
     df = cruiseTrack
     df['margin'] = margin
     dirPath = 'data/'
@@ -135,49 +119,32 @@ def exportData(cruiseTrack, t, y, yErr, table, variable, margin, extV, extVV, ex
     df.to_csv(path, index=False)    
     return
 
-def colocalize(ftleTable, ftleValue, tables, variables, startDate, lat1, lat2, lon1, lon2, spMargin, extV, extVV, extV2, extVV2, exportDataFlag, fname, marker='-'):
-    def spectrum(ind):
-        colList = ['grey', 'purple', 'darkturquoise', 'black', 'red', 'blue', 'pink', 'lime', 'green', 'orange']
-        ind = ind % len(colList)
-        col = colList[ind]
-        return col
-
+def colocalize(ftleTable, ftleField, ftleValue, tables, variables, startDate, endDate, lat1, lat2, lon1, lon2, depth1, depth2, spMargin, exportDataFlag, fname, bkgComparison, marker='-'):
     fmt='%Y-%m-%d'
     dt = 24*60
     msize=10
     p = []
-    
     lw = 2
     w = 800
     h = 400
     TOOLS = 'pan,wheel_zoom,zoom_in,zoom_out,box_zoom, undo,redo,reset,tap,save,box_select,poly_select,lasso_select'
     for i in tqdm(range(len(tables))):
-        df = match(ftleTable, tables[i], startDate, endDate, lat1, lat2, lon1, lon2, extV[i], extVV[i], ftleField, ftleValue, variables[i], spMargin)
+        df = match(ftleTable, tables[i], startDate, endDate, lat1, lat2, lon1, lon2, depth1, depth2, ftleField, ftleValue, variables[i], spMargin, '0')
+        if len(df)<1:
+            continue
+
         if i==0:
             loadedFTLE = pd.DataFrame(df)    
-        ts, ys, y_stds = df.time, df[variables[i]], ''
-        '''
-        for j in tqdm(range(len(eddy))):
-            startDate = eddy.iloc[j]['time']
-            endDate = startDate
-            lat1 = float(eddy.iloc[j]['lat']) - spMargin
-            lat2 = float(eddy.iloc[j]['lat']) + spMargin
-            lon1 = float(eddy.iloc[j]['lon']) - spMargin
-            lon2 = float(eddy.iloc[j]['lon']) + spMargin           
-            t, y, y_std = TS.timeSeries(tables[i], variables[i], startDate, endDate, lat1, lat2, lon1, lon2, extV[i], extVV[i], extV2[i], extVV2[i], fmt=fmt, dt=dt)
-            ts.append( datetime.strptime(eddy.iloc[j]['time'], fmt) )
-            ys = np.append(ys, y[0])            
-            y_stds = np.append(y_stds, y_std[0])
-        '''
+        ts, ys, y_stds = df[df.columns[0]], df[variables[i]], ''
         if i>0:
-            loadedFTLE = appendVar(loadedFTLE, ts, ys, y_stds, variables[i], extV[i], extVV[i], extV2[i], extVV2[i]) 
+            loadedFTLE = appendVar(loadedFTLE, ts, ys, y_stds, variables[i]) 
         #plot_single_hist(ys, clr='m', labelx='', labely='', leg='', yscale='linear', store_path='', bincount=50)
 
         ys = ys[~np.isnan(ys)]     # remove nans
         hist, edges = np.histogram(ys, density=False, bins=50)
         if bkgComparison:
             ########## get backgrounf distribution (not matched with fronts)
-            dfBkg = bkg(ftleTable, tables[i], startDate, endDate, lat1, lat2, lon1, lon2, extV[i], extVV[i], ftleField, ftleValue, variables[i], spMargin)
+            dfBkg = match(ftleTable, tables[i], startDate, endDate, lat1, lat2, lon1, lon2, depth1, depth2, ftleField, ftleValue, variables[i], spMargin, '1')
             ysBkg = dfBkg[variables[i]]
             ysBkg = ysBkg[~np.isnan(ysBkg)]     # remove nans
             histBkg, edgesBkg = np.histogram(ysBkg, density=False, bins=50)
@@ -186,11 +153,7 @@ def colocalize(ftleTable, ftleValue, tables, variables, startDate, lat1, lat2, l
         p1.yaxis.axis_label = 'Density'
         p1.xaxis.axis_label = variables[i] + ' [' + db.getVar(tables[i], variables[i]).iloc[0]['Unit'] + ']'
         leg = variables[i]
-        if extV[i] != None:
-            leg = leg + '   ' + extV[i] + ': ' + ( '%d' % float(extVV[i]) ) 
-            if tables[i].find('Pisces') != -1:
-                leg = leg + ' ' + 'm'
-        fill_alpha = 0.9   
+        fill_alpha = 0.4   
         cr = p1.quad(top=hist, bottom=0, left=edges[:-1], right=edges[1:], fill_color="dodgerblue", line_color=None, hover_fill_color="firebrick", fill_alpha=fill_alpha, hover_alpha=0.7, hover_line_color="white", legend=leg + ' on fronts')
         if bkgComparison:        
             cr = p1.quad(top=histBkg, bottom=0, left=edgesBkg[:-1], right=edgesBkg[1:], fill_color="purple", line_color=None, hover_fill_color="firebrick", fill_alpha=fill_alpha, hover_alpha=0.7, hover_line_color="white", legend='background')        
@@ -203,7 +166,7 @@ def colocalize(ftleTable, ftleValue, tables, variables, startDate, lat1, lat2, l
     output_file(dirPath + fname + ".html", title="Front")
     show(column(p))
     if exportDataFlag:
-        exportData(loadedFTLE, ts, ys, y_stds, tables[i], variables[i], spMargin, extV[i], extVV[i], extV2[i], extVV2[i])    
+        exportData(loadedFTLE, ts, ys, y_stds, tables[i], variables[i], spMargin)    
     print('')
     return df
 
@@ -219,56 +182,56 @@ def colocalize(ftleTable, ftleValue, tables, variables, startDate, lat1, lat2, l
 
 
 
-
-ftleTable = sys.argv[1]
-ftleField = sys.argv[2]
-ftleValue = float(sys.argv[3])
-bkgComparison = bool(int(sys.argv[4]))
-startDate = sys.argv[5]
-endDate = sys.argv[6]
-lat1 = float(sys.argv[7])
-lat2 = float(sys.argv[8])
-lon1 = float(sys.argv[9])
-lon2 = float(sys.argv[10])
-shapeFlag = bool(int(sys.argv[11]))
-colocateFlag = bool(int(sys.argv[12]))
-
-if shapeFlag:                       # make shapefile for the tracer's trajectory
-    import geopandas as gpd
-    from shapely.geometry import Point 
-    cores = getFronts(ftleTable, startDate, endDate, lat1, lat2, lon1, lon2, ftleField, ftleValue)
-    ### shapefile params
-    shapeFname = sys.argv[13]
-    ##########################
-    dumpFrontShape(cores.lat, cores.lon, shapeFname)
-
-if colocateFlag:                    # colocate the tracer's trajectory on varialble fields
-    #### colocalization params
-    exportDataFlag = bool(int(sys.argv[14]))
-    spMargin = float(sys.argv[15])         #spatial margin 
-    tables = sys.argv[16].split(',')
-    variables = sys.argv[17].split(',')   
-    
-    extV = sys.argv[18].split(',')        #extra condition: var_name
-    extVV = sys.argv[19].split(',')       #extra condition: var_val
-    extV2 = sys.argv[20].split(',')       #extra condition: var_name
-    extVV2 = sys.argv[21].split(',')      #extra condition: var_val  
-    fname = sys.argv[22]
-    for i in range(len(tables)):
-        if extV[i].find('ignore') != -1:
-            extV[i]=None
-        if extVV[i].find('ignore') != -1:
-            extVV[i]=None
-        if extV2[i].find('ignore') != -1:
-            extV2[i]=None
-        if extVV2[i].find('ignore') != -1:
-            extVV2[i]=None
-    #############################
-
-    df = colocalize(ftleTable, ftleValue, tables, variables, startDate, lat1, lat2, lon1, lon2, spMargin, extV, extVV, extV2, extVV2, exportDataFlag, fname, marker='-')
-    dumpFrontShape(df.lat, df.lon, shapeFname)
+def main():
+    ftleTable = sys.argv[1]                                     # argument1: ftle table name
+    ftleField = sys.argv[2]                                     # argument2: ftle (type) field name
+    ftleValue = float(sys.argv[3])                              # argument3: lower bound ftle value
+    bkgComparison = bool(int(sys.argv[4]))                      # argument4: < 1 > to compare with the backgound values
+    startDate = sys.argv[5]                                     # argument5: within the delimited space-time (start date)    
+    endDate = sys.argv[6]                                       # argument6: within the delimited space-time (end date) 
+    lat1 = float(sys.argv[7])                                   # argument7: within the delimited space-time (start lat) 
+    lat2 = float(sys.argv[8])                                   # argument8: within the delimited space-time (end lat)     
+    lon1 = float(sys.argv[9])                                   # argument9: within the delimited space-time (start lon) 
+    lon2 = float(sys.argv[10])                                  # argument10: within the delimited space-time (end lon)     
+    shapeFlag = bool(int(sys.argv[11]))                         # argument11: < 1 > to generate ftle shape file; < 0 > ignore 
+    colocateFlag = bool(int(sys.argv[12]))                      # argument12: < 1 > to colocalize selected variables along the ftle ridges; < 0 > ignore
+    fname = sys.argv[13]                                        # argument13: figure filename (and/or shape filename)
 
 
+    if shapeFlag or colocateFlag:
+        cores = getFronts(ftleTable, startDate, endDate, lat1, lat2, lon1, lon2, ftleField, ftleValue)
+
+
+    # make shapefile for the ftle ridges
+    if shapeFlag:                       
+        try:
+            dumpFrontShape(cores.lat, cores.lon, fname)
+        except Exception as e:              
+            print("The following error occurred while generating the ftle shape file: ")
+            print(e)
+
+
+    # colocate the ftle ridges on varialble fields
+    if colocateFlag:                   
+        tables = sys.argv[14].split(',')                        # argument14: comma-separated list of varaible table names
+        variables = sys.argv[15].split(',')                     # argument15: comma-separated list of variable names  
+        spatialTolerance = float(sys.argv[16])                  # argument16: colocalizer spatial tolerance (+/- degrees)
+        exportDataFlag = bool(int(sys.argv[17]))                # argument17: < 1 > export the ftle ridges and colocalized data on disk; < 0 > ignore 
+        depth1 = 0
+        depth2 = 5
+
+        df = colocalize(ftleTable, ftleField, ftleValue, tables, variables, startDate, endDate, lat1, lat2, lon1, lon2, depth1, depth2, spatialTolerance, exportDataFlag, fname, bkgComparison, marker='-')
+        
+        try:
+            dumpFrontShape(df.lat, df.lon, fname)
+        except Exception as e:              
+            print("The following error occurred while generating the colocalized ftle shape file: ")
+            print(e)
+
+
+
+if __name__ == '__main__':
+    main()
 
 
 

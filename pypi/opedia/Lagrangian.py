@@ -197,7 +197,6 @@ def plotAlongTrack(dt, fmt, tables, variables, track, spMargin, depth1, depth2, 
 
 def main():
     fmt='%Y-%m-%d'
-
     dt = int(sys.argv[1])                               # argument1: propagation time step (day seconds)
     direction = int(sys.argv[2])                        # argument2: propagation direction (forward/backward in time)
     startDate = sys.argv[3]                             # argument3: propagation start date

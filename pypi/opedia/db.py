@@ -33,10 +33,8 @@ def dbFetchStoredProc(query, args):
         args = [ str(a) if a is not None else a for a in args ]
     cur.execute(query, args)
     df = cur.fetchall()
-
     cols = [column[0] for column in cur.description]
     df = DataFrame.from_records(df, columns=cols)
-
     conn.close()
     return df
 

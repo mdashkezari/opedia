@@ -98,6 +98,7 @@ class MainVC: NSViewController, MKMapViewDelegate, NSTokenFieldCellDelegate, NST
     }
 
     
+    
     /*
     func consoleOutput(_ task:Process) {
         outputPipe = Pipe()

@@ -83,3 +83,22 @@ GO
 
 
 */
+
+
+
+
+/*
+-- columnstore index
+
+CREATE NONCLUSTERED COLUMNSTORE INDEX [IX_tblDarwin_Chl_Climatology_month_lat_lon_depth] ON [dbo].[tblDarwin_Chl_Climatology]
+(
+	[month],
+	[lat] ,
+	[lon] ,
+	[depth] 
+)
+WITH (DATA_COMPRESSION = COLUMNSTORE)
+ON [FG4]
+GO
+
+*/

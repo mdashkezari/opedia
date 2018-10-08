@@ -74,6 +74,7 @@ class Initializer {
     func setPythonPath() {
         let pythonPath2 = "/anaconda2/bin/python"
         let pythonPath3 = "/anaconda3/bin/python"
+        //  "/Users/Raphael/anaconda2/bin/python"
         
         if exists(pythonPath3).1 {
             pythonPath = pythonPath3
