@@ -23,12 +23,12 @@ Opedia is an open source database service to integrate, visualize, and analyze o
 	$ brew install freetds --with-unixodbc
 	```
 2. **Install [Anaconda Distribution Python](https://www.anaconda.com/download/).**<br>
-Make sure python is added to the system path.  Anaconda distribution covers the majority of python modules used by Opedia. There are a few more required modules that need to be installed using the conda package manager; run the following commands to install them. Finally pip-install the opedia package itselt.
+Make sure python is added to the system path.  Anaconda distribution covers the majority of python modules used by Opedia. There are a few more required modules that need to be installed using the conda package manager; run the following commands to install them. Finally pip-install the opedia package itself.
 
 	```
 	$ conda install shapely
 	$ conda install fiona
 	$ conda install -c conda-forge geopandas
-	
+
 	$ pip install opedia
 	```
