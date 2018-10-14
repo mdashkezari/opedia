@@ -14,8 +14,8 @@ def fillGaps(ts_original, y_original, y_std_original, startDate, endDate, fmt, d
     y = np.array([])
     y_std = np.array([])
     ts = []    
-    startDate = datetime.strptime(startDate, fmt)
-    endDate = datetime.strptime(endDate, fmt)
+    startDate = datetime.strptime(str(startDate), fmt)
+    endDate = datetime.strptime(str(endDate), fmt)
     t = startDate
     i, ind = 0, 0
     while t<=endDate:                        

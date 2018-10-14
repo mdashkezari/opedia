@@ -61,6 +61,9 @@ def dumpCruiseShape(dfShape, source, cruise, fname):
     if not os.path.exists(dirPath):
         os.makedirs(dirPath)       
     dfShape.to_file(dirPath + '%s.shp' % fname, driver='ESRI Shapefile')    
+    
+    ## dump the shape file content in a csv file (this will be used by macos app)
+    dfShape.to_csv(dirPath + 'shape.csv', index=False)
     return
 
 def resampleToTimeStep(resampTau):

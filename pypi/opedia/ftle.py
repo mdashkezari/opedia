@@ -100,6 +100,9 @@ def dumpFrontShape(lats, lons, fname):
     if not os.path.exists(dirPath):
         os.makedirs(dirPath)       
     df.to_file(dirPath + '%s.shp' % fname, driver='ESRI Shapefile')    
+    
+    ## dump the shape file content in a csv file (this will be used by macos app)
+    df.to_csv(dirPath + 'shape.csv', index=False)
     return
 
 def appendVar(track, t, y, yErr, variable):

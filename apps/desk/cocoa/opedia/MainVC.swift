@@ -34,6 +34,7 @@ class MainVC: NSViewController, MKMapViewDelegate, NSTokenFieldCellDelegate, NST
     var catItems = [cat]()
     
     
+    
     // MARK: - outlets
     @IBOutlet weak var spnBusy: NSProgressIndicator!
     //@IBOutlet var txvConsole: NSTextView!
@@ -53,6 +54,8 @@ class MainVC: NSViewController, MKMapViewDelegate, NSTokenFieldCellDelegate, NST
     @IBOutlet weak var pupRegisteredCruise: NSPopUpButton!
     @IBOutlet weak var txfSpatialToleranceCruise: NSTextField!
     @IBOutlet weak var pupSamplingRate: NSPopUpButton!
+    @IBOutlet weak var txfVirtualCruise: NSTextField!
+    @IBOutlet weak var btnVirtualCruise: NSButton!
     
     // lagrangian tab objects
     @IBOutlet weak var swtTracer: OGSwitch!
@@ -69,14 +72,20 @@ class MainVC: NSViewController, MKMapViewDelegate, NSTokenFieldCellDelegate, NST
     @IBOutlet weak var txfSpatialToleranceFTLE: NSTextField!
     @IBOutlet weak var txfFTLEFilter: NSTextField!
     
-    // colocalize tab objects
+    // conform tab objects
+    @IBOutlet weak var txfFilePathConform: NSTextField!
+    @IBOutlet weak var txfLatTolerance: NSTextField!
+    @IBOutlet weak var txfLonTolerance: NSTextField!
+    @IBOutlet weak var txfDepthTolerance: NSTextField!
+    @IBOutlet weak var txfTemporalTolerance: NSTextField!
     
 
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet var acCatalog: NSArrayController!
     @IBOutlet weak var tokenField: NSTokenField!
     
-
+    @IBOutlet weak var scMapTypeControl: NSSegmentedControl!
+    
     
     
     
@@ -88,18 +97,30 @@ class MainVC: NSViewController, MKMapViewDelegate, NSTokenFieldCellDelegate, NST
     }
 
     @IBAction func plotTimeSeries(_ sender: Any) {
+        if (tokenField.objectValue as! NSArray).count < 1 {
+            _ = Initializer().msgDialog(headline: "Please pick at least one variable!", text: "")
+            return
+        }
         spnBusy.startAnimation(self)
         updateQueryParams()
         runScript([pythonPath, "\(opediaAPI)plotTS.py", tables, vars, date1, date2, lat1, lat2, lon1, lon2, depth1, depth2, fname, exportFlag, bundlePath])
     }
     
     @IBAction func plotRegionalMap(_ sender: Any) {
+        if (tokenField.objectValue as! NSArray).count < 1 {
+            _ = Initializer().msgDialog(headline: "Please pick at least one variable!", text: "")
+            return
+        }
         spnBusy.startAnimation(self)
         updateQueryParams()
         runScript([pythonPath, "\(opediaAPI)plotRegional.py", tables, vars, date1, date2, lat1, lat2, lon1, lon2, depth1, depth2, fname, exportFlag, bundlePath])
     }
 
     @IBAction func plotMutualTrend(_ sender: Any) {
+        if (tokenField.objectValue as! NSArray).count < 2 {
+            _ = Initializer().msgDialog(headline: "Please pick at least two variables!", text: "")
+            return
+        }
         spnBusy.startAnimation(self)
         updateQueryParams()
         runScript([pythonPath, "\(opediaAPI)plotXY.py", tables, vars, date1, date2, lat1, lat2, lon1, lon2, fname, exportFlag, extV1, extVV1, extV2, extVV2, bundlePath])
@@ -107,6 +128,10 @@ class MainVC: NSViewController, MKMapViewDelegate, NSTokenFieldCellDelegate, NST
 
 
     @IBAction func plotHist(_ sender: Any) {
+        if (tokenField.objectValue as! NSArray).count < 1 {
+            _ = Initializer().msgDialog(headline: "Please pick at least one variable!", text: "")
+            return
+        }
         spnBusy.startAnimation(self)
         updateQueryParams()
         runScript([pythonPath, "\(opediaAPI)plotDist.py", tables, vars, date1, date2, lat1, lat2, lon1, lon2, depth1, depth2, fname, exportFlag, bundlePath])
@@ -114,6 +139,10 @@ class MainVC: NSViewController, MKMapViewDelegate, NSTokenFieldCellDelegate, NST
     
 
     @IBAction func plotDepthProfile(_ sender: Any) {
+        if (tokenField.objectValue as! NSArray).count < 1 {
+            _ = Initializer().msgDialog(headline: "Please pick at least one variable!", text: "")
+            return
+        }
         spnBusy.startAnimation(self)
         updateQueryParams()
         runScript([pythonPath, "\(opediaAPI)plotDepthProfile.py", tables, vars, date1, date2, lat1, lat2, lon1, lon2, depth1, depth2, fname, exportFlag, bundlePath])
@@ -121,6 +150,10 @@ class MainVC: NSViewController, MKMapViewDelegate, NSTokenFieldCellDelegate, NST
 
     
     @IBAction func plotSection(_ sender: Any) {
+        if (tokenField.objectValue as! NSArray).count < 1 {
+            _ = Initializer().msgDialog(headline: "Please pick at least one variable!", text: "")
+            return
+        }
         spnBusy.startAnimation(self)
         updateQueryParams()
         runScript([pythonPath, "\(opediaAPI)plotSection.py", tables, vars, date1, date2, lat1, lat2, lon1, lon2, depth1, depth2, fname, exportFlag, bundlePath])
@@ -137,12 +170,33 @@ class MainVC: NSViewController, MKMapViewDelegate, NSTokenFieldCellDelegate, NST
             _ = Initializer().msgDialog(headline: "Please pick at least one variable!", text: "")
             
         } else {
-            plotCruise(shapeFlag: "0", colocalizeFlag: "1")
+            plotCruise(shapeFlag: "1", colocalizeFlag: "1")
         }
      }
     
     
+    @IBAction func swtCruiseMode(_ sender: Any) {
 
+        let virtual = swtCruise.isOn
+        txfVirtualCruise.isEnabled = virtual
+        btnVirtualCruise.isEnabled = virtual
+        pupRegisteredCruise.isEnabled = !virtual
+    }
+    
+    
+    @IBAction func btnVirtualCruisePath(_ sender: Any) {
+        let opFilePicker: NSOpenPanel = NSOpenPanel()
+        opFilePicker.directoryURL = NSURL(fileURLWithPath: bundlePath) as URL
+        opFilePicker.allowsMultipleSelection = false
+        opFilePicker.canChooseFiles = true
+        opFilePicker.canChooseDirectories = false
+        opFilePicker.allowedFileTypes = ["csv"]
+        opFilePicker.runModal()
+        let file = opFilePicker.url
+        if (file != nil) { txfVirtualCruise.stringValue = (file?.path)! }
+        }
+    
+    
     @IBAction func btnLagrangianTrack(_ sender: Any) {
         plotLagrangian(shapeFlag: "1", colocalizeFlag: "0")
     }
@@ -153,7 +207,7 @@ class MainVC: NSViewController, MKMapViewDelegate, NSTokenFieldCellDelegate, NST
             _ = Initializer().msgDialog(headline: "Please pick at least one variable!", text: "")
             
         } else {
-            plotLagrangian(shapeFlag: "0", colocalizeFlag: "1")
+            plotLagrangian(shapeFlag: "1", colocalizeFlag: "1")
         }
     }
     
@@ -169,7 +223,7 @@ class MainVC: NSViewController, MKMapViewDelegate, NSTokenFieldCellDelegate, NST
             _ = Initializer().msgDialog(headline: "Please pick at least one variable!", text: "")
             
         } else {
-            plotEddy(shapeFlag: "0", colocalizeFlag: "1")
+            plotEddy(shapeFlag: "1", colocalizeFlag: "1")
         }
     }
     
@@ -184,11 +238,87 @@ class MainVC: NSViewController, MKMapViewDelegate, NSTokenFieldCellDelegate, NST
             _ = Initializer().msgDialog(headline: "Please pick at least one variable!", text: "")
             
         } else {
-            plotFTLE(shapeFlag: "0", colocalizeFlag: "1")
+            plotFTLE(shapeFlag: "1", colocalizeFlag: "1")
         }
     }
     
 
+    @IBAction func btnFilePathConform(_ sender: Any) {
+        let opFilePicker: NSOpenPanel = NSOpenPanel()
+        opFilePicker.directoryURL = NSURL(fileURLWithPath: bundlePath) as URL
+        opFilePicker.allowsMultipleSelection = false
+        opFilePicker.canChooseFiles = true
+        opFilePicker.canChooseDirectories = false
+        opFilePicker.allowedFileTypes = ["csv"]
+        opFilePicker.runModal()
+        let file = opFilePicker.url
+        if (file != nil) { txfFilePathConform.stringValue = (file?.path)! }
+    }
+
+    
+    @IBAction func btnDatasetConform(_ sender: Any) {
+        
+        if (tokenField.objectValue as! NSArray).count < 1 {
+            _ = Initializer().msgDialog(headline: "Please pick at least one variable!", text: "")
+            return
+        }
+        
+        if (txfFilePathConform.stringValue.count < 1) {
+            _ = Initializer().msgDialog(headline: "Please select your data set file.", text: "")
+            return
+        }
+        
+        
+        let DB = "0"
+        let source = txfFilePathConform.stringValue
+        let temporalTolerance = txfTemporalTolerance.stringValue
+        let latTolerance = txfLatTolerance.stringValue
+        let lonTolerance = txfLonTolerance.stringValue
+        let depthTolerance = txfDepthTolerance.stringValue
+
+        let extention = NSURL(fileURLWithPath: source).pathExtension! as String
+        let pathPrefix = NSURL(fileURLWithPath: source).deletingPathExtension?.path
+        let exportPath = pathPrefix! + "_loaded." + extention
+        
+        spnBusy.startAnimation(self)
+        updateQueryParams()
+        runScript([pythonPath, "\(opediaAPI)colocalize.py", DB, source, temporalTolerance, latTolerance, lonTolerance, depthTolerance, tables, vars, exportPath, bundlePath])
+    }
+    
+    
+    @IBAction func scMapType(_ sender: Any) {
+        let ind = scMapTypeControl.indexOfSelectedItem
+        switch ind {
+        case 0:
+            mapView.mapType = .standard
+        case 1:
+            mapView.mapType = .hybrid
+        case 2:
+            mapView.mapType = .hybridFlyover
+        default:
+            mapView.mapType = .hybridFlyover
+        }
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 
     func plotFTLE(shapeFlag:String, colocalizeFlag:String) {
         let ftleTable = "tblLCS_REP"
@@ -277,10 +407,47 @@ class MainVC: NSViewController, MKMapViewDelegate, NSTokenFieldCellDelegate, NST
     }
     */
     
+    
+    func removeAnnotsOverlays() {
+        self.mapView.removeAnnotations(self.mapView.annotations)
+        self.mapView.removeOverlays(self.mapView.overlays)
+    }
+ 
+    
+    func addAnnot(lat:Float, lon:Float, title:String, subtitle:String) {
+        let annot = MKPointAnnotation()
+        annot.coordinate = CLLocationCoordinate2D(latitude: CLLocationDegrees(lat), longitude: CLLocationDegrees(lon))
+        if !title.isEmpty { annot.title = title }
+        if !subtitle.isEmpty { annot.subtitle = subtitle }
+        mapView.addAnnotation(annot)
+        mapView.add(MKCircle(center: annot.coordinate, radius: 20000))
+        
+    }
+
+    
+    func addTrack(_ track: [CLLocationCoordinate2D]) {
+        let rad = CLLocationDistance(20000)
+        for item in track {
+            mapView.add(MKCircle(center: item, radius: rad))
+        }
+    }
+    
+    func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
+        if overlay is MKCircle {
+            var circleRenderer = MKCircleRenderer(circle: overlay as! MKCircle)
+            circleRenderer.lineWidth = 1.0
+            circleRenderer.strokeColor = NSColor(red: 1, green:0.1, blue:0.1, alpha: 1)
+            circleRenderer.fillColor = NSColor(red: 1, green:0.1, blue:0.1, alpha: 1)
+            circleRenderer.alpha = 0.4
+            return circleRenderer
+        }
+        return MKOverlayRenderer()
+    }
+    
     func initUI() {
         swtExport.isOn = false
         swtExport.reloadLayer()
-
+        scMapTypeControl.selectedSegment = 2
         tokenField.objectValue = []
         
         dslLat.colorStyle = .aqua
@@ -326,7 +493,12 @@ class MainVC: NSViewController, MKMapViewDelegate, NSTokenFieldCellDelegate, NST
                     self.spnBusy.stopAnimation(self)
                     self.isRunning = false
                     //// process finished; check if it was asking for catalog
-                    if arguments[1].contains("getCatalog") { self.loadCatalog() }
+                    if arguments[1].contains("getCatalog") { _ = self.loadCatalog() }
+                    if (arguments[1].contains("plotCruise")) ||
+                        (arguments[1].contains("Lagrangian")) ||
+                        (arguments[1].contains("eddy")) ||
+                        (arguments[1].contains("ftle"))
+                        { _ = self.loadTrack() }
                 })
             }
             //self.consoleOutput(self.proc)     //console output handling
@@ -454,6 +626,29 @@ class MainVC: NSViewController, MKMapViewDelegate, NSTokenFieldCellDelegate, NST
     }
 
     
+    func loadTrack()-> CSVReader {
+        var track = [CLLocationCoordinate2D]()
+        removeAnnotsOverlays()
+        //https://github.com/yaslab/CSV.swift
+        let file = bundlePath + "/shape/shape.csv"
+        let stream = InputStream(fileAtPath: file)!
+        let csv = try! CSVReader(stream: stream, hasHeaderRow: true)
+        //let header = csv.headerRow
+       
+        var lat: Double = -999
+        var lon: Double = -999
+        track.removeAll()
+        while let row = csv.next() {
+            lat = Double(row[0])!
+            lon = Double(row[1])!
+            track.append( CLLocationCoordinate2D(latitude: CLLocationDegrees(lat), longitude: CLLocationDegrees(lon)) )
+        }
+        
+        addTrack(track)
+        return csv
+    }
+    
+    
     func loadCatalog()-> CSVReader {
         //https://github.com/yaslab/CSV.swift
         let file = bundlePath + "/data/catalog.csv"
@@ -465,31 +660,31 @@ class MainVC: NSViewController, MKMapViewDelegate, NSTokenFieldCellDelegate, NST
             // fill cat struct
             catItems.append(cat(short_name: row[0], long_name: row[1], make: row[3], sensor: row[4], table_name: row[16], keywords: row[17], ID: Int(row[15])! ))
             /*
-            // fill catalog array controller
-            self.acCatalog.addObject(
-                CatalogVar(short_name: row[0],
-                           long_name: row[1],
-                           unit: row[2],
-                           make: row[3],
-                           sensor: row[4],
-                           process_level: row[5],
-                           study_domain: row[6],
-                           temporal_resolution: row[7],
-                           spatial_resolution: row[8],
-                           dataset_name: row[10],
-                           data_source: row[11],
-                           distributor: row[12],
-                           id: row[15],
-                           table_name: row[16],
-                           keywords: row[17]
-            )
-            )
+             // fill catalog array controller
+             self.acCatalog.addObject(
+             CatalogVar(short_name: row[0],
+             long_name: row[1],
+             unit: row[2],
+             make: row[3],
+             sensor: row[4],
+             process_level: row[5],
+             study_domain: row[6],
+             temporal_resolution: row[7],
+             spatial_resolution: row[8],
+             dataset_name: row[10],
+             data_source: row[11],
+             distributor: row[12],
+             id: row[15],
+             table_name: row[16],
+             keywords: row[17]
+             )
+             )
              */
         }
         return csv
     }
-    
-    
+
+
     func extractTokenID(_ tokenValue: String)->Int? {
         let prefix = " ID("
         if tokenValue.contains(prefix) == false {return nil}
@@ -575,13 +770,19 @@ class MainVC: NSViewController, MKMapViewDelegate, NSTokenFieldCellDelegate, NST
     
     func opediaPathScript() -> String {
         return """
+        import os
         import site
         file = open("out.txt","w")
-        path = site.getsitepackages()[-1]
-        file.write(path + "/opedia/")
+        #path = site.getsitepackages()[-1]
+        #file.write(path + "/opedia/")
+        for pack in site.getsitepackages():
+            path = pack + "/opedia/"
+            if os.path.isdir(path):
+                file.write(path)
+                break
         """
     }
-    
+
     
     func setOpediaAPI() {
         ///////// set opediaAPI (path to opedia python package) /////////
@@ -661,6 +862,8 @@ class MainVC: NSViewController, MKMapViewDelegate, NSTokenFieldCellDelegate, NST
     }
     
     */
-        
+    
+    
+    
 }
 

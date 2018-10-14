@@ -1,0 +1,60 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Regional Map</title>
+        
+<link rel="stylesheet" href="https://cdn.pydata.org/bokeh/release/bokeh-0.12.15.min.css" type="text/css" />
+        
+<script type="text/javascript" src="https://cdn.pydata.org/bokeh/release/bokeh-0.12.15.min.js"></script>
+<script type="text/javascript">
+    Bokeh.set_log_level("info");
+</script>
+    </head>
+    <body>
+        
+        <div class="bk-root">
+            <div class="bk-plotdiv" id="8b0c1d63-f0e9-4cf8-957c-8689f9836b52"></div>
+        </div>
+        
+        <script type="application/json" id="060abe2a-d36d-4284-b312-6ad7e43e461c">
+          {"d04306d9-ce47-4281-bbf5-e44e1a688924":{"roots":{"references":[{"attributes":{},"id":"060818c5-06a4-42af-a3ca-da85ea8c0a0a","type":"Column"}],"root_ids":["060818c5-06a4-42af-a3ca-da85ea8c0a0a"]},"title":"Bokeh Application","version":"0.12.15"}}
+        </script>
+        <script type="text/javascript">
+          (function() {
+            var fn = function() {
+              Bokeh.safely(function() {
+                (function(root) {
+                  function embed_document(root) {
+                    
+                  var docs_json = document.getElementById('060abe2a-d36d-4284-b312-6ad7e43e461c').textContent;
+                  var render_items = [{"docid":"d04306d9-ce47-4281-bbf5-e44e1a688924","elementid":"8b0c1d63-f0e9-4cf8-957c-8689f9836b52","modelid":"060818c5-06a4-42af-a3ca-da85ea8c0a0a"}];
+                  root.Bokeh.embed.embed_items(docs_json, render_items);
+                
+                  }
+                  if (root.Bokeh !== undefined) {
+                    embed_document(root);
+                  } else {
+                    var attempts = 0;
+                    var timer = setInterval(function(root) {
+                      if (root.Bokeh !== undefined) {
+                        embed_document(root);
+                        clearInterval(timer);
+                      }
+                      attempts++;
+                      if (attempts > 100) {
+                        console.log("Bokeh: ERROR: Unable to run BokehJS code because BokehJS library is missing")
+                        clearInterval(timer);
+                      }
+                    }, 10, root)
+                  }
+                })(window);
+              });
+            };
+            if (document.readyState != "loading") fn();
+            else document.addEventListener("DOMContentLoaded", fn);
+          })();
+        </script>
+    </body>
+</html>

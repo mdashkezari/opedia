@@ -46,6 +46,9 @@ def dumpEddyShape(lats, lons, fname):
     if not os.path.exists(dirPath):
         os.makedirs(dirPath)       
     df.to_file(dirPath + '%s.shp' % fname, driver='ESRI Shapefile')    
+    
+    ## dump the shape file content in a csv file (this will be used by macos app)
+    df.to_csv(dirPath + 'shape.csv', index=False)
     return
 
 def appendVar(track, t, y, yErr, variable):
@@ -104,7 +107,7 @@ def colocalize(tables, variables, eddy, spMargin, depth1, depth2, exportDataFlag
             lon1 = float(eddy.iloc[j]['lon']) - spMargin
             lon2 = float(eddy.iloc[j]['lon']) + spMargin           
             t, y, y_std = TS.timeSeries(tables[i], variables[i], startDate, endDate, lat1, lat2, lon1, lon2, depth1, depth2, fmt=fmt, dt=dt)
-            ts.append( datetime.strptime(eddy.iloc[j]['time'], fmt) )
+            ts.append( datetime.strptime(str(eddy.iloc[j]['time']), fmt) )
             ys = np.append(ys, y[0])            
             y_stds = np.append(y_stds, y_std[0])
             track_ids = np.append(track_ids, eddy.iloc[j]['track'])
