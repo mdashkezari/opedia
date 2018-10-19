@@ -1,5 +1,6 @@
 import sys
 import os
+sys.path.append(os.path.dirname(__file__))
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd

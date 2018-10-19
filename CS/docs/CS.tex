@@ -1,0 +1,272 @@
+\documentclass[9pt,twocolumn]{article} 
+
+\usepackage[USenglish]{babel}
+\usepackage[T1]{fontenc} 
+\usepackage[ansinew]{inputenc} 
+\usepackage{hyperref} 
+\usepackage{color} 
+\usepackage{lmodern} 
+
+
+\usepackage{graphicx}
+\usepackage{color,soul}
+\usepackage{amsmath} 
+\usepackage{amsthm} 
+\usepackage{amsfonts} 
+\usepackage{bm} 
+
+\usepackage{verbatim} 
+
+\usepackage[margin=0.45in]{geometry} 
+\usepackage{authblk}
+
+\makeatletter 
+\newcommand{\rmnum}[1]{\romannumeral #1} 
+\newcommand{\Rmnum}[1]{\expandafter\@slowromancap\romannumeral #1@} 
+\makeatother 
+\date{} 
+\begin{document} 
+	
+	\title{Coherent Structures Toolbox (Ver. 1.0)} 
+\author[1]{M. D. Ashkezari}
+\author[1]{C. N. Hill}
+\author[1]{M. J. Follows}
+
+\affil[1]{Massachusetts Institute of Technology, Cambridge, MA USA}
+
+	\maketitle 
+	
+	\begin{abstract}
+		We are presenting an open source MATLAB numerical toolbox for the identification of coherent structures (CS) in turbulent fluids. The package encompasses Eulerian and Lagrangian diagnostics and may be applied to model generated flow fields or geostrophic flows inferred from remote sensing altimetric data. We employ the Okubo-Weiss criteria for the Eulerian approach and Finite Time (or Size) Lyapunov Exponent (FTLE/FSLE) for the Lagrangian analysis.       
+	\end{abstract} 
+	
+	
+	
+	\section{Introduction} \label{sec:Introduction}
+	Transport barriers and mixing properties of turbulent flows such as those of the ocean surface play a key role in the understanding of these dynamically complex systems. These properties are, also, central in other natural or industrial phenomena such as large scale pollutant motion~\cite{Wolff}, the advection of planktons~\cite{Abraham, Bracco1}, and oil spills in the ocean flow~\cite{Mariano}. The identification and study of CS associated with the fluid can significantly enhance the understanding of these properties. Broadly speaking, CS are reduced order features of the flow field (codimensional-1) that partition the field into dynamically distinct regions. For instance, in a 2D flow field, they form boundary lines that decompose the flow field into smaller subdomains highlighting features such as vortices, filaments, or regions with large bulk transport properties.\\
+	
+	\noindent There are two major approaches to seek for CS in the fluid flows: Eulerian and Lagrangian. We will briefly describe a well-established Eulerian method first, which is also used in our numerical package, and then will devote the rest of this document to the Lagrangian diagnostics.
+	
+	
+	
+	\section{Eulerian Coherent Structures} \label{sec:ECS} 
+	The Eulerian diagnostics typically involve velocity or gradient of velocity field, and evaluate the properties of the flow using a fixed coordinate system at any instant of time. Properties like acceleration, kinetic energy, and vorticity are Eulerian specifications of the flow and are frame-dependent. One of the most established Eulerian metrics to distinguish hyperbolic (high deformation) from elliptic (high vorticity) subdomains is the Okubo-Weiss criteria~\cite{Okubo, Weiss}:     
+	
+	\begin{equation} \label{Eq:OW} 
+	O(\bm{x},t)=s^2(\bm{x},t)+\zeta^2(\bm{x},t),
+	\end{equation} 
+	
+	\noindent where $s$, and $\zeta$ represent strain and vorticity, respectively: 
+	
+	\begin{equation} \label{Eq:Strain} 
+	s^2(\bm{x},t)=\left( \frac{\partial u}{\partial x} - \frac{\partial v}{\partial y} \right)^2 + \left( \frac{\partial v}{\partial x} + \frac{\partial u}{\partial y} \right)^2,
+	\end{equation} 
+	
+	\begin{equation} \label{Eq:Vorticity} 
+	\zeta^2(\bm{x},t)= \left( \frac{\partial v}{\partial x} - \frac{\partial u}{\partial y} \right)^2,
+	\end{equation} 
+	
+    \noindent where $u$ and $v$ are the zonal and meridional components of the flow, and $\bm{x}=(x,y)$ represents the coordinates. To partition the domain to smaller subdomains one needs to choose a predefined threshold value $O_o$. Assuming $O_o>0$, subdomains with $O>O_o$ and $O<-O_o$ are defined as hyperbolic (high strain) and elliptic (high vorticity) regions, respectively; while regions where $|O|<O_o$ represent the background.  Although $O_o$ is a free parameter in our numerical package, its default value is $O_o=0.2\sigma_o$, where $\sigma_o$ corresponds to the standard deviation associated with the scalar field $O$~\cite{dOvidio, Bracco2}. As an example, Fig.~\ref{fig:VortMITgcm} shows the calculated vorticity by the CS toolbox near the Hawaiian islands. In the case of autonomous systems (time independent), the boundary lines defined by the Okubo-Weiss metric constitute material lines (zero flux) which means particles located in the elliptic subdomains will remain trapped indefinitely. However, this is not hold for the non-autonomous flow fields~\cite{dOvidio, Basdevant, Hua}.\\
+
+	\begin{figure}[htbp] 
+		\centering 
+		\includegraphics[scale=0.5]{Pics/vort.png} 
+		\caption{Relative vorticity scalar field calculated by the CS toolbox. Here we have used flow fields generated by MITgcm model in order to calculate the vorticity.} 
+		\label{fig:VortMITgcm} 
+	\end{figure} 
+	    
+    \noindent There are multiple limitations associated with the Eulerian approaches. However, the primary concern is due to the fact that the results of the Eulerian methods are not objective, which means they rely on the frame of reference. For instance, changing the frame of reference may result in significant change in the velocity gradient and consequently the Okubo-Weiss value. To avoid these drawbacks Lagrangian diagnostics are used which are frame invariant.  
+    
+    
+    \section{Lagrangian Coherent Structures} \label{sec:LCS}      
+    The alternative approach involves examining the flow from the standpoint of the fluid elements, the Lagrangian viewpoint~\cite{Pierrehumbert, Miller, Haller1, Shadden}. In this method transport properties are inferred from trajectory analysis of passive tracers, hypothetical massless particles that follow the flow without having any influence on the fluid. The most widely-utilized Lagrangian diagnostics involve calculation of the local Lyapunov exponents, providing a metric for exponential divergence rate of two adjacent tracers initially located infinitesimally close together~\cite{Lyapunov}: 
+    
+	\begin{equation} \label{Eq:Lyapunov} 
+	\Lambda = \lim_{|\delta x(t_0)| \to 0}  \lim_{t \to \infty} \frac{1}{t} \log \frac{\delta x(t)}{\delta x(t_0)}
+	\end{equation} 
+
+    \noindent such that $\Lambda$ is the Lyapunov exponent, and $\delta x(t)$, $\delta x(t_0)$ represent the separation between the tracers at times $t$ and $t_0$, receptively. The trajectories are followed for either a certain time or until the separation between the tracers reaches a certain distance. The former is referred to as Finite Time Lyapunov Exponent (FTLE) and the latter is referred to as Finite Size Lyapunov Exponent (FSLE). Our numerical package features both FTLE and FSLE methods. 
+    
+    \subsection{FSLE} \label{subsec:FSLE}  
+    The Finite Size Lyapunov Exponent (FSLE) is a simple and popular choice of Lagrangian diagnostic in dynamical systems, particularly in oceanography~\cite{dOvidio, Artale, dOvidio2}. In this method, a grid of passive tracers are initialized over the domain of interest, at time $t_0$ and with an initial spacing $\delta_0$. Each tracer follows the flow until the mutual separation with one its neighboring tracers reaches the final separation $\delta_f$ (Fig.~\ref{fig:Grid}), at which point the integration of that particular tracer is stopped and the FSLE parameter is calculated according to Eq.~\ref{Eq:Lyapunov}:     
+    
+	\begin{equation} \label{Eq:FSLE} 
+	\lambda(\bm{x},t,\delta_0,\delta_f) = \frac{1}{t} \log \frac{\delta_f}{\delta_0}.
+	\end{equation} 
+
+     
+	\begin{figure}[htbp] 
+		\centering 
+		\includegraphics[scale=0.35]{Pics/Grid.png} 
+		\caption{A grid of tracers are initialized over the flow field. The particles are advected using the velocity field. The trajectory of a given tracer is stopped when its distance with one its immediate particles reaches a final separation of $\delta_f$.} 
+		\label{fig:Grid} 
+	\end{figure} 
+
+    \noindent The particles can be integrated either forward or backward in time. The local maxima of the FSLE scalar field show the paths of fastest dispersion can be interpreted as stable and unsatble manifolds of the flow field in the case of forward and backward integration, respectively~\cite{Haller1, Haller2}. 
+
+
+
+    \subsection{FTLE} \label{subsec:FTLE}  
+    With appropriate considerations~\cite{Haller3}, the local maxima (ridges) of the scalar field of Finite Time Lyapunov Exponent (FTLE) may be considered as indicators of the LCS~\cite{Haller2}. The calculation procedure of the FTLE field relies on the concept of \textit{flow map} which maps the initial location of the tracers, $\bm{x_0}$ at time $t_0$, to their final positions $\bm{x}$ at time $t$:
+    
+	\begin{equation} \label{Eq:Flowmap} 
+	\Phi_{t_0}^{t}(x_0) = x(t;x_0,t_0).
+	\end{equation} 
+    
+    \noindent Practically, the flow map is constructed by solving the equation of motion according to the given velocity field $\bm{u}(x,t)$:
+    
+	\begin{equation} \label{Eq:Motion} 
+	\frac{dx}{dt} = \bm{u}(x,t).
+	\end{equation} 
+
+    \noindent We employ a fourth-order Runge-Kutta algorithm to solve the system of ODE's. Prior to solving the equations of motion, the velocity field is interpolated at the position of the passive tracers. To examine the variation of the final positions to infinitesimal perturbation to the starting positions of the tracers, spatial derivate (gradient) of the flow map is calculated. In case of 3D discrete flow field, the flow map gradient may be computed using finite difference method; here we use central differencing:   
+ 	\begin{equation} \label{Eq:Gradient}                      	
+ 	\begin{split}
+ 	&\nabla \Phi_{t_0}^{t}(x_0) \mid_{(   x_{ijk}(t_0),y_{ijk}(t_0),z_{ijk}(t_0) )}~\approx \\ 
+ 	 &\begin{bmatrix}
+       \frac{x_{i+1,j,k}(t)-x_{i-1,j,k}(t)}{x_{i+1,j,k}(t_0)-x_{i-1,j,k}(t_0)} & \frac{x_{i,j+1,k}(t)-x_{i,j-1,k}(t)}{y_{i,j+1,k}(t_0)-y_{i,j-1,k}(t_0)} & \frac{x_{i,j,k+1}(t)-x_{i,j,k-1}(t)}{z_{i,j,k+1}(t_0)-z_{i,j,k-1}(t_0)} \\ 
+       \frac{y_{i+1,j,k}(t)-y_{i-1,j,k}(t)}{x_{i+1,j,k}(t_0)-x_{i-1,j,k}(t_0)} & \frac{y_{i,j+1,k}(t)-y_{i,j-1,k}(t)}{y_{i,j+1,k}(t_0)-y_{i,j-1,k}(t_0)} & \frac{y_{i,j,k+1}(t)-y_{i,j,k-1}(t)}{z_{i,j,k+1}(t_0)-z_{i,j,k-1}(t_0)} \\ 
+       \frac{z_{i+1,j,k}(t)-z_{i-1,j,k}(t)}{x_{i+1,j,k}(t_0)-x_{i-1,j,k}(t_0)} & \frac{z_{i,j+1,k}(t)-z_{i,j-1,k}(t)}{y_{i,j+1,k}(t_0)-y_{i,j-1,k}(t_0)} & \frac{z_{i,j,k+1}(t)-z_{i,j,k-1}(t)}{z_{i,j,k+1}(t_0)-z_{i,j,k-1}(t_0)} \\ 
+ 	 \end{bmatrix}.
+ 	\end{split}
+ 	\end{equation} 
+
+
+    \noindent Finally, the flow deformation around a given position $x_0$ is determined using the (right) Cauchy-Green deformation tensor:	 	   
+
+	\begin{equation} \label{Eq:CG} 
+	C(x_0)_{t_0}^{t} = \nabla \Phi_{t_0}^{t}(x_0) ^ \top \cdot \nabla \Phi_{t_0}^{t}(x_0),
+	\end{equation} 
+	
+	\noindent where $\top$ denotes the transpose operator. The largest degree of divergence between a trajectory and a perturbed trajectory is achieved if the starting positions of the two trajectories are aligned with the largest eigenvector of the Cauchy-Green deformation tensor~\cite{Haller2, Shadden}. Therefore, the FTLE field is determined by:  
+
+	\begin{equation} \label{Eq:FTLE} 
+	\sigma(x_0)_{t_0}^{t} = \frac{1}{|t-t_0|} \log \sqrt{\lambda_{\rm max}(C(x_0)_{t_0}^{t})},
+	\end{equation} 
+	Grid
+	\noindent where $\lambda_{\rm max}(C(x_0)_{t_0}^{t})$ is the largest eigenvalue of the Cauchy-Green deformation tensor. Similar to FSLE, the integration could be carried out forward or backward in time. The FTLE ridges are associated with repelling (stable manifolds) and attracting (unstable manifolds) LCS in forward and backward integration, respectively~\cite{Haller2}.\\  
+
+	\begin{figure}[htbp] 
+		\centering 
+		\includegraphics[scale=0.5]{Pics/FTLE_08062015.png} 
+		\caption{An example of forward-integration FTLE field near the Hawaiian islands, generated by the CS toolbox. Here geostrophic flow fields provided by Colorado Center for Astrodynamics Research (CCAR) are used. The tracers particles are integrated for 25~days.} 
+		\label{fig:FTLE} 
+	\end{figure} 
+	
+	
+	\noindent Figure~\ref{fig:FTLE} shows the calculated FTLE field by the CS toolbox around the Hawaiian islands. The input flow fields are inferred geostrophic velocities associated with remote sensing altimetric data ($0.25^{\circ}$ resolution) provided by Colorado Center for Astrodynamics Research (CCAR). A grid of passive tracers with initial spacing of $0.01^{\circ}$ ($\sim$1~km) is initialized over the entire domain. The particles are integrated for 25 days, forward in time; therefore the FTLE ridges represent the repelling LCS. The Euclidean distance between the final and initial positions of each tracer particle is shown in Fig.~\ref{fig:Displacement}.  
+	
+
+	\begin{figure}[htbp] 
+		\centering 
+		\includegraphics[scale=0.5]{Pics/Displacement_08062015.png} 
+		\caption{Total displacement of tracer particles (Euclidean distance) with respect to their initial position after 25-day forward-integration. Similar to Fig.~\ref{fig:FTLE}, CCAR flow fields are used.} 
+		\label{fig:Displacement} 
+	\end{figure} 
+	
+	
+	
+	
+	\section{Getting Started with CS Toolbox} \label{sec:CSToolbox}
+	The package is expected to be able to conduct Eulerian (currently Okubo-Weiss) and Lagrangian (currently FSLE and FTLE) analysis using grid-based velocity fields. The \texttt{CS.m} function only two arguments \texttt{CS(<FlowFieds>,<IntegrationTime>)}, where \texttt{FlowFieds} is a list of input flow fields to be analyzed and \texttt{IntegrationTime} is the integration time (in days) over which the tracer particles are advected (only relevant to Lagrangian calculations). The rest of the control parameters are set in \texttt{config\_CS.m}, located at \texttt{<CS root>/config/config\_CS.m}. Here we list and describe a selected number of these parameters:\\
+	
+	\noindent \hl{\texttt{runnumber}}: One may associate a unique identifier number to each run of the toolbox. A folder with this number is created at the storage path of the toolbox and all output files are located inside this folder.\\
+	\hl{\texttt{run\_description}}: An optional description for the run.\\
+	\hl{\texttt{DataSource}}: A short string specifying the name of the data source. Currently, CS toolbox supports flow fields from \texttt{MITgcm}, \texttt{CCRA}, \texttt{AVISO}, and \texttt{HYCOM}.\\  
+	\hl{\texttt{flgEulerian}}: If true, Eulerian analysis are carried out.\\
+	\hl{\texttt{flgLagrangian}}: If true, Lagrangian analysis are carried out.\\
+	\hl{\texttt{flgDispersion}}: If true, the separation between the neighboring particles are calculated. The defined \texttt{dispersion} in the CS toolbox is directly proportional to FSLE.\\
+	\hl{\texttt{flgTrajectory}}: If true, the trajectory of the tracers are recorded. \\
+	\hl{\texttt{flgPlot}}: if true, the results are plotted and the figures are stored.\\
+	\hl{\texttt{Xres, Yres}}: The initial spacing (in degrees) between the passive tracers.\\
+	\hl{\texttt{forward}}: forward/backward integration in time (true/false).\\
+	\hl{\texttt{T}}: Integration time (in seconds) per each flow field.\\
+	\hl{\texttt{itnum\_step}}: The index step between between two sequential flow fields.\\
+	\hl{\texttt{trunk}}: The root address where the MAT files and figures are stored.\\
+	
+	\subsection{Examples}
+	 Here we review the configuration parameters for a few scenarios:\\
+	 
+	 \noindent \textbf{1. Eulerian:} To configure an Eulerian run to generate results similar to Fig.~\ref{fig:VortMITgcm} based on MITgcm flow field files, one may use the following settings:\\
+	 \texttt{DataSource='MITgcm'; flgEulerian=true; flgLagrangian=false; flgTrajectory=false; flgPlot=true; Xres=[]; Yres=[];}\\           
+	 
+	 \noindent \textbf{2. Lagrangian:} To configure a Lagrangian run to generate results similar to Fig.~\ref{fig:FTLE} based on remote sensing data provided by Colorado Center for Astrodynamics Research, one may use the following settings:\\
+	 \texttt{DataSource='CCRA'; flgEulerian=false; flgLagrangian=true; flgDispersion=false; flgTrajectory=false; flgPlot=true; Xres=0.01; Yres=0.01; forward=true; itnum\_step=1;}
+
+	 \noindent \textbf{3. Lagrangian with Steady Flow:} The Lagrangian analysis may run with steady flow (autonomous), such as that of a river. These calculations capture the instantaneous streamlines of the flow and can potentially refine structures smaller than the resolution of the input flow field. Here is an example configuration in order to generate the instantaneous streamlines based on remote sensing data provided by Colorado Center for Astrodynamics Research:\\
+	 \texttt{DataSource='CCRA'; flgEulerian=false; flgLagrangian=true; flgDispersion=false; flgTrajectory=false; flgPlot=true; Xres=0.01; Yres=0.01; forward=true; itnum\_step=0;}
+
+
+
+
+	
+	\begin{thebibliography}{} 
+
+		\bibitem{Wolff} 
+		G.~T.~Wolff. Mesoscale and synoptic scale transport of
+		aerosols. \textit{Annals of the New York Academy of Sciences} \textbf{338}, 379–388 (2008). 
+
+		\bibitem{Abraham} 
+		E.~R.~Abraham. The generation of plankton patchiness by
+		turbulent stirring. \textit{Nature} \textbf{391}, 577–580 (1998). 
+
+		\bibitem{Bracco1} 
+		A.~Bracco, A.~Provenzale, I.~Scheuring. Mesoscale
+		vortices and the paradox of the plankton. \textit{Proceedings of the Royal Society of London B} \textbf{267}, 1795–1800 (2000). 
+
+
+		\bibitem{Mariano} 
+		A.~J.~Mariano, V.~H.~Kourafalou, A.~Srinivasan, H.~Kang, G.~R.~Halliwell, E.~H.~Ryan, M.~Roffer. On the modeling of the 2010 gulf of Mexico oil spill. \textit{Dynamics of Atmospheres and Oceans} \textbf{52}, 322-340 (2011). 
+
+		\bibitem{Okubo} 
+		A.~Okubo. Horizontal dispersion of floatable particles in the vicinity of velocity singularities such as convergences. \textit{Deep-Sea Research} \textbf{17}, 445-454 (1970). 
+		
+		\bibitem{Weiss} 
+		J.~Weiss. The dynamics of enstrophy transfer in two-dimensional
+		hydrodynamics. \textit{Physica~D} \textbf{48}, 273-294 (1991). 
+		
+		\bibitem{dOvidio} 
+		F.~d’Ovidio, J.~Isern-Fontanet, C.~López, E.~Hernández-García. E.~García-Ladona. Comparison between Eulerian diagnostics and finite-size Lyapunov exponents computed from altimetry in the Algerian basin. \textit{Deep-Sea Research} \textbf{56}, 15-31 (2009). 
+
+		\bibitem{Bracco2} 
+		A.~Bracco, J.~LaCasce, C.~Pasquero, A.~Provenzale. The velocity distribution of barotropic turbulence. \textit{Physics of Fluids} \textbf{12}, 2478-2488 (2000). 
+
+		\bibitem{Basdevant} 
+		C.~Basdevant, and T.~Philipovitch. On the validity of the “Weiss criterion” in two-dimensional turbulence. \textit{Physica~D: Nonlinear Phenomena} \textbf{73}, 17-30 (1994). 
+
+		\bibitem{Hua} 
+		B.~L.~Hua and P.~Klein. An exact criterion for the stirring properties of nearly two-dimensional turbulence. \textit{Physica~D: Nonlinear Phenomena} \textbf{113}, 98-110 (1998). 
+
+		\bibitem{Pierrehumbert} 
+		R.~T.~Pierrehumbert. Large?scale horizontal mixing in planetary atmospheres. \textit{Physics of Fluids A} \textbf{3}, 1250-1260 (1991). 
+
+		\bibitem{Miller} 
+		P.~D.~Miller, C.~K.~R.~T.~Jones, A.~M.~Rogerson, L.~J.~Pratt. Quantifying transport in numerically generated velocity fields. \textit{Physica D: Nonlinear Phenomena} \textbf{110}, 105-122 (1997).
+		
+		\bibitem{Haller1} 
+		G.~Haller, G.~Yuan. Lagrangian coherent structures and mixing in two-dimensional turbulence. \textit{Physica D: Nonlinear Phenomena} \textbf{147}, 352-370 (2000). 
+		 
+		\bibitem{Shadden} 
+		S.~C.~Shadden, F.~Lekien, J.~E.~Marsden. Definition and properties of Lagrangian coherent structures from finite-time Lyapunov exponents in two-dimensional aperiodic flows. \textit{Physica D: Nonlinear Phenomena} \textbf{212}, 271-304 (2005). 
+				
+		\bibitem{Lyapunov} 
+		A.~M.~Lyapunov. The general problem of the stability of motion. \textit{International Journal of Control} \textbf{55}, 531-534 (1992). Originally published in Russian by the \textit{Mathematical Society of Kharkov} (1892).  
+
+		\bibitem{Artale} 
+		V.~Artale, G.~Boffetta, A.~Celani, M.~Cencini, A.~Vulpiani. Dispersion of passive tracers in closed basins: Beyond the diffusion coefficient. \textit{Physics of Fluids} \textbf{9}, 3162-3171 (1997). 
+
+		\bibitem{dOvidio2} 
+		F.~d'Ovidio, V.~Fernández, E.~Hernández-García, C.~López. Mixing structures in the Mediterranean Sea from finite-size Lyapunov exponents. \textit{Geophysical Research Letters} \textbf{31}, (2004). 
+
+		\bibitem{Haller2} 
+		G.~Haller. Distinguished material surfaces and coherent structures in three-dimensional fluid flows. \textit{Physica D: Nonlinear Phenomena} \textbf{149}, 248-277 (2001). 
+
+		\bibitem{Haller3} 
+		G.~Haller. A variational theory of hyperbolic Lagrangian Coherent Structures. \textit{Physica D: Nonlinear Phenomena} \textbf{240}, 574-598 (2011). 
+
+
+    \end{thebibliography} 
+		
+	
+\end{document}
+

@@ -2,6 +2,7 @@
 from docopt import docopt
 import sys
 import os
+sys.path.append(os.path.dirname(__file__))
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -83,7 +84,7 @@ def exportData(df, path):
     return
 
 
-def RegionalMap(tables, variabels, dt1, dt2, lat1, lat2, lon1, lon2, depth1, depth2, fname, exportDataFlag):
+def regionalMap(tables, variabels, dt1, dt2, lat1, lat2, lon1, lon2, depth1, depth2, fname, exportDataFlag):
     data, lats, lons, subs, frameVars = [], [], [], [], []
     for i in range(len(tables)):
         df = subset.spaceTime(tables[i], variabels[i], dt1, dt2, lat1, lat2, lon1, lon2, depth1, depth2)
@@ -177,7 +178,7 @@ def main():
     depth2 = sys.argv[10]      
     fname = sys.argv[11]
     exportDataFlag = bool(int(sys.argv[12]))
-    RegionalMap(tables.split(','), variables.split(','), dt1, dt2, lat1, lat2, lon1, lon2, depth1, depth2, fname, exportDataFlag)
+    regionalMap(tables.split(','), variables.split(','), dt1, dt2, lat1, lat2, lon1, lon2, depth1, depth2, fname, exportDataFlag)
 
 
 

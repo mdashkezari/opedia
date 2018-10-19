@@ -1,5 +1,6 @@
 import os
 import sys
+sys.path.append(os.path.dirname(__file__))
 sys.dont_write_bytecode = True
 import numpy as np
 import matplotlib.pyplot as plt

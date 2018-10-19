@@ -161,8 +161,10 @@ class MainVC: NSViewController, MKMapViewDelegate, NSTokenFieldCellDelegate, NST
 
     
     @IBAction func btnCruiseTrack(_ sender: Any) {
-        plotCruise(shapeFlag: "1", colocalizeFlag: "0")
+        setPythonPath()
+        //plotCruise(shapeFlag: "1", colocalizeFlag: "0")
     }
+    
     
     
     @IBAction func btnCruiseColocalize(_ sender: Any) {
@@ -800,7 +802,20 @@ class MainVC: NSViewController, MKMapViewDelegate, NSTokenFieldCellDelegate, NST
         }
     }
     
-    
+    func setPythonPath() {
+        ///////// set python path (path to python binary) /////////
+        runScript(["which", "python", ">>", dumpFilename, bundlePath], false)
+        pythonPath = try! NSString(contentsOfFile: bundlePath + dumpFilename, encoding: String.Encoding.utf8.rawValue) as String
+        print(pythonPath)
+        do {
+            let fm = FileManager.default
+            try fm.removeItem(atPath: bundlePath + dumpFilename)
+        }
+        catch let error as NSError {
+            print("Error while deleteing python path dump file: \(error)")
+        }
+    }
+
     
     
     
