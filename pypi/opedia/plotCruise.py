@@ -19,6 +19,12 @@ from bokeh.embed import components
 import itertools as itt
 
 
+try:
+    import jupyterInline
+except Exception as e:
+    print("Error while loading jupyter inline!")
+    print(e)
+
 def removeNA(df, subset):
     df = df.dropna(subset=subset)
     return df

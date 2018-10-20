@@ -17,6 +17,13 @@ from bokeh.palettes import all_palettes
 from bokeh.models import HoverTool
 from bokeh.embed import components
 
+
+try:
+    import jupyterInline
+except Exception as e:
+    print("Error while loading jupyter inline!")
+    print(e)
+
 def iterative(table):
     it = False
     if table.find('tblDarwin') != -1:

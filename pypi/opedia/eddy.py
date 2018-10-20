@@ -15,7 +15,14 @@ from bokeh.palettes import all_palettes
 from bokeh.models import HoverTool
 from bokeh.embed import components
 from tqdm import tqdm
-   
+
+
+try:
+    import jupyterInline
+except Exception as e:
+    print("Error while loading jupyter inline!")
+    print(e)
+
 
 def prepareQuery(table, startDate, endDate, lat1, lat2, lon1, lon2):
     args = (table, startDate, endDate, lat1, lat2, lon1, lon2)

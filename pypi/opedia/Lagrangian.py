@@ -17,6 +17,12 @@ from bokeh.embed import components
 from tqdm import tqdm
    
 
+try:
+    import jupyterInline
+except Exception as e:
+    print("Error while loading jupyter inline!")
+    print(e)
+
 
 def prepareQuery(t, lat, lon):
     table = 'tblAltimetry_REP'

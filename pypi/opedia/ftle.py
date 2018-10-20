@@ -17,7 +17,14 @@ from bokeh.embed import components
 import matplotlib.pyplot as plt
 from tqdm import tqdm
 
-   
+
+try:
+    import jupyterInline
+except Exception as e:
+    print("Error while loading jupyter inline!")
+    print(e)
+
+
 def plot_single_hist(data, clr='m', labelx='', labely='', leg='', yscale='linear', store_path='', bincount=50):   
     if len(filter(None, data)) < 1:
         return

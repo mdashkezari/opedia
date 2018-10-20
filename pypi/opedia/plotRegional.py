@@ -17,6 +17,12 @@ from bokeh.models import LinearColorMapper, BasicTicker, ColorBar
 from bokeh.embed import components
 
 
+try:
+    import jupyterInline
+except Exception as e:
+    print("Error while loading jupyter inline!")
+    print(e)
+
 
 def getBounds(varName):
     bounds = (None, None)

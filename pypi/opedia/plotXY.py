@@ -18,6 +18,12 @@ from bokeh.models import HoverTool
 from bokeh.embed import components
 
 
+try:
+    import jupyterInline
+except Exception as e:
+    print("Error while loading jupyter inline!")
+    print(e)
+
 
 def exportData(t1, y1, yErr1, t2, y2, yErr2, table1, variable1, table2, variable2, lat1, lat2, lon1, lon2, depth1, depth2):
     df = pd.DataFrame()
