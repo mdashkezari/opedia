@@ -7,10 +7,87 @@ uses
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Data.DB, Data.Win.ADODB, IdStack, IdBaseComponent,
   IdComponent, IdTCPConnection, IdTCPClient, IdExplicitTLSClientServerBase,
   IdMessageClient, IdSMTPBase, IdSMTP, IdSSL, IdSSLOpenSSL, IdMessage, IdAttachment, IdAttachmentFile,
-  IdHTTP, DBXJSON;
+  IdHTTP, DBXJSON, cxGraphics, cxControls, cxLookAndFeels,
+  cxLookAndFeelPainters, dxSkinsCore, dxSkinBlack, dxSkinBlue, dxSkinBlueprint,
+  dxSkinCaramel, dxSkinCoffee, dxSkinDarkRoom, dxSkinDarkSide,
+  dxSkinDevExpressDarkStyle, dxSkinDevExpressStyle, dxSkinFoggy,
+  dxSkinGlassOceans, dxSkinHighContrast, dxSkiniMaginary, dxSkinLilian,
+  dxSkinLiquidSky, dxSkinLondonLiquidSky, dxSkinMcSkin, dxSkinMetropolis,
+  dxSkinMetropolisDark, dxSkinMoneyTwins, dxSkinOffice2007Black,
+  dxSkinOffice2007Blue, dxSkinOffice2007Green, dxSkinOffice2007Pink,
+  dxSkinOffice2007Silver, dxSkinOffice2010Black, dxSkinOffice2010Blue,
+  dxSkinOffice2010Silver, dxSkinOffice2013DarkGray, dxSkinOffice2013LightGray,
+  dxSkinOffice2013White, dxSkinOffice2016Colorful, dxSkinOffice2016Dark,
+  dxSkinPumpkin, dxSkinSeven, dxSkinSevenClassic, dxSkinSharp, dxSkinSharpPlus,
+  dxSkinSilver, dxSkinSpringTime, dxSkinStardust, dxSkinSummer2008,
+  dxSkinTheAsphaltWorld, dxSkinsDefaultPainters, dxSkinValentine,
+  dxSkinVisualStudio2013Blue, dxSkinVisualStudio2013Dark,
+  dxSkinVisualStudio2013Light, dxSkinVS2010, dxSkinWhiteprint,
+  dxSkinXmas2008Blue, Vcl.Menus, cxContainer, cxEdit, cxTextEdit, cxMaskEdit,
+  cxDropDownEdit, cxLabel, cxGroupBox, Vcl.StdCtrls, cxButtons, cxSplitter,
+  cxScrollBox, Vcl.ExtCtrls, cxMemo, cxCheckBox;
 
 type
   TfrmRegistration = class(TForm)
+    cxScrollBox1: TcxScrollBox;
+    cxSplitter1: TcxSplitter;
+    cxScrollBox2: TcxScrollBox;
+    btnRegister: TcxButton;
+    cxGroupBox1: TcxGroupBox;
+    cxLabel1: TcxLabel;
+    cbTitle: TcxComboBox;
+    cxLabel2: TcxLabel;
+    cxLabel3: TcxLabel;
+    edtFirstName: TcxTextEdit;
+    edtFamilyName: TcxTextEdit;
+    cxLabel4: TcxLabel;
+    cxLabel5: TcxLabel;
+    cxLabel6: TcxLabel;
+    edtUserName: TcxTextEdit;
+    edtPassword: TcxTextEdit;
+    edtEmail: TcxTextEdit;
+    imgEmailNo: TImage;
+    imgEmailOk: TImage;
+    imgEmailWait: TImage;
+    imgUserNo: TImage;
+    imgUserOk: TImage;
+    imgUserWait: TImage;
+    cxGroupBox2: TcxGroupBox;
+    cxLabel8: TcxLabel;
+    cxLabel9: TcxLabel;
+    edtInstitute: TcxTextEdit;
+    edtDepartment: TcxTextEdit;
+    cxLabel10: TcxLabel;
+    cxLabel11: TcxLabel;
+    cxLabel12: TcxLabel;
+    edtCity: TcxTextEdit;
+    edtState: TcxTextEdit;
+    edtCountry: TcxTextEdit;
+    cxLabel7: TcxLabel;
+    memAddress: TcxMemo;
+    cxLabel13: TcxLabel;
+    edtZipCode: TcxTextEdit;
+    cxLabel14: TcxLabel;
+    edtTelephone: TcxTextEdit;
+    cxGroupBox3: TcxGroupBox;
+    cxLabel15: TcxLabel;
+    chbPhysicalOceanography: TcxCheckBox;
+    chbChemicalOceanography: TcxCheckBox;
+    chbBiology: TcxCheckBox;
+    chbDataScience: TcxCheckBox;
+    chbMachineLearning: TcxCheckBox;
+    chbOthers: TcxCheckBox;
+    cxGroupBox4: TcxGroupBox;
+    cxLabel16: TcxLabel;
+    chbResearch: TcxCheckBox;
+    chbEducation: TcxCheckBox;
+    chbOperation: TcxCheckBox;
+    chbPurOthers: TcxCheckBox;
+    cxLabel17: TcxLabel;
+    cxLabel18: TcxLabel;
+    procedure edtUserNamePropertiesChange(Sender: TObject);
+    procedure edtEmailPropertiesChange(Sender: TObject);
+    procedure btnRegisterClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -368,12 +445,14 @@ begin
   Result:=True;
   with frmRegistration do
   begin
+    {
     if cbTitle.ItemIndex<0 then
     begin
       Result:=False;
       MessageDlg('Please select a valid title!', mtError, [mbok], 0);
       Exit;
     end;
+    }
     if not ValidateTextField(edtFirstName.Text) then
     begin
       Result:=False;
@@ -418,6 +497,10 @@ begin
       MessageDlg('The entered email already registered!', mtError, [mbok], 0);
       Exit;
     end;
+
+
+
+    {
     if not ValidateTextField(edtInstitute.Text) then
     begin
       Result:=False;
@@ -455,19 +538,20 @@ begin
       Exit;
     end;
 
-    if (not chbResearch.Checked) and (not chbEducation.Checked) and (not chbOperation.Checked) then
+    if (not chbResearch.Checked) and (not chbEducation.Checked) and (not chbOperation.Checked) and (not chbPurOthers.Checked) then
     begin
       Result:=False;
       MessageDlg('Please indicate your purpose of using this product!', mtError, [mbok], 0);
       Exit;
     end;
 
-    if (not chbOceanography.Checked) and (not chbGeophysics.Checked) and (not chbBiology.Checked) and (not chbClimatology.Checked) and (not chbMeteorology.Checked) and (not chbOther.Checked) then
+    if (not chbPhysicalOceanography.Checked) and (not chbChemicalOceanography.Checked) and (not chbBiology.Checked) and (not chbDataScience.Checked) and (not chbMachineLearning.Checked) and (not chbOthers.Checked) then
     begin
       Result:=False;
       MessageDlg('Please indicate your domain of interest/expertise!', mtError, [mbok], 0);
       Exit;
     end;
+    }
 
   end;
 
@@ -486,6 +570,8 @@ begin
       pur:=pur+chbEducation.Caption+' ';
     if chbOperation.Checked then
       pur:=pur+chbOperation.Caption+' ';
+    if chbPurOthers.Checked then
+      pur:=pur+chbPurOthers.Caption+' ';
   end;
   Result:=pur;
 end;
@@ -497,18 +583,18 @@ begin
   with frmRegistration do
   begin
     dom:='';
-    if chbOceanography.Checked then
-      dom:=dom+chbOceanography.Caption+' ';
-    if chbGeophysics.Checked then
-      dom:=dom+chbGeophysics.Caption+' ';
+    if chbPhysicalOceanography.Checked then
+      dom:=dom+chbPhysicalOceanography.Caption+' ';
+    if chbChemicalOceanography.Checked then
+      dom:=dom+chbChemicalOceanography.Caption+' ';
     if chbBiology.Checked then
       dom:=dom+chbBiology.Caption+' ';
-    if chbClimatology.Checked then
-      dom:=dom+chbClimatology.Caption+' ';
-    if chbMeteorology.Checked then
-      dom:=dom+chbMeteorology.Caption+' ';
-    if chbOther.Checked then
-      dom:=dom+chbOther.Caption+' ';
+    if chbDataScience.Checked then
+      dom:=dom+chbDataScience.Caption+' ';
+    if chbMachineLearning.Checked then
+      dom:=dom+chbMachineLearning.Caption+' ';
+    if chbOthers.Checked then
+      dom:=dom+chbOthers.Caption+' ';
   end;
   Result:=dom;
 end;
@@ -647,13 +733,85 @@ var
 begin
   ln:=Char(13)+char(10);
   Result:='Dear '+Firstname+' '+Lastname+','+ln+ln;
-  Result:=Result+'  Thank you for your interest in our product. Please find the attachment to access your credentials.'+ln;
+  Result:=Result+'  Thank you for your interest in Opedia. Please find the attachment to access your credentials.'+ln;
   Result:=Result+'  Notice you will be required to change your password once you logged in with the temporary password.'+ln+ln;
   Result:=Result+'Best regards,'+ln;
-  Result:=Result+'Mohammad D. Ashkezari';
+  Result:=Result+'Opedia!';
 end;
 
 
 {$R *.dfm}
+
+procedure TfrmRegistration.btnRegisterClick(Sender: TObject);
+var
+  ApplicationFilePath, CredentialFilePath:String;
+  ApplicationSubmission, UserInsert: Boolean;
+begin
+  ApplicationFilePath:=Root+'\Application.txt';
+  CredentialFilePath:=Root+'\Credentials.txt';
+  if not ValidateApplication then
+    Exit;
+  try
+    Screen.Cursor:=crHourGlass;
+    GenerateApplicationForm(ApplicationFilePath);
+    ApplicationSubmission:=Submit('eddy.ocean.atlas@gmail.com', 'SignUp Request', '', ApplicationFilePath);
+    UserInsert:=AddUser(DefaultPassword);
+
+    GenerateCredentialFile(CredentialFilePath, DefaultPassword);
+    ApplicationSubmission:=Submit(frmRegistration.edtEmail.Text, 'Opedia Account', GenerateGreetingBody(frmRegistration.edtFirstname.Text,frmRegistration.edtFamilyname.Text), CredentialFilePath);
+    DeleteAttachmentFile(ApplicationFilePath);
+    DeleteAttachmentFile(CredentialFilePath);
+
+    if ApplicationSubmission and UserInsert then
+    begin
+      PostSubmit;
+      Close;
+    end;
+  finally
+    Screen.Cursor:=crDefault;
+  end;
+end;
+
+procedure TfrmRegistration.edtEmailPropertiesChange(Sender: TObject);
+begin
+  edtUserName.Text:=edtEmail.Text;
+  Exit;
+
+  EmailImages('wait');
+  if edtEmail.Text='' then
+  begin
+    EmailImages('nothing');
+    Exit;
+  end;
+
+  if not EmailExists(edtEmail.Text) then
+    EmailImages('ok')
+  else
+    EmailImages('no');
+end;
+
+procedure TfrmRegistration.edtUserNamePropertiesChange(Sender: TObject);
+begin
+{
+  UserImages('wait');
+  if edtUserName.Text='' then
+  begin
+    UserImages('nothing');
+    Exit;
+  end;
+
+  if Length(edtUserName.Text)<MinLen_Username then
+  begin
+    UserImages('no');
+    Exit;
+  end;
+
+
+  if UsernameAvalaiblity(edtUserName.Text) then
+    UserImages('ok')
+  else
+    UserImages('no');
+}
+end;
 
 end.

@@ -161,10 +161,8 @@ class MainVC: NSViewController, MKMapViewDelegate, NSTokenFieldCellDelegate, NST
 
     
     @IBAction func btnCruiseTrack(_ sender: Any) {
-        setPythonPath()
-        //plotCruise(shapeFlag: "1", colocalizeFlag: "0")
+        plotCruise(shapeFlag: "1", colocalizeFlag: "0")
     }
-    
     
     
     @IBAction func btnCruiseColocalize(_ sender: Any) {
@@ -251,7 +249,7 @@ class MainVC: NSViewController, MKMapViewDelegate, NSTokenFieldCellDelegate, NST
         opFilePicker.allowsMultipleSelection = false
         opFilePicker.canChooseFiles = true
         opFilePicker.canChooseDirectories = false
-        opFilePicker.allowedFileTypes = ["csv"]
+        opFilePicker.allowedFileTypes = ["csv", "xlsx"]
         opFilePicker.runModal()
         let file = opFilePicker.url
         if (file != nil) { txfFilePathConform.stringValue = (file?.path)! }
@@ -280,7 +278,7 @@ class MainVC: NSViewController, MKMapViewDelegate, NSTokenFieldCellDelegate, NST
 
         let extention = NSURL(fileURLWithPath: source).pathExtension! as String
         let pathPrefix = NSURL(fileURLWithPath: source).deletingPathExtension?.path
-        let exportPath = pathPrefix! + "_loaded." + extention
+        let exportPath = pathPrefix! + "_loaded." + ".csv" //+ extention
         
         spnBusy.startAnimation(self)
         updateQueryParams()
@@ -388,26 +386,7 @@ class MainVC: NSViewController, MKMapViewDelegate, NSTokenFieldCellDelegate, NST
         
     }
 
-    /*
-    func consoleOutput(_ task:Process) {
-        outputPipe = Pipe()
-        task.standardOutput = outputPipe
-        outputPipe.fileHandleForReading.waitForDataInBackgroundAndNotify()
-        NotificationCenter.default.addObserver(forName: NSNotification.Name.NSFileHandleDataAvailable, object: outputPipe.fileHandleForReading , queue: nil) {
-            notification in
-            let output = self.outputPipe.fileHandleForReading.availableData
-            let outputString = String(data: output, encoding: String.Encoding.utf8) ?? ""
-            DispatchQueue.main.async(execute: {
-                let previousOutput = self.txvConsole.string ?? ""
-                let nextOutput = previousOutput + "\n" + outputString
-                self.txvConsole.string = nextOutput
-                let range = NSRange(location:nextOutput.characters.count,length:0)
-                self.txvConsole.scrollRangeToVisible(range)
-            })
-            self.outputPipe.fileHandleForReading.waitForDataInBackgroundAndNotify()
-        }
-    }
-    */
+    
     
     
     func removeAnnotsOverlays() {
@@ -519,6 +498,28 @@ class MainVC: NSViewController, MKMapViewDelegate, NSTokenFieldCellDelegate, NST
         }
         ///////////////////////////////////
     }
+    
+    
+/*
+    func consoleOutput(_ task:Process) {
+        outputPipe = Pipe()
+        task.standardOutput = outputPipe
+        outputPipe.fileHandleForReading.waitForDataInBackgroundAndNotify()
+        NotificationCenter.default.addObserver(forName: NSNotification.Name.NSFileHandleDataAvailable, object: outputPipe.fileHandleForReading , queue: nil) {
+            notification in
+            let output = self.outputPipe.fileHandleForReading.availableData
+            let outputString = String(data: output, encoding: String.Encoding.utf8) ?? ""
+            DispatchQueue.main.async(execute: {
+                let previousOutput = self.txvConsole.string ?? ""
+                let nextOutput = previousOutput + "\n" + outputString
+                self.txvConsole.string = nextOutput
+                let range = NSRange(location:nextOutput.characters.count,length:0)
+                self.txvConsole.scrollRangeToVisible(range)
+            })
+            self.outputPipe.fileHandleForReading.waitForDataInBackgroundAndNotify()
+        }
+    }
+*/
     
     
     func updateQueryParams() {
@@ -802,21 +803,9 @@ class MainVC: NSViewController, MKMapViewDelegate, NSTokenFieldCellDelegate, NST
         }
     }
     
-    func setPythonPath() {
-        ///////// set python path (path to python binary) /////////
-        runScript(["which", "python", ">>", dumpFilename, bundlePath], false)
-        pythonPath = try! NSString(contentsOfFile: bundlePath + dumpFilename, encoding: String.Encoding.utf8.rawValue) as String
-        print(pythonPath)
-        do {
-            let fm = FileManager.default
-            try fm.removeItem(atPath: bundlePath + dumpFilename)
-        }
-        catch let error as NSError {
-            print("Error while deleteing python path dump file: \(error)")
-        }
-    }
 
     
+
     
     
     // MARK: - implemntation

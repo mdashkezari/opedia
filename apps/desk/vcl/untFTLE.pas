@@ -39,6 +39,7 @@ type
     tsBkgComparison: TdxToggleSwitch;
     procedure btnFTLERidgeClick(Sender: TObject);
     procedure btnColocalizeClick(Sender: TObject);
+    procedure FormKeyPress(Sender: TObject; var Key: Char);
   private
     { Private declarations }
   public
@@ -186,6 +187,12 @@ begin
   shapeFlag:=True;
   colocateFlag:=False;
   FTLE(shapeFlag, colocateFlag);
+end;
+
+procedure TfrmFTLE.FormKeyPress(Sender: TObject; var Key: Char);
+begin
+  if (Key = #27) then
+    Close;
 end;
 
 end.

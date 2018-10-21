@@ -11,6 +11,7 @@ object frmRegistration: TfrmRegistration
   Font.Height = -13
   Font.Name = 'Tahoma'
   Font.Style = []
+  KeyPreview = True
   OldCreateOrder = False
   Position = poScreenCenter
   PixelsPerInch = 96
@@ -22,8 +23,6 @@ object frmRegistration: TfrmRegistration
     Height = 65
     Align = alBottom
     TabOrder = 0
-    ExplicitTop = 440
-    ExplicitWidth = 755
     object btnRegister: TcxButton
       Left = 174
       Top = 9
@@ -40,8 +39,6 @@ object frmRegistration: TfrmRegistration
     Width = 613
     Height = 8
     AlignSplitter = salBottom
-    ExplicitTop = 0
-    ExplicitWidth = 424
   end
   object cxScrollBox2: TcxScrollBox
     Left = 0
@@ -50,7 +47,6 @@ object frmRegistration: TfrmRegistration
     Height = 756
     Align = alClient
     TabOrder = 2
-    ExplicitHeight = 748
     object cxGroupBox1: TcxGroupBox
       Left = 19
       Top = 40

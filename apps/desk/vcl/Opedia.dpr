@@ -14,7 +14,8 @@ uses
   untCatalog in 'untCatalog.pas' {frmCatalog},
   untVault in 'untVault.pas' {frmVault},
   untEddy in 'untEddy.pas' {frmEddy},
-  untFTLE in 'untFTLE.pas' {frmFTLE};
+  untFTLE in 'untFTLE.pas' {frmFTLE},
+  untConform in 'untConform.pas' {frmConform};
 
 {$R *.res}
 
@@ -33,5 +34,6 @@ begin
   Application.CreateForm(TfrmVault, frmVault);
   Application.CreateForm(TfrmEddy, frmEddy);
   Application.CreateForm(TfrmFTLE, frmFTLE);
+  Application.CreateForm(TfrmConform, frmConform);
   Application.Run;
 end.

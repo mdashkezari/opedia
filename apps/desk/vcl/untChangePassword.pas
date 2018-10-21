@@ -35,6 +35,7 @@ type
     btnChangePassword: TcxButton;
     procedure FormShow(Sender: TObject);
     procedure btnChangePasswordClick(Sender: TObject);
+    procedure FormKeyPress(Sender: TObject; var Key: Char);
   private
     { Private declarations }
   public
@@ -108,6 +109,12 @@ begin
   else
     MessageDlg('Password update failed!', mtError, [mbok], 0);
 
+end;
+
+procedure TfrmChangePassword.FormKeyPress(Sender: TObject; var Key: Char);
+begin
+  if (Key = #27) then
+    Close;
 end;
 
 procedure TfrmChangePassword.FormShow(Sender: TObject);

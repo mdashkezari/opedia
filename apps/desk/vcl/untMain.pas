@@ -159,6 +159,7 @@ type
     procedure barImportClick(Sender: TObject);
     procedure barEddyClick(Sender: TObject);
     procedure barFTLEClick(Sender: TObject);
+    procedure barFeaturesClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -193,7 +194,7 @@ implementation
 
 uses
   untCommonDB, untBusy, untCruise, untCatalog, untFilter,
-  untSignIn, untLagrangian, untVault, untEddy, untFTLE;
+  untSignIn, untLagrangian, untVault, untEddy, untFTLE, untConform;
 
 
 Procedure WriteCoreDump(CoredumpBody:String);
@@ -512,11 +513,18 @@ procedure Initialize;
 begin
   Root := ExtractFileDir(Application.ExeName)+'\';
   DefaultPassword:='jZi75@1';
+
+
+  ///////////////// log in //////////////
+  {
   if not SignIn then
   begin
     Application.Terminate;
     Application.ProcessMessages;
   end;
+  }
+  //////////////////////////////////////
+
 
   opediaPath:=getOpediaPath();
 
@@ -770,6 +778,11 @@ end;
 procedure TfrmMain.barEddyClick(Sender: TObject);
 begin
   frmEddy.Show;
+end;
+
+procedure TfrmMain.barFeaturesClick(Sender: TObject);
+begin
+  frmConform.Show;
 end;
 
 procedure TfrmMain.barFilterClick(Sender: TObject);

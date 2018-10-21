@@ -37,6 +37,7 @@ type
     dxToggleSwitch1: TdxToggleSwitch;
     procedure btnEddyTrackClick(Sender: TObject);
     procedure btnColocalizeClick(Sender: TObject);
+    procedure FormKeyPress(Sender: TObject; var Key: Char);
   private
     { Private declarations }
   public
@@ -169,6 +170,12 @@ begin
   shapeFlag:=True;
   colocateFlag:=False;
   Eddy(shapeFlag, colocateFlag);
+end;
+
+procedure TfrmEddy.FormKeyPress(Sender: TObject; var Key: Char);
+begin
+  if (Key = #27) then
+    Close;
 end;
 
 end.

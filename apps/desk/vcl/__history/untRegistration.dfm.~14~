@@ -3,8 +3,8 @@ object frmRegistration: TfrmRegistration
   Top = 0
   BorderStyle = bsSizeToolWin
   Caption = 'Registration'
-  ClientHeight = 505
-  ClientWidth = 600
+  ClientHeight = 829
+  ClientWidth = 613
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -12,30 +12,32 @@ object frmRegistration: TfrmRegistration
   Font.Name = 'Tahoma'
   Font.Style = []
   OldCreateOrder = False
-  Position = poOwnerFormCenter
+  Position = poScreenCenter
   PixelsPerInch = 96
   TextHeight = 16
   object cxScrollBox1: TcxScrollBox
     Left = 0
-    Top = 440
-    Width = 600
+    Top = 764
+    Width = 613
     Height = 65
     Align = alBottom
     TabOrder = 0
+    ExplicitTop = 440
     ExplicitWidth = 755
     object btnRegister: TcxButton
-      Left = 160
-      Top = 5
+      Left = 174
+      Top = 9
       Width = 265
       Height = 45
       Caption = 'Register'
       TabOrder = 0
+      OnClick = btnRegisterClick
     end
   end
   object cxSplitter1: TcxSplitter
     Left = 0
-    Top = 432
-    Width = 600
+    Top = 756
+    Width = 613
     Height = 8
     AlignSplitter = salBottom
     ExplicitTop = 0
@@ -44,17 +46,14 @@ object frmRegistration: TfrmRegistration
   object cxScrollBox2: TcxScrollBox
     Left = 0
     Top = 0
-    Width = 600
-    Height = 432
+    Width = 613
+    Height = 756
     Align = alClient
     TabOrder = 2
-    ExplicitLeft = 336
-    ExplicitTop = 208
-    ExplicitWidth = 185
-    ExplicitHeight = 41
+    ExplicitHeight = 748
     object cxGroupBox1: TcxGroupBox
-      Left = 11
-      Top = 7
+      Left = 19
+      Top = 40
       TabOrder = 0
       Height = 121
       Width = 574
@@ -18809,13 +18808,14 @@ object frmRegistration: TfrmRegistration
         Visible = False
       end
       object cxLabel1: TcxLabel
-        Left = 11
-        Top = 16
+        Left = 285
+        Top = 21
         Caption = 'Title'
         Transparent = True
+        Visible = False
       end
       object cbTitle: TcxComboBox
-        Left = 99
+        Left = 379
         Top = 14
         Properties.DropDownListStyle = lsFixedList
         Properties.Items.Strings = (
@@ -18830,69 +18830,291 @@ object frmRegistration: TfrmRegistration
           'Ph.D.'
           'None')
         TabOrder = 1
+        Visible = False
         Width = 73
       end
       object cxLabel2: TcxLabel
-        Left = 11
+        Left = 285
         Top = 47
         Caption = 'First Name*'
         Transparent = True
       end
       object cxLabel3: TcxLabel
-        Left = 11
+        Left = 285
         Top = 82
         Caption = 'Family Name*'
         Transparent = True
       end
       object edtFirstName: TcxTextEdit
-        Left = 99
+        Left = 379
         Top = 46
-        TabOrder = 4
-        Width = 121
+        TabOrder = 5
+        Width = 150
       end
       object edtFamilyName: TcxTextEdit
-        Left = 99
-        Top = 81
-        TabOrder = 5
-        Width = 121
+        Left = 379
+        Top = 78
+        TabOrder = 6
+        Width = 150
       end
       object cxLabel4: TcxLabel
-        Left = 307
-        Top = 18
+        Left = 20
+        Top = 94
         Caption = 'Username*'
         Transparent = True
+        Visible = False
       end
       object cxLabel5: TcxLabel
-        Left = 307
-        Top = 47
+        Left = 121
+        Top = 94
         Caption = 'Password*'
         Transparent = True
+        Visible = False
       end
       object cxLabel6: TcxLabel
-        Left = 307
-        Top = 82
+        Left = 14
+        Top = 47
         Caption = 'Email*'
         Transparent = True
       end
       object edtUserName: TcxTextEdit
-        Left = 395
-        Top = 17
-        TabOrder = 9
-        Width = 121
+        Left = 73
+        Top = 94
+        Properties.OnChange = edtUserNamePropertiesChange
+        TabOrder = 10
+        Visible = False
+        Width = 32
       end
       object edtPassword: TcxTextEdit
-        Left = 395
-        Top = 50
+        Left = 181
+        Top = 94
         Properties.PasswordChar = '*'
+        TabOrder = 11
+        Visible = False
+        Width = 32
+      end
+      object edtEmail: TcxTextEdit
+        Left = 73
+        Top = 46
+        Properties.OnChange = edtEmailPropertiesChange
+        TabOrder = 4
+        Width = 150
+      end
+      object cxLabel18: TcxLabel
+        Left = 11
+        Top = 3
+        Caption = 'A temporary password will be emailed to you.'
+        Transparent = True
+      end
+    end
+    object cxGroupBox2: TcxGroupBox
+      Left = 19
+      Top = 172
+      TabOrder = 1
+      Height = 277
+      Width = 574
+      object cxLabel8: TcxLabel
+        Left = 11
+        Top = 18
+        Caption = 'Institute'
+        Transparent = True
+      end
+      object cxLabel9: TcxLabel
+        Left = 11
+        Top = 50
+        Caption = 'Department'
+        Transparent = True
+      end
+      object edtInstitute: TcxTextEdit
+        Left = 99
+        Top = 17
+        TabOrder = 2
+        Width = 121
+      end
+      object edtDepartment: TcxTextEdit
+        Left = 99
+        Top = 50
+        TabOrder = 3
+        Width = 121
+      end
+      object cxLabel10: TcxLabel
+        Left = 99
+        Top = 173
+        Caption = 'City'
+        Transparent = True
+      end
+      object cxLabel11: TcxLabel
+        Left = 210
+        Top = 173
+        Caption = 'State'
+        Transparent = True
+      end
+      object cxLabel12: TcxLabel
+        Left = 268
+        Top = 173
+        Caption = 'Country'
+        Transparent = True
+      end
+      object edtCity: TcxTextEdit
+        Left = 99
+        Top = 193
+        TabOrder = 8
+        Width = 102
+      end
+      object edtState: TcxTextEdit
+        Left = 210
+        Top = 193
+        Properties.PasswordChar = '*'
+        TabOrder = 9
+        Width = 48
+      end
+      object edtCountry: TcxTextEdit
+        Left = 268
+        Top = 193
         TabOrder = 10
         Width = 121
       end
-      object edtEmail: TcxTextEdit
-        Left = 395
-        Top = 81
-        TabOrder = 11
-        Width = 121
+      object cxLabel7: TcxLabel
+        Left = 14
+        Top = 82
+        Caption = 'Address'
+        Transparent = True
       end
+      object memAddress: TcxMemo
+        Left = 99
+        Top = 82
+        TabOrder = 4
+        Height = 83
+        Width = 430
+      end
+      object cxLabel13: TcxLabel
+        Left = 99
+        Top = 221
+        Caption = 'Zip Code'
+        Transparent = True
+      end
+      object edtZipCode: TcxTextEdit
+        Left = 99
+        Top = 241
+        TabOrder = 13
+        Width = 102
+      end
+      object cxLabel14: TcxLabel
+        Left = 210
+        Top = 224
+        Caption = 'Phone'
+        Transparent = True
+        Visible = False
+      end
+      object edtTelephone: TcxTextEdit
+        Left = 210
+        Top = 241
+        TabOrder = 15
+        Visible = False
+        Width = 179
+      end
+    end
+    object cxGroupBox3: TcxGroupBox
+      Left = 19
+      Top = 462
+      TabOrder = 2
+      Height = 148
+      Width = 574
+      object cxLabel15: TcxLabel
+        Left = 14
+        Top = 26
+        Caption = 'What are your areas of interest/expertise?'
+        Transparent = True
+      end
+      object chbPhysicalOceanography: TcxCheckBox
+        Left = 91
+        Top = 60
+        Caption = 'Physical Oceanography'
+        TabOrder = 1
+        Transparent = True
+      end
+      object chbChemicalOceanography: TcxCheckBox
+        Left = 327
+        Top = 60
+        Caption = 'Chemical Oceanography'
+        TabOrder = 2
+        Transparent = True
+      end
+      object chbBiology: TcxCheckBox
+        Left = 91
+        Top = 83
+        Caption = 'Biology'
+        TabOrder = 3
+        Transparent = True
+      end
+      object chbDataScience: TcxCheckBox
+        Left = 327
+        Top = 83
+        Caption = 'Data Science'
+        TabOrder = 4
+        Transparent = True
+      end
+      object chbMachineLearning: TcxCheckBox
+        Left = 91
+        Top = 106
+        Caption = 'Machine Learning'
+        TabOrder = 5
+        Transparent = True
+      end
+      object chbOthers: TcxCheckBox
+        Left = 327
+        Top = 106
+        Caption = 'Others'
+        TabOrder = 6
+        Transparent = True
+      end
+    end
+    object cxGroupBox4: TcxGroupBox
+      Left = 19
+      Top = 624
+      TabOrder = 3
+      Height = 121
+      Width = 574
+      object cxLabel16: TcxLabel
+        Left = 14
+        Top = 26
+        Caption = 'What is your main purpose of using this product?'
+        Transparent = True
+      end
+      object chbResearch: TcxCheckBox
+        Left = 91
+        Top = 60
+        Caption = 'Research'
+        TabOrder = 1
+        Transparent = True
+      end
+      object chbEducation: TcxCheckBox
+        Left = 327
+        Top = 60
+        Caption = 'Education'
+        TabOrder = 2
+        Transparent = True
+      end
+      object chbOperation: TcxCheckBox
+        Left = 91
+        Top = 83
+        Caption = 'Operation'
+        TabOrder = 3
+        Transparent = True
+      end
+      object chbPurOthers: TcxCheckBox
+        Left = 327
+        Top = 83
+        Caption = 'Others'
+        TabOrder = 4
+        Transparent = True
+      end
+    end
+    object cxLabel17: TcxLabel
+      Left = 19
+      Top = 14
+      Caption = '* Mandatory Fields'
+      Transparent = True
     end
   end
 end

@@ -1,0 +1,116 @@
+object frmSignIn: TfrmSignIn
+  Left = 0
+  Top = 0
+  BorderStyle = bsToolWindow
+  Caption = 'Sign in'
+  ClientHeight = 278
+  ClientWidth = 302
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -13
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  Position = poScreenCenter
+  OnShow = FormShow
+  PixelsPerInch = 96
+  TextHeight = 16
+  object cxScrollBox1: TcxScrollBox
+    Left = 0
+    Top = 0
+    Width = 302
+    Height = 278
+    Align = alClient
+    TabOrder = 0
+    object gbSignIn: TcxGroupBox
+      Left = 8
+      Top = 8
+      Caption = 'Sign in'
+      ParentFont = False
+      Style.Font.Charset = DEFAULT_CHARSET
+      Style.Font.Color = clWindowText
+      Style.Font.Height = -13
+      Style.Font.Name = 'Tahoma'
+      Style.Font.Style = []
+      Style.IsFontAssigned = True
+      TabOrder = 0
+      Height = 129
+      Width = 281
+      object cxLabel1: TcxLabel
+        Left = 24
+        Top = 33
+        Caption = 'Username'
+        Transparent = True
+      end
+      object cxLabel2: TcxLabel
+        Left = 24
+        Top = 81
+        Caption = 'Password'
+        Transparent = True
+      end
+      object edtUsername: TEdit
+        Left = 111
+        Top = 32
+        Width = 153
+        Height = 24
+        TabOrder = 2
+      end
+      object edtPassword: TEdit
+        Left = 111
+        Top = 80
+        Width = 153
+        Height = 24
+        PasswordChar = '*'
+        TabOrder = 3
+        OnChange = edtPasswordChange
+      end
+    end
+    object cxLabel3: TcxLabel
+      Left = 8
+      Top = 143
+      Caption = 'Remember Me'
+      Transparent = True
+    end
+    object tsRemember: TdxToggleSwitch
+      Left = 119
+      Top = 143
+      Checked = False
+      TabOrder = 2
+      Transparent = True
+    end
+    object btnSignIn: TcxButton
+      Left = 8
+      Top = 176
+      Width = 281
+      Height = 41
+      Caption = 'Sign in'
+      Default = True
+      TabOrder = 3
+      OnClick = btnSignInClick
+    end
+    object btnRegister: TcxButton
+      Left = 180
+      Top = 236
+      Width = 109
+      Height = 25
+      Caption = 'Register'
+      TabOrder = 4
+      OnClick = btnRegisterClick
+    end
+    object cxLabel4: TcxLabel
+      Left = 8
+      Top = 237
+      Caption = 'If new user, create account:'
+      Transparent = True
+    end
+    object aiBusy: TdxActivityIndicator
+      Left = 102
+      Top = 97
+      Width = 115
+      Height = 88
+      PropertiesClassName = 'TdxActivityIndicatorGravityDotsProperties'
+      Transparent = True
+    end
+  end
+end

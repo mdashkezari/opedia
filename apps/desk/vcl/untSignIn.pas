@@ -42,6 +42,7 @@ type
     procedure btnSignInClick(Sender: TObject);
     procedure edtPasswordChange(Sender: TObject);
     procedure btnRegisterClick(Sender: TObject);
+    procedure FormKeyPress(Sender: TObject; var Key: Char);
   private
     { Private declarations }
   public
@@ -191,6 +192,12 @@ begin
   end
   else
     tsRemember.Enabled:=True;
+end;
+
+procedure TfrmSignIn.FormKeyPress(Sender: TObject; var Key: Char);
+begin
+  if (Key = #27) then
+    Close;
 end;
 
 procedure TfrmSignIn.FormShow(Sender: TObject);

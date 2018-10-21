@@ -1,7 +1,7 @@
 object frmMain: TfrmMain
   Left = 0
   Top = 0
-  Caption = 'Opedia 0.1.45'
+  Caption = 'Opedia 0.2.1'
   ClientHeight = 967
   ClientWidth = 1330
   Color = clBtnFace
@@ -60,12 +60,13 @@ object frmMain: TfrmMain
       Visible = False
     end
     object Edit1: TEdit
-      Left = 24
-      Top = 730
+      Left = 16
+      Top = 822
       Width = 1025
       Height = 21
       TabOrder = 2
       Text = 'Edit1'
+      Visible = False
     end
   end
   object scbSettingsPanel: TcxScrollBox
@@ -823,7 +824,7 @@ object frmMain: TfrmMain
       Visible = ivAlways
     end
     object barMachineLearning: TdxBarSubItem
-      Caption = 'Machine Learning'
+      Caption = 'Conform'
       Category = 0
       Visible = ivAlways
       ImageIndex = 23
@@ -852,6 +853,7 @@ object frmMain: TfrmMain
     object barExtraTrees: TdxBarButton
       Caption = 'Extra Trees'
       Category = 0
+      Enabled = False
       Hint = 'Extra Trees'
       Visible = ivAlways
     end
@@ -866,26 +868,30 @@ object frmMain: TfrmMain
       Visible = ivAlways
     end
     object barFeatures: TdxBarButton
-      Caption = 'Feature Selection'
+      Caption = 'Conform'
       Category = 0
-      Hint = 'Feature Selection'
+      Hint = 'Conform'
       Visible = ivAlways
+      OnClick = barFeaturesClick
     end
     object barRandomForest: TdxBarButton
       Caption = 'Random Forest'
       Category = 0
+      Enabled = False
       Hint = 'Random Forest'
       Visible = ivAlways
     end
     object barGradientBoosting: TdxBarButton
       Caption = 'Gradient Boosting'
       Category = 0
+      Enabled = False
       Hint = 'Gradient Boosting'
       Visible = ivAlways
     end
     object barSVR: TdxBarButton
       Caption = 'Support Vector'
       Category = 0
+      Enabled = False
       Hint = 'Support Vector'
       Visible = ivAlways
     end

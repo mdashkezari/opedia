@@ -36,6 +36,7 @@ type
     procedure lvVaultDblClick(Sender: TObject);
     procedure btnUploadClick(Sender: TObject);
     procedure btnDownloadClick(Sender: TObject);
+    procedure FormKeyPress(Sender: TObject; var Key: Char);
   private
     { Private declarations }
   public
@@ -185,6 +186,12 @@ begin
       vaultBusy(False);
     end;
   end;
+end;
+
+procedure TfrmVault.FormKeyPress(Sender: TObject; var Key: Char);
+begin
+  if (Key = #27) then
+    Close;
 end;
 
 procedure TfrmVault.lvVaultDblClick(Sender: TObject);

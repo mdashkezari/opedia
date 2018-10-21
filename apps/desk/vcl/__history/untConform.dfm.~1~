@@ -1,0 +1,178 @@
+object frmConform: TfrmConform
+  Left = 0
+  Top = 0
+  BorderStyle = bsToolWindow
+  Caption = 'Conform'
+  ClientHeight = 287
+  ClientWidth = 621
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  Position = poScreenCenter
+  PixelsPerInch = 96
+  TextHeight = 13
+  object cxLabel2: TcxLabel
+    Left = 23
+    Top = 151
+    Caption = 'Virtual Cruise'
+    Enabled = False
+    ParentFont = False
+    Style.Font.Charset = DEFAULT_CHARSET
+    Style.Font.Color = clWindowText
+    Style.Font.Height = -13
+    Style.Font.Name = 'Tahoma'
+    Style.Font.Style = []
+    Style.IsFontAssigned = True
+    Transparent = True
+  end
+  object bedtVirtualCruise: TcxButtonEdit
+    Left = 23
+    Top = 177
+    BeepOnEnter = False
+    ParentFont = False
+    Properties.Buttons = <
+      item
+        Default = True
+        Enabled = False
+        Kind = bkEllipsis
+      end>
+    Style.Font.Charset = DEFAULT_CHARSET
+    Style.Font.Color = clWindowText
+    Style.Font.Height = -13
+    Style.Font.Name = 'Tahoma'
+    Style.Font.Style = []
+    Style.IsFontAssigned = True
+    TabOrder = 1
+    Width = 567
+  end
+  object cxLabel3: TcxLabel
+    Left = 23
+    Top = 7
+    Caption = 'Latitude Tolerance (+/- deg)'
+    ParentFont = False
+    Style.Font.Charset = DEFAULT_CHARSET
+    Style.Font.Color = clWindowText
+    Style.Font.Height = -13
+    Style.Font.Name = 'Tahoma'
+    Style.Font.Style = []
+    Style.IsFontAssigned = True
+    Transparent = True
+  end
+  object edtMargin: TcxTextEdit
+    Left = 23
+    Top = 33
+    BeepOnEnter = False
+    ParentFont = False
+    Style.Font.Charset = DEFAULT_CHARSET
+    Style.Font.Color = clWindowText
+    Style.Font.Height = -13
+    Style.Font.Name = 'Tahoma'
+    Style.Font.Style = []
+    Style.IsFontAssigned = True
+    TabOrder = 3
+    Text = '0.3'
+    Width = 167
+  end
+  object cxLabel1: TcxLabel
+    Left = 223
+    Top = 7
+    Caption = 'Latitude Tolerance (+/- deg)'
+    ParentFont = False
+    Style.Font.Charset = DEFAULT_CHARSET
+    Style.Font.Color = clWindowText
+    Style.Font.Height = -13
+    Style.Font.Name = 'Tahoma'
+    Style.Font.Style = []
+    Style.IsFontAssigned = True
+    Transparent = True
+  end
+  object cxTextEdit1: TcxTextEdit
+    Left = 223
+    Top = 33
+    BeepOnEnter = False
+    ParentFont = False
+    Style.Font.Charset = DEFAULT_CHARSET
+    Style.Font.Color = clWindowText
+    Style.Font.Height = -13
+    Style.Font.Name = 'Tahoma'
+    Style.Font.Style = []
+    Style.IsFontAssigned = True
+    TabOrder = 5
+    Text = '0.3'
+    Width = 167
+  end
+  object cxLabel4: TcxLabel
+    Left = 423
+    Top = 7
+    Caption = 'Latitude Tolerance (+/- deg)'
+    ParentFont = False
+    Style.Font.Charset = DEFAULT_CHARSET
+    Style.Font.Color = clWindowText
+    Style.Font.Height = -13
+    Style.Font.Name = 'Tahoma'
+    Style.Font.Style = []
+    Style.IsFontAssigned = True
+    Transparent = True
+  end
+  object cxTextEdit2: TcxTextEdit
+    Left = 423
+    Top = 33
+    BeepOnEnter = False
+    ParentFont = False
+    Style.Font.Charset = DEFAULT_CHARSET
+    Style.Font.Color = clWindowText
+    Style.Font.Height = -13
+    Style.Font.Name = 'Tahoma'
+    Style.Font.Style = []
+    Style.IsFontAssigned = True
+    TabOrder = 7
+    Text = '0.3'
+    Width = 167
+  end
+  object cxLabel5: TcxLabel
+    Left = 23
+    Top = 79
+    Caption = 'Temporal Tolerance (+/- day)'
+    ParentFont = False
+    Style.Font.Charset = DEFAULT_CHARSET
+    Style.Font.Color = clWindowText
+    Style.Font.Height = -13
+    Style.Font.Name = 'Tahoma'
+    Style.Font.Style = []
+    Style.IsFontAssigned = True
+    Transparent = True
+  end
+  object cxTextEdit3: TcxTextEdit
+    Left = 23
+    Top = 105
+    BeepOnEnter = False
+    ParentFont = False
+    Style.Font.Charset = DEFAULT_CHARSET
+    Style.Font.Color = clWindowText
+    Style.Font.Height = -13
+    Style.Font.Name = 'Tahoma'
+    Style.Font.Style = []
+    Style.IsFontAssigned = True
+    TabOrder = 9
+    Text = '3'
+    Width = 567
+  end
+  object btnColocalize: TcxButton
+    Left = 23
+    Top = 228
+    Width = 567
+    Height = 33
+    Caption = 'Colocalize'
+    TabOrder = 10
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -13
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
+  end
+end

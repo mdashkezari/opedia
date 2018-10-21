@@ -1,4 +1,4 @@
-unit untFTLE;
+unit untConform;
 
 interface
 
@@ -20,17 +20,27 @@ uses
   dxSkinTheAsphaltWorld, dxSkinsDefaultPainters, dxSkinValentine,
   dxSkinVisualStudio2013Blue, dxSkinVisualStudio2013Dark,
   dxSkinVisualStudio2013Light, dxSkinVS2010, dxSkinWhiteprint,
-  dxSkinXmas2008Blue, Vcl.Menus, dxActivityIndicator, Vcl.StdCtrls, cxButtons,
-  cxTextEdit, cxLabel, cxCheckBox, dxToggleSwitch;
+  dxSkinXmas2008Blue, Vcl.Menus, Vcl.StdCtrls, cxButtons, cxTextEdit,
+  cxMaskEdit, cxButtonEdit, cxLabel, System.Actions, Vcl.ActnList;
 
 type
-  TfrmFTLE = class(TForm)
-    tsDirection: TdxToggleSwitch;
+  TfrmConform = class(TForm)
+    cxLabel2: TcxLabel;
     cxLabel3: TcxLabel;
-    edtMargin: TcxTextEdit;
-    btnTracerTrack: TcxButton;
+    edtLatMargin: TcxTextEdit;
+    cxLabel1: TcxLabel;
+    edtLonMargin: TcxTextEdit;
+    cxLabel4: TcxLabel;
+    edtDepthMargin: TcxTextEdit;
+    cxLabel5: TcxLabel;
     btnColocalize: TcxButton;
-    aiBusy: TdxActivityIndicator;
+    OpenDialog1: TOpenDialog;
+    ActionList1: TActionList;
+    Action1: TAction;
+    edtTemporalMargin: TcxTextEdit;
+    bedtDatasetConform: TcxButtonEdit;
+    procedure FormKeyPress(Sender: TObject; var Key: Char);
+    procedure Action1Execute(Sender: TObject);
   private
     { Private declarations }
   public
@@ -38,10 +48,30 @@ type
   end;
 
 var
-  frmFTLE: TfrmFTLE;
+  frmConform: TfrmConform;
 
 implementation
 
 {$R *.dfm}
+
+procedure TfrmConform.Action1Execute(Sender: TObject);
+var
+  fname: string;
+begin
+  if OpenDialog1.Execute then
+  begin
+    fname:=OpenDialog1.FileName;
+    fname:=stringreplace(fname, ' (MIT)', '', [rfReplaceAll, rfIgnoreCase]);
+    bedtDatasetConform.Text:=fname;
+  end;
+end;
+
+
+
+procedure TfrmConform.FormKeyPress(Sender: TObject; var Key: Char);
+begin
+  if (Key = #27) then
+    Close;
+end;
 
 end.

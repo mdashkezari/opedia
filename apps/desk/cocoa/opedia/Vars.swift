@@ -15,6 +15,9 @@ var opediaAPI: String = ""
 // bundle
 var bundlePath: String = ""
 
+// dump text file
+let dumpFilename = "dump.txt"
+
 // catalog file content
 //var catalog: String = ""
 

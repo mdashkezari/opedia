@@ -1,13 +1,13 @@
-unit untVault;
+unit untConform;
 
 interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ComCtrls, cxGraphics, cxControls,
-  cxLookAndFeels, cxLookAndFeelPainters, dxSkinsCore, dxSkinBlack, dxSkinBlue,
-  dxSkinBlueprint, dxSkinCaramel, dxSkinCoffee, dxSkinDarkRoom, dxSkinDarkSide,
-  dxSkinDevExpressDarkStyle, dxSkinDevExpressStyle, dxSkinFoggy,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, cxGraphics, cxControls, cxLookAndFeels,
+  cxLookAndFeelPainters, cxContainer, cxEdit, dxSkinsCore, dxSkinBlack,
+  dxSkinBlue, dxSkinBlueprint, dxSkinCaramel, dxSkinCoffee, dxSkinDarkRoom,
+  dxSkinDarkSide, dxSkinDevExpressDarkStyle, dxSkinDevExpressStyle, dxSkinFoggy,
   dxSkinGlassOceans, dxSkinHighContrast, dxSkiniMaginary, dxSkinLilian,
   dxSkinLiquidSky, dxSkinLondonLiquidSky, dxSkinMcSkin, dxSkinMetropolis,
   dxSkinMetropolisDark, dxSkinMoneyTwins, dxSkinOffice2007Black,
@@ -20,16 +20,22 @@ uses
   dxSkinTheAsphaltWorld, dxSkinsDefaultPainters, dxSkinValentine,
   dxSkinVisualStudio2013Blue, dxSkinVisualStudio2013Dark,
   dxSkinVisualStudio2013Light, dxSkinVS2010, dxSkinWhiteprint,
-  dxSkinXmas2008Blue, cxContainer, cxEdit, Vcl.Menus, Vcl.StdCtrls, cxButtons,
-  cxTextEdit, cxListView, System.ImageList, Vcl.ImgList;
+  dxSkinXmas2008Blue, Vcl.Menus, Vcl.StdCtrls, cxButtons, cxTextEdit,
+  cxMaskEdit, cxButtonEdit, cxLabel;
 
 type
-  TfrmVault = class(TForm)
-    ilVault: TcxImageList;
-    lvVault: TcxListView;
-    edtAddress: TcxTextEdit;
-    btnClose: TcxButton;
-    btnSelect: TcxButton;
+  TfrmConform = class(TForm)
+    cxLabel2: TcxLabel;
+    bedtVirtualCruise: TcxButtonEdit;
+    cxLabel3: TcxLabel;
+    edtMargin: TcxTextEdit;
+    cxLabel1: TcxLabel;
+    cxTextEdit1: TcxTextEdit;
+    cxLabel4: TcxLabel;
+    cxTextEdit2: TcxTextEdit;
+    cxLabel5: TcxLabel;
+    cxTextEdit3: TcxTextEdit;
+    btnColocalize: TcxButton;
   private
     { Private declarations }
   public
@@ -37,7 +43,7 @@ type
   end;
 
 var
-  frmVault: TfrmVault;
+  frmConform: TfrmConform;
 
 implementation
 

@@ -36,53 +36,25 @@ class Initializer {
   
 
     func setBundlePath(){
-        /*
-        let pythonPath2 = "/anaconda2/bin/python"
-        let opediaAPI2 = "/anaconda2/lib/python2.7/site-packages/opedia/"
-        
-        let pythonPath3 = "/anaconda3/bin/python"
-        let opediaAPI3 = "/anaconda3/lib/python3.6/site-packages/opedia/"
-        
-        if exists(pythonPath3).1 {
-            pythonPath = pythonPath3
-            if exists(opediaAPI3).0 {
-                opediaAPI = opediaAPI3
-            } else {
-                _ = msgDialog(headline: "Opedia python package not found. \n $ pip install opedia", text: "Expecting: \n" + opediaAPI3)
-                NSApplication.shared.terminate(self)
-            }
-        } else if exists(pythonPath2).1 {
-            pythonPath = pythonPath2
-            if exists(opediaAPI2).0 {
-                opediaAPI = opediaAPI2
-            } else {
-                _ = msgDialog(headline: "Opedia python package not found. \n $ pip install opedia", text: "Expecting: \n" + opediaAPI2)
-                NSApplication.shared.terminate(self)
-            }
-        } else {
-            _ = msgDialog(headline: "Unable to locate any anaconda distribution. \n Install python anaconda distribution.", text: "Expecting either: \n" + pythonPath2 + " \n or \n " + pythonPath3)
-            NSApplication.shared.terminate(self)
-        }
-        */
-        
         let url = URL(fileURLWithPath: Bundle.main.bundlePath)
         bundlePath = url.deletingLastPathComponent().path
-        
     }
     
         
     func setPythonPath() {
-        let pythonPath2 = "/anaconda2/bin/python"
-        //let pythonPath3 = "/anaconda3/bin/python"
-        let pythonPath3 = "/Users/Mohammad/anaconda3/bin/python"
-        //  "/Users/Raphael/anaconda2/bin/python"
+        let fm = FileManager.default
+        let homeDir = fm.homeDirectoryForCurrentUser.path
+        let pythonRootPath2 = "/anaconda2/bin/python"
+        let pythonUserPath2 = homeDir + pythonRootPath2
+        let pythonRootPath3 = "/anaconda3/bin/python"
+        let pythonUserPath3 = homeDir + pythonRootPath3
         
-        if exists(pythonPath3).1 {
-            pythonPath = pythonPath3
-        } else if exists(pythonPath2).1 {
-            pythonPath = pythonPath2
-        } else {
-            _ = msgDialog(headline: "Unable to locate any anaconda distribution. \n Install python anaconda distribution.", text: "Expecting either: \n" + pythonPath2 + " \n or \n " + pythonPath3)
+        if exists(pythonUserPath3).1 {pythonPath = pythonUserPath3}
+        else if exists(pythonRootPath3).1 {pythonPath = pythonRootPath3}
+        else if exists(pythonUserPath2).1 {pythonPath = pythonUserPath2}
+        else if exists(pythonRootPath2).1 {pythonPath = pythonRootPath2}
+        else {
+            _ = msgDialog(headline: "Unable to locate any anaconda distribution. \n Install python anaconda distribution.", text: "Expecting either: \n" + pythonUserPath3 + " \n or \n " + pythonRootPath3 + " \n or \n " + pythonUserPath2 + " \n or \n " + pythonRootPath2)
             NSApplication.shared.terminate(self)
         }
         

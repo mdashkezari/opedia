@@ -812,7 +812,7 @@
                                                         <font key="font" metaFont="system"/>
                                                         <tabViewItems>
                                                             <tabViewItem label="Space-Time" identifier="" id="cPS-vo-VpZ">
-                                                                <view key="view" id="1dC-PH-qEA">
+                                                                <view key="view" ambiguous="YES" id="1dC-PH-qEA">
                                                                     <rect key="frame" x="10" y="33" width="515" height="149"/>
                                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                     <subviews>
@@ -1586,7 +1586,7 @@
                                                                 </view>
                                                             </tabViewItem>
                                                             <tabViewItem label="Conform" identifier="" id="78I-hX-wPO">
-                                                                <view key="view" ambiguous="YES" id="ZDc-35-Bpi">
+                                                                <view key="view" id="ZDc-35-Bpi">
                                                                     <rect key="frame" x="10" y="33" width="515" height="149"/>
                                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                     <subviews>
@@ -2533,7 +2533,7 @@
                 <customObject id="rPt-NT-nkU" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
                 <arrayController objectClassName="CatalogVar" id="wG7-nq-i67"/>
             </objects>
-            <point key="canvasLocation" x="1094" y="676"/>
+            <point key="canvasLocation" x="1039" y="673"/>
         </scene>
     </scenes>
 </document>
