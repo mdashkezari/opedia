@@ -16,13 +16,8 @@ from bokeh.models import HoverTool
 from bokeh.embed import components
 import matplotlib.pyplot as plt
 from tqdm import tqdm
+import jupyterInline as jup
 
-
-try:
-    import jupyterInline
-except Exception as e:
-    print("Error while loading jupyter inline!")
-    print(e)
 
 
 def plot_single_hist(data, clr='m', labelx='', labely='', leg='', yscale='linear', store_path='', bincount=50):   
@@ -97,20 +92,24 @@ def match_temptable(geomTable, bkgTable, startDate, lat1, lat2, lon1, lon2, ftle
 
 
 def dumpFrontShape(lats, lons, fname):
-    import geopandas as gpd
-    from shapely.geometry import Point 
-    df = pd.DataFrame()
-    df['lat'] = lats
-    df['lon'] = lons
-    df['geometry'] = df.apply(lambda x: Point((float(x.lon), float(x.lat))), axis=1)
-    df = gpd.GeoDataFrame(df, geometry='geometry')
     dirPath = 'shape/'
     if not os.path.exists(dirPath):
         os.makedirs(dirPath)       
-    df.to_file(dirPath + '%s.shp' % fname, driver='ESRI Shapefile')    
-    
+    df = pd.DataFrame()
+    df['lat'] = lats
+    df['lon'] = lons
     ## dump the shape file content in a csv file (this will be used by macos app)
     df.to_csv(dirPath + 'shape.csv', index=False)
+
+    try:
+        import geopandas as gpd
+        from shapely.geometry import Point 
+        df['geometry'] = df.apply(lambda x: Point((float(x.lon), float(x.lat))), axis=1)
+        df = gpd.GeoDataFrame(df, geometry='geometry')
+        df.to_file(dirPath + '%s.shp' % fname, driver='ESRI Shapefile')    
+    except Exception as e:
+        print('dumpFrontShape Error: ')    
+        print(e)    
     return
 
 def appendVar(track, t, y, yErr, variable):
@@ -174,7 +173,8 @@ def colocalize(ftleTable, ftleField, ftleValue, tables, variables, startDate, en
     dirPath = 'embed/'
     if not os.path.exists(dirPath):
         os.makedirs(dirPath)    
-    output_file(dirPath + fname + ".html", title="Front")
+    if not inline:      ## if jupyter is not the caller
+        output_file(dirPath + fname + ".html", title="Front")
     show(column(p))
     if exportDataFlag:
         exportData(loadedFTLE, ts, ys, y_stds, tables[i], variables[i], spMargin)    
@@ -240,7 +240,7 @@ def main():
             print(e)
 
 
-
+inline = jup.inline()   # check if jupyter is calling this script
 if __name__ == '__main__':
     main()
 

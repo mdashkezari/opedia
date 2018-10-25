@@ -15,13 +15,8 @@ from bokeh.layouts import column
 from bokeh.palettes import all_palettes
 from bokeh.models import LinearColorMapper, BasicTicker, ColorBar
 from bokeh.embed import components
+import jupyterInline as jup
 
-
-try:
-    import jupyterInline
-except Exception as e:
-    print("Error while loading jupyter inline!")
-    print(e)
 
 
 def getBounds(varName):
@@ -164,7 +159,9 @@ def bokehGM(data, subject, fname, lat, lon, variabels):
     dirPath = 'embed/'
     if not os.path.exists(dirPath):
         os.makedirs(dirPath)        
-    output_file(dirPath + fname + ".html", title="Regional Map")
+
+    if not inline:      ## if jupyter is not the caller
+        output_file(dirPath + fname + ".html", title="Regional Map")
     show(column(p))
     return
 
@@ -187,7 +184,7 @@ def main():
     regionalMap(tables.split(','), variables.split(','), dt1, dt2, lat1, lat2, lon1, lon2, depth1, depth2, fname, exportDataFlag)
 
 
-
+inline = jup.inline()   # check if jupyter is calling this script
 if __name__ == '__main__':
     main()
     

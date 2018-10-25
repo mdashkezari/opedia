@@ -15,13 +15,9 @@ from bokeh.models import DatetimeTickFormatter
 from bokeh.palettes import all_palettes
 from bokeh.models import HoverTool
 from bokeh.embed import components
+import jupyterInline as jup
 
 
-try:
-    import jupyterInline
-except Exception as e:
-    print("Error while loading jupyter inline!")
-    print(e)
 
 def exportData(t, y, yErr, table, variable, lat1, lat2, lon1, lon2, extV, extVV, extV2, extVV2):
     df = pd.DataFrame()
@@ -84,10 +80,19 @@ def plotMonthly(tables, variables, lat1, lat2, lon1, lon2, extV, extVV, extV2, e
     dirPath = 'embed/'
     if not os.path.exists(dirPath):
         os.makedirs(dirPath)        
-    output_file(dirPath + fname + ".html", title="Monthly Trend")
+    if not inline:      ## if jupyter is not the caller
+        output_file(dirPath + fname + ".html", title="Monthly Trend")
     show(column(p))
     return
 
+
+
+
+
+
+
+
+inline = jup.inline()   # check if jupyter is calling this script
 
 
 tables = sys.argv[1].split(',')      #tables

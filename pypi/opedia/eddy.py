@@ -15,13 +15,7 @@ from bokeh.palettes import all_palettes
 from bokeh.models import HoverTool
 from bokeh.embed import components
 from tqdm import tqdm
-
-
-try:
-    import jupyterInline
-except Exception as e:
-    print("Error while loading jupyter inline!")
-    print(e)
+import jupyterInline as jup
 
 
 def prepareQuery(table, startDate, endDate, lat1, lat2, lon1, lon2):
@@ -43,20 +37,24 @@ def getEddies(table, startDate, endDate, lat1, lat2, lon1, lon2):
 
 
 def dumpEddyShape(lats, lons, fname):
-    import geopandas as gpd
-    from shapely.geometry import Point 
-    df = pd.DataFrame()
-    df['lat'] = lats
-    df['lon'] = lons
-    df['geometry'] = df.apply(lambda x: Point((float(x.lon), float(x.lat))), axis=1)
-    df = gpd.GeoDataFrame(df, geometry='geometry')
     dirPath = 'shape/'
     if not os.path.exists(dirPath):
         os.makedirs(dirPath)       
-    df.to_file(dirPath + '%s.shp' % fname, driver='ESRI Shapefile')    
-    
+    df = pd.DataFrame()
+    df['lat'] = lats
+    df['lon'] = lons
     ## dump the shape file content in a csv file (this will be used by macos app)
     df.to_csv(dirPath + 'shape.csv', index=False)
+
+    try:
+        import geopandas as gpd
+        from shapely.geometry import Point 
+        df['geometry'] = df.apply(lambda x: Point((float(x.lon), float(x.lat))), axis=1)
+        df = gpd.GeoDataFrame(df, geometry='geometry')
+        df.to_file(dirPath + '%s.shp' % fname, driver='ESRI Shapefile')    
+    except Exception as e:
+        print('dumpEddyShape Error: ')    
+        print(e)   
     return
 
 def appendVar(track, t, y, yErr, variable):
@@ -145,7 +143,8 @@ def colocalize(tables, variables, eddy, spMargin, depth1, depth2, exportDataFlag
     dirPath = 'embed/'
     if not os.path.exists(dirPath):
         os.makedirs(dirPath)    
-    output_file(dirPath + fname + ".html", title="Eddy")
+    if not inline:      ## if jupyter is not the caller
+        output_file(dirPath + fname + ".html", title="Eddy")
     show(column(p))
     if exportDataFlag:
         exportData(loadedEddy, ts, ys, y_stds, tables[i], variables[i], spMargin)   
@@ -189,7 +188,7 @@ def main():
 
 
 
-
+inline = jup.inline()   # check if jupyter is calling this script
 if __name__ == '__main__':
     main()
 

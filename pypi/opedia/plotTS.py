@@ -15,13 +15,9 @@ from bokeh.models import DatetimeTickFormatter
 from bokeh.palettes import all_palettes
 from bokeh.models import HoverTool
 from bokeh.embed import components
+import jupyterInline as jup
 
 
-try:
-    import jupyterInline
-except Exception as e:
-    print("Error while loading jupyter inline!")
-    print(e)
 
 
 def exportData(t, y, yErr, table, variable, lat1, lat2, lon1, lon2, depth1, depth2):
@@ -78,7 +74,8 @@ def plotTS(tables, variables, startDate, endDate, lat1, lat2, lon1, lon2, depth1
     dirPath = 'embed/'
     if not os.path.exists(dirPath):
         os.makedirs(dirPath)        
-    output_file(dirPath + fname + ".html", title="TimeSeries")
+    if not inline:      ## if jupyter is not the caller
+        output_file(dirPath + fname + ".html", title="TimeSeries")
     show(column(p))
     return
 
@@ -123,6 +120,6 @@ def main():
 
 
 
-
+inline = jup.inline()   # check if jupyter is calling this script
 if __name__ == '__main__':
     main()

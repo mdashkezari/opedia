@@ -17,13 +17,9 @@ from bokeh.palettes import all_palettes
 from bokeh.models import HoverTool
 from bokeh.embed import components
 import itertools as itt
+import jupyterInline as jup
 
 
-try:
-    import jupyterInline
-except Exception as e:
-    print("Error while loading jupyter inline!")
-    print(e)
 
 def removeNA(df, subset):
     df = df.dropna(subset=subset)
@@ -59,18 +55,22 @@ def resample(df, resampTau):
     return df
 
 def dumpCruiseShape(dfShape, source, cruise, fname):
-    import geopandas as gpd
-    from shapely.geometry import Point 
-    del dfShape['time']  
-    dfShape['geometry'] = dfShape.apply(lambda x: Point((float(x.lon), float(x.lat))), axis=1)
-    dfShape = gpd.GeoDataFrame(dfShape, geometry='geometry')
     dirPath = 'shape/'
     if not os.path.exists(dirPath):
         os.makedirs(dirPath)       
-    dfShape.to_file(dirPath + '%s.shp' % fname, driver='ESRI Shapefile')    
-    
+    del dfShape['time']  
     ## dump the shape file content in a csv file (this will be used by macos app)
     dfShape.to_csv(dirPath + 'shape.csv', index=False)
+
+    try:
+        import geopandas as gpd
+        from shapely.geometry import Point 
+        dfShape['geometry'] = dfShape.apply(lambda x: Point((float(x.lon), float(x.lat))), axis=1)
+        dfShape = gpd.GeoDataFrame(dfShape, geometry='geometry')
+        dfShape.to_file(dirPath + '%s.shp' % fname, driver='ESRI Shapefile')    
+    except Exception as e:
+        print('dumpCruiseShape Error: ')    
+        print(e)
     return
 
 def resampleToTimeStep(resampTau):
@@ -153,7 +153,9 @@ def plotAlongTrack(tables, variables, cruiseName, resampTau, track, spMargin, de
     dirPath = 'embed/'
     if not os.path.exists(dirPath):
         os.makedirs(dirPath)    
-    output_file(dirPath + fname + ".html", title="Along Track")
+
+    if not inline:      ## if jupyter is not the caller
+        output_file(dirPath + fname + ".html", title="Along Track")
     show(column(p))
 
     ############### export retrieved data ###############
@@ -189,7 +191,9 @@ def mutualTrends(loadedTrack, tables, variables, cruise, msize=20):
     dirPath = 'embed/'
     if not os.path.exists(dirPath):
         os.makedirs(dirPath)        
-    output_file(dirPath + fname + ".html", title="Mutual Trends")
+
+    if not inline:      ## if jupyter is not the caller
+        output_file(dirPath + fname + ".html", title="Mutual Trends")
     show(column(p))
     return
 
@@ -234,7 +238,6 @@ def main():
 
 
 
-
-
+inline = jup.inline()   # check if jupyter is calling this script
 if __name__ == "__main__":
     main()

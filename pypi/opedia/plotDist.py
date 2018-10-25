@@ -15,13 +15,8 @@ from bokeh.models import DatetimeTickFormatter
 from bokeh.palettes import all_palettes
 from bokeh.models import HoverTool
 from bokeh.embed import components
+import jupyterInline as jup
 
-
-try:
-    import jupyterInline
-except Exception as e:
-    print("Error while loading jupyter inline!")
-    print(e)
 
 
 def exportData(y, table, variable, startDate, endDate, lat1, lat2, lon1, lon2, depth1, depth2):
@@ -75,7 +70,8 @@ def plotDist(tables, variables, startDate, endDate, lat1, lat2, lon1, lon2, dept
     dirPath = 'embed/'
     if not os.path.exists(dirPath):
         os.makedirs(dirPath)        
-    output_file(dirPath + fname + ".html", title="Histogram")
+    if not inline:      ## if jupyter is not the caller
+        output_file(dirPath + fname + ".html", title="Histogram")
     show(column(p))
     return
 
@@ -118,5 +114,6 @@ def main():
     #print('Fetch time: %2.2f s' % (toc-tic))
 
 
+inline = jup.inline()   # check if jupyter is calling this script
 if __name__ == '__main__':
     main()
