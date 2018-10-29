@@ -1,7 +1,7 @@
 object frmMain: TfrmMain
   Left = 0
   Top = 0
-  Caption = 'Opedia 0.2.1'
+  Caption = 'Opedia 0.2.6'
   ClientHeight = 967
   ClientWidth = 1330
   Color = clBtnFace
@@ -824,7 +824,7 @@ object frmMain: TfrmMain
       Visible = ivAlways
     end
     object barMachineLearning: TdxBarSubItem
-      Caption = 'Conform'
+      Caption = 'Colocalize'
       Category = 0
       Visible = ivAlways
       ImageIndex = 23
@@ -868,9 +868,9 @@ object frmMain: TfrmMain
       Visible = ivAlways
     end
     object barFeatures: TdxBarButton
-      Caption = 'Conform'
+      Caption = 'Colocalize'
       Category = 0
-      Hint = 'Conform'
+      Hint = 'Colocalize'
       Visible = ivAlways
       OnClick = barFeaturesClick
     end

@@ -87,6 +87,10 @@ nrt_tax16s_raw, rep_tax16s_raw, doc_tax16s_raw, code_tax16s_raw = leafStruc(tax1
 KM1314_cobalamin_raw = cruise_raw + 'KM1314_cobalamin/'
 makedir(KM1314_cobalamin_raw)
 nrt_KM1314_cobalamin_raw, rep_KM1314_cobalamin_raw, doc_KM1314_cobalamin_raw, code_KM1314_cobalamin_raw = leafStruc(KM1314_cobalamin_raw)
+####  obs/in-situ/cruise/esv  #####
+esv_raw = cruise_raw + 'esv/'
+makedir(esv_raw)
+nrt_esv_raw, rep_esv_raw, doc_esv_raw, code_esv_raw = leafStruc(esv_raw)
 
 
 #########  obs/in-situ/station  #########

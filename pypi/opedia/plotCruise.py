@@ -69,7 +69,7 @@ def dumpCruiseShape(dfShape, source, cruise, fname):
         dfShape = gpd.GeoDataFrame(dfShape, geometry='geometry')
         dfShape.to_file(dirPath + '%s.shp' % fname, driver='ESRI Shapefile')    
     except Exception as e:
-        print('dumpCruiseShape Error: ')    
+        print('Check if these modules are properly installed: shapely, fiona, geopandas.')    
         print(e)
     return
 

@@ -2,7 +2,7 @@ object frmConform: TfrmConform
   Left = 0
   Top = 0
   BorderStyle = bsToolWindow
-  Caption = 'Conform'
+  Caption = 'Colocalize'
   ClientHeight = 287
   ClientWidth = 621
   Color = clBtnFace
@@ -133,7 +133,7 @@ object frmConform: TfrmConform
     Top = 228
     Width = 567
     Height = 33
-    Caption = 'Conform'
+    Caption = 'Colocalize'
     TabOrder = 8
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText

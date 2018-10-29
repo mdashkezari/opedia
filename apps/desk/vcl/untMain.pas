@@ -478,8 +478,8 @@ end;
 procedure makeDirs;
 begin
   makeDirectory('embed');
-  makeDirectory('script');
-  makeDirectory('script/python');
+  //makeDirectory('script');
+  //makeDirectory('script/python');
   makeDirectory('data');
   makeDirectory('ML');
   makeDirectory('shape');

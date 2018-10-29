@@ -1,13 +1,18 @@
 import sys
 sys.dont_write_bytecode = True
 import os
+sys.path.append(os.path.dirname(__file__))
 import db
 import subset
 import pandas as pd
 from datetime import datetime
 from datetime import timedelta  
 import numpy as np
-from tqdm import tqdm
+import jupyterInline as jup
+if jup.jupytered():
+    from tqdm import tqdm_notebook as tqdm
+else:
+    from tqdm import tqdm
 
 
 def getModelDepthLevels(tableName):
@@ -29,7 +34,7 @@ def getSrcDF(DB, source):
     else:  
         filename, fileExtension = os.path.splitext(source)  
         if fileExtension == '.xlsx':
-            srcDF = pd.read_excel(open(source,'rb'), sheetname='data')
+            srcDF = pd.read_excel(open(source,'rb'), sheet_name='data')
         elif fileExtension == '.csv':    
             srcDF = pd.read_csv(source)
         srcDF['time'] = pd.to_datetime(srcDF['time'])
@@ -90,7 +95,7 @@ def main():
     temporalTolerance = float(sys.argv[3])              # argument3: colocalizer temporal tolerance (+/- degrees)
     latTolerance = float(sys.argv[4])                   # argument4: colocalizer meridional tolerance (+/- degrees)
     lonTolerance = float(sys.argv[5])                   # argument5: colocalizer zonal tolerance (+/- degrees) 
-    depthTolerance = float(sys.argv[6])                 # argument6: colocalizer depth tolerance (+/- degrees)
+    depthTolerance = float(sys.argv[6])                 # argument6: colocalizer depth tolerance (+/- meters)
     tables = sys.argv[7].split(',')                     # argument7: comma-separated list of varaible table names 
     variables = sys.argv[8].split(',')                  # argument8: comma-separated list of variable names   
     exportPath = sys.argv[9]                            # argument9: path to save the colocalized data set 
