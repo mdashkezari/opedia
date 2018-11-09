@@ -6,7 +6,6 @@ import pandas as pd
 from datetime import datetime, timedelta
 import db
 import timeSeries as TS
-import matplotlib.pyplot as plt
 from math import pi
 from bokeh.plotting import figure, show, output_file
 from bokeh.layouts import column
@@ -14,8 +13,11 @@ from bokeh.models import DatetimeTickFormatter
 from bokeh.palettes import all_palettes
 from bokeh.models import HoverTool
 from bokeh.embed import components
-from tqdm import tqdm
 import jupyterInline as jup
+if jup.jupytered():
+    from tqdm import tqdm_notebook as tqdm
+else:
+    from tqdm import tqdm
 
 
 def prepareQuery(table, startDate, endDate, lat1, lat2, lon1, lon2):
@@ -103,9 +105,9 @@ def colocalize(tables, variables, eddy, spMargin, depth1, depth2, exportDataFlag
     w = 800
     h = 400
     TOOLS = 'pan,wheel_zoom,zoom_in,zoom_out,box_zoom, undo,redo,reset,tap,save,box_select,poly_select,lasso_select'
-    for i in tqdm(range(len(tables))):
+    for i in tqdm(range(len(tables)), desc='overall'):
         ts, ys, y_stds, track_ids = [], np.array([]), np.array([]), np.array([])
-        for j in tqdm(range(len(eddy))):
+        for j in tqdm(range(len(eddy)), desc=variables[i]):
             startDate = eddy.iloc[j]['time']
             endDate = startDate
             lat1 = float(eddy.iloc[j]['lat']) - spMargin

@@ -392,6 +392,8 @@ class MainVC: NSViewController, MKMapViewDelegate, NSTokenFieldCellDelegate, NST
     func removeAnnotsOverlays() {
         self.mapView.removeAnnotations(self.mapView.annotations)
         self.mapView.removeOverlays(self.mapView.overlays)
+        
+        addStationALOHA()
     }
  
     
@@ -401,13 +403,28 @@ class MainVC: NSViewController, MKMapViewDelegate, NSTokenFieldCellDelegate, NST
         if !title.isEmpty { annot.title = title }
         if !subtitle.isEmpty { annot.subtitle = subtitle }
         mapView.addAnnotation(annot)
-        mapView.add(MKCircle(center: annot.coordinate, radius: 20000))
+        mapView.add(MKCircle(center: annot.coordinate, radius: 10000))
         
     }
 
     
+    func addPinAnnot(lat:Float, lon:Float, title:String, subtitle:String) {
+        let annot = MKPointAnnotation()
+        annot.coordinate = CLLocationCoordinate2D(latitude: CLLocationDegrees(lat), longitude: CLLocationDegrees(lon))
+        if !title.isEmpty { annot.title = title }
+        if !subtitle.isEmpty { annot.subtitle = subtitle }
+        mapView.addAnnotation(annot)
+    }
+
+    
+    func addStationALOHA(){
+        // Adding a pin representing the Station ALOHA
+        addPinAnnot(lat:22.75, lon:-158, title:"Station ALOHA", subtitle:"")
+    }
+    
+    
     func addTrack(_ track: [CLLocationCoordinate2D]) {
-        let rad = CLLocationDistance(20000)
+        let rad = CLLocationDistance(13000)
         for item in track {
             mapView.add(MKCircle(center: item, radius: rad))
         }
@@ -454,6 +471,8 @@ class MainVC: NSViewController, MKMapViewDelegate, NSTokenFieldCellDelegate, NST
 
         swtFTLEBackgroud.isOn = false
         swtFTLEBackgroud.reloadLayer()
+        
+        addStationALOHA()
     }
     
     
@@ -536,7 +555,7 @@ class MainVC: NSViewController, MKMapViewDelegate, NSTokenFieldCellDelegate, NST
         //depth2 = "\(dslDepth.end)"
         depth1 = "\(pupStartDepth.title)"
         depth2 = "\(pupEndDepth.title)"
-        fname = "untitle"
+        fname = "figure"
         if swtExport.isOn {
             exportFlag = "1"
         } else {

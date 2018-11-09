@@ -6,7 +6,6 @@ import pandas as pd
 from datetime import datetime, timedelta
 import db
 import timeSeries as TS
-import matplotlib.pyplot as plt
 from math import pi
 from bokeh.plotting import figure, show, output_file
 from bokeh.layouts import column
@@ -14,9 +13,11 @@ from bokeh.models import DatetimeTickFormatter
 from bokeh.palettes import all_palettes
 from bokeh.models import HoverTool
 from bokeh.embed import components
-import matplotlib.pyplot as plt
-from tqdm import tqdm
 import jupyterInline as jup
+if jup.jupytered():
+    from tqdm import tqdm_notebook as tqdm
+else:
+    from tqdm import tqdm
 
 
 
@@ -138,7 +139,7 @@ def colocalize(ftleTable, ftleField, ftleValue, tables, variables, startDate, en
     w = 800
     h = 400
     TOOLS = 'pan,wheel_zoom,zoom_in,zoom_out,box_zoom, undo,redo,reset,tap,save,box_select,poly_select,lasso_select'
-    for i in tqdm(range(len(tables))):
+    for i in tqdm(range(len(tables)), desc='overall'):
         df = match(ftleTable, tables[i], startDate, endDate, lat1, lat2, lon1, lon2, depth1, depth2, ftleField, ftleValue, variables[i], spMargin, '0')
         if len(df)<1:
             continue

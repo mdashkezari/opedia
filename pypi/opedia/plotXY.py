@@ -2,7 +2,6 @@ import sys
 import os
 sys.path.append(os.path.dirname(__file__))
 import numpy as np
-import matplotlib.pyplot as plt
 import pandas as pd
 import db
 import timeSeries as TS
@@ -17,6 +16,10 @@ from bokeh.palettes import all_palettes
 from bokeh.models import HoverTool
 from bokeh.embed import components
 import jupyterInline as jup
+if jup.jupytered():
+    from tqdm import tqdm_notebook as tqdm
+else:
+    from tqdm import tqdm
 
 
 
@@ -50,7 +53,7 @@ def plotXY(tables, variables, startDate, endDate, lat1, lat2, lon1, lon2, depth1
     TOOLS = 'pan,wheel_zoom,zoom_in,zoom_out,box_zoom, undo,redo,reset,tap,save,box_select,poly_select,lasso_select'
     tablePairs = list(itt.combinations(tables, 2))
     variablePairs = list(itt.combinations(variables, 2))
-    for i in range(len(tablePairs)):
+    for i in tqdm(range(len(tablePairs)), desc='overall'):
         t1, y1, y_std1 = TS.timeSeries(tablePairs[i][0], variablePairs[i][0], startDate, endDate, lat1, lat2, lon1, lon2, depth1, depth2)
         t2, y2, y_std2 = TS.timeSeries(tablePairs[i][1], variablePairs[i][1], startDate, endDate, lat1, lat2, lon1, lon2, depth1, depth2)
         if exportDataFlag:

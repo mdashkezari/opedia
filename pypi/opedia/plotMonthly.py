@@ -2,7 +2,6 @@ import sys
 import os
 sys.path.append(os.path.dirname(__file__))
 import numpy as np
-import matplotlib.pyplot as plt
 import pandas as pd
 import db
 import timeSeries as TS
@@ -16,6 +15,10 @@ from bokeh.palettes import all_palettes
 from bokeh.models import HoverTool
 from bokeh.embed import components
 import jupyterInline as jup
+if jup.jupytered():
+    from tqdm import tqdm_notebook as tqdm
+else:
+    from tqdm import tqdm
 
 
 
@@ -45,10 +48,10 @@ def plotMonthly(tables, variables, lat1, lat2, lon1, lon2, extV, extVV, extV2, e
     h = 400
     months = range(1, 13)
     TOOLS = 'pan,wheel_zoom,zoom_in,zoom_out,box_zoom, undo,redo,reset,tap,save,box_select,poly_select,lasso_select'
-    for i in range(len(tables)):
+    for i in tqdm(range(len(tables)), desc='overall'):
         monthly = np.array([])
         monthly_std = np.array([])
-        for mon in months:
+        for mon in tqdm(months, desc=variables[i]):
             mon = int(mon)
             args = [tables[i], variables[i], mon, lat1, lat2, lon1, lon2, extV[i], extVV[i]]
             query = 'EXEC uspMonthly ?, ?, ?, ?, ?, ?, ?, ?, ?'

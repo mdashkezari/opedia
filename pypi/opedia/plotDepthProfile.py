@@ -2,9 +2,9 @@ import sys
 import os
 sys.path.append(os.path.dirname(__file__))
 import numpy as np
-import matplotlib.pyplot as plt
 import pandas as pd
 import db
+import common as com
 import climatology as clim
 import subset
 from datetime import datetime, timedelta
@@ -17,14 +17,19 @@ from bokeh.palettes import all_palettes
 from bokeh.models import HoverTool
 from bokeh.embed import components
 import jupyterInline as jup
+if jup.jupytered():
+    from tqdm import tqdm_notebook as tqdm
+else:
+    from tqdm import tqdm
 
 
 
 def iterative(table):
+    table = table.lower()
     it = False
-    if table.find('tblDarwin') != -1:
+    if table.find('tblDarwin'.lower()) != -1:
         it = True
-    if table.find('tblPisces') != -1:
+    if table.find('tblPisces'.lower()) != -1:
         it = True
     return it
 
@@ -61,6 +66,9 @@ def depthProfile_iterative(table, field, dt1, dt2, lat1, lat2, lon1, lon2, depth
         else:
             timesteps = range(m2, m1+1)
         timesteps = ['2016-%2.2d-01' % m for m in timesteps]    
+    elif table.lower().find('tblPisces'.lower()) != -1:        # currently (Nov 2018) only Pisces table has a calendar table. all datasets have to have a calendar  table. we can then remove thw else: clause below 
+        calTable = table+'_Calendar'
+        timesteps = com.timesBetween(calTable, dt1, dt2)   
     else:        
         delta = datetime.strptime(dt2, '%Y-%m-%d') - datetime.strptime(dt1, '%Y-%m-%d')
         timesteps = [(datetime.strptime(dt1, '%Y-%m-%d') + timedelta(days=x)).strftime('%Y-%m-%d') for x in range(delta.days+1)]
@@ -96,7 +104,7 @@ def plotDepthProfile(tables, variables, dt1, dt2, lat1, lat2, lon1, lon2, depth1
     w = 800
     h = 400
     TOOLS = 'pan,wheel_zoom,zoom_in,zoom_out,box_zoom, undo,redo,reset,tap,save,box_select,poly_select,lasso_select'
-    for i in range(len(tables)):
+    for i in tqdm(range(len(tables)), desc='overall'):
         if not db.hasField(tables[i], 'depth'):
             continue
         if not iterative(tables[i]):    

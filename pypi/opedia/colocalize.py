@@ -15,6 +15,7 @@ else:
     from tqdm import tqdm
 
 
+
 def getModelDepthLevels(tableName):
     query = "SELECT * FROM %s" % tableName
     depthLevs = db.dbFetch(query) 
@@ -51,10 +52,10 @@ def matchSource(DB, source, tMargin, latMargin, lonMargin, depthMargin, tables, 
     #depthLevs = getModelDepthLevels('tblPisces_Depth')
     #depthLevs = getModelDepthLevels('tblDarwin_Depth')
     srcDF['dt1'], srcDF['dt2'], srcDF['lat1'], srcDF['lat2'], srcDF['lon1'], srcDF['lon2'], srcDF['depth1'], srcDF['depth2'] = '', '', '', '', '', '', '', ''
-    for tar in tqdm(target):
+    for tar in tqdm(target, desc='overall'):
         srcDF[tar[1]] = ''
         srcDF[tar[1]+'_std'] = ''
-        for i in tqdm(range(len(srcDF))):
+        for i in tqdm(range(len(srcDF)), desc=tar[1]):
             dt = srcDF.time[i]   
             dt1 = dt - timedelta(days=tMargin) 
             dt2 = dt + timedelta(days=tMargin) 
@@ -88,14 +89,13 @@ def matchSource(DB, source, tMargin, latMargin, lonMargin, depthMargin, tables, 
 
 
 
-
 def main():
     DB = bool(int(sys.argv[1]))                         # argument1: < 1 > if source data exists in the database. < 0 > if the source data set is a spreadsheet file on disk.
     source = sys.argv[2]                                # argument2: the source table name (or full filename)      
     temporalTolerance = float(sys.argv[3])              # argument3: colocalizer temporal tolerance (+/- degrees)
     latTolerance = float(sys.argv[4])                   # argument4: colocalizer meridional tolerance (+/- degrees)
     lonTolerance = float(sys.argv[5])                   # argument5: colocalizer zonal tolerance (+/- degrees) 
-    depthTolerance = float(sys.argv[6])                 # argument6: colocalizer depth tolerance (+/- meters)
+    depthTolerance = float(sys.argv[6])                 # argument6: colocalizer depth tolerance (+/- degrees)
     tables = sys.argv[7].split(',')                     # argument7: comma-separated list of varaible table names 
     variables = sys.argv[8].split(',')                  # argument8: comma-separated list of variable names   
     exportPath = sys.argv[9]                            # argument9: path to save the colocalized data set 

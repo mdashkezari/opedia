@@ -61,7 +61,7 @@ BEGIN
 	BEGIN
 		SET @orderList = @orderList + ', [hour]'
 	END
-    SET @orderList = @orderList + ', lat, lon, depth'
+    SET @orderList = @orderList + ', lat, lon, depth DESC'
 
 	DECLARE @selList AS NVARCHAR(MAX);
 	

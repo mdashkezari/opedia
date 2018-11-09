@@ -3,7 +3,6 @@ import sys
 sys.path.append(os.path.dirname(__file__))
 sys.dont_write_bytecode = True
 import numpy as np
-import matplotlib.pyplot as plt
 import pandas as pd
 import db
 import timeSeries as TS
@@ -18,6 +17,10 @@ from bokeh.models import HoverTool
 from bokeh.embed import components
 import itertools as itt
 import jupyterInline as jup
+if jup.jupytered():
+    from tqdm import tqdm_notebook as tqdm
+else:
+    from tqdm import tqdm
 
 
 
@@ -119,9 +122,9 @@ def plotAlongTrack(tables, variables, cruiseName, resampTau, track, spMargin, de
     w = 800
     h = 400
     TOOLS = 'pan,wheel_zoom,zoom_in,zoom_out,box_zoom, undo,redo,reset,tap,save,box_select,poly_select,lasso_select'
-    for i in range(len(tables)):
+    for i in tqdm(range(len(tables)), desc='overall'):
         ts, ys, y_stds = [], np.array([]), np.array([])
-        for j in range(len(track)):
+        for j in tqdm(range(len(track)), desc=variables[i]):
             startDate = track.iloc[j]['time'].strftime(fmt)
             endDate = startDate
             lat1 = float(track.iloc[j]['lat']) - spMargin

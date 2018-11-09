@@ -2,7 +2,6 @@ import sys
 import os
 sys.path.append(os.path.dirname(__file__))
 import numpy as np
-import matplotlib.pyplot as plt
 import pandas as pd
 import db
 import subset
@@ -16,6 +15,10 @@ from bokeh.palettes import all_palettes
 from bokeh.models import HoverTool
 from bokeh.embed import components
 import jupyterInline as jup
+if jup.jupytered():
+    from tqdm import tqdm_notebook as tqdm
+else:
+    from tqdm import tqdm
 
 
 
@@ -48,7 +51,7 @@ def plotDist(tables, variables, startDate, endDate, lat1, lat2, lon1, lon2, dept
     w = 800
     h = 400
     TOOLS = 'pan,wheel_zoom,zoom_in,zoom_out,box_zoom, undo,redo,reset,tap,save,box_select,poly_select,lasso_select'
-    for i in range(len(tables)):
+    for i in tqdm(range(len(tables)), desc='overall'):
         #y = gd.genericDist(tables[i], variables[i], startDate, endDate, lat1, lat2, lon1, lon2, extV[i], extVV[i], extV2[i], extVV2[i])
         y = subset.spaceTime(tables[i], variables[i], startDate, endDate, lat1, lat2, lon1, lon2, depth1, depth2) 
         y = y[variables[i]]

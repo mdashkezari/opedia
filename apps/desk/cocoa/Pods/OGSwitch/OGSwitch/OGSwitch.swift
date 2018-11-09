@@ -217,7 +217,7 @@ public class OGSwitch : NSControl {
         }
         
         if isOn != on {
-            Swift.print("Now: \(on)")
+            //Swift.print("Now: \(on)")
             if action != nil {
                 NSApp.sendAction(action!, to: target, from: self)
             }

@@ -634,10 +634,20 @@ begin
     AssignFile(F, pyScript);
     Rewrite(F);
     Writeln(F,'import site');
+    Writeln(F,'import os');
     Writeln(F,'file = open("out.txt","w")');
-    writeln(F,'path = site.getsitepackages()[1]');
-    writeln(F,'path = path.replace("\\","/")');
-    Writeln(F,'file.write(path + "/opedia/")');
+    //writeln(F,'path = site.getsitepackages()[1]');
+    //writeln(F,'path = path.replace("\\","/")');
+
+    writeln(F,'for pack in site.getsitepackages():');
+    writeln(F,'  path = pack.replace("\\","/")');
+    writeln(F,'  path = path + "/opedia/"');
+    writeln(F,'  if os.path.isdir(path):');
+    writeln(F,'    file.write(path)');
+    writeln(F,'    break');
+
+
+    //Writeln(F,'file.write(path + "/opedia/")');
     code := 'file.close()';
     Writeln(F,code);
     CloseFile(F);

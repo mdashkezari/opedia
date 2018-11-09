@@ -3,7 +3,6 @@ import os
 sys.path.append(os.path.dirname(__file__))
 sys.dont_write_bytecode = True
 import numpy as np
-import matplotlib.pyplot as plt
 import pandas as pd
 import db
 import subset
@@ -40,15 +39,16 @@ def fillGaps(ts_original, y_original, y_std_original, startDate, endDate, fmt, d
 
 
 def iterative(table, field, dt):
+    table = table.lower()
     it = False
     if dt != 24*60:
         it = True
-    #if table.find('tblWind') != -1:
+    #if table.find('tblWind'.lower()) != -1:
     #    it = True
-    #if table.find('tblCHL_OI') != -1:
+    #if table.find('tblCHL_OI'.lower()) != -1:
     #    it = True   
-    ##if table.find('tblPisces') != -1:
-    ##    it = True
+    #if table.find('tblPisces'.lower()) != -1:
+    #    it = True
     return it
 
 

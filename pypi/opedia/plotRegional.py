@@ -4,10 +4,10 @@ import sys
 import os
 sys.path.append(os.path.dirname(__file__))
 import numpy as np
-import matplotlib.pyplot as plt
 import pandas as pd
 import db
 import subset
+from common import getPalette, getBounds
 from datetime import datetime, timedelta
 import time
 from bokeh.plotting import figure, show, output_file
@@ -16,68 +16,11 @@ from bokeh.palettes import all_palettes
 from bokeh.models import LinearColorMapper, BasicTicker, ColorBar
 from bokeh.embed import components
 import jupyterInline as jup
+if jup.jupytered():
+    from tqdm import tqdm_notebook as tqdm
+else:
+    from tqdm import tqdm
 
-
-
-def getBounds(varName):
-    bounds = (None, None)
-    if varName.find('Fe') != -1:
-        bounds = (0, 1e-4)
-    elif varName.find('chl') != -1:
-        bounds = (0, 5e-1)
-    elif varName.find('CHL') != -1:
-        bounds = (0, 5e-1)
-    elif varName.find('O2') != -1:
-        bounds = (200, 320)
-    elif varName.find('PHYC') != -1:
-        bounds = (0, 4)
-    elif varName.find('PP') != -1:
-        bounds = (0, 4e-2)
-    elif varName.find('Si') != -1:
-        bounds = (10, 30)
-    elif varName.find('NO3') != -1:
-        bounds = (0, 20)
-    elif varName.find('PO4') != -1:
-        bounds = (0, 1.5)
-    elif varName.find('wind_stress') != -1:
-        bounds = (0, 3e-1)
-    elif varName.find('eastward_wind') != -1:
-        bounds = (0, 2)
-    elif varName.find('sst') != -1:
-        bounds = (0, 32)          
-    elif varName.find('sla') != -1:
-        bounds = (-0.3, 0.3)          
-    elif varName.find('vort') != -1:
-        bounds = (-4e-6, 4e-6)          
-    return bounds
-
-def getPalette(varName):
-    paletteName = 'RdBu11'
-    if varName.find('Fe') != -1:
-        paletteName = 'Viridis256'
-    elif varName.find('O2') != -1:
-        paletteName = 'Viridis256'
-    elif varName.find('PHYC') != -1:
-        paletteName = 'Viridis256'
-    elif varName.find('PP') != -1:
-        paletteName = 'Viridis256'
-    elif varName.find('Si') != -1:
-        paletteName = 'Viridis256'
-    elif varName.find('NO3') != -1:
-        paletteName = 'Viridis256'
-    elif varName.find('PO4') != -1:
-        paletteName = 'Viridis256'
-    elif varName.find('chl') != -1:
-        paletteName = 'Viridis256'
-    elif varName.find('CHL') != -1:
-        paletteName = 'Viridis256'
-    elif varName.find('wind_stress') != -1:
-        paletteName = 'Plasma256'
-    elif varName.find('sst') != -1:
-        paletteName = 'Inferno256'
-    elif varName.find('sla') != -1:
-        paletteName = 'RdBu11'
-    return paletteName
 
 
 def exportData(df, path):
@@ -87,7 +30,7 @@ def exportData(df, path):
 
 def regionalMap(tables, variabels, dt1, dt2, lat1, lat2, lon1, lon2, depth1, depth2, fname, exportDataFlag):
     data, lats, lons, subs, frameVars = [], [], [], [], []
-    for i in range(len(tables)):
+    for i in tqdm(range(len(tables)), desc='overall'):
         df = subset.spaceTime(tables[i], variabels[i], dt1, dt2, lat1, lat2, lon1, lon2, depth1, depth2)
         if len(df) < 1:
             continue

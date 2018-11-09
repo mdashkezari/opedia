@@ -2,9 +2,9 @@ import sys
 import os
 sys.path.append(os.path.dirname(__file__))
 import numpy as np
-import matplotlib.pyplot as plt
 import pandas as pd
 import db
+import common as com
 import timeSeries as TS
 from datetime import datetime, timedelta
 import time
@@ -16,6 +16,10 @@ from bokeh.palettes import all_palettes
 from bokeh.models import HoverTool
 from bokeh.embed import components
 import jupyterInline as jup
+if jup.jupytered():
+    from tqdm import tqdm_notebook as tqdm
+else:
+    from tqdm import tqdm
 
 
 
@@ -43,14 +47,16 @@ def exportData(t, y, yErr, table, variable, lat1, lat2, lon1, lon2, depth1, dept
     return
 
 
+
 def plotTS(tables, variables, startDate, endDate, lat1, lat2, lon1, lon2, depth1, depth2, fname, exportDataFlag, marker='-', msize=20, clr='purple'):
     p = []
     lw = 2
     w = 800
     h = 400
     TOOLS = 'pan,wheel_zoom,zoom_in,zoom_out,box_zoom, undo,redo,reset,tap,save,box_select,poly_select,lasso_select'
-    for i in range(len(tables)):
-        t, y, yErr = TS.timeSeries(tables[i], variables[i], startDate, endDate, lat1, lat2, lon1, lon2, depth1, depth2)
+    for i in tqdm(range(len(tables)), desc='overall'):
+        dt = com.temporalRes(tables[i])
+        t, y, yErr = TS.timeSeries(tables[i], variables[i], startDate, endDate, lat1, lat2, lon1, lon2, depth1, depth2, fmt='%Y-%m-%d', dt=dt*24*60)
         if exportDataFlag:
             exportData(t, y, yErr, tables[i], variables[i], lat1, lat2, lon1, lon2, depth1, depth2)
         p1 = figure(tools=TOOLS, toolbar_location="above", plot_width=w, plot_height=h)
@@ -68,7 +74,10 @@ def plotTS(tables, variables, startDate, endDate, lat1, lat2, lon1, lon2, depth1
                     months=["%d %B %Y"],
                     years=["%d %B %Y"],
                 )
-        p1.xaxis.major_label_orientation = pi/4
+            p1.xaxis.major_label_orientation = pi/4
+        elif db.hasField(tables[i], 'month'):
+            p1.xaxis.axis_label = 'Month'
+
         #p1.xaxis.visible = False
         p.append(p1)
     dirPath = 'embed/'
@@ -85,8 +94,6 @@ def main():
     variables = sys.argv[2].split(',')      
     startDate = sys.argv[3]      
     endDate = sys.argv[4]      
-    #startDate = sys.argv[3].split('T')[0]      
-    #endDate = sys.argv[4].split('T')[0]      
     lat1 = sys.argv[5]
     lat2 = sys.argv[6]     
     lon1 = sys.argv[7]      

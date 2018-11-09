@@ -1,8 +1,8 @@
 object frmMain: TfrmMain
   Left = 0
   Top = 0
-  Caption = 'Opedia 0.2.6'
-  ClientHeight = 967
+  Caption = 'Opedia 0.2.16'
+  ClientHeight = 918
   ClientWidth = 1330
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -19,14 +19,14 @@ object frmMain: TfrmMain
     Left = 0
     Top = 0
     Width = 1070
-    Height = 942
+    Height = 893
     Align = alClient
     TabOrder = 0
     object Map: TdxMapControl
       Left = 0
       Top = 0
       Width = 1068
-      Height = 940
+      Height = 891
       Align = alClient
       LookAndFeel.NativeStyle = False
       PopupMenu = dxRibbonRadialMenu1
@@ -61,19 +61,18 @@ object frmMain: TfrmMain
     end
     object Edit1: TEdit
       Left = 16
-      Top = 822
+      Top = 716
       Width = 1025
       Height = 21
       TabOrder = 2
       Text = 'Edit1'
-      Visible = False
     end
   end
   object scbSettingsPanel: TcxScrollBox
     Left = 1070
     Top = 0
     Width = 260
-    Height = 942
+    Height = 893
     Align = alRight
     Color = clBtnFace
     ParentColor = False
@@ -90,13 +89,13 @@ object frmMain: TfrmMain
       Style.Font.Style = [fsBold]
       Style.IsFontAssigned = True
       TabOrder = 0
-      Height = 160
+      Height = 167
       Width = 240
       object ledtVars: TAdvListEditor
-        Left = 8
-        Top = 38
-        Width = 225
-        Height = 117
+        Left = 7
+        Top = 41
+        Width = 227
+        Height = 119
         Appearance.Normal.ColorFrom = 16312028
         Appearance.Normal.ColorTo = 15847357
         Appearance.Normal.BorderColor = 14124408
@@ -128,8 +127,8 @@ object frmMain: TfrmMain
         Version = '1.4.0.1'
       end
       object cxLabel9: TcxLabel
-        Left = 88
-        Top = 11
+        Left = 82
+        Top = 12
         Caption = 'Export Data'
         ParentFont = False
         Style.Font.Charset = DEFAULT_CHARSET
@@ -141,16 +140,19 @@ object frmMain: TfrmMain
         Transparent = True
       end
       object tsExportData: TdxToggleSwitch
-        Left = 159
-        Top = 11
+        Left = 158
+        Top = 12
+        AutoSize = False
         Checked = False
         TabOrder = 2
         Transparent = True
+        Height = 21
+        Width = 74
       end
     end
     object cxGroupBox2: TcxGroupBox
       Left = 9
-      Top = 229
+      Top = 226
       ParentFont = False
       Style.Font.Charset = DEFAULT_CHARSET
       Style.Font.Color = clWindowText
@@ -159,10 +161,10 @@ object frmMain: TfrmMain
       Style.Font.Style = [fsBold]
       Style.IsFontAssigned = True
       TabOrder = 1
-      Height = 420
+      Height = 391
       Width = 241
       object dtwpTimeStart: TdxDateTimeWheelPicker
-        Left = 8
+        Left = 7
         Top = 30
         ParentFont = False
         Style.Font.Charset = DEFAULT_CHARSET
@@ -172,12 +174,12 @@ object frmMain: TfrmMain
         Style.Font.Style = []
         Style.IsFontAssigned = True
         TabOrder = 0
-        Height = 175
-        Width = 220
+        Height = 158
+        Width = 227
       end
       object dtwpTimeEnd: TdxDateTimeWheelPicker
-        Left = 8
-        Top = 238
+        Left = 7
+        Top = 220
         ParentFont = False
         Style.Font.Charset = DEFAULT_CHARSET
         Style.Font.Color = clWindowText
@@ -186,8 +188,8 @@ object frmMain: TfrmMain
         Style.Font.Style = []
         Style.IsFontAssigned = True
         TabOrder = 1
-        Height = 175
-        Width = 220
+        Height = 158
+        Width = 227
       end
       object cxLabel1: TcxLabel
         Left = 8
@@ -204,7 +206,7 @@ object frmMain: TfrmMain
       end
       object cxLabel2: TcxLabel
         Left = 6
-        Top = 217
+        Top = 199
         Caption = 'End Date'
         ParentFont = False
         Style.Font.Charset = DEFAULT_CHARSET
@@ -218,7 +220,7 @@ object frmMain: TfrmMain
     end
     object cxGroupBox3: TcxGroupBox
       Left = 5
-      Top = 692
+      Top = 646
       ParentFont = False
       Style.Font.Charset = DEFAULT_CHARSET
       Style.Font.Color = clWindowText
@@ -679,7 +681,7 @@ object frmMain: TfrmMain
     end
     object cxLabel10: TcxLabel
       Left = 5
-      Top = 663
+      Top = 617
       Caption = 'III. Spatial domain'
       ParentFont = False
       Style.Font.Charset = DEFAULT_CHARSET
@@ -692,7 +694,7 @@ object frmMain: TfrmMain
     end
     object cxLabel11: TcxLabel
       Left = 9
-      Top = 203
+      Top = 200
       Caption = 'II. Time period'
       ParentFont = False
       Style.Font.Charset = DEFAULT_CHARSET
@@ -719,7 +721,7 @@ object frmMain: TfrmMain
   end
   object cxScrollBox1: TcxScrollBox
     Left = 0
-    Top = 942
+    Top = 893
     Width = 1330
     Height = 25
     Align = alBottom
