@@ -111,9 +111,14 @@ class MainVC: NSViewController, MKMapViewDelegate, NSTokenFieldCellDelegate, NST
             _ = Initializer().msgDialog(headline: "Please pick at least one variable!", text: "")
             return
         }
-        spnBusy.startAnimation(self)
-        updateQueryParams()
-        runScript([pythonPath, "\(opediaAPI)plotRegional.py", tables, vars, date1, date2, lat1, lat2, lon1, lon2, depth1, depth2, fname, exportFlag, bundlePath])
+        
+        let delta = updateQueryParams()
+        let pass = sanityCheck_RegionalMap(delta: delta)
+        if pass {
+            spnBusy.startAnimation(self)
+            runScript([pythonPath, "\(opediaAPI)plotRegional.py", tables, vars, date1, date2, lat1, lat2, lon1, lon2, depth1, depth2, fname, exportFlag, bundlePath])
+            //print(pythonPath, "\(opediaAPI)plotRegional.py", tables, vars, date1, date2, lat1, lat2, lon1, lon2, depth1, depth2, fname, exportFlag, invertLon)
+        }
     }
 
     @IBAction func plotMutualTrend(_ sender: Any) {
@@ -123,7 +128,7 @@ class MainVC: NSViewController, MKMapViewDelegate, NSTokenFieldCellDelegate, NST
         }
         spnBusy.startAnimation(self)
         updateQueryParams()
-        runScript([pythonPath, "\(opediaAPI)plotXY.py", tables, vars, date1, date2, lat1, lat2, lon1, lon2, fname, exportFlag, extV1, extVV1, extV2, extVV2, bundlePath])
+        runScript([pythonPath, "\(opediaAPI)plotXY.py", tables, vars, date1, date2, lat1, lat2, lon1, lon2, depth1, depth2, fname, exportFlag, bundlePath])
     }
 
 
@@ -373,8 +378,8 @@ class MainVC: NSViewController, MKMapViewDelegate, NSTokenFieldCellDelegate, NST
             cruise = pupRegisteredCruise.title
         } else {
             cruiseDB="0"
-            //source = pupRegisteredCruise.title
-            //cruise = pupRegisteredCruise.title
+            source = txfVirtualCruise.stringValue
+            cruise = (source as NSString).lastPathComponent
         }
         let Resample = pupSamplingRate.title
         let spatialTolerance = txfSpatialToleranceCruise.stringValue
@@ -403,7 +408,7 @@ class MainVC: NSViewController, MKMapViewDelegate, NSTokenFieldCellDelegate, NST
         if !title.isEmpty { annot.title = title }
         if !subtitle.isEmpty { annot.subtitle = subtitle }
         mapView.addAnnotation(annot)
-        mapView.add(MKCircle(center: annot.coordinate, radius: 10000))
+        mapView.add(MKCircle(center: annot.coordinate, radius: 14000))
         
     }
 
@@ -419,12 +424,12 @@ class MainVC: NSViewController, MKMapViewDelegate, NSTokenFieldCellDelegate, NST
     
     func addStationALOHA(){
         // Adding a pin representing the Station ALOHA
-        addPinAnnot(lat:22.75, lon:-158, title:"Station ALOHA", subtitle:"")
+        // addPinAnnot(lat:22.75, lon:-158, title:"Station ALOHA", subtitle:"")
     }
     
     
     func addTrack(_ track: [CLLocationCoordinate2D]) {
-        let rad = CLLocationDistance(13000)
+        let rad = CLLocationDistance(14000)
         for item in track {
             mapView.add(MKCircle(center: item, radius: rad))
         }
@@ -436,7 +441,7 @@ class MainVC: NSViewController, MKMapViewDelegate, NSTokenFieldCellDelegate, NST
             circleRenderer.lineWidth = 1.0
             circleRenderer.strokeColor = NSColor(red: 1, green:0.1, blue:0.1, alpha: 1)
             circleRenderer.fillColor = NSColor(red: 1, green:0.1, blue:0.1, alpha: 1)
-            circleRenderer.alpha = 0.4
+            circleRenderer.alpha = 0.6
             return circleRenderer
         }
         return MKOverlayRenderer()
@@ -541,7 +546,16 @@ class MainVC: NSViewController, MKMapViewDelegate, NSTokenFieldCellDelegate, NST
 */
     
     
-    func updateQueryParams() {
+    func deltas() -> delatParams {
+        let deltaDays = Calendar.current.dateComponents([.day], from: dpcStartDate.dateValue, to: dpcEndDate.dateValue).day! + 1
+        let deltaLat = dslLat.end - dslLat.start
+        let deltaLon = dslLon.end - dslLon.start
+        let deltaDepth = Double(pupEndDepth.title)! - Double(pupStartDepth.title)!
+        let deltaDepthIndex = pupEndDepth.indexOfSelectedItem - pupStartDepth.indexOfSelectedItem + 1
+        return delatParams(days: deltaDays, lats: deltaLat, lons: deltaLon, depths: deltaDepth, depthIndexes: deltaDepthIndex)
+    }
+    
+    func updateQueryParams() -> delatParams {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd"        
         (vars, tables, extV1, extVV1, extV2, extVV2) = parseTokens()
@@ -562,6 +576,14 @@ class MainVC: NSViewController, MKMapViewDelegate, NSTokenFieldCellDelegate, NST
             exportFlag = "0"
         }
         exportFormat = "csv"
+        
+        if crossed180 {
+            invertLon = "1"
+        } else {
+            invertLon = "0"
+        }
+        
+        return deltas()
     }
 
     
@@ -633,6 +655,7 @@ class MainVC: NSViewController, MKMapViewDelegate, NSTokenFieldCellDelegate, NST
         
         switch recognizer.state {
         case .began:
+            crossed180 = false
             startCoord = coordinates
             startRegionSelect(location)
         case .changed:
@@ -640,6 +663,7 @@ class MainVC: NSViewController, MKMapViewDelegate, NSTokenFieldCellDelegate, NST
             drawRect(location)
         case .ended:
             endCoord = coordinates
+            if (startCoord.longitude * endCoord.longitude < 0) { crossed180 = true }
             setSpatialControls(startCoord, endCoord)
             endRegionSelect()
         default:
@@ -824,7 +848,20 @@ class MainVC: NSViewController, MKMapViewDelegate, NSTokenFieldCellDelegate, NST
     
 
     
+    func sanityCheck_RegionalMap(delta: delatParams) -> Bool {
+        var res = true
+        let vars = (tokenField.objectValue as! NSArray).count
+        let plotNumbers = vars * delta.days * delta.depthIndexes
+        if plotNumbers > plotCountWarning {
+            res = Initializer().msgDialog(headline: "Warning", text: "You've picked:\n\t\t\t\(vars) variable(s)\n\t\t\t\(delta.depthIndexes) depth level(s)\n\t\t\t\(delta.days)-day time period.\n\nYour query may result in large number of plots.\nDo you want to continue?")
+        }
+        return res
+    }
 
+
+    
+    
+    
     
     
     // MARK: - implemntation

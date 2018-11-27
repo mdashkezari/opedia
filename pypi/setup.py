@@ -11,7 +11,7 @@ with open(path.join(here, 'README.md'), encoding='utf-8') as f:
 
 
 def postPIP():
-    #f=open('E:/here.txt','w')
+    #f=open('path to a text file','w')
     #f.write(here)
     #f.close()
     pass
@@ -30,7 +30,7 @@ class PostInstallCommand(install):
 
 setup(
     name='opedia',
-    version='0.2.22',
+    version='0.2.27',
     description='Opedia is an open source database service to integrate, visualize, and analyze ocean datasets such as satellite data, in-situ observations, and model outputs.',
     long_description=long_description,
     long_description_content_type='text/markdown',

@@ -124,6 +124,7 @@ def main():
     depth2 = sys.argv[10]      
     fname = sys.argv[11]
     exportDataFlag = bool(int(sys.argv[12]))
+
     regionalMap(tables.split(','), variables.split(','), dt1, dt2, lat1, lat2, lon1, lon2, depth1, depth2, fname, exportDataFlag)
 
 

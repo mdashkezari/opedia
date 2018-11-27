@@ -49,12 +49,13 @@ def getCruiseTrack(DB_Cruise, source, cruise):
         df = pd.read_csv(source)    
     return df
 
-def resample(df, resampTau):
+def resample(df, resampTau, removeNAs=True):
     if resampTau != '0':
         df = indexTime(df)
         df = df.resample(resampTau).mean()
         df.reset_index(level=0, inplace=True)
-        df = removeNA(df, ['lat', 'lon'])        
+        if removeNAs:
+            df = removeNA(df, ['lat', 'lon'])        
     return df
 
 def dumpCruiseShape(dfShape, source, cruise, fname):

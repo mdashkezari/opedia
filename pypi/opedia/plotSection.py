@@ -78,7 +78,7 @@ def sectionMap(tables, variabels, dt1, dt2, lat1, lat2, lon1, lon2, depth1, dept
                 frameVars.append(variabels[i])
                 subs.append(sub)
 
-    bokehSec(data=data, subject=subs, fname=fname, ys=ys, xs=ys, zs=zs, variabels=frameVars)
+    bokehSec(data=data, subject=subs, fname=fname, ys=ys, xs=xs, zs=zs, variabels=frameVars)
     return
 
 

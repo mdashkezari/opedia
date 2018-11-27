@@ -113,7 +113,7 @@
                                                             <action selector="plotMutualTrend:" target="Ady-hI-5gd" id="KPI-UY-lbP"/>
                                                         </connections>
                                                     </menuItem>
-                                                    <menuItem title="Histogram" keyEquivalent="h" id="TIw-8R-Y3N">
+                                                    <menuItem title="Histogram" keyEquivalent="i" id="TIw-8R-Y3N">
                                                         <connections>
                                                             <action selector="plotHist:" target="Ady-hI-5gd" id="WC0-D4-Lbv"/>
                                                         </connections>
@@ -121,14 +121,14 @@
                                                 </items>
                                             </menu>
                                         </menuItem>
-                                        <menuItem title="Geometry" id="JY6-Rb-kih">
+                                        <menuItem title="Geometry" enabled="NO" id="JY6-Rb-kih">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <menu key="submenu" title="Geometry" id="lab-3v-Qux">
                                                 <items>
-                                                    <menuItem title="Cruise Track" keyEquivalent="c" id="cyp-d2-UdP"/>
-                                                    <menuItem title="Lagrangian Track" keyEquivalent="l" id="O8w-AO-tch"/>
-                                                    <menuItem title="Eddy Track" keyEquivalent="e" id="ZGe-Kj-aOc"/>
-                                                    <menuItem title="FTLE Ridge" keyEquivalent="f" id="kuE-9s-B92"/>
+                                                    <menuItem title="Cruise Track" enabled="NO" keyEquivalent="c" id="cyp-d2-UdP"/>
+                                                    <menuItem title="Lagrangian Track" enabled="NO" keyEquivalent="l" id="O8w-AO-tch"/>
+                                                    <menuItem title="Eddy Track" enabled="NO" keyEquivalent="e" id="ZGe-Kj-aOc"/>
+                                                    <menuItem title="FTLE Ridge" enabled="NO" keyEquivalent="f" id="kuE-9s-B92"/>
                                                 </items>
                                             </menu>
                                         </menuItem>
@@ -764,7 +764,7 @@
         <scene sceneID="R2V-B0-nI4">
             <objects>
                 <windowController id="B8D-0N-5wS" sceneMemberID="viewController">
-                    <window key="window" title="Simons Ocean Atlas 0.2.15" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" animationBehavior="default" titlebarAppearsTransparent="YES" id="IQv-IB-iLA">
+                    <window key="window" title="Simons Ocean Atlas 0.2.27" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" animationBehavior="default" titlebarAppearsTransparent="YES" id="IQv-IB-iLA">
                         <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
                         <rect key="contentRect" x="196" y="240" width="480" height="270"/>
                         <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1027"/>
@@ -778,7 +778,7 @@
                 </windowController>
                 <customObject id="Oky-zY-oP4" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="59" y="320"/>
+            <point key="canvasLocation" x="59" y="248"/>
         </scene>
         <!--MainVC-->
         <scene sceneID="hIz-AP-VOD">
@@ -815,11 +815,11 @@
                                                         <font key="font" metaFont="system"/>
                                                         <tabViewItems>
                                                             <tabViewItem label="Space-Time" identifier="" id="cPS-vo-VpZ">
-                                                                <view key="view" id="1dC-PH-qEA">
+                                                                <view key="view" ambiguous="YES" id="1dC-PH-qEA">
                                                                     <rect key="frame" x="10" y="33" width="515" height="149"/>
                                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                     <subviews>
-                                                                        <datePicker verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="PbU-qU-JbB">
+                                                                        <datePicker verticalHuggingPriority="750" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="PbU-qU-JbB">
                                                                             <rect key="frame" x="4" y="80" width="142" height="27"/>
                                                                             <constraints>
                                                                                 <constraint firstAttribute="width" constant="139" id="eb2-zu-Jqm"/>
@@ -836,7 +836,7 @@
                                                                                 <color key="textColor" red="0.4756349325" green="0.47564673419999998" blue="0.47564041610000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                             </datePickerCell>
                                                                         </datePicker>
-                                                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="RfE-s6-oRK">
+                                                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="RfE-s6-oRK">
                                                                             <rect key="frame" x="2" y="104" width="68" height="17"/>
                                                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Start Time" id="wqx-p6-vaM">
                                                                                 <font key="font" metaFont="system"/>
@@ -844,7 +844,7 @@
                                                                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                                             </textFieldCell>
                                                                         </textField>
-                                                                        <datePicker verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="09T-l7-r3H">
+                                                                        <datePicker verticalHuggingPriority="750" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="09T-l7-r3H">
                                                                             <rect key="frame" x="4" y="17" width="142" height="27"/>
                                                                             <datePickerCell key="cell" borderStyle="bezel" alignment="left" id="N6G-eM-t1e">
                                                                                 <font key="font" metaFont="system"/>
@@ -858,7 +858,7 @@
                                                                                 <color key="textColor" red="0.4756349325" green="0.47564673419999998" blue="0.47564041610000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                             </datePickerCell>
                                                                         </datePicker>
-                                                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="fQQ-2G-igh">
+                                                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fQQ-2G-igh">
                                                                             <rect key="frame" x="2" y="42" width="61" height="17"/>
                                                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="End Time" id="tES-bm-HxL">
                                                                                 <font key="font" metaFont="system"/>
@@ -866,16 +866,16 @@
                                                                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                                             </textFieldCell>
                                                                         </textField>
-                                                                        <customView translatesAutoresizingMaskIntoConstraints="NO" id="kLZ-4o-Mzo" customClass="RangeSlider" customModule="opedia" customModuleProvider="target">
+                                                                        <customView ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kLZ-4o-Mzo" customClass="RangeSlider" customModule="opedia" customModuleProvider="target">
                                                                             <rect key="frame" x="172" y="88" width="341" height="20"/>
                                                                         </customView>
-                                                                        <customView translatesAutoresizingMaskIntoConstraints="NO" id="L0M-MS-BS1" customClass="RangeSlider" customModule="opedia" customModuleProvider="target">
+                                                                        <customView ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="L0M-MS-BS1" customClass="RangeSlider" customModule="opedia" customModuleProvider="target">
                                                                             <rect key="frame" x="172" y="46" width="341" height="21"/>
                                                                         </customView>
-                                                                        <customView hidden="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nb7-U2-2tX" customClass="RangeSlider" customModule="opedia" customModuleProvider="target">
+                                                                        <customView hidden="YES" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nb7-U2-2tX" customClass="RangeSlider" customModule="opedia" customModuleProvider="target">
                                                                             <rect key="frame" x="4" y="52" width="341" height="20"/>
                                                                         </customView>
-                                                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="tch-dO-jEJ">
+                                                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tch-dO-jEJ">
                                                                             <rect key="frame" x="170" y="108" width="58" height="17"/>
                                                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Latitude " id="FfV-xJ-h2j">
                                                                                 <font key="font" metaFont="system"/>
@@ -883,7 +883,7 @@
                                                                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                                             </textFieldCell>
                                                                         </textField>
-                                                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="y0k-Kh-L95">
+                                                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="y0k-Kh-L95">
                                                                             <rect key="frame" x="170" y="67" width="65" height="17"/>
                                                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Longitude" id="lWH-99-ylg">
                                                                                 <font key="font" metaFont="system"/>
@@ -891,7 +891,7 @@
                                                                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                                             </textFieldCell>
                                                                         </textField>
-                                                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="T0o-Ll-Kfr">
+                                                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="T0o-Ll-Kfr">
                                                                             <rect key="frame" x="170" y="24" width="99" height="17"/>
                                                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Depth Start [m]" id="DD1-5T-GQG">
                                                                                 <font key="font" metaFont="system"/>
@@ -899,7 +899,7 @@
                                                                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                                             </textFieldCell>
                                                                         </textField>
-                                                                        <popUpButton verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="H9l-9d-qMv">
+                                                                        <popUpButton verticalHuggingPriority="750" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="H9l-9d-qMv">
                                                                             <rect key="frame" x="170" y="-1" width="100" height="26"/>
                                                                             <popUpButtonCell key="cell" type="push" title="0" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="dGE-eF-S9P" id="ddM-lf-K8q">
                                                                                 <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
@@ -961,7 +961,7 @@
                                                                                 </menu>
                                                                             </popUpButtonCell>
                                                                         </popUpButton>
-                                                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="kC7-EA-ewe">
+                                                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kC7-EA-ewe">
                                                                             <rect key="frame" x="416" y="20" width="93" height="17"/>
                                                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Depth End [m]" id="RJb-Ke-6GX">
                                                                                 <font key="font" metaFont="system"/>
@@ -969,7 +969,7 @@
                                                                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                                             </textFieldCell>
                                                                         </textField>
-                                                                        <popUpButton verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="MPM-sF-FWC">
+                                                                        <popUpButton verticalHuggingPriority="750" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="MPM-sF-FWC">
                                                                             <rect key="frame" x="416" y="-5" width="100" height="26"/>
                                                                             <popUpButtonCell key="cell" type="push" title="0.5" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="iaZ-HV-Dac" id="zwR-Rm-yk6">
                                                                                 <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
@@ -1072,17 +1072,21 @@
                                                                 </view>
                                                             </tabViewItem>
                                                             <tabViewItem label="Cruise" identifier="" id="KvE-Vv-aK7">
-                                                                <view key="view" ambiguous="YES" id="no7-2g-1u1">
+                                                                <view key="view" id="no7-2g-1u1">
                                                                     <rect key="frame" x="10" y="33" width="515" height="149"/>
                                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                     <subviews>
-                                                                        <popUpButton verticalHuggingPriority="750" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="icV-uC-vnZ">
+                                                                        <popUpButton verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="icV-uC-vnZ">
                                                                             <rect key="frame" x="334" y="84" width="168" height="26"/>
-                                                                            <popUpButtonCell key="cell" type="push" title="SCOPE_16" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="k04-8H-wku" id="Noq-7c-S6p">
+                                                                            <popUpButtonCell key="cell" type="push" title="Gradients1.0" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="k04-8H-wku" id="Noq-7c-S6p">
                                                                                 <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                                                                                 <font key="font" metaFont="menu"/>
                                                                                 <menu key="menu" id="Fxa-wU-7d1">
                                                                                     <items>
+                                                                                        <menuItem title="DeepDOM" id="N7o-jg-bBR" userLabel="DeepDOM"/>
+                                                                                        <menuItem title="Gradients1.0" state="on" id="k04-8H-wku" userLabel="SCOPE_16"/>
+                                                                                        <menuItem title="Gradients2.0" id="qWI-tr-Vpt" userLabel="Gradients2.0"/>
+                                                                                        <menuItem title="KM_1" id="IMV-ww-cdG" userLabel="KM_1"/>
                                                                                         <menuItem title="SCOPE_1" id="jfE-nT-vh0" userLabel="SCOPE_1"/>
                                                                                         <menuItem title="SCOPE_2" id="pIO-1d-lnC" userLabel="SCOPE_2"/>
                                                                                         <menuItem title="SCOPE_3" id="IL6-MU-eeH" userLabel="SCOPE_3"/>
@@ -1096,20 +1100,16 @@
                                                                                         <menuItem title="SCOPE_13" id="ThT-N9-LRz" userLabel="SCOPE_13"/>
                                                                                         <menuItem title="SCOPE_14" id="DEN-LP-l8q" userLabel="SCOPE_14"/>
                                                                                         <menuItem title="SCOPE_15" id="ftq-xW-7QM" userLabel="SCOPE_15"/>
-                                                                                        <menuItem title="SCOPE_16" state="on" id="k04-8H-wku" userLabel="SCOPE_16"/>
                                                                                         <menuItem title="SCOPE_17" id="b7I-fb-W2R" userLabel="SCOPE_17"/>
                                                                                         <menuItem title="SCOPE_18" id="58A-wI-JTe" userLabel="SCOPE_18"/>
                                                                                         <menuItem title="SCOPE_19" id="3H6-JB-lmf" userLabel="SCOPE_19"/>
-                                                                                        <menuItem title="DeepDOM" id="N7o-jg-bBR" userLabel="DeepDOM"/>
-                                                                                        <menuItem title="Gradients2.0" id="qWI-tr-Vpt" userLabel="Gradients2.0"/>
-                                                                                        <menuItem title="KM_1" id="IMV-ww-cdG" userLabel="KM_1"/>
                                                                                         <menuItem title="Thompson_4" id="BEH-iE-PUe" userLabel="Thompson_4"/>
                                                                                         <menuItem title="Thompson_9" id="Dph-pl-B4T" userLabel="Thompson_9"/>
                                                                                     </items>
                                                                                 </menu>
                                                                             </popUpButtonCell>
                                                                         </popUpButton>
-                                                                        <textField verticalHuggingPriority="750" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vUA-Tn-zZK">
+                                                                        <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="vUA-Tn-zZK">
                                                                             <rect key="frame" x="18" y="43" width="163" height="22"/>
                                                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" title="0.5" drawsBackground="YES" id="f0W-H0-lYY">
                                                                                 <font key="font" metaFont="system"/>
@@ -1117,7 +1117,7 @@
                                                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                                             </textFieldCell>
                                                                         </textField>
-                                                                        <popUpButton verticalHuggingPriority="750" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IvC-b9-mGZ">
+                                                                        <popUpButton verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="IvC-b9-mGZ">
                                                                             <rect key="frame" x="334" y="40" width="168" height="26"/>
                                                                             <popUpButtonCell key="cell" type="push" title="6H" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="PXK-y7-zax" id="d3G-EE-fmc">
                                                                                 <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
@@ -1134,7 +1134,7 @@
                                                                                 </menu>
                                                                             </popUpButtonCell>
                                                                         </popUpButton>
-                                                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="FSy-so-LX3">
+                                                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="FSy-so-LX3">
                                                                             <rect key="frame" x="175" y="121" width="44" height="17"/>
                                                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Virtual" id="hZx-oi-q99">
                                                                                 <font key="font" metaFont="system"/>
@@ -1142,7 +1142,7 @@
                                                                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                                             </textFieldCell>
                                                                         </textField>
-                                                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="WXg-3c-EYe">
+                                                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="WXg-3c-EYe">
                                                                             <rect key="frame" x="334" y="110" width="112" height="17"/>
                                                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Registered Cruise" id="FIa-ez-L9Y">
                                                                                 <font key="font" metaFont="system"/>
@@ -1150,7 +1150,7 @@
                                                                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                                             </textFieldCell>
                                                                         </textField>
-                                                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="h3W-re-9Qt">
+                                                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="h3W-re-9Qt">
                                                                             <rect key="frame" x="334" y="66" width="92" height="17"/>
                                                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Sampling Rate" id="tyF-T0-04M">
                                                                                 <font key="font" metaFont="system"/>
@@ -1158,13 +1158,13 @@
                                                                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                                             </textFieldCell>
                                                                         </textField>
-                                                                        <customView ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rqc-dU-Khc" customClass="OGSwitch" customModule="OGSwitch">
+                                                                        <customView translatesAutoresizingMaskIntoConstraints="NO" id="rqc-dU-Khc" customClass="OGSwitch" customModule="OGSwitch">
                                                                             <rect key="frame" x="225" y="113" width="64" height="33"/>
                                                                             <connections>
                                                                                 <action selector="swtCruiseMode:" target="XfG-lQ-9wD" id="BeX-cI-SkD"/>
                                                                             </connections>
                                                                         </customView>
-                                                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6Gm-CR-pCG">
+                                                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="6Gm-CR-pCG">
                                                                             <rect key="frame" x="16" y="66" width="167" height="17"/>
                                                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Spatial Tolerance (+/- deg)" id="pO7-Lc-rAA">
                                                                                 <font key="font" metaFont="system"/>
@@ -1172,7 +1172,7 @@
                                                                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                                             </textFieldCell>
                                                                         </textField>
-                                                                        <button verticalHuggingPriority="750" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="PyT-rD-MXf">
+                                                                        <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="PyT-rD-MXf">
                                                                             <rect key="frame" x="336" y="1" width="163" height="31"/>
                                                                             <buttonCell key="cell" type="square" title="Show Track" bezelStyle="shadowlessSquare" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="2ub-Fh-pKZ">
                                                                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -1182,7 +1182,7 @@
                                                                                 </connections>
                                                                             </buttonCell>
                                                                         </button>
-                                                                        <button verticalHuggingPriority="750" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="O90-iA-rxy">
+                                                                        <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="O90-iA-rxy">
                                                                             <rect key="frame" x="18" y="1" width="163" height="31"/>
                                                                             <constraints>
                                                                                 <constraint firstAttribute="height" constant="31" id="sBY-ds-5hi"/>
@@ -1195,7 +1195,7 @@
                                                                                 </connections>
                                                                             </buttonCell>
                                                                         </button>
-                                                                        <textField verticalHuggingPriority="750" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="XeV-Id-0si">
+                                                                        <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="XeV-Id-0si">
                                                                             <rect key="frame" x="18" y="87" width="163" height="22"/>
                                                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" enabled="NO" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="2Fe-Au-SmF">
                                                                                 <font key="font" metaFont="system"/>
@@ -1203,7 +1203,7 @@
                                                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                                             </textFieldCell>
                                                                         </textField>
-                                                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7Rj-GB-NG8">
+                                                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="7Rj-GB-NG8">
                                                                             <rect key="frame" x="16" y="110" width="86" height="17"/>
                                                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Virtual Cruise" id="PIG-Mg-MeZ">
                                                                                 <font key="font" metaFont="system"/>
@@ -1211,7 +1211,7 @@
                                                                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                                             </textFieldCell>
                                                                         </textField>
-                                                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ilI-vQ-wqN">
+                                                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="ilI-vQ-wqN">
                                                                             <rect key="frame" x="295" y="121" width="30" height="17"/>
                                                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Real" id="qOi-Jq-4ua">
                                                                                 <font key="font" metaFont="system"/>
@@ -1219,7 +1219,7 @@
                                                                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                                             </textFieldCell>
                                                                         </textField>
-                                                                        <button verticalHuggingPriority="750" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3ub-zy-k40">
+                                                                        <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="3ub-zy-k40">
                                                                             <rect key="frame" x="178" y="80" width="38" height="32"/>
                                                                             <constraints>
                                                                                 <constraint firstAttribute="width" constant="26" id="fiQ-fC-zNU"/>
@@ -2566,7 +2566,7 @@
                 <customObject id="rPt-NT-nkU" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
                 <arrayController objectClassName="CatalogVar" id="wG7-nq-i67"/>
             </objects>
-            <point key="canvasLocation" x="1039" y="673"/>
+            <point key="canvasLocation" x="782" y="654"/>
         </scene>
     </scenes>
 </document>

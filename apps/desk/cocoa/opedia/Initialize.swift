@@ -29,7 +29,7 @@ class Initializer {
         alert.informativeText = text
         alert.alertStyle = .critical
         alert.addButton(withTitle: "OK")
-        //alert.addButton(withTitle: "Cancel")
+        alert.addButton(withTitle: "Cancel")
         return alert.runModal() == .alertFirstButtonReturn
     }
     

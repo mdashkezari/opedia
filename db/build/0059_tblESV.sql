@@ -53,6 +53,17 @@ USE [Opedia]
 GO
 
 
+
+CREATE NONCLUSTERED INDEX [IX_tblESV_centroid] ON [dbo].[tblESV]
+(
+	[centroid] ASC
+)WITH (DATA_COMPRESSION = PAGE, PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) 
+ON [FG1]
+GO
+
+
+
+
 -- Rowstore index
 
 CREATE UNIQUE NONCLUSTERED INDEX [IX_tblESV_time_lat_lon_depth_cluster_levels_and_members] ON [dbo].[tblESV]

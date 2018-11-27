@@ -1,7 +1,7 @@
 object frmMain: TfrmMain
   Left = 0
   Top = 0
-  Caption = 'Opedia 0.2.16'
+  Caption = 'Opedia 0.2.27'
   ClientHeight = 918
   ClientWidth = 1330
   Color = clBtnFace
@@ -61,11 +61,12 @@ object frmMain: TfrmMain
     end
     object Edit1: TEdit
       Left = 16
-      Top = 716
-      Width = 1025
+      Top = 756
+      Width = 1033
       Height = 21
       TabOrder = 2
       Text = 'Edit1'
+      Visible = False
     end
   end
   object scbSettingsPanel: TcxScrollBox

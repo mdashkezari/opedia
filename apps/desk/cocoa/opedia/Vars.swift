@@ -21,6 +21,14 @@ let dumpFilename = "dump.txt"
 // catalog file content
 //var catalog: String = ""
 
+
+// min number of plots that generate a warning message
+let plotCountWarning = 20
+
+
+// if longitude 180 degree has crossed
+var crossed180 = false
+
 // query parameters
 var tables = ""
 var vars = ""
@@ -35,8 +43,17 @@ var depth2 = ""
 var fname = ""
 var exportFlag = ""
 var exportFormat = ""
+var invertLon = ""
 var extV1 = ""
 var extVV1 = ""
 var extV2 = ""
 var extVV2 = ""
 
+
+struct delatParams {
+    let days: Int
+    let lats: Double
+    let lons: Double
+    let depths: Double
+    let depthIndexes: Int
+}

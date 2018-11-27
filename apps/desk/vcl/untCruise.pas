@@ -278,6 +278,7 @@ procedure TfrmCruise.FormShow(Sender: TObject);
 begin
   frmCruise.ActiveControl:=wpResample;
   cbCruises.Properties.Items:=CruiseList();
+  cbCruises.ItemIndex:=1;
   OpenDialog1.InitialDir:=ExtractFileDir(Application.ExeName);
 end;
 

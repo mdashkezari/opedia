@@ -98,6 +98,12 @@ def timeSeries(table, field, startDate, endDate, lat1, lat2, lon1, lon2, depth1,
         ts, y, y_std = timeSeries_iterative(table, field, startDate, endDate, lat1, lat2, lon1, lon2, depth1, depth2, fmt, dt)
     else:   
         df = subset.timeSeries(table, field, startDate, endDate, lat1, lat2, lon1, lon2, depth1, depth2)
+
+        if table.lower().find('tblseaflow') != -1:
+            from plotCruise import resample
+            df = resample(df, 'D', removeNAs=False)
+            df[field+'_std'] = None
+
         if not db.isClimatology(table):
             ts, y, y_std = pd.to_datetime(df[df.columns[0]]), df[field], df[field+'_std']
             ts, y, y_std = fillGaps(ts, y, y_std, startDate, endDate, fmt, dt)
