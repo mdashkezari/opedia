@@ -68,7 +68,7 @@ def bulkInsertFlombaum(tableName):
     return
 
 
-def toSQLPandasFlombaum(bulkPath, tableName, usr='sa', psw='ArmLab2018', ip='10.19.231.219', port='1433', db='Opedia'):
+def toSQLPandasFlombaum(bulkPath, tableName, usr='ArmLab', psw='ArmLab2018', ip='192.168.0.21', port='1433', db='Opedia'):
 
     """ sqlalchemy connection to db """
     engine = sqlalchemy.create_engine('mssql+pyodbc://'+usr+':'+psw+'@'+ip+':'+port+'/'+db+'?'\
