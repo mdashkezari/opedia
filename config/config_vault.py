@@ -17,10 +17,11 @@ def leafStruc(base):
 	code = base + 'code/'
 	makedir(code)
 	return nrt, rep, doc, code
-    	
+
 
 opedia_proj = r'H:/Dropbox/projects/opedia/'
 vault = r'H:/Dropbox/Apps/OpediaVault/'
+
 makedir(vault)
 
 
@@ -75,6 +76,10 @@ nrt_socat_raw, rep_socat_raw, doc_socat_raw, code_socat_raw = leafStruc(socat_ra
 seaflow_raw = cruise_raw + 'seaflow/'
 makedir(seaflow_raw)
 nrt_seaflow_raw, rep_seaflow_raw, doc_seaflow_raw, code_seaflow_raw = leafStruc(seaflow_raw)
+####  obs/in-situ/cruise/flombaum   #####
+flombaum_raw = cruise_raw + 'flombaum/'
+makedir(flombaum_raw)
+nrt_flombaum_raw, rep_flombaum_raw, doc_flombaum_raw, code_flombaum_raw = leafStruc(flombaum_raw)
 ####  obs/in-situ/cruise/lineage  #####
 lineage_raw = cruise_raw + 'lineage/'
 makedir(lineage_raw)
