@@ -12,9 +12,15 @@ CREATE TABLE [dbo].[tblFlombaum](
 	[lat] [float] NOT NULL,
 	[lon] [float] NOT NULL,
 	[depth] [float] NOT NULL,
-	[prochloro_abundance] [float] NOT NULL,
-	[synecho_abundance] [float] NOT NULL
+	[prochloro_abundance] [float] NULL,
+	[synecho_abundance] [float] NULL,
+	[ID] [bigint] IDENTITY(1,1) NOT NULL,
+ CONSTRAINT [PK_tblFlombaum] PRIMARY KEY CLUSTERED
+(
+	[ID] ASC
+)WITH (DATA_COMPRESSION = PAGE, PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [FG1]
 ) ON [FG1]
+
 GO
 
 
@@ -32,7 +38,8 @@ CREATE NONCLUSTERED INDEX [IX_tblFlombaum_time_lat_lon] ON [dbo].[tblFlombaum]
 (
 	[time] ASC,
 	[lat] ASC,
-	[lon] ASC
+	[lon] ASC,
+	[depth] ASC
 )
 WITH (DATA_COMPRESSION = PAGE, PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON)
 ON [FG1]
