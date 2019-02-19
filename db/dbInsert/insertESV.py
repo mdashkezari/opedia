@@ -20,7 +20,7 @@ import insertPrep as ip
 
 
 def makeBulkESV():
-    path = cfgv.rep_esv_raw + 'ANT-28-5_all_fractions_deblur_eASVs.tsv'    
+    path = cfgv.rep_esv_raw + 'ANT-28-5_all_fractions_deblur_eASVs.tsv'
     prefix = 'esv'
     df = pd.read_csv(path, delimiter="\t")
     df['time']=pd.to_datetime(df['time'], format='%Y-%m-%d %H:%M:%S')
@@ -35,6 +35,7 @@ def makeBulkESV():
     df['ID'] = None
     exportBase = cfgv.opedia_proj + 'db/dbInsert/export/'
     export_path = '%s%s.csv' % (exportBase, prefix)
+    print(df.head(1), len(df), export_path)
     df.to_csv(export_path, index=False)
     #ip.mapTo180180(export_path, 'lon')   # only use if necessary
     #ip.sortByDepthLatLon(df, export_path, 'lon', 'lat', 'cruise')
@@ -42,26 +43,38 @@ def makeBulkESV():
 
 
 
+def toSQLbcp(bulkPath, tableName,  usr='sa', psw='Jazireie08', ip='128.208.239.15'):
+    str = """bcp Opedia.dbo.""" + tableName + """ in """ + bulkPath + """ -c -t, -U """ + usr + """ -P """ + psw + """ -S """ + ip + """,1433"""
+    print(str)
+    # os.system(str)
 
-def bulkInsertESV(tableName, usr, psw):
+
+def bulkInsertESV(tableName):
     dataTitle = 'ESV'
     print('%s  Inserting Bulk %s into %s.' % (datetime.today(), dataTitle, tableName))
     try:
-        bulkPath = ''
-        bulkPath = makeBulkESV()
+        # bulkPath = ''
+        # bulkPath = ulkESV()
         #print('\t %s  Bulk %s %7.7d ready.' % (datetime.today(), dataTitle, itnum))
-        dc.bulkInsert(filePath=bulkPath, tableName=tableName, usr=usr, psw=psw)
+        # dc.bulkInsert(filePath=bulkPath, tableName=tableName, usr=usr, psw=psw)
+        print('Starting table insert....')
+        toSQLbcp(bulkPath, tableName)
     finally:
-        if bulkPath != '':
-            os.remove(bulkPath)    
-    print('%s  Done' % datetime.today())
+        pass
+    #     if bulkPath != '':
+    #         os.remove(bulkPath)
+    # print('%s  Done' % datetime.today())
     return
 
 
 
 
-usr = sys.argv[1]
-psw = sys.argv[2]
+# usr = sys.argv[1]
+# psw = sys.argv[2]
 
-tableName = 'tblESV'
-bulkInsertESV(tableName, usr, psw)
+tableName = 'tblESV_update'
+# bulkPath = 'D:\opedia\db\dbInsert\export\esv.csv'
+# toSQLbcp(bulkPath, tableName)
+# bulkInsertESV(tableName, usr, psw)
+# bulkInsertESV(tableName)
+makeBulkESV()

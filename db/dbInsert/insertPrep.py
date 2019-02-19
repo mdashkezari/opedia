@@ -4,8 +4,9 @@ import pandas as pd
 
 
 def convertYYYYMMDD(df):
-    df['time'] = df['time'] + '-00:00:00'
-    df['time'] = pd.to_datetime(df['time'].astype(str), format='%Y-%m-%d-%H:%M:%S')
+    df['time'] = df['time'] #+ ' 00:00:00'
+    df['time'] = pd.to_datetime(df['time'].astype(str), format='%Y-%m-%d')
+
     return df
 
 def removeColumn(cols, df):
@@ -18,6 +19,10 @@ def removeMissings(cols, df):
     for col in cols:
         df[col].replace('', np.nan, inplace=True)
         df.dropna(subset=[col], inplace=True)
+    return df
+
+def NAtoNone(df):
+    df = df.replace(r'\s+', np.nan, regex=True)
     return df
 
 
