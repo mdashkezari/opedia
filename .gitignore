@@ -1,3 +1,4 @@
 gantt/
 .vscode/
-*.pyc
+*.pyc/
+db/login
