@@ -25,7 +25,14 @@ def daynToDate(dt):
 
 
 def get_rep_uv_sla(yr, mn, dy):
-        c1 = 'python motu-client.py -u mdehghaniashkez -p Jazireie08 -m http://motu.sltac.cls.fr/motu-web/Motu -s SEALEVEL_GLO_PHY_L4_REP_OBSERVATIONS_008_047-TDS -d dataset-duacs-rep-global-merged-allsat-phy-l4-v3 -x 0.125 -X -0.125 -y -89.875 -Y 89.875 -t "'
+        c1 = 'python motuclient.py ' + \
+                '--user mdehghaniashkez --pwd Jazireie08 ' + \
+                '--motu http://my.cmems-du.eu/motu-web/Motu ' + \
+                '--service-id SEALEVEL_GLO_PHY_L4_REP_OBSERVATIONS_008_047-TDS ' + \
+                '--product-id dataset-duacs-rep-global-merged-allsat-phy-l4 ' + \
+                '--longitude-min 0.125 --longitude-max -0.125 ' + \
+                '--latitude-min -89.875 --latitude-max 89.875 --date-min "'
+
         c3 = '" -T "'
         c4 = '" -v err -v vgosa -v vgos -v sla -v adt -v ugosa -v ugos -o %s -f ' % cfgv.rep_alt_raw
 

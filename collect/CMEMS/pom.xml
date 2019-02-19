@@ -1,0 +1,88 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <parent>
+		<artifactId>cls-project-config</artifactId>
+		<groupId>cls.commons</groupId>
+		<version>1.2.00</version>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
+    <groupId>cls.atoll.motu.client</groupId>
+    <artifactId>motuclient-python</artifactId>
+    <version>1.8.1</version>
+    <packaging>pom</packaging>
+
+    <name>Motu Client Python</name>
+    <description>This package holds the python scripts used to address Motu servers for ordering, extracting and
+        downloading oceanographic data.
+    </description>
+	
+	<properties>
+    	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  	</properties>
+    
+    <build>
+        <scriptSourceDirectory>${basedir}/src</scriptSourceDirectory>
+        <testSourceDirectory>${basedir}/bin</testSourceDirectory>
+        <outputDirectory>${basedir}/bin</outputDirectory>
+        <testOutputDirectory>${basedir}/bin</testOutputDirectory>
+        <plugins>
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>2.4</version>
+    			<configuration>
+					<finalName>${project.artifactId}-${project.version}-${build-timestamp}</finalName>
+                    <descriptors>
+                        <descriptor>${basedir}/assembly/bin.xml</descriptor>
+                        <descriptor>${basedir}/assembly/src.xml</descriptor>
+                    </descriptors>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>make-assembly</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+			<!-- Used to build a "build-timestamp" property, this property could be overridden by ANT calls from /motu-distribution/build.xml -->
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>buildnumber-maven-plugin</artifactId>
+				<version>1.4</version>
+				<configuration>
+					<revisionOnScmFailure>no.scm.config.in.pom</revisionOnScmFailure>
+				</configuration>
+				<executions>
+					<execution>
+						<id>create-timestamp-id</id>
+						<phase>validate</phase>
+						<goals>
+							<goal>create-timestamp</goal>
+						</goals>
+						<configuration>
+							<timestampFormat>yyyyMMddHHmmssSSS</timestampFormat>
+							<timestampPropertyName>build-timestamp</timestampPropertyName>
+							<!-- formats the timestamp all together like 2016-04-04 14:17:05.123 
+								and puts it in the ${myBuildNumberVariable} buildProperty -->
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+        </plugins>
+    </build>
+
+    <organization>
+        <name>CLS (Collecte Localisation Satelite)</name>
+        <url>http://www.cls.fr</url>
+    </organization>
+
+    <licenses>
+        <license>
+            <name>GNU Lesser General Public License (LGPL)</name>
+            <url>http://www.gnu.org/licenses/lgpl.html</url>
+            <distribution>repo</distribution>
+            <comments>A business-friendly Open Source license</comments>
+        </license>
+    </licenses>
+</project>

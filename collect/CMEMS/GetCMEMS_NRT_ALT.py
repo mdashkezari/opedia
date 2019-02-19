@@ -23,21 +23,23 @@ def daynToDate(dt):
         return dat
 
 
-
 def get_rep_uv_sla(yr, mn, dy):
-        c1 = 'python motu-client.py -u mdehghaniashkez -p Jazireie08 -m http://motu.sltac.cls.fr/sltac-gateway-servlet/Motu -s SEALEVEL_GLO_PHY_L4_NRT_OBSERVATIONS_008_046-TDS -d dataset-duacs-nrt-global-merged-allsat-phy-l4-v3 -x 0.125 -X -0.125 -y -89.875 -Y 89.875 -t "'
-        c3 = '" -T "'
-        c4 = '" -v err -v vgosa -v vgos -v sla -v adt -v ugosa -v ugos -o %s -f ' % cfgv.nrt_alt_raw
+        c1 = 'python motuclient.py ' + \
+                '--user mdehghaniashkez --pwd Jazireie08 ' + \
+                '--motu http://nrt.cmems-du.eu/motu-web/Motu ' + \
+                '--service-id SEALEVEL_GLO_PHY_L4_NRT_OBSERVATIONS_008_046-TDS ' + \
+                '--product-id dataset-duacs-nrt-global-merged-allsat-phy-l4 ' + \
+                '--longitude-min 0.125 --longitude-max -0.125 ' + \
+                '--latitude-min -89.875 --latitude-max 89.875 --date-min "'
+
+        c3 = '" --date-max "'
+        c4 = '" --variable err --variable vgosa --variable vgos --variable sla --variable adt --variable ugosa --variable ugos --out-dir %s --out-name ' % cfgv.nrt_alt_raw
 
         c2 = str(yr) + '-' + str(mn).zfill(2) + '-' + str(dy).zfill(2)
         c5 = cfgv.nrt_alt_prefix + str(yr*1000 +  date(yr, mn, dy).timetuple().tm_yday).zfill(3) + '.nc'
         command = c1 + c2 + c3 + c2 + c4 + c5
         os.system(command)
-
 	return
-
-
-
 
 
 

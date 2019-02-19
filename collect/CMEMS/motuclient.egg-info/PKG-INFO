@@ -1,0 +1,21 @@
+Metadata-Version: 1.2
+Name: motuclient
+Version: 1.8.1
+Summary: Extract and download gridded data through a python command line from Motu web server. Used in CMEMS context http://marine.copernicus.eu/
+Home-page: https://github.com/clstoulouse/motu-client-python
+Author: Sylvain MARTY, CLS
+Author-email: smarty@cls.fr
+License: LGPL
+Download-URL: https://github.com/clstoulouse/motu-client-python/releases/
+Description-Content-Type: UNKNOWN
+Description: Motu is a high efficient and robust Web Server which fills the gap between heterogeneous data providers to end users. Motu handles, extracts and transforms oceanographic huge volumes of data without performance collapse. This client enables to extract and download data through a python command line.
+Keywords: Copernicus,CMEMS,CLS,Motu,motuclient-python,Dissemination Unit
+Platform: any
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Programming Language :: Python :: 2.7
+Classifier: License :: OSI Approved :: GNU Lesser General Public License v3 (LGPLv3)
+Classifier: Topic :: Scientific/Engineering :: GIS
+Classifier: Environment :: Console
+Classifier: Natural Language :: English
+Classifier: Operating System :: OS Independent
+Requires-Python: >=2.7

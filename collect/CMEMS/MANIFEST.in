@@ -1,0 +1,8 @@
+# Author: CLS, smarty@cls.fr
+include LICENSE
+include pom.xml
+include README.md
+include setup.cfg
+include setup.py
+include src/python/motu_utils/cfg/log.ini
+include src/python/motu_utils/cfg/messages.properties

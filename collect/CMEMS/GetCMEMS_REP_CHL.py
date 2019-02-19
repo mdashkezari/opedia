@@ -20,9 +20,6 @@ def raw_file_exists(folder, prefix, itnum, file_format):
 
 
 
-
-
-
 if len(sys.argv)<>4:
   print('Enter 3 arguments as follow: Year StartDay EndDay')
   exit()
@@ -31,9 +28,16 @@ yr = int(sys.argv[1])
 startDay = int(sys.argv[2])
 endDay = int(sys.argv[3])
 
-c1 = 'python motu-client.py -u mdehghaniashkez -p Jazireie08 -m http://cmems-oc.isac.cnr.it/motu-web/Motu -s OCEANCOLOUR_GLO_CHL_L4_REP_OBSERVATIONS_009_082-TDS -d dataset-oc-glo-chl-multi-l4-oi_4km_daily-rep-v02 -x -179.97917175293 -X 179.97917175293 -y -89.97917175293 -Y 89.979164123535 -t "'
-c3 = '" -T "'
-c4 = '" -v CHL -v CHL_error -o %s -f ' % cfgv.rep_chl_raw
+
+c1 = 'python motuclient.py ' + \
+      '--user mdehghaniashkez --pwd Jazireie08 ' + \
+      '--motu http://my.cmems-du.eu/motu-web/Motu ' + \
+      '--service-id OCEANCOLOUR_GLO_CHL_L4_REP_OBSERVATIONS_009_082-TDS ' + \
+      '--product-id dataset-oc-glo-chl-multi-l4-oi_4km_daily-rep-v02 ' + \
+      '--longitude-min -179.9791717529297 --longitude-max 179.9791717529297 ' + \
+      '--latitude-min -89.97917175292969 --latitude-max 89.97916412353516 --date-min "'
+c3 = '" --date-max "'
+c4 = '" --variable CHL --variable CHL_error --out-dir %s --out-name ' % cfgv.rep_chl_raw
 
 
 

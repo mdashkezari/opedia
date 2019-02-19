@@ -29,9 +29,17 @@ yr = int(sys.argv[1])
 startDay = int(sys.argv[2])
 endDay = int(sys.argv[3])
 
-c1 = 'python motu-client.py -u mdehghaniashkez -p Jazireie08 -m http://cmems-oc.isac.cnr.it/motu-web/Motu -s OCEANCOLOUR_GLO_CHL_L4_NRT_OBSERVATIONS_009_033-TDS -d dataset-oc-glo-chl-multi-l4-oi_4km_daily-rt-v02 -x -179.97917175293 -X 179.97917175293 -y -89.97917175293 -Y 89.979164123535 -t "'
-c3 = '" -T "'
-c4 = '" -v CHL -v CHL_error -o %s -f ' % cfgv.nrt_chl_raw
+
+c1 = 'python motuclient.py ' + \
+      '--user mdehghaniashkez --pwd Jazireie08 ' + \
+      '--motu http://nrt.cmems-du.eu/motu-web/Motu ' + \
+      '--service-id OCEANCOLOUR_GLO_CHL_L4_NRT_OBSERVATIONS_009_033-TDS ' + \
+      '--product-id dataset-oc-glo-chl-multi-l4-oi_4km_daily-rt-v02 ' + \
+      '--longitude-min 0.125 --longitude-max -0.125 ' + \
+      '--latitude-min -89.875 --latitude-max 89.875 --date-min "'
+
+c3 = '" --date-max "'
+c4 = '" --variable CHL --variable CHL_error --out-dir %s --out-name  ' % cfgv.nrt_chl_raw
 
 #for index in range(startDay,endDay+1):
 index = startDay

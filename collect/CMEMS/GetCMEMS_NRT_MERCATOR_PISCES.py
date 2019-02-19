@@ -66,9 +66,16 @@ def piscesFileExist(days=get_all_available_days()):
 
 def get_nrt_mercator_pisces_raw(dt):
       
-  c1 = 'python motu-client.py -u mdehghaniashkez -p Jazireie08 -m http://nrtcmems.mercator-ocean.fr/motu-web/Motu -s GLOBAL_ANALYSIS_FORECAST_BIO_001_014-TDS -d dataset-global-analysis-forecast-bio-001-014 -x -180 -X 179.5 -y -89 -Y 90 -t "'
-  c3 = '" -T "'
-  c4 = '" -z 0.493 -Z 5727.918 -v Fe -v PP -v Si -v NO3 -v CHL -v PHYC -v PO4 -v O2 -o %s -f ' % cfgv.nrt_mercator_pisces_raw
+  c1 = 'python motuclient.py ' + \
+      '--user mdehghaniashkez --pwd Jazireie08 ' + \
+      '--motu http://nrt.cmems-du.eu/motu-web/Motu ' + \
+      '--service-id GLOBAL_ANALYSIS_FORECAST_BIO_001_014-TDS ' + \
+      '--product-id dataset-global-analysis-forecast-bio-001-014 ' + \
+      '--longitude-min -180 --longitude-max 179.5 ' + \
+      '--latitude-min -89 --latitude-max 90 --date-min "'
+
+  c3 = '" --date-max "'
+  c4 = '" --depth-min 0.493 --depth-max 5727.918000000001 --variable PHYC --variable O2 --variable NO3 --variable PO4 --variable Si --variable Fe --variable PP --variable CHL --out-dir %s --out-name ' % cfgv.nrt_mercator_pisces_raw
 
   c2 = str(dt.year) + '-' + str(dt.month).zfill(2) + '-' + str(dt.day).zfill(2) + ' 12:00:00' 
   c5 = cfgv.nrt_mercator_pisces_prefix + str(dl.dateToDayn(dt)) + '.nc'
