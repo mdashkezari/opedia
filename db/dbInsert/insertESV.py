@@ -50,7 +50,7 @@ def bulkInsertESV(tableName, usr, psw):
         bulkPath = ''
         bulkPath = makeBulkESV()
         #print('\t %s  Bulk %s %7.7d ready.' % (datetime.today(), dataTitle, itnum))
-        dc.bulkInsert(filePath=bulkPath, tableName=tableName, usr=usr, psw=psw)
+                dc.bulkInsert(filePath=bulkPath, tableName=tableName, usr=usr, psw=psw)
     finally:
         if bulkPath != '':
             os.remove(bulkPath)    
