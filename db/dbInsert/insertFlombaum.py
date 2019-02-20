@@ -4,8 +4,8 @@ import insertFunctions as iF
 
 ############################
 ########### OPTS ###########
-tableName = 'tblFlombaum_temp'
-rawFileName = 'flombaum_temp.csv'
+tableName = 'tblFlombaum'
+rawFileName = 'flombaum.csv'
 ############################
 ############################
 
