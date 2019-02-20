@@ -7,8 +7,8 @@ import insertPrep as ip
 import config_vault as cfgv
 import credentials as cr
 
-def toSQLbcp(rawFileName, tableName, usr=cr.usr, psw=cr.psw, ip=cr.ip):
-    bulkPath = cleanStrucCSV(rawFileName, tableName)
+def toSQLbcp(rawFileName, tableName, opt_remove_cols="",  usr=cr.usr, psw=cr.psw, ip=cr.ip):
+    bulkPath = cleanStrucCSV(rawFileName, tableName, opt_remove_cols="")
     print('Inserting Bulk %s into %s.' % (tableName[3:], tableName))
     str = """bcp Opedia.dbo.""" + tableName + """ in """ + bulkPath + """ -e error -c -t, -U  """ + usr + """ -P """ + psw + """ -S """ + ip + """,1433"""
     os.system(str)
@@ -16,7 +16,7 @@ def toSQLbcp(rawFileName, tableName, usr=cr.usr, psw=cr.psw, ip=cr.ip):
 
 
 
-def cleanStrucCSV(rawFileName, tableName):
+def cleanStrucCSV(rawFileName, tableName, opt_remove_cols=""):
     path = getattr(cfgv, 'rep_' + tableName[3:].lower() + '_raw') + rawFileName
     if os.path.isfile(path):
         pass
@@ -31,6 +31,8 @@ def cleanStrucCSV(rawFileName, tableName):
     df['lat'] = df['lat'].astype(float)
     df['lon'] = df['lon'].astype(float)
     df['depth'] = df['depth'].astype(float)
+    if opt_remove_cols != "":
+        df.drop(removeCols, inplace=True, axis=1)
     df = ip.NaNtoNone(df)
     df['ID'] = None
 
