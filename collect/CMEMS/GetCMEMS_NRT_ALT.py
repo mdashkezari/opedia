@@ -6,9 +6,7 @@ import datetime
 import gzip
 from datetime import date
 import os
-#from datetime import datetime
 
-#2017-01-07 00:00:00,2019-02-21 00:00:00
 
 def dateToDayn(dt):
         dayn = int(format(dt, '%j'))
