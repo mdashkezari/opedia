@@ -30,12 +30,12 @@ for index in range(startDay,endDay+1):
   d0 = date(2011, 12, 31)
   d1 = dl.daynToDate(yr * 1000 + index)
   days = (d1 - d0).days
-  days = days - (days % 7) 
+  days = days - (days % 7)
   tup = d0 + timedelta(days=days)
 
 
   #tup = date.fromordinal(date(yr, 1, 1).toordinal() + index - 1)
-  c2 = str(tup.year) + '-' + str(tup.month).zfill(2) + '-' + str(tup.day).zfill(2) + ' 12:00:00' 
+  c2 = str(tup.year) + '-' + str(tup.month).zfill(2) + '-' + str(tup.day).zfill(2) + ' 12:00:00'
   c5 = cfgv.nrt_mercator_pisces_prefix + str(yr)  + str(index).zfill(3) + '.nc'
   command = c1 + c2 + c3 + c2 + c4 + c5
   os.system(command)
@@ -51,21 +51,21 @@ for index in range(startDay,endDay+1):
 def get_all_available_days():
   dt = date(2011, 12, 31)
   days = []
-  while(dt<=date.today()):    
+  while(dt<=date.today()):
     days.append(dt)
-    dt = dt + timedelta(days=7)         
+    dt = dt + timedelta(days=7)
   return days
 
 def piscesFileExist(days=get_all_available_days()):
       for dt in days:
         path = cfgv.nrt_mercator_pisces_raw + cfgv.nrt_mercator_pisces_prefix + str(dl.dateToDayn(dt)) + '.nc'
-        print path
+        print(path)
         if not os.path.isfile(path):
               print('The following file not found in the opedia vault: ' + path + ', Date: ' + dt.strftime('%Y-%m-%d'))
       return
 
 def get_nrt_mercator_pisces_raw(dt):
-      
+
   c1 = 'python motuclient.py ' + \
       '--user mdehghaniashkez --pwd Jazireie08 ' + \
       '--motu http://nrt.cmems-du.eu/motu-web/Motu ' + \
@@ -77,7 +77,7 @@ def get_nrt_mercator_pisces_raw(dt):
   c3 = '" --date-max "'
   c4 = '" --depth-min 0.493 --depth-max 5727.918000000001 --variable PHYC --variable O2 --variable NO3 --variable PO4 --variable Si --variable Fe --variable PP --variable CHL --out-dir %s --out-name ' % cfgv.nrt_mercator_pisces_raw
 
-  c2 = str(dt.year) + '-' + str(dt.month).zfill(2) + '-' + str(dt.day).zfill(2) + ' 12:00:00' 
+  c2 = str(dt.year) + '-' + str(dt.month).zfill(2) + '-' + str(dt.day).zfill(2) + ' 12:00:00'
   c5 = cfgv.nrt_mercator_pisces_prefix + str(dl.dateToDayn(dt)) + '.nc'
   command = c1 + c2 + c3 + c2 + c4 + c5
   os.system(command)
@@ -92,14 +92,14 @@ piscesFileExist()
 
 
 
-if len(sys.argv)<>3:
+if len(sys.argv)!=3:
     print('Enter 2 arguments as follow: Year-Month-Day Year-Month-Day')
     exit()
 
 dt1 = datetime.strptime(sys.argv[1], '%Y-%m-%d')
 dt2 = datetime.strptime(sys.argv[2], '%Y-%m-%d')
 dt = dt1
-while(dt<=dt2):    
+while(dt<=dt2):
     try:
         dayn = dl.dateToDayn(dt)
         print('Dowloading Mercator_Pisces >>>  date: %s,  DayNumber: %s' % (datetime.strftime(dt, '%Y-%m-%d'), dayn))
@@ -112,6 +112,6 @@ while(dt<=dt2):
         sleep(10)
         print('================================')
         get_nrt_mercator_pisces_raw(dt)
-        
-        
+
+
     dt = dt + timedelta(days=7)
