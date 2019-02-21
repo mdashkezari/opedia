@@ -21,7 +21,7 @@ def raw_file_exists(folder, prefix, itnum, file_format):
 
 
 
-if len(sys.argv)<>4:
+if len(sys.argv)!=4:
   print('Enter 3 arguments as follow: Year StartDay EndDay')
   exit()
 
@@ -48,7 +48,7 @@ while index <= endDay:
   print('Downloading: ' + str(yr*1000+index) )
   print('*************')
   tup = date.fromordinal(date(yr, 1, 1).toordinal() + index - 1)
-  c2 = str(tup.year) + '-' + str(tup.month).zfill(2) + '-' + str(tup.day).zfill(2)  
+  c2 = str(tup.year) + '-' + str(tup.month).zfill(2) + '-' + str(tup.day).zfill(2)
   c5 = cfgv.nrt_chl_prefix + str(yr)  + str(index).zfill(3) + '.nc'
   command = c1 + c2 + c3 + c2 + c4 + c5
   os.system(command)
