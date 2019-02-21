@@ -31,9 +31,9 @@ flgPlot=false;               % if true, results are plotted and stored
 flgCrop=false;               % if true, the resulting maps are cropped according to crop parameters
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-Xres=0.04;  %[];            % spatial resolution. if set to [], the original resolution is used.   
-Yres=0.04;  %[];            % spatial resolution. if set to [], the original resolution is used.     
-forward= true;              % forward/backward (true/false) temporal integration
+Xres=1.04;  %[];            % spatial resolution. if set to [], the original resolution is used.   
+Yres=1.04;  %[];            % spatial resolution. if set to [], the original resolution is used.     
+forward= false;              % forward/backward (true/false) temporal integration
 method= 2;                  % integration method: Euler (1), Runge-Kutta4 (2)
 
 
@@ -68,7 +68,7 @@ crop_lat1= 18;              % if flgCrop=true: this is the initial latitude of t
 crop_lat2= 26;              % if flgCrop=true: this is the final latitude of the maps (in degrees)
 
 
-trunk='H:/Dropbox (MIT)/opedia_vault/CS_trunk/';           % The root address where the  MAT files and figures are stored
+trunk='H:/Dropbox (MIT)/CS_trunk/';           % The root address where the  MAT files and figures are stored
 
 if exist(trunk)~=7
   mkdir(trunk);

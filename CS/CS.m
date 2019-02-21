@@ -33,7 +33,9 @@ for flowloop=itnum_starts
   %************************************************************************** 
 
   %************************ Store FTLE/Vort in Vault ************************
-  vault_path = 'H:/Dropbox (MIT)/opedia_vault/raw/obs/%s/%s/%s%10.10d.mat';
+  %vault_path = 'H:/Dropbox (MIT)/opedia_vault/raw/obs/%s/%s/%s%10.10d.mat';
+  vault_path = 'H:/Dropbox (MIT)/Apps/opediaVault/observation/remote/satellite/%s/%s/%s%10.10d.mat';
+  
   
   if flgEulerian         
     if nrt
@@ -51,7 +53,7 @@ for flowloop=itnum_starts
         folder = 'vort_adt';
         prefix = strcat(prefix, 'vort_adt_');
     end 
-    save(sprintf(vault_path, proc_level, folder, prefix, itnum_start), 'nrt', 'rep', 'SLA_Based', 'lon', 'lat', 'vort');
+    save(sprintf(vault_path, folder, proc_level, prefix, itnum_start), 'nrt', 'rep', 'SLA_Based', 'lon', 'lat', 'vort');
   end
   
   if flgLagrangian         
@@ -78,7 +80,7 @@ for flowloop=itnum_starts
         folder = strcat(folder, 'adt');
         prefix = strcat(prefix, 'adt_');
     end 
-    save(sprintf(vault_path, proc_level, folder, prefix, itnum_start), 'nrt', 'rep', 'SLA_Based', 'forward', 'stop_time_day', 'Xres', 'Yres', 'lon', 'lat', 'ftle', 'displacement');
+    save(sprintf(vault_path, folder, proc_level, prefix, itnum_start), 'nrt', 'rep', 'SLA_Based', 'forward', 'stop_time_day', 'Xres', 'Yres', 'lon', 'lat', 'ftle', 'displacement');
   end  
   %**************************************************************************
 

@@ -1,6 +1,6 @@
 function [rep nrt filepath] = get_filepath(iteration)
-    repDataPath = 'H:/Dropbox (MIT)/opedia_vault/raw/obs/rep/alt/rep_alt_';
-    nrtDataPath = 'H:/Dropbox (MIT)/opedia_vault/raw/obs/nrt/alt/nrt_alt_';
+    repDataPath = 'H:/Dropbox (MIT)/Apps/opediaVault/observation/remote/satellite/alt/rep/rep_alt_';
+    nrtDataPath = 'H:/Dropbox (MIT)/Apps/opediaVault/observation/remote/satellite/alt/nrt/nrt_alt_';
     repDataPath=strcat(repDataPath, sprintf('%7.7d',iteration),'.nc');   
     nrtDataPath=strcat(nrtDataPath, sprintf('%7.7d',iteration),'.nc');
 
