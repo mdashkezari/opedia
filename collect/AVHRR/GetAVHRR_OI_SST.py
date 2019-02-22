@@ -2,18 +2,17 @@ import sys
 sys.path.append('../../config')
 import config_vault as cfgv
 import os
-import urllib
+import urllib.request
+
 import datetime
 import bz2
 from datetime import datetime, date, timedelta
 from time import sleep
 
 
-
-
 def get_nrt_avhrr_oi(yr, mn, dy):
     def decompress(path):
-        zipfile = bz2.BZ2File(path)    
+        zipfile = bz2.BZ2File(path)
         data = zipfile.read()
         newfilepath = path[:-4]
         open(newfilepath, 'wb').write(data)
@@ -25,16 +24,16 @@ def get_nrt_avhrr_oi(yr, mn, dy):
     index = str(yr) + dayn
     path = path_base % (index)
     print('Dowloading AVHRR_OI_SST >>>  date: %s,  DayNumber: %s' % (datetime.strftime(dt, '%Y-%m-%d'),index))
-    urllib.urlretrieve(url,path)
+    urllib.request.urlretrieve(url,path)
     #decompress(path)
-    #os.remove(path)    
+    #os.remove(path)
     return
 
 
 
 
 
-if len(sys.argv)<>3:
+if len(sys.argv)!=3:
   print('Enter 2 arguments as follow: Year-Month-Day Year-Month-Day')
   exit()
 
@@ -43,21 +42,20 @@ dt2 = datetime.strptime(sys.argv[2], '%Y-%m-%d')
 
 dt = dt1
 
-while(dt<=dt2):    
+while(dt<=dt2):
     try:
         get_nrt_avhrr_oi(dt.year, dt.month, dt.day)
     except Exception as e:
         print('================================')
         print('Error on %s' % datetime.strftime(dt, '%Y-%m-%d'))
-        print('Error Message: %s' % e.message)
+        print('Error Message: %s' % e)
         print('Short wait ....')
         sleep(10)
         print('================================')
         get_nrt_avhrr_oi(dt.year, dt.month, dt.day)
-        
-        
+
+
     dt = dt + timedelta(days=1)
-    #sleep(6)
 
 
 
