@@ -12,7 +12,7 @@ import pandas.io.sql as sql
 
 
 def dbConnect(usr='ArmLab', psw='ArmLab2018', ip='128.208.239.15', port='1433', db='Opedia', TDS_Version='7.3'):
-	try:
+    	try:
 		server = ip + ',' + port
 		if platform.system().lower().find('windows') != -1:
 			conn = pyodbc.connect('DRIVER={SQL Server};SERVER=' + server + ';DATABASE=' + db + ';Uid=' + usr + ';Pwd='+ psw )

@@ -58,7 +58,12 @@ def makeBulkCHL(itnum, nrt):
     exportBase = cfgv.opedia_proj + 'db/dbInsert/export/'
     export_path = '%s%s%d.csv' % (exportBase, prefix, itnum)
     df.to_csv(export_path)
-    #ip.mapTo180180(export_path, 'lon')   # only use if necessary
+    
+    ## seems like the code below is only needed for the NRT product
+    ## longitude range in NRT products: 0 - 360
+    if nrt:
+        ip.mapTo180180(export_path, 'lon')   # only use if necessary
+    
     ###df = downsampleCHL(export_path)
     ip.sortByLatLon(df, export_path, 'lon', 'lat')
     return export_path
