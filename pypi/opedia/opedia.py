@@ -166,7 +166,7 @@ def run(cmd, subProc=True):
 
 
 if __name__ == '__main__':
-    args = docopt(__doc__, version='opedia 0.2.27', options_first=False)
+    args = docopt(__doc__, version='opedia 0.2.28', options_first=False)
 
     if args['<command>'] == 'regional':
         elems = [args['--tab'], args['--var'], args['--d1'], args['--lat1'], args['--lat2'], args['--lon1'], args['--lon2'], args['--pname'], args['--export'], args['--extV1'], args['--extVV1'] ]

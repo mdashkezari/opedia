@@ -112,6 +112,8 @@ def getBounds(varName):
         bounds = (0, 3e-1)
     elif varName.find('eastward_wind') != -1:
         bounds = (0, 2)
+    elif varName.find('mld_nrt') != -1:
+        bounds = (0, 170)          
     elif varName.find('sst') != -1:
         bounds = (0, 32)          
     elif varName.find('sla') != -1:
@@ -198,6 +200,8 @@ def getPalette(varName, nCols=256):
         paletteName = all_palettes['Viridis'][nCols]
     elif varName.find('wind_stress') != -1:
         paletteName = all_palettes['Plasma'][nCols]
+    elif varName.find('mld_nrt') != -1:
+        paletteName = all_palettes['Plasma'][nCols]        
     elif varName.find('sst') != -1:
         paletteName = all_palettes['Inferno'][nCols]
     elif varName.find('sla') != -1:
