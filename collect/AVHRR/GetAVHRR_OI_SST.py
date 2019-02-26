@@ -2,13 +2,16 @@ import sys
 sys.path.append('../../config')
 import config_vault as cfgv
 import os
-import urllib.request
-
 import datetime
 import bz2
 from datetime import datetime, date, timedelta
 from time import sleep
+if sys.version_info[0] >= 3:    # if python3 
+    import urllib.request as req
+else:
+    import urllib as req
 
+    
 
 def get_nrt_avhrr_oi(yr, mn, dy):
     def decompress(path):
@@ -24,7 +27,7 @@ def get_nrt_avhrr_oi(yr, mn, dy):
     index = str(yr) + dayn
     path = path_base % (index)
     print('Dowloading AVHRR_OI_SST >>>  date: %s,  DayNumber: %s' % (datetime.strftime(dt, '%Y-%m-%d'),index))
-    urllib.request.urlretrieve(url,path)
+    req.urlretrieve(url,path)
     #decompress(path)
     #os.remove(path)
     return

@@ -56,3 +56,19 @@ def sortByTimeLatLonDepth(df, export_path, timeName, latName, lonName, depthName
     df.sort_values([timeName, latName, lonName, depthName], ascending=[True, True, True, True], inplace=True)
     df.to_csv(export_path, index=False)
     return
+
+
+def arrangeColumns(cols, df):
+    ## arrange the columns: making sure that the columns are arranged in the correct (consistent with the undelying table) order
+    df = df[cols]
+    return df
+
+
+def sortByDepthLatLon_AddClim(df, export_path, lonName, latName, depthName):
+    df = pd.read_csv(export_path)
+    df.sort_values([depthName, latName, lonName], ascending=[True, True, True], inplace=True)
+    ## adding month and year columns (could be useful to compute climatology)
+    df['month'] = pd.DatetimeIndex(df['time_counter']).month
+    df['year'] = pd.DatetimeIndex(df['time_counter']).year
+    df.to_csv(export_path, index=False)
+    return

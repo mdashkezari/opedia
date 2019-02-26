@@ -30,14 +30,15 @@ def makeBulkPisces(itnum, nrt):
     
     prefix = 'pisces_'
     df = nc.ncToDF(path)
-    #df = ip.removeColumn(['analysis_error', 'mask', 'sea_ice_fraction', 'lat_bnds', 'lon_bnds'], df)
-    #df = ip.removeMissings(['analysed_sst'], df)   # remove land
+    ## arrange the columns: making sure that the columns are arranged in the correct (consistent with the undelying table) order
+    df = ip.arrangeColumns(['Fe', 'PP', 'Si', 'NO3', 'CHL', 'PHYC', 'PO4', 'O2'], df)
     df['ID'] = None
     exportBase = cfgv.opedia_proj + 'db/dbInsert/export/'
     export_path = '%s%s%d.csv' % (exportBase, prefix, itnum)
     df.to_csv(export_path)
     #ip.mapTo180180(export_path, 'longitude')   # only use if necessary
-    ip.sortByDepthLatLon(df, export_path, 'longitude', 'latitude', 'depth')
+    ## sortByDepthLatLon_AddClim will sort the dataframe and will add "month" and "year" coloumns to the dataframe
+    ip.sortByDepthLatLon_AddClim(df, export_path, 'longitude', 'latitude', 'depth')
     return export_path
 
 
@@ -45,16 +46,17 @@ def makeBulkPisces(itnum, nrt):
 
 def bulkInsertPisces(itnumStart, itnumEnd, tableName):
     dataTitle = 'Mercator-Pisces'
-    for itnum in range(itnumStart, itnumEnd+1):   
+    for itnum in range(itnumStart, itnumEnd+1, 7):   
         print('%s  Inserting Bulk %s %7.7d into %s.' % (datetime.today(), dataTitle, itnum, tableName))
         try:
             bulkPath = ''
             bulkPath = makeBulkPisces(itnum, nrt)
             #print('\t %s  Bulk %s %7.7d ready.' % (datetime.today(), dataTitle, itnum))
+            
             dc.bulkInsert(bulkPath, tableName)
         finally:
             if bulkPath != '':
-                os.remove(bulkPath)    
+               os.remove(bulkPath)    
     return
 
 

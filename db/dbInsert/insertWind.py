@@ -32,6 +32,10 @@ def makeBulkWind(itnum, nrt, hour):
     df = nc.ncToDF(path)
     df = ip.removeColumn(['land_ice_mask', 'sampling_length'], df)
     #df = ip.removeMissings(['wind_stress'], df)   # remove land
+
+    ## arrange the columns: making sure that the columns are arranged in the correct (consistent with the undelying table) order
+    df = ip.arrangeColumns(['wind_speed_rms', 'eastward_wind_rms', 'wind_stress', 'eastward_wind', 'surface_downward_eastward_stress', 'wind_speed', 'surface_downward_northward_stress', 'northward_wind', 'northward_wind_rms'], df)
+
     df['hour'] = hour
     df['ID'] = None
     exportBase = cfgv.opedia_proj + 'db/dbInsert/export/'

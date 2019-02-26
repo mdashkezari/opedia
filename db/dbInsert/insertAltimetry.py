@@ -31,6 +31,9 @@ def makeBulkALT(itnum, nrt):
     df = nc.ncToDF(path)
     df = ip.removeColumn(['err'], df)
     #df = ip.removeMissings(['sla'], df)   # remove land
+
+    ## arrange the columns: making sure that the columns are arranged in the correct (consistent with the undelying table) order
+    df = ip.arrangeColumns(['vgosa', 'vgos', 'sla', 'adt', 'ugosa', 'ugos'], df)
     df['ID'] = None
     exportBase = cfgv.opedia_proj + 'db/dbInsert/export/'
     export_path = '%s%s%d.csv' % (exportBase, prefix, itnum)
@@ -50,6 +53,7 @@ def bulkInsertALT(itnumStart, itnumEnd, tableName):
             bulkPath = ''
             bulkPath = makeBulkALT(itnum, nrt)
             #print('\t %s  Bulk %s %7.7d ready.' % (datetime.today(), dataTitle, itnum))
+            
             dc.bulkInsert(bulkPath, tableName)
         finally:
             if bulkPath != '':
