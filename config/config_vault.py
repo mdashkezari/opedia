@@ -43,6 +43,12 @@ makedir(mercator_pisces_raw)
 nrt_mercator_pisces_raw, rep_mercator_pisces_raw, doc_mercator_pisces_raw, code_mercator_pisces_raw = leafStruc(mercator_pisces_raw)
 nrt_mercator_pisces_prefix = 'mercator_pisces_'
 rep_mercator_pisces_prefix = 'mercator_pisces_'
+### models/mercator_mld ####
+mercator_mld_raw = model_raw + 'mercator_mld/'
+makedir(mercator_mld_raw)
+nrt_mercator_mld_raw, rep_mercator_mld_raw, doc_mercator_mld_raw, code_mercator_mld_raw = leafStruc(mercator_mld_raw)
+nrt_mercator_mld_prefix = 'mercator_mld_'
+rep_mercator_mld_prefix = 'mercator_mld_'
 ######## models/darwin ########
 darwin_raw = model_raw + 'darwin/'
 makedir(darwin_raw)
