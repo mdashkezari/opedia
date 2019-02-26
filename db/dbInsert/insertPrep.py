@@ -22,12 +22,12 @@ def removeMissings(cols, df):
     return df
 
 def NAtoNone(df):
-    df = df.replace(r'\s+', np.nan, regex=True)
+    df.replace(r'\s+', np.nan, regex=True, inplace=True)
     return df
 
 
 def NaNtoNone(df):
-    df = df.where((pd.notnull(df)), None)
+    df = df.replace(np.nan, '', regex=True)
     return df
 
 def mapTo180180(export_path, lonName):
