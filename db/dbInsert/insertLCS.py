@@ -83,26 +83,32 @@ def makeBulkLCS(itnum, nrt):
     if itnum < 1993001:
         print('Error: LCS is only available after 1993.')
         return
-    df_bw_adt = matToDF(nrt=nrt, forward=False, sla=False, itnum=itnum)
-    df_fw_adt = matToDF(nrt=nrt, forward=True, sla=False, itnum=itnum)
+
+    if not nrt:
+        df_bw_adt = matToDF(nrt=nrt, forward=False, sla=False, itnum=itnum)
+        df_fw_adt = matToDF(nrt=nrt, forward=True, sla=False, itnum=itnum)
+        df_fw_sla = matToDF(nrt=nrt, forward=True, sla=True, itnum=itnum)
     df_bw_sla = matToDF(nrt=nrt, forward=False, sla=True, itnum=itnum)
-    df_fw_sla = matToDF(nrt=nrt, forward=True, sla=True, itnum=itnum)
     
     prefix = 'LCS_'
     df = pd.DataFrame()
-    df['lat'] = df_bw_adt['lat']
-    df['lon'] = df_bw_adt['lon']
-    df['time'] = df_bw_adt['time']
+    df['lat'] = df_bw_sla['lat']
+    df['lon'] = df_bw_sla['lon']
+    df['time'] = df_bw_sla['time']
 
-    df['ftle_bw_adt'] = df_bw_adt['ftle']
-    df['disp_bw_adt'] = df_bw_adt['disp']
-    df['ftle_fw_adt'] = df_fw_adt['ftle']
-    df['disp_fw_adt'] = df_fw_adt['disp']
+    if nrt:
+        df['ftle_bw_sla'] = df_bw_sla['ftle']
+        df['disp_bw_sla'] = df_bw_sla['disp']
+    else:
+        df['ftle_bw_adt'] = df_bw_adt['ftle']
+        df['disp_bw_adt'] = df_bw_adt['disp']
+        df['ftle_fw_adt'] = df_fw_adt['ftle']
+        df['disp_fw_adt'] = df_fw_adt['disp']
 
-    df['ftle_bw_sla'] = df_bw_sla['ftle']
-    df['disp_bw_sla'] = df_bw_sla['disp']
-    df['ftle_fw_sla'] = df_fw_sla['ftle']
-    df['disp_fw_sla'] = df_fw_sla['disp']
+        df['ftle_bw_sla'] = df_bw_sla['ftle']
+        df['disp_bw_sla'] = df_bw_sla['disp']
+        df['ftle_fw_sla'] = df_fw_sla['ftle']
+        df['disp_fw_sla'] = df_fw_sla['disp']
 
     df['ID'] = None
     exportBase = cfgv.opedia_proj + 'db/dbInsert/export/'

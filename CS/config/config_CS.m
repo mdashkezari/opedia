@@ -31,8 +31,8 @@ flgPlot=false;               % if true, results are plotted and stored
 flgCrop=false;               % if true, the resulting maps are cropped according to crop parameters
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-Xres=1.04;  %[];            % spatial resolution. if set to [], the original resolution is used.   
-Yres=1.04;  %[];            % spatial resolution. if set to [], the original resolution is used.     
+Xres=0.04;  %[];            % spatial resolution. if set to [], the original resolution is used.   
+Yres=0.04;  %[];            % spatial resolution. if set to [], the original resolution is used.     
 forward= false;              % forward/backward (true/false) temporal integration
 method= 2;                  % integration method: Euler (1), Runge-Kutta4 (2)
 
