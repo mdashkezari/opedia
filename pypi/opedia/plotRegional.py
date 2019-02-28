@@ -79,13 +79,23 @@ def regionalMap(tables, variabels, dt1, dt2, lat1, lat2, lon1, lon2, depth1, dep
     return
 
 
+def canvasRect(dw, dh):
+    ar = dw / dh  # aspect ratio
+    h = 400 if ar > 3 else 500
+    w_min = 300
+    w_max = 1000
+    w = int(ar * h)
+    if w > w_max: w = w_max
+    if w < w_min: w = w_min
+    return w, h
+
+
 def bokehGM(data, subject, fname, lat, lon, variabels):
-    TOOLS="hover,crosshair,pan,wheel_zoom,zoom_in,zoom_out,box_zoom,undo,redo,reset,tap,save,box_select,poly_select,lasso_select,"
-    w = 1000
-    h = 500
+    TOOLS="hover,crosshair,pan,zoom_in,wheel_zoom,zoom_out,box_zoom,reset,save,"
+    w, h = canvasRect(dw=np.max(lon)-np.min(lon), dh=np.max(lat)-np.min(lat))
     p = []
     for ind in range(len(data)):
-        p1 = figure(tools=TOOLS, toolbar_location="above", title=subject[ind], plot_width=w, plot_height=h, x_range=(np.min(lon), np.max(lon)), y_range=(np.min(lat), np.max(lat)))
+        p1 = figure(tools=TOOLS, toolbar_location="left", title=subject[ind], plot_width=w, plot_height=h, x_range=(np.min(lon), np.max(lon)), y_range=(np.min(lat), np.max(lat)))
         p1.xaxis.axis_label = 'Longitude'
         p1.yaxis.axis_label = 'Latitude'
         bounds = getBounds(variabels[ind])

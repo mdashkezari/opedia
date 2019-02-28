@@ -30,13 +30,13 @@ class PostInstallCommand(install):
 
 setup(
     name='opedia',
-    version='0.2.29',
+    version='0.2.32',
     description='Opedia is an open source database service to integrate, visualize, and analyze ocean datasets such as satellite data, in-situ observations, and model outputs.',
     long_description=long_description,
     long_description_content_type='text/markdown',
     url='https://github.com/mdashkezari/opedia/tree/master/pypi',
     author='Mohammad D. Ashkezari',
-    author_email='demo.80@gmail.com',
+    author_email='mdehghan@uw.edu',
     cmdclass={
         'develop': PostDevelopCommand,
         'install': PostInstallCommand,
@@ -45,9 +45,9 @@ setup(
         'Development Status :: 3 - Alpha',
         'Intended Audience :: Science/Research',
         'License :: OSI Approved :: MIT License',
-        'Programming Language :: Python :: 2.7',
+        'Programming Language :: Python :: 3.7',
     ],
-    keywords='ocean oceanography database dataset satellite model in-situ remote sensing machine learning data visualization',  # Optional
+    keywords='ocean oceanography database dataset satellite model in-situ remote sensing machine learning data visualization', 
     packages=find_packages(exclude=['contrib', 'docs', 'tests']),
     install_requires=['matplotlib', 'numpy', 'pandas', 'scipy', 'bokeh', 'docopt', 'tqdm', 'pyodbc', 'dropbox'],
 )
