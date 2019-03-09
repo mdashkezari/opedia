@@ -46,7 +46,7 @@ dt = dt1
 while(dt<=dt2):
     try:
         dayn = dl.dateToDayn(dt)
-        print('Dowloading Mercator_Pisces >>>  date: %s,  DayNumber: %s' % (datetime.strftime(dt, '%Y-%m-%d'), dayn))
+        print('Dowloading Mercator_MLD >>>  date: %s,  DayNumber: %s' % (datetime.strftime(dt, '%Y-%m-%d'), dayn))
         get_nrt_mercator_mld(dt)
     except Exception as e:
         print('================================')

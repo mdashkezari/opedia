@@ -151,6 +151,11 @@ nrt_sst_raw, rep_sst_raw, doc_sst_raw, code_sst_raw = leafStruc(sst_raw)
 nrt_sst_prefix = 'nrt_sst_'
 rep_sst_prefix = 'rep_sst_'
 
+sss_raw = satellite_raw + 'sss/'
+nrt_sss_raw, rep_sss_raw, doc_sss_raw, code_sss_raw = leafStruc(sss_raw)
+nrt_sss_prefix = 'nrt_sss_'
+rep_sss_prefix = 'rep_sss_'
+
 chl_raw = satellite_raw +'chl/'
 nrt_chl_raw, rep_chl_raw, doc_chl_raw, code_chl_raw = leafStruc(chl_raw)
 nrt_chl_prefix = 'nrt_chl_'
