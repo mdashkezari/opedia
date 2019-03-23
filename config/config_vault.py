@@ -102,6 +102,15 @@ nrt_KM1314_cobalamin_raw, rep_KM1314_cobalamin_raw, doc_KM1314_cobalamin_raw, co
 esv_raw = cruise_raw + 'esv/'
 makedir(esv_raw)
 nrt_esv_raw, rep_esv_raw, doc_esv_raw, code_esv_raw = leafStruc(esv_raw)
+####  obs/in-situ/cruise/gradients_16s  #####
+gradients_16s_raw = cruise_raw + 'gradients_16s/'
+makedir(gradients_16s_raw)
+nrt_gradients_16s_raw, rep_gradients_16s_raw, doc_gradients_16s_raw, code_gradients_16s_raw = leafStruc(gradients_16s_raw)
+####  obs/in-situ/cruise/gradients_18s  #####
+gradients_18s_raw = cruise_raw + 'gradients_18s/'
+makedir(gradients_18s_raw)
+nrt_gradients_18s_raw, rep_gradients_18s_raw, doc_gradients_18s_raw, code_gradients_18s_raw = leafStruc(gradients_18s_raw)
+
 
 
 #########  obs/in-situ/station  #########

@@ -126,6 +126,8 @@ def getBounds(varName):
         bounds = (31, 37)          
     elif varName.find('vort') != -1:
         bounds = (-4e-6, 4e-6)          
+    elif varName.find('AOD') != -1:
+        bounds = (0, 0.5)          
     return bounds
 
 
@@ -217,6 +219,8 @@ def getPalette(varName, nCols=256):
     elif varName.find('sss') != -1:
         paletteName = all_palettes['Inferno'][11]
         # paletteName = 'RdBu11'
+    elif varName.find('AOD') != -1:
+        paletteName = all_palettes['Inferno'][nCols]
     elif varName.find('sla') != -1:
         paletteName = 'RdBu11'
     return paletteName

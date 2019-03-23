@@ -23,7 +23,6 @@ def daynToDate(dt):
         return dat
 
 
-
 def get_nrt_wind(yr, mn, dy, hour):
 
         c1 = 'python motuclient.py ' + \

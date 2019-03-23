@@ -1,7 +1,7 @@
 object frmMain: TfrmMain
   Left = 0
   Top = 0
-  Caption = 'Opedia 0.2.27'
+  Caption = 'Opedia 0.2.28_2 [port 1445]'
   ClientHeight = 918
   ClientWidth = 1330
   Color = clBtnFace
@@ -735,6 +735,15 @@ object frmMain: TfrmMain
       TabOrder = 0
       Width = 1328
     end
+  end
+  object ListBox1: TListBox
+    Left = 17
+    Top = 552
+    Width = 1033
+    Height = 199
+    ItemHeight = 13
+    TabOrder = 7
+    Visible = False
   end
   object dxBarManager1: TdxBarManager
     Font.Charset = DEFAULT_CHARSET
@@ -4962,13 +4971,12 @@ object frmMain: TfrmMain
     Top = 24
   end
   object OpediaDB: TADOConnection
-    Connected = True
     ConnectionString = 
-      'Provider=SQLOLEDB.1;Password=Jazireie08;Persist Security Info=Tr' +
-      'ue;User ID=sa;Initial Catalog=Opedia;Data Source=128.208.239.15,' +
-      '1433;Use Procedure for Prepare=1;Auto Translate=True;Packet Size' +
-      '=4096;Workstation ID=THEBEAST;Use Encryption for Data=False;Tag ' +
-      'with column collation when possible=False'
+      'Provider=SQLOLEDB.1;Password=ArmLab2018;Persist Security Info=Tr' +
+      'ue;User ID=ArmLab;Initial Catalog=Opedia;Data Source=128.208.239' +
+      '.15,1445;Use Procedure for Prepare=1;Auto Translate=True;Packet ' +
+      'Size=4096;Workstation ID=THEBEAST;Use Encryption for Data=False;' +
+      'Tag with column collation when possible=False'
     LoginPrompt = False
     Provider = 'SQLOLEDB.1'
     Left = 144

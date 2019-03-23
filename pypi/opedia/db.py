@@ -6,17 +6,17 @@ import pandas.io.sql as sql
 from pandas import DataFrame
 
 
-def dbConnect(usr='ArmLab', psw='ArmLab2018', ip='128.208.239.15', port='1433', db='Opedia', TDS_Version='7.3'):
+def dbConnect(usr='ArmLab', psw='ArmLab2018', ip='128.208.239.15', port='1445', db='Opedia', TDS_Version='7.3'):
     try:
         server = ip + ',' + port
         if platform.system().lower().find('windows') != -1:
             # conn = pyodbc.connect(DRIVER='{SQL Server}', SERVER=server, DATABASE=db, Uid=usr, Pwd=psw )
-            conn = pyodbc.connect(DRIVER='{SQL Server}', SERVER='tcp:'+ip, PORT=port, DATABASE=db, Uid=usr, Pwd=psw )
+            conn = pyodbc.connect(DRIVER='{SQL Server}', SERVER='tcp:'+server, DATABASE=db, Uid=usr, Pwd=psw )
             # conn = pyodbc.connect(DSN='cmap', SERVER='tcp:'+ip, PORT=port, DATABASE=db, Uid=usr, Pwd=psw )
         elif platform.system().lower().find('darwin') != -1:
-            conn = pyodbc.connect(DRIVER='/usr/local/lib/libtdsodbc.so', SERVER=server, DATABASE=db, Uid=usr, Pwd=psw )
+            conn = pyodbc.connect(DRIVER='/usr/local/lib/libtdsodbc.so', TDS_Version=TDS_Version, server=ip , port=port, DATABASE=db, Uid=usr, Pwd=psw )
         elif platform.system().lower().find('linux') != -1:
-            conn = pyodbc.connect(DRIVER='/usr/lib/x86_64-linux-gnu/odbc/libtdsodbc.so', TDS_Version =  TDS_Version , server =  ip , port =  port, uid = usr, pwd = psw)
+            conn = pyodbc.connect(DRIVER='/usr/lib/x86_64-linux-gnu/odbc/libtdsodbc.so', TDS_Version=TDS_Version, server=ip , port=port, DATABASE=db, uid=usr, pwd=psw)
         #print('Successful database connection')
     except Exception as e:
         print('Database connection error. Error message: '+str(e))        

@@ -118,6 +118,7 @@ type
     Edit1: TEdit;
     barEddy: TdxBarButton;
     barFTLE: TdxBarButton;
+    ListBox1: TListBox;
     procedure rtbLatPropertiesChange(Sender: TObject);
     procedure rtbLonPropertiesChange(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -628,47 +629,85 @@ var
   t: LongInt;
 begin
   try
+    frmMain.ListBox1.Items.Add('1');
+
     pyScript := Root + '\opPack.py';
     outPath:=Root+'out.txt';
+
+    frmMain.ListBox1.Items.Add(pyScript);
+    frmMain.ListBox1.Items.Add(outPath);
+
+
+    frmMain.ListBox1.Items.Add('2');
+
     DeleteFile(outPath);
     AssignFile(F, pyScript);
+
+    frmMain.ListBox1.Items.Add('3');
+
     Rewrite(F);
     Writeln(F,'import site');
     Writeln(F,'import os');
     Writeln(F,'file = open("out.txt","w")');
-    //writeln(F,'path = site.getsitepackages()[1]');
-    //writeln(F,'path = path.replace("\\","/")');
-
     writeln(F,'for pack in site.getsitepackages():');
     writeln(F,'  path = pack.replace("\\","/")');
     writeln(F,'  path = path + "/opedia/"');
     writeln(F,'  if os.path.isdir(path):');
     writeln(F,'    file.write(path)');
     writeln(F,'    break');
+    Writeln(F,'file.close()');
 
+    frmMain.ListBox1.Items.Add('4');
 
-    //Writeln(F,'file.write(path + "/opedia/")');
-    code := 'file.close()';
-    Writeln(F,code);
     CloseFile(F);
 
+
+    frmMain.ListBox1.Items.Add('5');
+
     ShellExecute(0, nil, 'python', Pchar('"'+Root+'opPack.py"'), nil, SW_HIDE);
+
+
+    frmMain.ListBox1.Items.Add('6');
+
     //terminalPipe('python ', '"'+Root+'opPack.py"', frmMain.memTerminal);
     t:=GetTickCount;
     repeat
       Application.ProcessMessages;
-    until (FileExists(outPath)) or (GetTickCount-t>5000);
+    until (FileExists(outPath)) or (GetTickCount-t>10000);
+    t:=GetTickCount;
     repeat
       Application.ProcessMessages;
-    until (not fileInUse(outPath)) or (GetTickCount-t>5000);
+    until (not fileInUse(outPath)) or (GetTickCount-t>10000);
+
+
+    frmMain.ListBox1.Items.Add('7');
 
     AssignFile(F, outPath);
+
+    frmMain.ListBox1.Items.Add('8');
+
     Reset(F);
+
+    frmMain.ListBox1.Items.Add('9');
+
     ReadLn(F, Result);
+
+    frmMain.ListBox1.Items.Add('Result: '+ Result);
+    frmMain.ListBox1.Items.Add('10');
+
     CloseFile(F);
+
+    frmMain.ListBox1.Items.Add('11');
+
   finally
-    DeleteFile(pyScript);
-    DeleteFile(outPath);
+
+//    frmMain.ListBox1.Items.Add('12');
+
+//    DeleteFile(pyScript);
+
+//    frmMain.ListBox1.Items.Add('13');
+
+//    DeleteFile(outPath);
   end;
 
 end;
