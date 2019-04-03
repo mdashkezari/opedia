@@ -9,7 +9,8 @@ GO
 
 CREATE TABLE [dbo].[tblApi_Keys](
 	[ID] [int] PRIMARY KEY,
-	[Key] [char] (36),
+	[Key] [char] (36) NOT NULL,
+	[Description] [nvarchar](150),
 	[UserID] [int] NOT NULL,
 	CONSTRAINT [FK_UserID] FOREIGN KEY (UserID)
 	REFERENCES [dbo].[tblUsers] (UserID)
