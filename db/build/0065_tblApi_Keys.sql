@@ -8,8 +8,8 @@ SET QUOTED_IDENTIFIER ON
 GO
 
 CREATE TABLE [dbo].[tblApi_Keys](
-	[ID] [int] PRIMARY KEY,
-	[Key] [char] (36) NOT NULL,
+	[ID] [int] PRIMARY KEY IDENTITY(1,1),
+	[Key] [char] (36) UNIQUE NOT NULL,
 	[Description] [nvarchar](150),
 	[UserID] [int] NOT NULL,
 	CONSTRAINT [FK_UserID] FOREIGN KEY (UserID)
