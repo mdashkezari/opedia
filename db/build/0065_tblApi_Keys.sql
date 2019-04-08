@@ -16,7 +16,15 @@ CREATE TABLE [dbo].[tblApi_Keys](
 	REFERENCES [dbo].[tblUsers] (UserID)
 ) ON [PRIMARY]
 GO
-		
+
+---------------------
+-- Constraint
+---------------------
+USE Opedia
+GO
+
+ALTER TABLE [tblApi_keys]
+ADD CONSTRAINT U_Api_Key UNIQUE (Api_Key)
 		    
 ---------------------
 -- Indices
