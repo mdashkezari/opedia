@@ -10,7 +10,7 @@ GO
 CREATE TABLE [dbo].[tblApi_Calls](
 	[ID] [bigint] PRIMARY KEY IDENTITY(1,1),
 	[Date_Time] [datetime] NOT NULL,
-    [Ip_Address] [nvarchar](15) NOT NULL,
+    [Ip_Address] [nvarchar](39) NOT NULL,
     [Host_Name] [nvarchar](150) NOT NULL,
     [User_ID] [int],
     [Route_ID] [int] NOT NULL,
