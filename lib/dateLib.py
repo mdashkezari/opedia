@@ -17,7 +17,7 @@ def dateToDayn(dt):
 
 
 def daynToDate(dt):
-        year = dt / 1000
-        dayn = dt % 1000
+	year = int(dt / 1000)
+	dayn = int(dt % 1000)
 	dat = date.fromordinal(date(year, 1, 1).toordinal() + dayn - 1)
-        return dat
+	return dat
