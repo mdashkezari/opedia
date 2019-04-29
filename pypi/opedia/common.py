@@ -6,8 +6,38 @@ import db
 import numpy as np
 from datetime import date, datetime, timedelta
 from bokeh.palettes import all_palettes
+import subset
+import webbrowser
 
 
+
+def normalize(vals, min_max=False):
+    if min_max:
+        normalized_vals=(vals-np.nanmin(vals))/(np.nanmax(vals)-np.nanmin(vals))
+    else:    
+        normalized_vals=(vals-np.nanmean(vals))/np.nanstd(vals)
+    return normalized_vals
+
+
+def getLandMask(lat1, lat2, lon1, lon2, fillValue=0):
+    table = 'tblsst_AVHRR_OI_NRT'
+    field = 'sst'
+    dt1, dt2 = '2016-04-30', '2016-04-30'
+    # lat1, lat2 = -90, 90
+    # lon1, lon2 = -180, 180
+    depth1, depth2 = 0, 0.5
+    df = subset.spaceTime(table, field, dt1, dt2, lat1, lat2, lon1, lon2, depth1, depth2)
+    times = df[df.columns[0]].unique()  
+    lat = df.lat.unique()
+    lon = df.lon.unique()
+    shape = (len(lat), len(lon))
+    data = df[field].values.reshape(shape)
+    return data
+
+def openHTML(path):
+    path = 'file://' + os.path.realpath(path)
+    webbrowser.open(path, new=2)
+    return
 
 def PiscesDates_Offline(startDate=date(2011, 12, 31), endDate=date(2017, 12, 9)):
     delta = endDate - startDate
@@ -37,6 +67,31 @@ def temporalRes(table):
     return dt
 
 
+def isGrid(table, variable):
+    grid = True
+    query = "SELECT Spatial_Res_ID, RTRIM(LTRIM(Spatial_Resolution)) AS Spatial_Resolution FROM tblVariables "
+    query = query + "JOIN tblSpatial_Resolutions ON [tblVariables].Spatial_Res_ID=[tblSpatial_Resolutions].ID "
+    query = query + "WHERE Table_Name='%s' AND Short_Name='%s' " % (table, variable)
+    df = db.dbFetch(query)
+    if len(df) < 1:
+        return None
+    if df.Spatial_Resolution[0].lower().find('irregular') != -1:
+        grid = False
+    return grid
+
+
+def getUnit(table, variable):
+    return ' [' + db.getVar(table, variable).iloc[0]['Unit'] + ']'    
+
+def canvasRect(dw, dh):
+    ar = dw / dh  # aspect ratio
+    h = 400 if ar > 3 else 500
+    w_min = 300
+    w_max = 1000
+    w = int(ar * h)
+    if w > w_max: w = w_max
+    if w < w_min: w = w_min
+    return w, h
 
     
 def getBounds(varName):
@@ -128,6 +183,8 @@ def getBounds(varName):
         bounds = (-4e-6, 4e-6)          
     elif varName.find('AOD') != -1:
         bounds = (0, 0.5)          
+
+    # bounds = (None, None)
     return bounds
 
 
@@ -141,7 +198,7 @@ paletteName = [plt.colors.rgb2hex(m) for m in colormap(np.arange(colormap.N))]
 
 
 def getPalette(varName, nCols=256):
-    paletteName = 'RdBu11'
+    paletteName = all_palettes['Viridis'][nCols]
     if varName.find('picoeukaryote') != -1:
         paletteName = all_palettes['Magma'][nCols]
     elif varName.find('prokaryote') != -1:

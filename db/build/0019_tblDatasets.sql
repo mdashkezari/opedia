@@ -12,7 +12,7 @@ CREATE TABLE [dbo].[tblDatasets](
 	[DB] [nvarchar](50) NOT NULL,
 	[Dataset_Name] [nvarchar](100) NOT NULL,
 	[Dataset_Long_Name] [nvarchar](500) NULL,
-	[Variables] [nvarchar](500) NULL,
+	[Variables] [nvarchar](max) NULL,
 	[Climatology] [bit] NULL,
 	[Data_Source] [nvarchar](100) NULL,
 	[Distributor] [nvarchar](50) NULL,
@@ -33,7 +33,13 @@ GO
 ---------------------
 
 
-
+CREATE UNIQUE NONCLUSTERED INDEX [IX_tblDatasets_Dataset_Names] ON [dbo].[tblDatasets]
+(
+	[Dataset_Name] ASC
+)
+WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON)
+ON [PRIMARY]
+GO
 
 CREATE NONCLUSTERED INDEX [IX_tblDatasets_Variables] ON [dbo].[tblDatasets]
 (

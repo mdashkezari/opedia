@@ -6,14 +6,14 @@ import pandas as pd
 from scipy.interpolate import griddata
 import db
 import subset
-from common import getPalette, getBounds
+from common import getPalette, getBounds, getUnit
 import climatology as clim
 from datetime import datetime, timedelta
 import time
 from bokeh.plotting import figure, show, output_file
 from bokeh.layouts import column
 from bokeh.palettes import all_palettes
-from bokeh.models import LinearColorMapper, BasicTicker, ColorBar
+from bokeh.models import HoverTool, LinearColorMapper, BasicTicker, ColorBar
 from bokeh.embed import components
 import jupyterInline as jup
 if jup.jupytered():
@@ -29,7 +29,7 @@ def exportData(df, path):
 
 
 def sectionMap(tables, variabels, dt1, dt2, lat1, lat2, lon1, lon2, depth1, depth2, fname, exportDataFlag):
-    data, lats, lons, subs, frameVars = [], [], [], [], []
+    data, lats, lons, subs, frameVars, units = [], [], [], [], [], []
     xs, ys, zs = [], [], []
     for i in tqdm(range(len(tables)), desc='overall'):
         if not db.hasField(tables[i], 'depth'):
@@ -56,7 +56,7 @@ def sectionMap(tables, variabels, dt1, dt2, lat1, lat2, lon1, lon2, depth1, dept
         if 'hour' in df.columns:
             hours = df.hour.unique()
 
-        unit =  ' [' + db.getVar(tables[i], variabels[i]).iloc[0]['Unit'] + ']'
+        unit = getUnit(tables[i], variabels[i])
 
         for t in times:
             for h in hours:
@@ -76,9 +76,10 @@ def sectionMap(tables, variabels, dt1, dt2, lat1, lat2, lon1, lon2, depth1, dept
                 zs.append(depths)
 
                 frameVars.append(variabels[i])
+                units.append(unit)
                 subs.append(sub)
 
-    bokehSec(data=data, subject=subs, fname=fname, ys=ys, xs=xs, zs=zs, variabels=frameVars)
+    bokehSec(data=data, subject=subs, fname=fname, ys=ys, xs=xs, zs=zs, units=units, variabels=frameVars)
     return
 
 
@@ -114,8 +115,8 @@ def regulate(lat, lon, depth, data):
 
 
 
-def bokehSec(data, subject, fname, ys, xs, zs, variabels):
-    TOOLS="hover,crosshair,pan,wheel_zoom,zoom_in,zoom_out,box_zoom,undo,redo,reset,tap,save,box_select,poly_select,lasso_select,"
+def bokehSec(data, subject, fname, ys, xs, zs, units, variabels):
+    TOOLS="crosshair,pan,wheel_zoom,zoom_in,zoom_out,box_zoom,undo,redo,reset,tap,save,box_select,poly_select,lasso_select,"
     w = 1000
     h = 500
     p = []
@@ -129,18 +130,17 @@ def bokehSec(data, subject, fname, ys, xs, zs, variabels):
         bounds = getBounds(variabels[ind])
         bounds = (None, None)
         paletteName = getPalette(variabels[ind], 10)
-
-        if bounds[0]==None:
-            color_mapper = LinearColorMapper(palette=paletteName)
-        else:   
-            color_mapper = LinearColorMapper(palette=paletteName, low=bounds[0], high=bounds[1])     
+        low, high = bounds[0], bounds[1]
+        if low == None:
+            low, high = np.nanmin(data[ind].flatten()), np.nanmax(data[ind].flatten())
+        color_mapper = LinearColorMapper(palette=paletteName, low=low, high=high)
 
         if len(lon) > len(lat):
             p1 = figure(tools=TOOLS, toolbar_location="above", title=subject[ind], plot_width=w, plot_height=h, x_range=(np.min(lon), np.max(lon)), y_range=(-np.max(depth), -np.min(depth)))
             data = np.nanmean(data, axis=0)
             data = np.transpose(data)
             data = np.squeeze(data)
-            p1.xaxis.axis_label = 'Longitude'
+            xLabel = 'Longitude'
             data = regulate(lat, lon, depth, data)
             p1.image(image=[data], color_mapper=color_mapper, x=np.min(lon), y=-np.max(depth), dw=np.max(lon)-np.min(lon), dh=np.max(depth)-np.min(depth))
         else:
@@ -148,10 +148,19 @@ def bokehSec(data, subject, fname, ys, xs, zs, variabels):
             data = np.nanmean(data, axis=1)
             data = np.transpose(data)
             data = np.squeeze(data)
-            p1.xaxis.axis_label = 'Latitude'      
+            xLabel = 'Latitude'      
             data = regulate(lat, lon, depth, data)
             p1.image(image=[data], color_mapper=color_mapper, x=np.min(lat), y=-np.max(depth), dw=np.max(lat)-np.min(lat), dh=np.max(depth)-np.min(depth))
 
+        p1.xaxis.axis_label = xLabel
+        p1.add_tools(HoverTool(
+            tooltips=[
+                (xLabel.lower(), '$x'),
+                ('depth', '$y'),
+                (variabels[ind]+units[ind], '@image'),
+            ],
+            mode='mouse'
+        ))
 
         p1.yaxis.axis_label = 'depth [m]'
         color_bar = ColorBar(color_mapper=color_mapper, ticker=BasicTicker(),
