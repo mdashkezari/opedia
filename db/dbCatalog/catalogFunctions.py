@@ -5,7 +5,6 @@ import sys
 sys.path.append('../')
 import dbCore as dc
 import catalogInsert as cI
-
 sys.path.append('../login')
 import credentials as cr
 

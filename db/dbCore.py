@@ -1,9 +1,4 @@
 import platform
-import sys
-sys.path.append('../config')
-import config_vault as cfgv
-sys.path.append('../lib')
-import dateLib as dl
 import numpy as np
 import pandas as pd
 import pyodbc
@@ -22,28 +17,27 @@ def dbConnect(usr='ArmLab', psw='ArmLab2018', ip='128.208.239.15', port='1433', 
 			conn = pyodbc.connect(DRIVER='/usr/lib/x86_64-linux-gnu/odbc/libtdsodbc.so', TDS_Version =  TDS_Version , server =  ip , port =  port, uid = usr, pwd = psw)
 		#print('Successful database connection')
 	except Exception as e:
-		print('Database connection error. Error message: '+str(e))        
+		print('Database connection error. Error message: '+str(e))
 	return conn
-
 
 '''
 def dbConnect(local=True):
     try:
-        if local: 
+        if local:
 			## Local Database
 			server = 'THEBEAST'
 			db = 'Opedia'
 			conn = pyodbc.connect('DRIVER={SQL Server};SERVER=' + server + ';DATABASE=' + db + ';Trusted_Connection=yes')
-        else: 
-			## Cloud (Azure) Database			
+        else:
+			## Cloud (Azure) Database
 			server = ''
 			db = ''
 			Uid = ''
 			psw = ''
-			conn = pyodbc.connect('DRIVER={SQL Server};SERVER=' + server + ';DATABASE=' + db + ';Uid=' + Uid + ';Pwd='+ psw +';Encrypt=yes')       
+			conn = pyodbc.connect('DRIVER={SQL Server};SERVER=' + server + ';DATABASE=' + db + ';Uid=' + Uid + ';Pwd='+ psw +';Encrypt=yes')
         #print('Successful Database Connection')
     except Exception as e:
-        print('Error in Database Connection. Error message: '+str(e))        
+        print('Error in Database Connection. Error message: '+str(e))
     return conn
 '''
 
@@ -54,7 +48,7 @@ def dbExecute(sql, vals):
 	cursor = conn.cursor()
 	#vals = nanToNone(vals)
 	cursor.execute(sql, vals)
-	conn.commit()		
+	conn.commit()
 	return
 
 
@@ -70,7 +64,7 @@ def dbRead(query):
 
 def bulkInsert(filePath, tableName, determinator=',', usr='ArmLab', psw='ArmLab2018', ip='128.208.239.15', port='1433', db='Opedia', TDS_Version='7.3'):
 	conn = dbConnect(usr=usr, psw=psw)
-	cursor = conn.cursor()	
+	cursor = conn.cursor()
 	query = "BULK INSERT %s FROM '%s' WITH ( FIELDTERMINATOR = '%s', ROWTERMINATOR = '\n', FIRSTROW = 2 ) " % (tableName, filePath, determinator)
 	cursor.execute(query, [])
 	conn.commit()
