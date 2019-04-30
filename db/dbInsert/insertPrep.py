@@ -4,9 +4,7 @@ import pandas as pd
 
 
 def convertYYYYMMDD(df):
-    df['time'] = df['time'] #+ ' 00:00:00'
     df['time'] = pd.to_datetime(df['time'].astype(str), format='%Y-%m-%d')
-
     return df
 
 def removeColumn(cols, df):
@@ -14,6 +12,13 @@ def removeColumn(cols, df):
         df.drop(col, axis=1, inplace=True)
     return df
 
+def removeDuplicates(df):
+    df = df.drop_duplicates(keep='first')
+    return df
+
+def addIDcol(df):
+    df['ID'] = None
+    return df
 
 def removeMissings(cols, df):
     for col in cols:
@@ -25,10 +30,26 @@ def NAtoNone(df):
     df.replace(r'\s+', np.nan, regex=True, inplace=True)
     return df
 
+def renameCol(df, oldColName, newColName):
+    df.rename(columns={oldColName: newColName},inplace=True)
+    return df
 
 def NaNtoNone(df):
     df = df.replace(np.nan, '', regex=True)
     return df
+
+def colDatatypes(df):
+    try:
+        df['time']=pd.to_datetime(df['time'], format='%Y-%m-%d')
+        df['lat'] = df['lat'].astype(float)
+        df['lon'] = df['lon'].astype(float)
+        df['depth'] = df['depth'].astype(float)
+        return df
+    except:
+        df['time']=pd.to_datetime(df['time'], format='%Y-%m-%d')
+        df['lat'] = df['lat'].astype(float)
+        df['lon'] = df['lon'].astype(float)
+        return df
 
 def mapTo180180(export_path, lonName):
     df = pd.read_csv(export_path)
@@ -42,7 +63,12 @@ def sortByLatLon(df, export_path, lonName, latName):
     df.sort_values([latName, lonName], ascending=[True, True], inplace=True)
     df.to_csv(export_path, index=False)
     return
-
+    
+def sortByTimeLatLon(df, export_path, timeName, latName, lonName):
+    df = pd.read_csv(export_path)
+    df.sort_values([timeName, latName, lonName], ascending=[True, True, True], inplace=True)
+    df.to_csv(export_path, index=False)
+    return
 
 def sortByDepthLatLon(df, export_path, lonName, latName, depthName):
     df = pd.read_csv(export_path)
