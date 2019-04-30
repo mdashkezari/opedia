@@ -1,3 +1,7 @@
+
+
+
+
 import sys
 sys.path.append('../')
 import insertFunctions as iF
@@ -8,14 +12,13 @@ import pandas as pd
 ############################
 ########### OPTS ###########
 
-tableName = 'tblFlombaum'
-rawFilePath = cfgv.rep_flombaum_raw
-rawFileName = 'flombaum.xlsx'
+tableName = 'tblHOT224'
+rawFilePath = cfgv.rep_HOT224_raw
+rawFileName = 'HOT224.xlsx'
 ############################
 
 
-
-def makeFlombaum(rawFilePath, rawFileName, tableName):
+def makeHOT224(rawFilePath, rawFileName, tableName):
     path = rawFilePath + rawFileName
     prefix = tableName
     exportBase = cfgv.opedia_proj + 'db/dbInsert/export/'
@@ -27,14 +30,11 @@ def makeFlombaum(rawFilePath, rawFileName, tableName):
     df = ip.convertYYYYMMDD(df)
     df = ip.addIDcol(df)
     df = ip.removeDuplicates(df)
-    df['lon'] = df['lon'].abs()
     df.to_csv(export_path, index=False)
-    ip.mapTo180180(export_path, 'lon')
     ip.sortByTimeLatLonDepth(df, export_path, 'time', 'lat', 'lon', 'depth')
     print('export path: ' ,export_path)
     return export_path
 
+export_path = makeHOT224(rawFilePath, rawFileName, tableName)
 
-
-export_path = makeFlombaum(rawFilePath, rawFileName, tableName)
 iF.toSQLbcp(export_path, tableName)
