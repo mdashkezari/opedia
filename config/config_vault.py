@@ -22,6 +22,9 @@ def leafStruc(base):
 opedia_proj = r'H:/Dropbox/projects/opedia/'
 vault = r'H:/Dropbox/Apps/OpediaVault/'
 
+# opedia_proj = r'/media/nrhagen/Drobo/opedia/'
+# vault = r'/media/nrhagen/Drobo/OpediaVault/'
+
 makedir(vault)
 
 
@@ -61,6 +64,14 @@ makedir(darwin_clim_1992_2011_raw)
 nrt_darwin_clim_raw, rep_darwin_clim_raw, doc_darwin_clim_raw, code_darwin_clim_raw = leafStruc(darwin_clim_1992_2011_raw)
 nrt_darwin_clim_prefix = 'darwin_clim_'
 rep_darwin_clim_prefix = 'darwin_clim_'
+
+######## models/darwin_3day ########
+darwin_3day_raw = model_raw + 'darwin_3day/'
+makedir(darwin_3day_raw)
+nrt_darwin_3day_raw, rep_darwin_3day_raw, doc_darwin_3day_raw, code_darwin_3day_raw = leafStruc(darwin_3day_raw)
+nrt_darwin_3day_prefix = 'darwin_3day_'
+rep_darwin_3day_prefix = 'darwin_3day_'
+
 
 
 
@@ -102,6 +113,26 @@ nrt_KM1314_cobalamin_raw, rep_KM1314_cobalamin_raw, doc_KM1314_cobalamin_raw, co
 esv_raw = cruise_raw + 'esv/'
 makedir(esv_raw)
 nrt_esv_raw, rep_esv_raw, doc_esv_raw, code_esv_raw = leafStruc(esv_raw)
+####  obs/in-situ/cruise/BiGRAPA1_CTDData_Chisholm  #####
+BiGRAPA1_CTDData_Chisholm_raw = cruise_raw + 'BiGRAPA1_CTDData_Chisholm/'
+makedir(BiGRAPA1_CTDData_Chisholm_raw)
+nrt_BiGRAPA1_CTDData_Chisholm_raw, rep_BiGRAPA1_CTDData_Chisholm_raw, doc_BiGRAPA1_CTDData_Chisholm_raw, code_BiGRAPA1_CTDData_Chisholm_raw = leafStruc(BiGRAPA1_CTDData_Chisholm_raw)
+####  obs/in-situ/cruise/BiGRAPA1_BottleData_Chisholm  #####
+BiGRAPA1_BottleData_Chisholm_raw = cruise_raw + 'BiGRAPA1_BottleData_Chisholm/'
+makedir(BiGRAPA1_BottleData_Chisholm_raw)
+nrt_BiGRAPA1_BottleData_Chisholm_raw, rep_BiGRAPA1_BottleData_Chisholm_raw, doc_BiGRAPA1_BottleData_Chisholm_raw, code_BiGRAPA1_BottleData_Chisholm_raw = leafStruc(BiGRAPA1_BottleData_Chisholm_raw)
+####  obs/in-situ/cruise/SingleCellGenomes_Chisholm  #####
+SingleCellGenomes_Chisholm_raw = cruise_raw + 'SingleCellGenomes_Chisholm/'
+makedir(SingleCellGenomes_Chisholm_raw)
+nrt_SingleCellGenomes_Chisholm_raw, rep_SingleCellGenomes_Chisholm_raw, doc_SingleCellGenomes_Chisholm_raw, code_SingleCellGenomes_Chisholm_raw = leafStruc(SingleCellGenomes_Chisholm_raw)
+####  obs/in-situ/cruise/km1709_MESOSCOPE  #####
+km1709_MESOSCOPE_raw = cruise_raw + 'km1709_MESOSCOPE/'
+makedir(km1709_MESOSCOPE_raw)
+nrt_km1709_MESOSCOPE_raw, rep_km1709_MESOSCOPE_raw, doc_km1709_MESOSCOPE_raw, code_km1709_MESOSCOPE_raw = leafStruc(km1709_MESOSCOPE_raw)
+####  obs/in-situ/cruise/HOT224  #####
+HOT224_raw = cruise_raw + 'HOT224/'
+makedir(HOT224_raw)
+nrt_HOT224_raw, rep_HOT224_raw, doc_HOT224_raw, code_HOT224_raw = leafStruc(HOT224_raw)
 ####  obs/in-situ/cruise/gradients_16s  #####
 gradients_16s_raw = cruise_raw + 'gradients_16s/'
 makedir(gradients_16s_raw)
@@ -209,6 +240,11 @@ armor3d_raw = satellite_raw + 'armor3d/'
 nrt_armor3d_raw, rep_armor3d_raw, doc_armor3d_raw, code_armor3d_raw = leafStruc(armor3d_raw)
 nrt_armor3d_prefix = 'nrt_armor3d_'
 rep_armor3d_prefix = 'rep_armor3d_'
+
+modis_aerosol_raw = satellite_raw + 'modis_aerosol/'
+nrt_modis_aerosol_raw, rep_modis_aerosol_raw, doc_modis_aerosol_raw, code_modis_aerosol_raw = leafStruc(modis_aerosol_raw)
+nrt_modis_aerosol_prefix = 'nrt_modis_aerosol_'
+rep_modis_aerosol_prefix = 'rep_modis_aerosol_'
 
 col_raw = satellite_raw + 'col/'
 nrt_col_raw, rep_col_raw, doc_col_raw, code_col_raw = leafStruc(col_raw)
