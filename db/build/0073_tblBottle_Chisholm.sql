@@ -17,7 +17,7 @@ CREATE TABLE [dbo].[tblBottle_Chisholm](
 	[lat] [float] NOT NULL,
 	[lon] [float] NOT NULL,
 	[depth] [float] NOT NULL,
-	[theta_cmor] [float] NULL,
+	[theta_cmore] [float] NULL,
 	[sigma_cmore] [float] NULL,
 	[temp_cmore] [float] NULL,
 	[csal_cmore] [float] NULL,
