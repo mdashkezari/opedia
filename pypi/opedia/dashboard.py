@@ -66,7 +66,7 @@ def dashboardPanels(df, table, variable):
             )
         p2.xaxis.major_label_orientation = pi/4    
         # p2.circle(df['time'], df[variable], fill_color=fillColor, hover_fill_color=hoverFillColor, fill_alpha=fillAlpha, hover_alpha=hoverAlpha, line_color=lineColor, hover_line_color=hoverLineColor, size=msize)       
-        source = ColumnDataSource({'x': df['time'], 'y': df[variable], 'Time': df['time'].dt.strftime('%Y-%m-%d') })      
+        source = ColumnDataSource({'x': df['time'], 'y': df[variable], 'Time': df['time']})      
         p2.circle('x', 'y', source = source, fill_color=fillColor, hover_fill_color=hoverFillColor, fill_alpha=fillAlpha, hover_alpha=hoverAlpha, line_color=lineColor, hover_line_color=hoverLineColor, size=msize)
         p2.add_tools(HoverTool(
             tooltips=[
