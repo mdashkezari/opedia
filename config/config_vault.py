@@ -19,11 +19,11 @@ def leafStruc(base):
 	return nrt, rep, doc, code
 
 
-opedia_proj = r'H:/Dropbox/projects/opedia/'
-vault = r'H:/Dropbox/Apps/OpediaVault/'
+# opedia_proj = r'H:/Dropbox/projects/opedia/'
+# vault = r'H:/Dropbox/Apps/OpediaVault/'
 
-# opedia_proj = r'/media/nrhagen/Drobo/opedia/'
-# vault = r'/media/nrhagen/Drobo/OpediaVault/'
+opedia_proj = r'/media/nrhagen/Drobo/opedia/'
+vault = r'/media/nrhagen/Drobo/OpediaVault/'
 
 makedir(vault)
 
@@ -117,10 +117,10 @@ nrt_esv_raw, rep_esv_raw, doc_esv_raw, code_esv_raw = leafStruc(esv_raw)
 BiGRAPA1_CTDData_Chisholm_raw = cruise_raw + 'BiGRAPA1_CTDData_Chisholm/'
 makedir(BiGRAPA1_CTDData_Chisholm_raw)
 nrt_BiGRAPA1_CTDData_Chisholm_raw, rep_BiGRAPA1_CTDData_Chisholm_raw, doc_BiGRAPA1_CTDData_Chisholm_raw, code_BiGRAPA1_CTDData_Chisholm_raw = leafStruc(BiGRAPA1_CTDData_Chisholm_raw)
-####  obs/in-situ/cruise/BiGRAPA1_BottleData_Chisholm  #####
-BiGRAPA1_BottleData_Chisholm_raw = cruise_raw + 'BiGRAPA1_BottleData_Chisholm/'
-makedir(BiGRAPA1_BottleData_Chisholm_raw)
-nrt_BiGRAPA1_BottleData_Chisholm_raw, rep_BiGRAPA1_BottleData_Chisholm_raw, doc_BiGRAPA1_BottleData_Chisholm_raw, code_BiGRAPA1_BottleData_Chisholm_raw = leafStruc(BiGRAPA1_BottleData_Chisholm_raw)
+####  obs/in-situ/cruise/AMT13_Chisholm  #####
+AMT13_Chisholm_raw = cruise_raw + 'AMT13_Chisholm/'
+makedir(AMT13_Chisholm_raw)
+nrt_AMT13_Chisholm_raw, rep_AMT13_Chisholm_raw, doc_AMT13_Chisholm_raw, code_AMT13_Chisholm_raw = leafStruc(AMT13_Chisholm_raw)
 ####  obs/in-situ/cruise/SingleCellGenomes_Chisholm  #####
 SingleCellGenomes_Chisholm_raw = cruise_raw + 'SingleCellGenomes_Chisholm/'
 makedir(SingleCellGenomes_Chisholm_raw)

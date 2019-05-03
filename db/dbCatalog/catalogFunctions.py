@@ -28,6 +28,36 @@ def findID(datasetName, catalogTable, usr=cr.usr, psw=cr.psw):
     IDvar = (cursor.fetchone()[0])
     return IDvar
 
+def findMinMaxDate(tableName):
+    cur_str = 'select min(time), max(time) FROM [Opedia].[dbo].[' + tableName + ']'
+    df = dc.dbRead(cur_str)
+    dates = df.iloc[0].values
+    minDate = pd.to_datetime(str(dates[0])).strftime('%Y-%m-%d')
+    maxDate = pd.to_datetime(str(dates[1])).strftime('%Y-%m-%d')
+    return {'minDate':minDate,
+     'maxDate':maxDate}
+
+
+def findSpatialBounds(tableName):
+    cur_str = 'select min(lat), max(lat), min(lon), max(lon) FROM [Opedia].[dbo].[' + tableName + ']'
+    df = dc.dbRead(cur_str)
+    dates = df.iloc[0].values
+    return {'minLat':dates[0],
+     'maxLat':dates[1],  'minLon':dates[2],  'maxLon':dates[3]}
+
+
+def remove_duplicatesCatalogTables(usr='nrhagen', psw='Rdw10^3pb'):
+    catalogTableList = [
+     'tblDatasets', 'tblDataset_References', 'tblVariables']
+    conn = dc.dbConnect(usr=usr, psw=psw)
+    cursor = conn.cursor()
+    cur_str_tblDatasets = '\n        WITH list_duplicates (Dataset_Name, Dataset_Long_Name, duplicate_count) AS\n        (\n            SELECT Dataset_Name, Dataset_Long_Name,\n        ROW_NUMBER() OVER(PARTITION BY Dataset_Name, Dataset_Long_Name ORDER BY Dataset_Name, Dataset_Long_Name) AS duplicate_count\n        FROM tblDatasets_copy)\n        DELETE FROM list_duplicates WHERE duplicate_count > 1\n        '
+    cur_str_tblDataset_References = '\n        WITH list_duplicates (Dataset_ID, Reference, duplicate_count) AS\n        (\n            SELECT Dataset_ID, Reference,\n        ROW_NUMBER() OVER(PARTITION BY Dataset_ID, Reference ORDER BY Dataset_ID, Reference) AS duplicate_count\n        FROM tblDataset_References_copy)\n        DELETE FROM list_duplicates WHERE duplicate_count > 1\n        '
+    cur_str_tblVariables = '\n        WITH list_duplicates (Table_Name, Short_Name, Long_Name, duplicate_count) AS\n        (\n            SELECT Table_Name, Short_Name, Long_Name,\n        ROW_NUMBER() OVER(PARTITION BY Table_Name, Short_Name, Long_Name ORDER BY Table_Name, Short_Name, Long_Name) AS duplicate_count\n        FROM tblVariables_copy)\n        DELETE FROM list_duplicates WHERE duplicate_count > 1\n        '
+    cursor.execute(tblDatasets)
+    cursor.execute(tblDataset_References)
+    cursor.execute(tblVariables)
+
 def findVariables(datasetName, catalogTable, usr=cr.usr, psw=cr.psw):
     conn = dc.dbConnect(usr=usr, psw=psw)
     cursor = conn.cursor()
@@ -68,28 +98,34 @@ def deleteCatalogTables(datasetName,usr=cr.usr, psw=cr.psw):
         print('Catalog tables for ' + datasetName + ' not deleted')
 
 
-def tblDatasets(DB, Dataset_Name, Dataset_Long_Name, Variables, variable_string, Data_Source, Distributor, Description, Climatology): # [ID] [DB],[Dataset_Name],[Dataset_Long_Name],[Variables],[Data_Source],[Distributor],[Description],[Climatology]
+def tblDatasets(DB, Dataset_Name, Dataset_Long_Name, Variables, Data_Source, Distributor, Description, Climatology):
     """ create a tuple out of variables and columns -- in future edit Climatology should be part of insert prep function to reduce repitition """
     if Climatology == 'NULL':
-        query = (DB,Dataset_Name, Dataset_Long_Name, Variables, Data_Source, Distributor, Description)
-    elif Climatology == '1':
-        columnList = """(DB,Dataset_Name, Dataset_Long_Name, Variables, Data_Source, Distributor, Description, Climatology)"""
-        query = (DB,Dataset_Name, Dataset_Long_Name, Variables, Data_Source, Distributor, Description, Climatology)
-    print('Inserting Flombaum data into tblDatasets')
-    lineInsert('[opedia].[dbo].[tblDatasets]', columnList, query)
-    print('Insert Successful')
+        query = (DB, Dataset_Name, Dataset_Long_Name, Variables, Data_Source, Distributor, Description)
+        columnList = '(DB,Dataset_Name, Dataset_Long_Name, Variables, Data_Source, Distributor, Description)'
+        print('Inserting data into tblDatasets')
+        cI.lineInsert('[opedia].[dbo].[tblDatasets]', columnList, query)
+    else:
+        if Climatology == '1':
+            columnList = '(DB,Dataset_Name, Dataset_Long_Name, Variables, Data_Source, Distributor, Description, Climatology)'
+            query = (DB, Dataset_Name, Dataset_Long_Name, Variables, Data_Source, Distributor, Description, Climatology)
+        print('Inserting data into tblDatasets')
+        cI.lineInsert('[opedia].[dbo].[tblDatasets]', columnList, query)
 
 def tblDataset_References(Dataset_Name, reference_list):
     IDvar = findID(Dataset_Name, 'tblDatasets')
-    columnList = """(Dataset_ID, Reference)"""
+    columnList = '(Dataset_ID, Reference)'
     for ref in reference_list:
         query = (IDvar, ref)
-        print(columnList, query)
         cI.lineInsert('[opedia].[dbo].[tblDataset_References]', columnList, query)
+    print('Inserting data into tblDataset_References')
 
-def tblVariables(DB, Table_Name, Short_Name_list, Long_Name_list, Unit, Temporal_Res_ID, Spatial_Res_ID, Temporal_Coverage_Begin, Temporal_Coverage_End, Lat_Coverage_Begin, Lat_Coverage_End, Lon_Coverage_Begin, Lon_Coverage_End, Grid_Mapping,Make_ID, Sensor_ID, Process_ID, Study_Domain_ID, Keyword_list, Comment):
-    Dataset_ID = cI.findID(Dataset_Name, 'tblDatasets')
-    columnList = """(DB, Dataset_ID, Table_Name, Short_Name, Long_Name, Unit, Temporal_Res_ID, Spatial_Res_ID, Temporal_Coverage_Begin, Temporal_Coverage_End, Lat_Coverage_Begin, Lat_Coverage_End, Lon_Coverage_Begin, Lon_Coverage_End, Grid_Mapping, Make_ID, Sensor_ID, Process_ID, Study_Domain_ID, Keywords,Comment)"""
-    for Short_Name, Long_Name, Keywords in zip(Short_Name_list, Long_Name_list, Keyword_list):
-        query =     (DB, Dataset_ID, Table_Name, Short_Name, Long_Name, Unit, Temporal_Res_ID, Spatial_Res_ID, Temporal_Coverage_Begin, Temporal_Coverage_End, Lat_Coverage_Begin, Lat_Coverage_End, Lon_Coverage_Begin, Lon_Coverage_End, Grid_Mapping, Make_ID, Sensor_ID, Process_ID, Study_Domain_ID, Keywords, Comment)
-        lineInsert('[opedia].[dbo].[tblVariables]', columnList, query)
+
+def tblVariables(DB_list, Dataset_Name_list, short_name_list, long_name_list, unit_list, temporal_res_list, spatial_res_list, Temporal_Coverage_Begin_list, Temporal_Coverage_End_list, Lat_Coverage_Begin_list, Lat_Coverage_End_list, Lon_Coverage_Begin_list, Lon_Coverage_End_list, Grid_Mapping_list, Make_ID_list, Sensor_ID_list, Process_ID_list, Study_Domain_ID_list, keyword_list, comment_list):
+    Dataset_ID_raw = cI.findID(Dataset_Name_list[0], 'tblDatasets')
+    dataset_ID_list = [Dataset_ID_raw] * len(DB_list)
+    columnList = '(DB, Dataset_ID, Table_Name, Short_Name, Long_Name, Unit, Temporal_Res_ID, Spatial_Res_ID, Temporal_Coverage_Begin, Temporal_Coverage_End, Lat_Coverage_Begin, Lat_Coverage_End, Lon_Coverage_Begin, Lon_Coverage_End, Grid_Mapping, Make_ID, Sensor_ID, Process_ID, Study_Domain_ID, Keywords,Comment)'
+    for DB, dataset_ID, Dataset_Name, short_name, long_name, unit, temporal_res, spatial_res, Temporal_Coverage_Begin, Temporal_Coverage_End, Lat_Coverage_Begin, Lat_Coverage_End, Lon_Coverage_Begin, Lon_Coverage_End, Grid_Mapping, Make_ID, Sensor_ID, Process_ID, Study_Domain_ID, keyword, comment in zip(DB_list, dataset_ID_list, Dataset_Name_list, short_name_list, long_name_list, unit_list, temporal_res_list, spatial_res_list, Temporal_Coverage_Begin_list, Temporal_Coverage_End_list, Lat_Coverage_Begin_list, Lat_Coverage_End_list, Lon_Coverage_Begin_list, Lon_Coverage_End_list, Grid_Mapping_list, Make_ID_list, Sensor_ID_list, Process_ID_list, Study_Domain_ID_list, keyword_list, comment_list):
+        query = (DB, dataset_ID, Dataset_Name, short_name, long_name, unit, temporal_res, spatial_res, Temporal_Coverage_Begin, Temporal_Coverage_End, Lat_Coverage_Begin, Lat_Coverage_End, Lon_Coverage_Begin, Lon_Coverage_End, Grid_Mapping, Make_ID, Sensor_ID, Process_ID, Study_Domain_ID, keyword, comment)
+        cI.lineInsert('[opedia].[dbo].[tblVariables]', columnList, query)
+    print('Inserting data into tblVariables')
