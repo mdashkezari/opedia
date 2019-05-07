@@ -1,8 +1,10 @@
+import sys
 import os
+sys.path.append(os.path.dirname(__file__))
+import common as com
 import numpy as np
 import folium
 from folium.plugins import HeatMap, MarkerCluster, Fullscreen, MousePosition
-import common as com
 
 
 

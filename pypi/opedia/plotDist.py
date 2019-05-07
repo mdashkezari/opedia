@@ -5,6 +5,7 @@ import numpy as np
 import pandas as pd
 import db
 import subset
+import common as com
 from datetime import datetime, timedelta
 import time
 from math import pi
@@ -52,8 +53,11 @@ def plotDist(tables, variables, startDate, endDate, lat1, lat2, lon1, lon2, dept
     h = 400
     TOOLS = 'pan,wheel_zoom,zoom_in,zoom_out,box_zoom, undo,redo,reset,tap,save,box_select,poly_select,lasso_select'
     for i in tqdm(range(len(tables)), desc='overall'):
-        #y = gd.genericDist(tables[i], variables[i], startDate, endDate, lat1, lat2, lon1, lon2, extV[i], extVV[i], extV2[i], extVV2[i])
         y = subset.spaceTime(tables[i], variables[i], startDate, endDate, lat1, lat2, lon1, lon2, depth1, depth2) 
+        if len(y) < 1:
+            com.printTQDM('%d: No matching entry found: Table: %s, Variable: %s ' % (i+1, tables[i], variables[i]), err=True )
+            continue
+        com.printTQDM('%d: %s retrieved (%s).' % (i+1, variables[i], tables[i]), err=False)
         y = y[variables[i]]
         if exportDataFlag:
             exportData(y, tables[i], variables[i], startDate, endDate, lat1, lat2, lon1, lon2, depth1, depth2)
@@ -84,8 +88,6 @@ def main():
     variables = sys.argv[2].split(',')      
     startDate = sys.argv[3]      
     endDate = sys.argv[4]      
-    #startDate = sys.argv[3].split('T')[0]      
-    #endDate = sys.argv[4].split('T')[0]      
     lat1 = sys.argv[5]   
     lat2 = sys.argv[6]   
     lon1 = sys.argv[7]     
@@ -110,11 +112,7 @@ def main():
         startDate = endDate
         endDate = temp
 
-
-    #tic = time.clock()
     plotDist(tables, variables, startDate, endDate, lat1, lat2, lon1, lon2, depth1, depth2, fname, exportDataFlag)
-    #toc = time.clock()
-    #print('Fetch time: %2.2f s' % (toc-tic))
 
 
 inline = jup.inline()   # check if jupyter is calling this script

@@ -6,7 +6,7 @@ import pandas as pd
 from scipy.interpolate import griddata
 import db
 import subset
-from common import getPalette, getBounds, getUnit
+import common as com
 import climatology as clim
 from datetime import datetime, timedelta
 import time
@@ -36,7 +36,9 @@ def sectionMap(tables, variabels, dt1, dt2, lat1, lat2, lon1, lon2, depth1, dept
             continue        
         df = subset.section(tables[i], variabels[i], dt1, dt2, lat1, lat2, lon1, lon2, depth1, depth2)
         if len(df) < 1:
+            com.printTQDM('%d: No matching entry found: Table: %s, Variable: %s ' % (i+1, tables[i], variabels[i]), err=True )
             continue
+        com.printTQDM('%d: %s retrieved (%s).' % (i+1, variabels[i], tables[i]), err=False)
 
         ############### export retrieved data ###############
         if exportDataFlag:      # export data
@@ -56,7 +58,7 @@ def sectionMap(tables, variabels, dt1, dt2, lat1, lat2, lon1, lon2, depth1, dept
         if 'hour' in df.columns:
             hours = df.hour.unique()
 
-        unit = getUnit(tables[i], variabels[i])
+        unit = com.getUnit(tables[i], variabels[i])
 
         for t in times:
             for h in hours:
@@ -127,9 +129,9 @@ def bokehSec(data, subject, fname, ys, xs, zs, units, variabels):
         lat = ys[ind]
         depth = zs[ind]      
         
-        bounds = getBounds(variabels[ind])
+        bounds = com.getBounds(variabels[ind])
         bounds = (None, None)
-        paletteName = getPalette(variabels[ind], 10)
+        paletteName = com.getPalette(variabels[ind], 10)
         low, high = bounds[0], bounds[1]
         if low == None:
             low, high = np.nanmin(data[ind].flatten()), np.nanmax(data[ind].flatten())

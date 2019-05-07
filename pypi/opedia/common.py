@@ -8,7 +8,8 @@ from datetime import date, datetime, timedelta
 from bokeh.palettes import all_palettes
 import subset
 import webbrowser
-
+from tqdm import tqdm
+from colorama import Fore, Back, Style, init
 
 
 def normalize(vals, min_max=False):
@@ -18,21 +19,6 @@ def normalize(vals, min_max=False):
         normalized_vals=(vals-np.nanmean(vals))/np.nanstd(vals)
     return normalized_vals
 
-
-def getLandMask(lat1, lat2, lon1, lon2, fillValue=0):
-    table = 'tblsst_AVHRR_OI_NRT'
-    field = 'sst'
-    dt1, dt2 = '2016-04-30', '2016-04-30'
-    # lat1, lat2 = -90, 90
-    # lon1, lon2 = -180, 180
-    depth1, depth2 = 0, 0.5
-    df = subset.spaceTime(table, field, dt1, dt2, lat1, lat2, lon1, lon2, depth1, depth2)
-    times = df[df.columns[0]].unique()  
-    lat = df.lat.unique()
-    lon = df.lon.unique()
-    shape = (len(lat), len(lon))
-    data = df[field].values.reshape(shape)
-    return data
 
 def openHTML(path):
     path = 'file://' + os.path.realpath(path)
@@ -93,7 +79,24 @@ def canvasRect(dw, dh):
     if w < w_min: w = w_min
     return w, h
 
-    
+
+def printTQDM(msg, err=False):
+    # init()
+    if err:
+        tqdm.write(Fore.RED + msg)        
+    else:    
+        tqdm.write(msg)
+    tqdm.write(Style.RESET_ALL, end='')
+    return
+
+
+def halt(msg):
+    print(Fore.RED + msg)    
+    print(Style.RESET_ALL, end='')
+    sys.exit()
+    return
+
+
 def getBounds(varName):
     bounds = (None, None)
 
@@ -183,18 +186,8 @@ def getBounds(varName):
         bounds = (-4e-6, 4e-6)          
     elif varName.find('AOD') != -1:
         bounds = (0, 0.5)          
-
-    # bounds = (None, None)
     return bounds
 
-
-
-'''
-import matplotlib as plt
-import matplotlib.cm as cm
-colormap =cm.get_cmap("ocean") 
-paletteName = [plt.colors.rgb2hex(m) for m in colormap(np.arange(colormap.N))]
-'''
 
 
 def getPalette(varName, nCols=256):
@@ -275,7 +268,6 @@ def getPalette(varName, nCols=256):
         paletteName = all_palettes['Inferno'][nCols]
     elif varName.find('sss') != -1:
         paletteName = all_palettes['Inferno'][11]
-        # paletteName = 'RdBu11'
     elif varName.find('AOD') != -1:
         paletteName = all_palettes['Inferno'][nCols]
     elif varName.find('sla') != -1:

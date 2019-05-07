@@ -9,7 +9,7 @@ import pandas as pd
 import db
 import subset
 from dashboard import dashboardPanels
-from common import getPalette, getBounds, isGrid, getLandMask, canvasRect, getUnit
+import common as com
 from datetime import datetime, timedelta
 import time
 from math import pi
@@ -44,7 +44,7 @@ def structuredMap(df, table, variable, data, lats, lons, subs, frameTables, fram
     if 'hour' in df.columns:
         hours = df.hour.unique()
 
-    unit = getUnit(table, variable)
+    unit = com.getUnit(table, variable)
     for t in times:
         for h in hours:
             for z in depths:
@@ -82,7 +82,7 @@ def interpolatedMap(df, table, variable, data, lats, lons, subs, frameTables, fr
         depths = df.depth.sort_values().unique()    
         depth_sub = ', depth: %2.2f -- %2.2f' % (np.min(df.depth), np.max(df.depth)) + ' [m]'
 
-    unit = getUnit(table, variable)
+    unit = com.getUnit(table, variable)
     sub = variable + unit + ', ' + time_sub
     sub = sub + depth_sub
 
@@ -117,7 +117,9 @@ def regionalMap(tables, variabels, dt1, dt2, lat1, lat2, lon1, lon2, depth1, dep
     for i in tqdm(range(len(tables)), desc='overall'):
         df = subset.spaceTime(tables[i], variabels[i], dt1, dt2, lat1, lat2, lon1, lon2, depth1, depth2)        
         if len(df) < 1:
+            com.printTQDM('%d: No matching entry found: Table: %s, Variable: %s ' % (i+1, tables[i], variabels[i]), err=True )
             continue
+        com.printTQDM('%d: %s retrieved (%s).' % (i+1, variabels[i], tables[i]), err=False)
 
         ############### export retrieved data ###############
         if exportDataFlag:      
@@ -128,7 +130,7 @@ def regionalMap(tables, variabels, dt1, dt2, lat1, lat2, lon1, lon2, depth1, dep
             exportData(df, path=exportPath + '.csv')
         #####################################################
 
-        if isGrid(tables[i], variabels[i]):
+        if com.isGrid(tables[i], variabels[i]):
             data, lats, lons, subs, frameTables, frameVars = structuredMap(df, tables[i], variabels[i], data, lats, lons, subs, frameTables, frameVars)
         else:
             dashboardPanels(df, tables[i], variabels[i])
@@ -144,13 +146,13 @@ def bokehMap(data, subject, fname, lat, lon, tables, variabels):
     TOOLS="crosshair,pan,zoom_in,wheel_zoom,zoom_out,box_zoom,reset,save,"
     p = []
     for ind in range(len(data)):
-        w, h = canvasRect(dw=np.max(lon[ind])-np.min(lon[ind]), dh=np.max(lat[ind])-np.min(lat[ind]))
+        w, h = com.canvasRect(dw=np.max(lon[ind])-np.min(lon[ind]), dh=np.max(lat[ind])-np.min(lat[ind]))
         p1 = figure(tools=TOOLS, toolbar_location="right", title=subject[ind], plot_width=w, plot_height=h, x_range=(np.min(lon[ind]), np.max(lon[ind])), y_range=(np.min(lat[ind]), np.max(lat[ind])))
         p1.xaxis.axis_label = 'Longitude'
         p1.yaxis.axis_label = 'Latitude'
-        unit = getUnit(tables[ind], variabels[ind])
-        bounds = getBounds(variabels[ind])
-        paletteName = getPalette(variabels[ind])
+        unit = com.getUnit(tables[ind], variabels[ind])
+        bounds = com.getBounds(variabels[ind])
+        paletteName = com.getPalette(variabels[ind])
         low, high = bounds[0], bounds[1]
         if low == None:
             low, high = np.nanmin(data[ind].flatten()), np.nanmax(data[ind].flatten())

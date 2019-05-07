@@ -4,6 +4,7 @@ sys.path.append(os.path.dirname(__file__))
 import numpy as np
 import pandas as pd
 import db
+import common as com
 import timeSeries as TS
 import itertools as itt
 from datetime import datetime, timedelta
@@ -59,6 +60,15 @@ def plotXY(tables, variables, startDate, endDate, lat1, lat2, lon1, lon2, depth1
         if exportDataFlag:
             exportData(t1, y1, y_std1, t2, y2, y_std2, tablePairs[i][0], variablePairs[i][0], tablePairs[i][1], variablePairs[i][1], lat1, lat2, lon1, lon2, depth1, depth2)
 
+        if len(y1[~np.isnan(y1)]) < 1:
+            com.printTQDM('%d: No matching entry found: Table: %s, Variable: %s ' % (i+1, tablePairs[i][0], variablePairs[i][0]), err=True )
+            # continue
+        com.printTQDM('%d: %s retrieved (%s).' % (i+1, variablePairs[i][0], tablePairs[i][0]), err=False)    
+        if len(y2[~np.isnan(y2)]) < 1:
+            com.printTQDM('%d: No matching entry found: Table: %s, Variable: %s ' % (i+1, tablePairs[i][1], variablePairs[i][1]), err=True )
+            # continue
+        com.printTQDM('%d: %s retrieved (%s).' % (i+1, variablePairs[i][1], tablePairs[i][1]), err=False)     
+
         if len(t1)<1 or len(y1)<1 or len(t2)<1 or len(y2)<1:
             continue
         if (len(t1)-len(t2) != 0) or (len(y1)-len(y2) != 0):   
@@ -86,8 +96,6 @@ def main():
     variables = sys.argv[2].split(',')      
     startDate = sys.argv[3]      
     endDate = sys.argv[4]      
-    #startDate = sys.argv[3].split('T')[0]      
-    #endDate = sys.argv[4].split('T')[0]      
     lat1 = sys.argv[5]
     lat2 = sys.argv[6]      
     lon1 = sys.argv[7]      
@@ -112,10 +120,7 @@ def main():
         startDate = endDate
         endDate = temp
 
-    #tic = time.clock()
     plotXY(tables, variables, startDate, endDate, lat1, lat2, lon1, lon2, depth1, depth2, fname, exportDataFlag)
-    #toc = time.clock()
-    #print('Fetch time: %2.2f s' % (toc-tic))
 
 
 

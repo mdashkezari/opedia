@@ -57,10 +57,14 @@ def plotTS(tables, variables, startDate, endDate, lat1, lat2, lon1, lon2, depth1
     for i in tqdm(range(len(tables)), desc='overall'):
         dt = com.temporalRes(tables[i])
         t, y, yErr = TS.timeSeries(tables[i], variables[i], startDate, endDate, lat1, lat2, lon1, lon2, depth1, depth2, fmt='%Y-%m-%d', dt=dt*24*60)
+        if len(y[~np.isnan(y)]) < 1:
+            com.printTQDM('%d: No matching entry found: Table: %s, Variable: %s ' % (i+1, tables[i], variables[i]), err=True )
+            continue
+        com.printTQDM('%d: %s retrieved (%s).' % (i+1, variables[i], tables[i]), err=False)
         if exportDataFlag:
             exportData(t, y, yErr, tables[i], variables[i], lat1, lat2, lon1, lon2, depth1, depth2)
         p1 = figure(tools=TOOLS, toolbar_location="above", plot_width=w, plot_height=h)
-        #p1.xaxis.axis_label = 'Time'
+        # p1.xaxis.axis_label = 'Time'
         p1.yaxis.axis_label = variables[i] + ' [' + db.getVar(tables[i], variables[i]).iloc[0]['Unit'] + ']'
         leg = variables[i]
         fill_alpha = 0.3        
@@ -78,7 +82,6 @@ def plotTS(tables, variables, startDate, endDate, lat1, lat2, lon1, lon2, depth1
         elif db.hasField(tables[i], 'month'):
             p1.xaxis.axis_label = 'Month'
 
-        #p1.xaxis.visible = False
         p.append(p1)
     dirPath = 'embed/'
     if not os.path.exists(dirPath):
@@ -118,10 +121,7 @@ def main():
         startDate = endDate
         endDate = temp
 
-    #tic = time.clock()
     plotTS(tables, variables, startDate, endDate, lat1, lat2, lon1, lon2, depth1, depth2, fname, exportDataFlag)
-    #toc = time.clock()
-    #print('Fetch time: %2.2f s' % (toc-tic))
 
 
 
