@@ -34,6 +34,10 @@ def renameCol(df, oldColName, newColName):
     df.rename(columns={oldColName: newColName},inplace=True)
     return df
 
+def reorderCol(df,ColList):
+    df = df[ColList]
+    return df
+
 def NaNtoNone(df):
     df = df.replace(np.nan, '', regex=True)
     return df
@@ -63,7 +67,7 @@ def sortByLatLon(df, export_path, lonName, latName):
     df.sort_values([latName, lonName], ascending=[True, True], inplace=True)
     df.to_csv(export_path, index=False)
     return
-    
+
 def sortByTimeLatLon(df, export_path, timeName, latName, lonName):
     df = pd.read_csv(export_path)
     df.sort_values([timeName, latName, lonName], ascending=[True, True, True], inplace=True)
