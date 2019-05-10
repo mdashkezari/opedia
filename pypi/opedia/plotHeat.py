@@ -37,7 +37,7 @@ def addMarkers(m, df, variable, unit):
     normalized = com.normalize(df[variable])
     mc = MarkerCluster(name=variable+unit, options={'spiderfyOnMaxZoom':'False', 'disableClusteringAtZoom' : '4'})
     for i in range(len(df)):
-        folium.CircleMarker(location=[df.lat[i], df.lon[i]], radius=(normalized[i] * 10), tooltip='%s: %f%s' % (variable, df[variable][i], unit), color=colors['darkOrange'], fill=True).add_to(mc)
+        folium.CircleMarker(location=[df.lat[i], df.lon[i]], radius=(normalized[i] * 10), tooltip='%s: %f%s <br> date: %s' % (variable, df[variable][i], unit, df['time'][i]), color=colors['darkOrange'], fill=True).add_to(mc)
     mc.add_to(m)
     return m
 
@@ -72,11 +72,10 @@ def heatMap(df, table, variable, unit):
 
     dirPath = 'embed/'
     if not os.path.exists(dirPath):
-        os.makedirs(dirPath)        
+        os.makedirs(dirPath)
     fname = dirPath + 'heatMap.html'
     if os.path.exists(fname):
         os.remove(fname)
-    m.save(fname)            
+    m.save(fname)
     com.openHTML(fname)
     return
-
