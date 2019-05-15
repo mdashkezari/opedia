@@ -4,7 +4,7 @@
 # Opedia
 Opedia is an open source database service to integrate, visualize, and analyze ocean datasets such as satellite data, in-situ observations, and model outputs. The project is supported by [Simons Foundation](https://www.simonsfoundation.org/).
 
-# Documentation:
+# Documentation
 https://cmap.readthedocs.io/en/latest/
 
 # System Requirements
