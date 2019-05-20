@@ -55,6 +55,10 @@ def colDatatypes(df):
         df['lon'] = df['lon'].astype(float)
         return df
 
+def convertcolDatatype(df,ColList):
+    df[ColList] = df[ColList].apply(pd.to_numeric)
+    return df
+
 def mapTo180180(export_path, lonName):
     df = pd.read_csv(export_path)
     df.ix[df[lonName] > 180, lonName] = df.ix[df[lonName] > 180, lonName] - 360
