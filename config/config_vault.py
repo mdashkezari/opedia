@@ -19,11 +19,11 @@ def leafStruc(base):
 	return nrt, rep, doc, code
 
 
-# opedia_proj = r'H:/Dropbox/projects/opedia/'
-# vault = r'H:/Dropbox/Apps/OpediaVault/'
+opedia_proj = r'H:/Dropbox/projects/opedia/'
+vault = r'H:/Dropbox/Apps/OpediaVault/'
 
-opedia_proj = r'/media/nrhagen/Drobo/opedia/'
-vault = r'/media/nrhagen/Drobo/OpediaVault/'
+# opedia_proj = r'/media/nrhagen/Drobo/opedia/'
+# vault = r'/media/nrhagen/Drobo/OpediaVault/'
 
 makedir(vault)
 
@@ -65,12 +65,12 @@ nrt_darwin_clim_raw, rep_darwin_clim_raw, doc_darwin_clim_raw, code_darwin_clim_
 nrt_darwin_clim_prefix = 'darwin_clim_'
 rep_darwin_clim_prefix = 'darwin_clim_'
 
-######## models/darwin_3day ########
-darwin_3day_raw = model_raw + 'darwin_3day/'
-makedir(darwin_3day_raw)
-nrt_darwin_3day_raw, rep_darwin_3day_raw, doc_darwin_3day_raw, code_darwin_3day_raw = leafStruc(darwin_3day_raw)
-nrt_darwin_3day_prefix = 'darwin_3day_'
-rep_darwin_3day_prefix = 'darwin_3day_'
+######## models/darwin_nutrient_3day ########
+darwin_nutrient_3day_raw = model_raw + 'darwin_nutrient_3day/'
+makedir(darwin_nutrient_3day_raw)
+nrt_darwin_nutrient_3day_raw, rep_darwin_nutrient_3day_raw, doc_darwin_nutrient_3day_raw, code_darwin_nutrient_3day_raw = leafStruc(darwin_nutrient_3day_raw)
+nrt_darwin_nutrient_3day_prefix = 'darwin_nutrient_3day_'
+rep_darwin_nutrient_3day_prefix = 'darwin_nutrient_3day_'
 
 
 
@@ -85,6 +85,10 @@ makedir(remote_raw)
 #########  obs/in-situ/cruise  #########
 cruise_raw = in_situ_raw + 'cruise/'
 makedir(cruise_raw)
+######  obs/in-situ/cruise/WOA_climatology  ######
+WOA_climatology_raw = cruise_raw + 'WOA_climatology/'
+makedir(WOA_climatology_raw)
+nrt_WOA_climatology_raw, rep_WOA_climatology_raw, doc_WOA_climatology_raw, code_WOA_climatology_raw = leafStruc(WOA_climatology_raw)
 ######  obs/in-situ/cruise/socat  ######
 socat_raw = cruise_raw + 'socat/'
 makedir(socat_raw)
@@ -97,6 +101,10 @@ nrt_seaflow_raw, rep_seaflow_raw, doc_seaflow_raw, code_seaflow_raw = leafStruc(
 flombaum_raw = cruise_raw + 'flombaum/'
 makedir(flombaum_raw)
 nrt_flombaum_raw, rep_flombaum_raw, doc_flombaum_raw, code_flombaum_raw = leafStruc(flombaum_raw)
+####  obs/in-situ/cruise/Global_PicoPhytoPlankton   #####
+Global_PicoPhytoPlankton_raw = cruise_raw + 'Global_PicoPhytoPlankton/'
+makedir(Global_PicoPhytoPlankton_raw)
+nrt_Global_PicoPhytoPlankton_raw, rep_Global_PicoPhytoPlankton_raw, doc_Global_PicoPhytoPlankton_raw, code_Global_PicoPhytoPlankton_raw = leafStruc(Global_PicoPhytoPlankton_raw)
 ####  obs/in-situ/cruise/lineage  #####
 lineage_raw = cruise_raw + 'lineage/'
 makedir(lineage_raw)

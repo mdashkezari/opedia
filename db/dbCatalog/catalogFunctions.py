@@ -76,7 +76,7 @@ def deleteCatalogTables(datasetName,usr=cr.usr, psw=cr.psw):
         cursor = conn.cursor()
         print('db connection successful')
 
-        Dataset_ID = str(findID(datasetName, catalogTable = 'tblDatasets'))
+        Dataset_ID = str(findID(datasetName, catalogTable = 'tblDatasets')) #datasetName
         print('Dataset ID used to remove catalog tables: ', Dataset_ID)
 
         cur_str = """DELETE FROM [Opedia].[dbo].[tblVariables] WHERE [Dataset_ID] = """ + Dataset_ID
