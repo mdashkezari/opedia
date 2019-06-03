@@ -87,13 +87,20 @@ def organismsList(tax, depth1, depth2, cruise_name, cluster_level, size_frac_low
     query = "SELECT [%s], SUM(relative_abundance) AS total FROM %s WHERE " % (tax, table)
     query += "depth BETWEEN %f AND %f AND " % (depth1, depth2)
     query += "cruise_name='%s' AND " % cruise_name
+    # removing null, ambiguous, and uncultured taxa labels
+    query += "[%s] IS NOT NULL AND " % tax
+    query += "[%s] NOT LIKE '%s' AND " % (tax, '%uncultured%')
+    query += "[%s] NOT LIKE '%s' AND " % (tax, '%ambiguous%')
+    query += "[%s] NOT LIKE '%s' AND " % (tax, '%unidentified%')
+    query += "[%s] NOT LIKE '%s' AND " % (tax, '%metagenome%')
+
     query += "cluster_level=%d AND " % cluster_level  
     query += "size_frac_lower=%f AND " % size_frac_lower  
     if size_frac_upper is not None:
         query += "size_frac_upper=%f " % size_frac_upper 
     else:
         query += "size_frac_upper IS NULL " 
-    query += "GROUP BY [%s] ORDER BY total DESC" % tax
+    query += "GROUP BY [%s] ORDER BY total DESC " % tax
     df = db.dbFetch(query)
     df[tax] = df[tax].str.strip()
     return df
@@ -150,6 +157,9 @@ def plotESVs(topN, tax, depth1, depth2, cruise_name, cluster_level, size_frac_lo
 
 
         dfOrg = aggQuery(depth1, depth2, cruise_name, cluster_level, size_frac_lower, size_frac_upper, domain, kingdom, phylum, class_tax, order, genus, species)
+        
+        dfOrg.sort_values(by=['lat'], inplace=True)
+
         x, y = dfOrg['lat'], dfOrg['abund']        
         leg = orgs[i]
         filCol = spectrum(i)
@@ -171,7 +181,7 @@ def plotESVs(topN, tax, depth1, depth2, cruise_name, cluster_level, size_frac_lo
     if not os.path.exists(dirPath):
         os.makedirs(dirPath)    
     if not inline:      ## if jupyter is not the caller
-        output_file(dirPath + fname + ".html", title="Eddy")
+        output_file(dirPath + fname + ".html", title="ESV")
     show(column(p))
     print('')   
     

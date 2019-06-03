@@ -1,3 +1,4 @@
+import os
 import platform
 import numpy as np
 import pandas as pd
@@ -54,8 +55,8 @@ def dbExecute(sql, vals):
 
 
 
-def dbRead(query):
-	conn = dbConnect()
+def dbRead(query, usr='ArmLab', psw='ArmLab2018', ip='128.208.239.15', port='1433', db='Opedia', TDS_Version='7.3'):
+	conn = dbConnect(usr=usr, psw=psw, ip=ip, port=port, db=db, TDS_Version=TDS_Version)
 	dframe = sql.read_sql(query, conn)
 	conn.close()
 	return dframe
@@ -63,9 +64,15 @@ def dbRead(query):
 
 
 def bulkInsert(filePath, tableName, determinator=',', usr='ArmLab', psw='ArmLab2018', ip='128.208.239.15', port='1433', db='Opedia', TDS_Version='7.3'):
-	conn = dbConnect(usr=usr, psw=psw)
+	conn = dbConnect(usr=usr, psw=psw, ip=ip, port=port, db=db, TDS_Version=TDS_Version)
 	cursor = conn.cursor()
 	query = "BULK INSERT %s FROM '%s' WITH ( FIELDTERMINATOR = '%s', ROWTERMINATOR = '\n', FIRSTROW = 2 ) " % (tableName, filePath, determinator)
 	cursor.execute(query, [])
 	conn.commit()
 	return
+
+
+def bcpInsert(filePath, tableName, determinator=',', usr='ArmLab', psw='ArmLab2018', ip='128.208.239.15', port='1433', db='Opedia', TDS_Version='7.3'):
+    str = """bcp """ + db + """.dbo.""" + tableName + """ in """ + filePath + """ -e error -c -t, -U  """ + usr + """ -P """ + psw + """ -S """ + ip + ""","""+ port 
+    os.system(str)
+    # print('BCP insert finished')

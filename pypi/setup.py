@@ -30,7 +30,7 @@ class PostInstallCommand(install):
 
 setup(
     name='opedia',
-    version='0.2.55',
+    version='0.2.75',
     description='Opedia is an open source database service to integrate, visualize, and analyze ocean datasets such as satellite data, in-situ observations, and model outputs.',
     long_description=long_description,
     long_description_content_type='text/markdown',
@@ -49,5 +49,5 @@ setup(
     ],
     keywords='ocean oceanography database dataset satellite model in-situ remote sensing machine learning data visualization', 
     packages=find_packages(exclude=['contrib', 'docs', 'tests']),
-    install_requires=['matplotlib', 'numpy', 'pandas', 'scipy', 'bokeh', 'docopt', 'tqdm', 'pyodbc', 'folium'],
+    install_requires=['matplotlib', 'numpy', 'pandas', 'scipy', 'bokeh', 'docopt', 'tqdm', 'folium', 'colorama', 'pyodbc'],
 )

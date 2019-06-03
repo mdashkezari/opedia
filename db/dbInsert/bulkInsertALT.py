@@ -2,12 +2,17 @@ import os
 import numpy as np
 
 itnums = np.array([])
-itnums = np.append(itnums, np.arange(2017135, 2017001-1, -1))
-itnums = np.append(itnums, np.arange(2016366, 2016001-1, -1))
-itnums = np.append(itnums, np.arange(2015365, 2015001-1, -1))
-itnums = np.append(itnums, np.arange(2014365, 2014001-1, -1))
-itnums = np.append(itnums, np.arange(2013365, 2013001-1, -1))
+itnums = np.append(itnums, np.arange(2002261, 2002365+1))
+itnums = np.append(itnums, np.arange(2001001, 2001365+1))
+itnums = np.append(itnums, np.arange(2000001, 2000366+1))
 
+itnums = np.append(itnums, np.arange(1999001, 1999365+1))
+itnums = np.append(itnums, np.arange(1998001, 1998365+1))
+itnums = np.append(itnums, np.arange(1997001, 1997365+1))
+itnums = np.append(itnums, np.arange(1996001, 1996366+1))
+itnums = np.append(itnums, np.arange(1995001, 1995365+1))
+itnums = np.append(itnums, np.arange(1994001, 1994365+1))
+itnums = np.append(itnums, np.arange(1993001, 1993365+1))
 
 
 

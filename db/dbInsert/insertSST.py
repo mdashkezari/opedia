@@ -34,7 +34,7 @@ def makeBulkSST(itnum, nrt):
     if 'time_bnds' in df.columns:
         df = ip.removeColumn(['time_bnds'], df)
     #df = ip.removeMissings(['analysed_sst'], df)   # remove land
-    df['ID'] = None
+    # df['ID'] = None
     exportBase = cfgv.opedia_proj + 'db/dbInsert/export/'
     export_path = '%s%s%d.csv' % (exportBase, prefix, itnum)
     df.to_csv(export_path)
@@ -66,7 +66,8 @@ def bulkInsertSST(itnumStart, itnumEnd, tableName):
             bulkPath = ''
             bulkPath = makeBulkSST(itnum, nrt)
             #print('\t %s  Bulk %s %7.7d ready.' % (datetime.today(), dataTitle, itnum))
-            dc.bulkInsert(bulkPath, tableName)
+            # dc.bulkInsert(bulkPath, tableName)
+            dc.bcpInsert(bulkPath, tableName)
         finally:
             if bulkPath != '':
                 os.remove(bulkPath)    
