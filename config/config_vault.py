@@ -19,11 +19,11 @@ def leafStruc(base):
 	return nrt, rep, doc, code
 
 
-opedia_proj = r'H:/Dropbox/projects/opedia/'
-vault = r'H:/Dropbox/Apps/OpediaVault/'
+# opedia_proj = r'H:/Dropbox/projects/opedia/'
+# vault = r'H:/Dropbox/Apps/OpediaVault/'
 
-# opedia_proj = r'/media/nrhagen/Drobo/opedia/'
-# vault = r'/media/nrhagen/Drobo/OpediaVault/'
+opedia_proj = r'/media/nrhagen/Drobo/opedia/'
+vault = r'/media/nrhagen/Drobo/OpediaVault/'
 
 makedir(vault)
 
@@ -150,6 +150,10 @@ gradients_18s_raw = cruise_raw + 'gradients_18s/'
 makedir(gradients_18s_raw)
 nrt_gradients_18s_raw, rep_gradients_18s_raw, doc_gradients_18s_raw, code_gradients_18s_raw = leafStruc(gradients_18s_raw)
 
+####  obs/in-situ/cruise/CPR_zooplankton   #####
+CPR_zooplankton_raw = cruise_raw + 'CPR_zooplankton/'
+makedir(CPR_zooplankton_raw)
+nrt_CPR_zooplankton_raw, rep_CPR_zooplankton_raw, doc_CPR_zooplankton_raw, code_CPR_zooplankton_raw = leafStruc(CPR_zooplankton_raw)
 
 
 #########  obs/in-situ/station  #########

@@ -1,2 +1,2 @@
 #@ Row 1, Column 1: Invalid character value for cast specification @#
-latitude	longitude	time	vgosa	vgos	sla	adt	ugosa	ugos
+time	lat	lon	depth	ESV_ID_or_Cluster_Centroid	qiime2-ID	Relative_Abundance	Study_Max_Abund	Clustering_Level	Num_Cluster_Members	Domain	Phylum	Class	Order	Genus	Species	Temperature_celsius	Salinity_psu	Chla_ugL	Size_frac_lower_uM	Size_frac_upper_uM	Cruise_name	prok_cells_10E05_per_ml,ID

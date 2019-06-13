@@ -14,12 +14,12 @@ CREATE TABLE [dbo].[tblESV](
 	[lon] [float] NOT NULL,
 	[depth] [float] NOT NULL,
 	[centroid] [nchar](50) NULL,
+	[qiime2-ID] [nchar](50) NULL,
 	[relative_abundance] [float] NULL,
 	[max_abundance] [float] NULL,
 	[cluster_level] [smallint] NULL,
 	[num_cluster_members] [int] NULL,
 	[domain] [nchar](50) NULL,
-	[kingdom] [nchar](50) NULL,
 	[phylum] [nchar](50) NULL,
 	[class] [nchar](50) NULL,
 	[order] [nchar](50) NULL,
@@ -66,7 +66,7 @@ GO
 
 -- Rowstore index
 
-CREATE UNIQUE NONCLUSTERED INDEX [IX_tblESV_time_lat_lon_depth_cluster_levels_and_members] ON [dbo].[tblESV]
+CREATE  NONCLUSTERED INDEX [IX_tblESV_time_lat_lon_depth_cluster_levels_and_members] ON [dbo].[tblESV]
 (
 	[time] ASC,
 	[lat] ASC,
@@ -113,7 +113,6 @@ CREATE NONCLUSTERED COLUMNSTORE INDEX [IX_ColumnStore_tblESV_time_space_cluster_
 	[size_frac_lower],
 	[size_frac_upper],
 	[domain],
-	[kingdom],
 	[phylum],
 	[class],
 	[order]
