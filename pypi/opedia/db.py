@@ -19,7 +19,7 @@ import common as com
 import pyodbc
 import pandas.io.sql as sql
 from pandas import DataFrame
-def dbConnect(usr='ArmLab', psw='ArmLab2018', ip='128.208.239.15', port='1445', db='Opedia', TDS_Version='7.3'):
+def dbConnect(usr='ArmLab', psw='ArmLab2018', ip='128.208.239.194', port='1445', db='Opedia', TDS_Version='7.3'):
     try:
         server = ip + ',' + port
         if platform.system().lower().find('windows') != -1:
