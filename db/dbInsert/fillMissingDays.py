@@ -18,7 +18,7 @@ def dayExists(tableName, day):
     query = "select [time] from %s where [time]='%s' " % (tableName, day)
     query += 'and lat between 20 and 40 '
     query += 'and lon between -160 and -140 '
-    df = dc.dbRead(query, usr='sa', psw='Boe@pwc1!', ip='128.208.239.194', port='1445', db='Opedia', TDS_Version='7.3')
+    df = dc.dbRead(query, usr='', psw='', ip='', port='', db='')
     if len(df) > 100:
         return True
     else:        

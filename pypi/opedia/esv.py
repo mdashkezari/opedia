@@ -1,7 +1,16 @@
+"""
+Author: Mohammad Dehghani Ashkezari <mdehghan@uw.edu>
+
+Date: Winter 2018
+
+Function: Retrieve 16s amplicon within a predefined space-time domain. 
+"""
+
 import sys
 import os
 sys.path.append(os.path.dirname(__file__))
 import db
+import export
 import numpy as np
 import pandas as pd
 from math import pi
@@ -22,11 +31,13 @@ else:
 
 
 def exportData(df):
-    dirPath = 'data/'
-    path = dirPath + 'esv.csv'
-    if not os.path.exists(dirPath):
-        os.makedirs(dirPath)    
-    df.to_csv(path, index=False)    
+    # dirPath = 'data/'
+    # path = dirPath + 'esv.csv'
+    # if not os.path.exists(dirPath):
+    #     os.makedirs(dirPath)    
+    # df.to_csv(path, index=False)    
+    #     
+    export.dump(df, table='tblESV', variable='relative_abundance', prefix='ESV', fmt='.csv')
     return
 
 

@@ -1,3 +1,11 @@
+"""
+Author: Mohammad Dehghani Ashkezari <mdehghan@uw.edu>
+
+Date: Summer 2017
+
+Function: Host a collection of shared multi-purpose helper functions.
+"""
+
 import sys
 sys.dont_write_bytecode = True
 import os
@@ -275,7 +283,26 @@ def getBoundsEx(varName):
         bounds = (-4e-6, 4e-6)
     elif varName.find('AOD') != -1:
         bounds = (0, 0.5)
-
+    elif varName.find('AOU') != -1:
+        bounds = (-1, 1.5)
+    elif varName.find('density') != -1:
+        bounds = (20, 30)
+    elif varName.find('o2sat') != -1:
+        bounds = (80, 115)
+    elif varName.find('oxygen') != -1:
+        bounds = (4, 10)
+    elif varName.find('salinity') != -1:
+        bounds = (30, 38)
+    elif varName.find('conductivity') != -1:
+        bounds = (2.5, 6)
+    elif varName.find('sea_water_temp') != -1:
+        bounds = (0, 32)
+    elif varName.find('nitrate') != -1:
+        bounds = (0, 30)
+    elif varName.find('phosphate') != -1:
+        bounds = (0, 2.5)
+    elif varName.find('silicate') != -1:
+        bounds = (0, 25)
     # bounds = (None, None)
     return bounds
 
@@ -363,4 +390,7 @@ def getPalette(varName, nCols=256):
         paletteName = all_palettes['Inferno'][nCols]
     elif varName.find('sla') != -1:
         paletteName = 'RdBu11'
+    elif varName.find('AOD') != -1:
+        paletteName = all_palettes['Inferno'][nCols]
+
     return paletteName

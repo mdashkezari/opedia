@@ -1,11 +1,23 @@
+"""
+Author: Mohammad Dehghani Ashkezari <mdehghan@uw.edu>
+
+Date: Summer 2017
+
+Function: 
+Create section maps using gridded data. Does not apply to sparse data sets. 
+If the selected longitude range is larger than latitude range, a zonal section map is generated, otherwise meridional section maps are created.
+"""
+
 import sys
 import os
 sys.path.append(os.path.dirname(__file__))
 import numpy as np
 import pandas as pd
+import warnings
 from scipy.interpolate import griddata
 import db
 import subset
+import export
 import common as com
 import climatology as clim
 from datetime import datetime, timedelta
@@ -23,31 +35,20 @@ else:
 
 
 
-def exportData(df, path):
-    df.to_csv(path, index=False)    
-    return
 
-
-def sectionMap(tables, variabels, dt1, dt2, lat1, lat2, lon1, lon2, depth1, depth2, fname, exportDataFlag):
+def sectionMap(tables, variables, dt1, dt2, lat1, lat2, lon1, lon2, depth1, depth2, fname, exportDataFlag):
     data, lats, lons, subs, frameVars, units = [], [], [], [], [], []
     xs, ys, zs = [], [], []
     for i in tqdm(range(len(tables)), desc='overall'):
         if not db.hasField(tables[i], 'depth'):
             continue        
-        df = subset.section(tables[i], variabels[i], dt1, dt2, lat1, lat2, lon1, lon2, depth1, depth2)
+        df = subset.section(tables[i], variables[i], dt1, dt2, lat1, lat2, lon1, lon2, depth1, depth2)
         if len(df) < 1:
-            com.printTQDM('%d: No matching entry found: Table: %s, Variable: %s ' % (i+1, tables[i], variabels[i]), err=True )
+            com.printTQDM('%d: No matching entry found: Table: %s, Variable: %s ' % (i+1, tables[i], variables[i]), err=True )
             continue
-        com.printTQDM('%d: %s retrieved (%s).' % (i+1, variabels[i], tables[i]), err=False)
-
-        ############### export retrieved data ###############
-        if exportDataFlag:      # export data
-            dirPath = 'data/'
-            if not os.path.exists(dirPath):
-                os.makedirs(dirPath)                
-            exportData(df, path=dirPath + fname + '_' + tables[i] + '_' + variabels[i] + '.csv')
-        #####################################################
-
+        com.printTQDM('%d: %s retrieved (%s).' % (i+1, variables[i], tables[i]), err=False)
+        if exportDataFlag:
+            export.dump(df, tables[i], variables[i], prefix='Section', fmt='.csv')
         times = df[df.columns[0]].unique() 
         lats = df.lat.unique()
         lons = df.lon.unique()
@@ -58,17 +59,17 @@ def sectionMap(tables, variabels, dt1, dt2, lat1, lat2, lon1, lon2, depth1, dept
         if 'hour' in df.columns:
             hours = df.hour.unique()
 
-        unit = com.getUnit(tables[i], variabels[i])
+        unit = com.getUnit(tables[i], variables[i])
 
         for t in times:
             for h in hours:
                 frame = df[df[df.columns[0]] == t]
-                sub = variabels[i] + unit + ', ' + df.columns[0] + ': ' + str(t) 
+                sub = variables[i] + unit + ', ' + df.columns[0] + ': ' + str(t) 
                 if h != None:
                     frame = frame[frame['hour'] == h]
                     sub = sub + ', hour: ' + str(h) + 'hr'
                 try:    
-                    shot = frame[variabels[i]].values.reshape(shape)
+                    shot = frame[variables[i]].values.reshape(shape)
                 except Exception as e:
                     continue    
                 data.append(shot)
@@ -77,11 +78,11 @@ def sectionMap(tables, variabels, dt1, dt2, lat1, lat2, lon1, lon2, depth1, dept
                 ys.append(lats)
                 zs.append(depths)
 
-                frameVars.append(variabels[i])
+                frameVars.append(variables[i])
                 units.append(unit)
                 subs.append(sub)
 
-    bokehSec(data=data, subject=subs, fname=fname, ys=ys, xs=xs, zs=zs, units=units, variabels=frameVars)
+    bokehSec(data=data, subject=subs, fname=fname, ys=ys, xs=xs, zs=zs, units=units, variables=frameVars)
     return
 
 
@@ -117,7 +118,7 @@ def regulate(lat, lon, depth, data):
 
 
 
-def bokehSec(data, subject, fname, ys, xs, zs, units, variabels):
+def bokehSec(data, subject, fname, ys, xs, zs, units, variables):
     TOOLS="crosshair,pan,wheel_zoom,zoom_in,zoom_out,box_zoom,undo,redo,reset,tap,save,box_select,poly_select,lasso_select,"
     w = 1000
     h = 500
@@ -129,37 +130,39 @@ def bokehSec(data, subject, fname, ys, xs, zs, units, variabels):
         lat = ys[ind]
         depth = zs[ind]      
         
-        bounds = com.getBounds(variabels[ind])
+        bounds = com.getBounds(variables[ind])
         bounds = (None, None)
-        paletteName = com.getPalette(variabels[ind], 10)
+        paletteName = com.getPalette(variables[ind], 10)
         low, high = bounds[0], bounds[1]
         if low == None:
             low, high = np.nanmin(data[ind].flatten()), np.nanmax(data[ind].flatten())
         color_mapper = LinearColorMapper(palette=paletteName, low=low, high=high)
 
-        if len(lon) > len(lat):
-            p1 = figure(tools=TOOLS, toolbar_location="above", title=subject[ind], plot_width=w, plot_height=h, x_range=(np.min(lon), np.max(lon)), y_range=(-np.max(depth), -np.min(depth)))
-            data = np.nanmean(data, axis=0)
-            data = np.transpose(data)
-            data = np.squeeze(data)
-            xLabel = 'Longitude'
-            data = regulate(lat, lon, depth, data)
-            p1.image(image=[data], color_mapper=color_mapper, x=np.min(lon), y=-np.max(depth), dw=np.max(lon)-np.min(lon), dh=np.max(depth)-np.min(depth))
-        else:
-            p1 = figure(tools=TOOLS, toolbar_location="above", title=subject[ind], plot_width=w, plot_height=h, x_range=(np.min(lat), np.max(lat)), y_range=(-np.max(depth), -np.min(depth)))
-            data = np.nanmean(data, axis=1)
-            data = np.transpose(data)
-            data = np.squeeze(data)
-            xLabel = 'Latitude'      
-            data = regulate(lat, lon, depth, data)
-            p1.image(image=[data], color_mapper=color_mapper, x=np.min(lat), y=-np.max(depth), dw=np.max(lat)-np.min(lat), dh=np.max(depth)-np.min(depth))
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", category=RuntimeWarning)       
+            if len(lon) > len(lat):
+                p1 = figure(tools=TOOLS, toolbar_location="above", title=subject[ind], plot_width=w, plot_height=h, x_range=(np.min(lon), np.max(lon)), y_range=(-np.max(depth), -np.min(depth)))
+                data = np.mean(data, axis=0)
+                data = np.transpose(data)
+                data = np.squeeze(data)
+                xLabel = 'Longitude'
+                data = regulate(lat, lon, depth, data)
+                p1.image(image=[data], color_mapper=color_mapper, x=np.min(lon), y=-np.max(depth), dw=np.max(lon)-np.min(lon), dh=np.max(depth)-np.min(depth))
+            else:
+                p1 = figure(tools=TOOLS, toolbar_location="above", title=subject[ind], plot_width=w, plot_height=h, x_range=(np.min(lat), np.max(lat)), y_range=(-np.max(depth), -np.min(depth)))
+                data = np.mean(data, axis=1)
+                data = np.transpose(data)
+                data = np.squeeze(data)
+                xLabel = 'Latitude'      
+                data = regulate(lat, lon, depth, data)
+                p1.image(image=[data], color_mapper=color_mapper, x=np.min(lat), y=-np.max(depth), dw=np.max(lat)-np.min(lat), dh=np.max(depth)-np.min(depth))
 
         p1.xaxis.axis_label = xLabel
         p1.add_tools(HoverTool(
             tooltips=[
                 (xLabel.lower(), '$x'),
                 ('depth', '$y'),
-                (variabels[ind]+units[ind], '@image'),
+                (variables[ind]+units[ind], '@image'),
             ],
             mode='mouse'
         ))

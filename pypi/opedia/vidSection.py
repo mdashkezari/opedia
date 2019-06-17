@@ -1,9 +1,18 @@
+"""
+Author: Mohammad Dehghani Ashkezari <mdehghan@uw.edu>
+
+Date: Spring 2019
+
+Function: Generate video files from section map snapshots.
+"""
+
 from docopt import docopt
 import sys
 import os
 sys.path.append(os.path.dirname(__file__))
 import numpy as np
 import pandas as pd
+import warnings
 import db
 import subset
 import common as com
@@ -59,6 +68,7 @@ def makeFrames(table, field, startDate, endDate, lat1, lat2, lon1, lon2, depth1,
     dt2 = pd.to_datetime(endDate, format='%Y-%m-%d')
     dtRange = pd.date_range(dt1, dt2, freq='D')
     itnum = -1
+    limits = [None, None]
     for frame, dtIndex in enumerate(tqdm(dtRange, desc='frames')):    
         dt = dtIndex.strftime("%Y-%m-%d")
         df = subset.section(table, field, dt, dt, lat1, lat2, lon1, lon2, depth1, depth2) 
@@ -70,20 +80,27 @@ def makeFrames(table, field, startDate, endDate, lat1, lat2, lon1, lon2, depth1,
         depth = df.depth.unique()
         shape = (len(lat), len(lon), len(depth))
         data = df[field].values.reshape(shape)
-        if len(lon) > len(lat):
-            data = np.nanmean(data, axis=0)
-            xLabel = 'Longitude [$\degree$E]'
-            titleExt = 'Averaged around lat: %2.2f [$\degree$N]' % np.nanmean(lat)    
-        else:
-            data = np.nanmean(data, axis=1)
-            xLabel = 'Latitude [$\degree$N]'  
-            titleExt = 'Averaged around lon: %2.2f [$\degree$E]' % np.nanmean(lon)
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", category=RuntimeWarning)       
+            if len(lon) > len(lat):
+                data = np.mean(data, axis=0)
+                xLabel = 'Longitude [$\degree$E]'
+                titleExt = 'Averaged around lat: %2.2f [$\degree$N]' % np.nanmean(lat)    
+            else:
+                data = np.mean(data, axis=1)
+                xLabel = 'Latitude [$\degree$N]'  
+                titleExt = 'Averaged around lon: %2.2f [$\degree$E]' % np.nanmean(lon)
         if itnum == 0:
             bou = com.getBounds(field, data)
-            if not bounds[0]: bounds[0] = bou[0]
-            if not bounds[1]: bounds[1] = bou[1]
-        bounds = tuple(bounds)
-        sectionFrame(table, field, dt, lat, lon, depth, data, frameDirectory, itnum, cmap, bounds, levels, xLabel, titleExt)
+            if not bounds[0]: 
+                limits[0] = bou[0]
+            else:
+                limits[0] = bounds[0]    
+            if not bounds[1]: 
+                limits[1] = bou[1]
+            else:
+                limits[1] = bounds[1] 
+        sectionFrame(table, field, dt, lat, lon, depth, data, frameDirectory, itnum, cmap, tuple(limits), levels, xLabel, titleExt)
     return
 
 
@@ -148,3 +165,4 @@ def main():
 if __name__ == '__main__':
     main()
     
+

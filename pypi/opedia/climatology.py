@@ -1,3 +1,11 @@
+"""
+Author: Mohammad Dehghani Ashkezari <mdehghan@uw.edu>
+
+Date: Spring 2018
+
+Function: Generate module for climatological data sets.
+"""
+
 import sys
 sys.dont_write_bytecode = True
 import db

@@ -1,3 +1,11 @@
+"""
+Author: Mohammad Dehghani Ashkezari <mdehghan@uw.edu>
+
+Date: Summer 2017
+
+Function: Host a collection of database related helper functions.
+"""
+
 import platform
 import sys
 sys.dont_write_bytecode = True

@@ -1,3 +1,13 @@
+"""
+Author: Mohammad Dehghani Ashkezari <mdehghan@uw.edu>
+
+Date: Summer 2017
+
+Function: 
+Filter out FTLE (Finite Time Lyapunov Exponent) ridges (representing fronts) and colocalize with any other data sets. 
+Distribution of the colocalized values can then be compared with those of the background.
+"""
+
 import sys
 import os
 sys.path.append(os.path.dirname(__file__))
@@ -5,6 +15,7 @@ import numpy as np
 import pandas as pd
 from datetime import datetime, timedelta
 import db
+import export
 import timeSeries as TS
 from math import pi
 from bokeh.plotting import figure, show, output_file
@@ -123,11 +134,13 @@ def appendVar(track, t, y, yErr, variable):
 def exportData(cruiseTrack, t, y, yErr, table, variable, margin):
     df = cruiseTrack
     df['margin'] = margin
-    dirPath = 'data/'
-    path = dirPath + 'Front.csv'
-    if not os.path.exists(dirPath):
-        os.makedirs(dirPath)    
-    df.to_csv(path, index=False)    
+    # dirPath = 'data/'
+    # path = dirPath + 'Front.csv'
+    # if not os.path.exists(dirPath):
+    #     os.makedirs(dirPath)    
+    # df.to_csv(path, index=False)    
+
+    export.dump(df, table, variable, prefix='Front', fmt='.csv')
     return
 
 def colocalize(ftleTable, ftleField, ftleValue, tables, variables, startDate, endDate, lat1, lat2, lon1, lon2, depth1, depth2, spMargin, exportDataFlag, fname, bkgComparison, marker='-'):

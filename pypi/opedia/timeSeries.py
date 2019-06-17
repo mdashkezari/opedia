@@ -1,3 +1,11 @@
+"""
+Author: Mohammad Dehghani Ashkezari <mdehghan@uw.edu>
+
+Date: Summer 2017
+
+Function: retrieve time series of variables within a predefined space-time domain.
+"""
+
 import sys
 import os
 sys.path.append(os.path.dirname(__file__))

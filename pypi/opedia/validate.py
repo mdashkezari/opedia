@@ -1,3 +1,11 @@
+"""
+Author: Mohammad Dehghani Ashkezari <mdehghan@uw.edu>
+
+Date: Spring 2019
+
+Function: Generic validation module.
+"""
+
 import sys
 import os
 sys.path.append(os.path.dirname(__file__))

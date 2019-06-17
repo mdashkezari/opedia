@@ -1,3 +1,13 @@
+"""
+Author: Mohammad Dehghani Ashkezari <mdehghan@uw.edu>
+
+Date: Summer 2017
+
+Function:
+Retrieve eddy trajectories within a predefined space-time domain. 
+The trajectories may then be colocalized with other data sets.
+"""
+
 import sys
 import os
 sys.path.append(os.path.dirname(__file__))

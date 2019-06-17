@@ -1,3 +1,11 @@
+"""
+Author: Mohammad Dehghani Ashkezari <mdehghan@uw.edu>
+
+Date: 2019-04-15
+
+Function: Create a geospatial heatmap of sparse variables within a predefined space-time domain.
+"""
+
 import sys
 import os
 sys.path.append(os.path.dirname(__file__))

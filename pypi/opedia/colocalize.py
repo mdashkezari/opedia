@@ -1,3 +1,11 @@
+"""
+Author: Mohammad Dehghani Ashkezari <mdehghan@uw.edu>
+
+Date: Summer 2017
+
+Function: Cross match multiple data sets within a predefined space-time domain.
+"""
+
 import sys
 sys.dont_write_bytecode = True
 import os

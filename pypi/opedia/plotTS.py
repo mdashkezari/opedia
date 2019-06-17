@@ -1,9 +1,18 @@
+"""
+Author: Mohammad Dehghani Ashkezari <mdehghan@uw.edu>
+
+Date: Summer 2017
+
+Function: Plot time series of variables within a predefined space-time domain.
+"""
+
 import sys
 import os
 sys.path.append(os.path.dirname(__file__))
 import numpy as np
 import pandas as pd
 import db
+import export
 import common as com
 import timeSeries as TS
 from datetime import datetime, timedelta
@@ -39,11 +48,7 @@ def exportData(t, y, yErr, table, variable, lat1, lat2, lon1, lon2, depth1, dept
     if db.hasField(table, 'depth'):
         df['depth1'] = depth1
         df['depth2'] = depth2
-    dirPath = 'data/'
-    if not os.path.exists(dirPath):
-        os.makedirs(dirPath)        
-    path = dirPath + 'TS_' + table + '_' + variable + '.csv'
-    df.to_csv(path, index=False)    
+    export.dump(df, table, variable, prefix='TimeSeries', fmt='.csv') 
     return
 
 

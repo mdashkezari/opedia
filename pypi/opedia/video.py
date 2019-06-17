@@ -1,3 +1,11 @@
+"""
+Author: Mohammad Dehghani Ashkezari <mdehghan@uw.edu>
+
+Date: Spring 2019
+
+Function: Generate video outputs using ffmpeg library.
+"""
+
 from docopt import docopt
 import sys
 import os

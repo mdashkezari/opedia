@@ -1,3 +1,12 @@
+"""
+Author: Mohammad Dehghani Ashkezari <mdehghan@uw.edu>
+
+Date: Summer 2017
+
+Function: 
+Create individual maps per each depth level using gridded data. 
+In the case of sparse data set, scatter plots are created.
+"""
 
 from docopt import docopt
 import sys
@@ -9,6 +18,7 @@ import pandas as pd
 import db
 import subset
 from dashboard import dashboardPanels
+import export
 import common as com
 from datetime import datetime, timedelta
 import time
@@ -25,11 +35,6 @@ if jup.jupytered():
 else:
     from tqdm import tqdm
 
-
-
-def exportData(df, path):
-    df.to_csv(path, index=False)    
-    return
 
 
 def structuredMap(df, table, variable, data, lats, lons, subs, frameTables, frameVars):
@@ -112,37 +117,29 @@ def interpolatedMap(df, table, variable, data, lats, lons, subs, frameTables, fr
     return data, lats, lons, subs, frameTables, frameVars
 
 
-def regionalMap(tables, variabels, dt1, dt2, lat1, lat2, lon1, lon2, depth1, depth2, fname, exportDataFlag):
+def regionalMap(tables, variables, dt1, dt2, lat1, lat2, lon1, lon2, depth1, depth2, fname, exportDataFlag):
     data, lats, lons, subs, frameTables, frameVars = [], [], [], [], [], []
     for i in tqdm(range(len(tables)), desc='overall'):
-        df = subset.spaceTime(tables[i], variabels[i], dt1, dt2, lat1, lat2, lon1, lon2, depth1, depth2)        
+        df = subset.spaceTime(tables[i], variables[i], dt1, dt2, lat1, lat2, lon1, lon2, depth1, depth2)        
         if len(df) < 1:
-            com.printTQDM('%d: No matching entry found: Table: %s, Variable: %s ' % (i+1, tables[i], variabels[i]), err=True )
+            com.printTQDM('%d: No matching entry found: Table: %s, Variable: %s ' % (i+1, tables[i], variables[i]), err=True )
             continue
-        com.printTQDM('%d: %s retrieved (%s).' % (i+1, variabels[i], tables[i]), err=False)
-
-        ############### export retrieved data ###############
+        com.printTQDM('%d: %s retrieved (%s).' % (i+1, variables[i], tables[i]), err=False)
         if exportDataFlag:      
-            dirPath = 'data/'
-            if not os.path.exists(dirPath):
-                os.makedirs(dirPath)     
-            exportPath = dirPath + 'RM_' + tables[i] + '_' + variabels[i]               
-            exportData(df, path=exportPath + '.csv')
-        #####################################################
-
-        if com.isGrid(tables[i], variabels[i]):
-            data, lats, lons, subs, frameTables, frameVars = structuredMap(df, tables[i], variabels[i], data, lats, lons, subs, frameTables, frameVars)
+            export.dump(df, tables[i], variables[i], prefix='Regional', fmt='.csv')
+        if com.isGrid(tables[i], variables[i]):
+            data, lats, lons, subs, frameTables, frameVars = structuredMap(df, tables[i], variables[i], data, lats, lons, subs, frameTables, frameVars)
         else:
-            dashboardPanels(df, tables[i], variabels[i])
-            # data, lats, lons, subs, frameTables, frameVars = interpolatedMap(df, tables[i], variabels[i], data, lats, lons, subs, frameTables, frameVars)
+            dashboardPanels(df, tables[i], variables[i])
+            # data, lats, lons, subs, frameTables, frameVars = interpolatedMap(df, tables[i], variables[i], data, lats, lons, subs, frameTables, frameVars)
     
-    bokehMap(data=data, subject=subs, fname=fname, lat=lats, lon=lons, tables=frameTables, variabels=frameVars)
+    bokehMap(data=data, subject=subs, fname=fname, lat=lats, lon=lons, tables=frameTables, variables=frameVars)
     return
 
 
 
 
-def bokehMap(data, subject, fname, lat, lon, tables, variabels):
+def bokehMap(data, subject, fname, lat, lon, tables, variables):
     TOOLS="crosshair,pan,zoom_in,wheel_zoom,zoom_out,box_zoom,reset,save,"
     p = []
     for ind in range(len(data)):
@@ -150,9 +147,9 @@ def bokehMap(data, subject, fname, lat, lon, tables, variabels):
         p1 = figure(tools=TOOLS, toolbar_location="right", title=subject[ind], plot_width=w, plot_height=h, x_range=(np.min(lon[ind]), np.max(lon[ind])), y_range=(np.min(lat[ind]), np.max(lat[ind])))
         p1.xaxis.axis_label = 'Longitude'
         p1.yaxis.axis_label = 'Latitude'
-        unit = com.getUnit(tables[ind], variabels[ind])
-        bounds = com.getBounds(variabels[ind])
-        paletteName = com.getPalette(variabels[ind])
+        unit = com.getUnit(tables[ind], variables[ind])
+        bounds = com.getBounds(variables[ind])
+        paletteName = com.getPalette(variables[ind])
         low, high = bounds[0], bounds[1]
         if low == None:
             low, high = np.nanmin(data[ind].flatten()), np.nanmax(data[ind].flatten())
@@ -162,7 +159,7 @@ def bokehMap(data, subject, fname, lat, lon, tables, variabels):
             tooltips=[
                 ('longitude', '$x'),
                 ('latitude', '$y'),
-                (variabels[ind]+unit, '@image'),
+                (variables[ind]+unit, '@image'),
             ],
             mode='mouse'
         ))

@@ -1,3 +1,11 @@
+"""
+Author: Mohammad Dehghani Ashkezari <mdehghan@uw.edu>
+
+Date: Fall 2017
+
+Function: Retrieve data within a predefined space-time domain. The retrieved data is in form of pandas dataframe.
+"""
+
 import sys
 import os
 sys.path.append(os.path.dirname(__file__))
