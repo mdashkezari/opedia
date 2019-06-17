@@ -1,9 +1,18 @@
+"""
+Author: Mohammad Dehghani Ashkezari <mdehghan@uw.edu>
+
+Date: Summer 2017
+
+Function: Plot depth profile of variables within a predefined space-time domain.
+"""
+
 import sys
 import os
 sys.path.append(os.path.dirname(__file__))
 import numpy as np
 import pandas as pd
 import db
+import export
 import common as com
 import climatology as clim
 import subset
@@ -49,11 +58,13 @@ def exportData(z, y, yErr, table, variable, date1, date2, lat1, lat2, lon1, lon2
     df['lat2'] = lat2
     df['lon1'] = lon1
     df['lon2'] = lon2
-    dirPath = 'data/'
-    if not os.path.exists(dirPath):
-        os.makedirs(dirPath)        
-    path = dirPath + fname + '_' + table + '_' + variable + '.csv'
-    df.to_csv(path, index=False)    
+    # dirPath = 'data/'
+    # if not os.path.exists(dirPath):
+    #     os.makedirs(dirPath)        
+    # path = dirPath + fname + '_' + table + '_' + variable + '.csv'
+    # df.to_csv(path, index=False)   
+
+    export.dump(df, table, variable, prefix='DepthProfile', fmt='.csv') 
     return
 
 

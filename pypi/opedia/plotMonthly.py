@@ -1,9 +1,20 @@
+"""
+Author: Mohammad Dehghani Ashkezari <mdehghan@uw.edu>
+
+Date: Summer 2017
+
+Function: 
+Plot monthly time series of variables within a predefined space-time domain. 
+Does not apply to all data sets.
+"""
+
 import sys
 import os
 sys.path.append(os.path.dirname(__file__))
 import numpy as np
 import pandas as pd
 import db
+import export
 import timeSeries as TS
 from datetime import datetime, timedelta
 import time
@@ -33,11 +44,13 @@ def exportData(t, y, yErr, table, variable, lat1, lat2, lon1, lon2, extV, extVV,
     df['lon2'] = lon2
     df[extV] = extVV
     df[extV2] = extVV2
-    dirPath = 'data/'
-    if not os.path.exists(dirPath):
-        os.makedirs(dirPath)        
-    path = dirPath + 'Monthly_' + table + '_' + variable + '.csv'
-    df.to_csv(path, index=False)    
+    # dirPath = 'data/'
+    # if not os.path.exists(dirPath):
+    #     os.makedirs(dirPath)        
+    # path = dirPath + 'Monthly_' + table + '_' + variable + '.csv'
+    # df.to_csv(path, index=False)    
+
+    export.dump(df, table, variable, prefix='Monthly', fmt='.csv')
     return
 
 

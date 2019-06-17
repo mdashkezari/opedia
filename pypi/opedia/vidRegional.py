@@ -1,3 +1,11 @@
+"""
+Author: Mohammad Dehghani Ashkezari <mdehghan@uw.edu>
+
+Date: Spring 2019
+
+Function: Generate video files from regional map snapshots.
+"""
+
 from docopt import docopt
 import sys
 import os
@@ -52,6 +60,7 @@ def makeFrames(table, field, startDate, endDate, lat1, lat2, lon1, lon2, depth1,
     dt2 = pd.to_datetime(endDate, format='%Y-%m-%d')
     dtRange = pd.date_range(dt1, dt2, freq='D')
     itnum = -1
+    limits = [None, None]
     for frame, dtIndex in enumerate(tqdm(dtRange, desc='frames')):    
         dt = dtIndex.strftime("%Y-%m-%d")
         df = subset.spaceTime(table, field, dt, dt, lat1, lat2, lon1, lon2, depth1, depth2) 
@@ -73,10 +82,15 @@ def makeFrames(table, field, startDate, endDate, lat1, lat2, lon1, lon2, depth1,
         data = df[field].values.reshape(shape)        
         if itnum == 0:
             bou = com.getBounds(field, data)
-            if not bounds[0]: bounds[0] = bou[0]
-            if not bounds[1]: bounds[1] = bou[1]
-        bounds = tuple(bounds)
-        regionalFrame(table, field, dt, lat, lon, depthLabel, data, frameDirectory, itnum, cmap, bounds, levels)
+            if not bounds[0]: 
+                limits[0] = bou[0]
+            else:
+                limits[0] = bounds[0]    
+            if not bounds[1]: 
+                limits[1] = bou[1]
+            else:
+                limits[1] = bounds[1] 
+        regionalFrame(table, field, dt, lat, lon, depthLabel, data, frameDirectory, itnum, cmap, tuple(limits), levels)
     return
 
 

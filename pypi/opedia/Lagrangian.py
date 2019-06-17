@@ -1,3 +1,13 @@
+"""
+Author: Mohammad Dehghani Ashkezari <mdehghan@uw.edu>
+
+Date: Summer 2017
+
+Function: 
+Compute the trajectory of a water parcel using altimetry-driven flow fields.
+The water parcel's trajectory is then colocalized with any other data sets, such as temperature, mimicking the Lagrangian sampling. 
+"""
+
 import sys
 import os
 sys.path.append(os.path.dirname(__file__))
@@ -5,6 +15,7 @@ import numpy as np
 import pandas as pd
 from datetime import datetime, timedelta
 import db
+import export
 import timeSeries as TS
 from math import pi
 from bokeh.plotting import figure, show, output_file
@@ -144,11 +155,13 @@ def appendVar(track, t, y, yErr, variable):
 def exportData(cruiseTrack, t, y, yErr, table, variable, margin):
     df = cruiseTrack
     df['margin'] = margin
-    dirPath = 'data/'
-    path = dirPath + 'Tracer.csv'
-    if not os.path.exists(dirPath):
-        os.makedirs(dirPath)    
-    df.to_csv(path, index=False)    
+    # dirPath = 'data/'
+    # path = dirPath + 'Tracer.csv'
+    # if not os.path.exists(dirPath):
+    #     os.makedirs(dirPath)    
+    # df.to_csv(path, index=False)    
+
+    export.dump(df, table, variable, prefix='Lagrangian', fmt='.csv')
     return
 
 

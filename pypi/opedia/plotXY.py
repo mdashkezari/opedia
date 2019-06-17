@@ -1,9 +1,18 @@
+"""
+Author: Mohammad Dehghani Ashkezari <mdehghan@uw.edu>
+
+Date: Summer 2017
+
+Function: Plot one variable against another within a predefined space-time domain.
+"""
+
 import sys
 import os
 sys.path.append(os.path.dirname(__file__))
 import numpy as np
 import pandas as pd
 import db
+import export
 import common as com
 import timeSeries as TS
 import itertools as itt
@@ -39,11 +48,14 @@ def exportData(t1, y1, yErr1, t2, y2, yErr2, table1, variable1, table2, variable
     if db.hasField(table1, 'depth') or db.hasField(table2, 'depth'):
         df['depth1'] = depth1
         df['depth2'] = depth2
-    dirPath = 'data/'
-    if not os.path.exists(dirPath):
-        os.makedirs(dirPath)        
-    path = dirPath + 'XY_' + table1 + '_' + variable1 + '_vs_' + table2 + '_' + variable2 + '.csv'
-    df.to_csv(path, index=False)    
+    # dirPath = 'data/'
+    # if not os.path.exists(dirPath):
+    #     os.makedirs(dirPath)        
+    # path = dirPath + 'XY_' + table1 + '_' + variable1 + '_vs_' + table2 + '_' + variable2 + '.csv'
+    # df.to_csv(path, index=False)    
+
+    export.dump(df, table1, variable1, prefix='Mutual', fmt='.csv') 
+    export.dump(df, table2, variable2, prefix='Mutual', fmt='.csv') 
     return
 
 def plotXY(tables, variables, startDate, endDate, lat1, lat2, lon1, lon2, depth1, depth2, fname, exportDataFlag, marker='-', msize=15, clr='green'):

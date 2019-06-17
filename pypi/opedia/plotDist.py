@@ -1,3 +1,11 @@
+"""
+Author: Mohammad Dehghani Ashkezari <mdehghan@uw.edu>
+
+Date: Summer 2017
+
+Function: Plot distribution of variables within a predefined space-time domain.
+"""
+
 import sys
 import os
 sys.path.append(os.path.dirname(__file__))
@@ -6,6 +14,7 @@ import pandas as pd
 import db
 import subset
 import common as com
+import export
 from datetime import datetime, timedelta
 import time
 from math import pi
@@ -38,11 +47,13 @@ def exportData(y, table, variable, startDate, endDate, lat1, lat2, lon1, lon2, d
     if db.hasField(table, 'depth'):
         df['depth1'] = depth1
         df['depth2'] = depth2
-    dirPath = 'data/'
-    if not os.path.exists(dirPath):
-        os.makedirs(dirPath)        
-    path = dirPath + 'Hist_' + table + '_' + variable + '.csv'
-    df.to_csv(path, index=False)    
+    # dirPath = 'data/'
+    # if not os.path.exists(dirPath):
+    #     os.makedirs(dirPath)        
+    # path = dirPath + 'Hist_' + table + '_' + variable + '.csv'
+    # df.to_csv(path, index=False)    
+
+    export.dump(df, table, variable, prefix='Hist', fmt='.csv')
     return
 
 

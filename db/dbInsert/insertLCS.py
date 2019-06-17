@@ -85,8 +85,8 @@ def makeBulkLCS(itnum, nrt):
         return
 
     if not nrt:
-        df_bw_adt = matToDF(nrt=nrt, forward=False, sla=False, itnum=itnum)
-        df_fw_adt = matToDF(nrt=nrt, forward=True, sla=False, itnum=itnum)
+        # df_bw_adt = matToDF(nrt=nrt, forward=False, sla=False, itnum=itnum)
+        # df_fw_adt = matToDF(nrt=nrt, forward=True, sla=False, itnum=itnum)
         df_fw_sla = matToDF(nrt=nrt, forward=True, sla=True, itnum=itnum)
     df_bw_sla = matToDF(nrt=nrt, forward=False, sla=True, itnum=itnum)
     
@@ -100,17 +100,17 @@ def makeBulkLCS(itnum, nrt):
         df['ftle_bw_sla'] = df_bw_sla['ftle']
         df['disp_bw_sla'] = df_bw_sla['disp']
     else:
-        df['ftle_bw_adt'] = df_bw_adt['ftle']
-        df['disp_bw_adt'] = df_bw_adt['disp']
-        df['ftle_fw_adt'] = df_fw_adt['ftle']
-        df['disp_fw_adt'] = df_fw_adt['disp']
+        # df['ftle_bw_adt'] = df_bw_adt['ftle']
+        # df['disp_bw_adt'] = df_bw_adt['disp']
+        # df['ftle_fw_adt'] = df_fw_adt['ftle']
+        # df['disp_fw_adt'] = df_fw_adt['disp']
 
         df['ftle_bw_sla'] = df_bw_sla['ftle']
         df['disp_bw_sla'] = df_bw_sla['disp']
         df['ftle_fw_sla'] = df_fw_sla['ftle']
         df['disp_fw_sla'] = df_fw_sla['disp']
 
-    df['ID'] = None
+    # df['ID'] = None
     exportBase = cfgv.opedia_proj + 'db/dbInsert/export/'
     export_path = '%s%s%d.csv' % (exportBase, prefix, itnum)
     df.to_csv(export_path, index=False)
@@ -129,7 +129,8 @@ def bulkInsertLCS(itnumStart, itnumEnd, tableName):
             bulkPath = ''
             bulkPath = makeBulkLCS(itnum, nrt)
             #print('\t %s  Bulk %s %7.7d ready.' % (datetime.today(), dataTitle, itnum))
-            dc.bulkInsert(bulkPath, tableName)
+            # dc.bulkInsert(bulkPath, tableName)
+            dc.bcpInsert(bulkPath, tableName)
         finally:
             if bulkPath != '':
                 os.remove(bulkPath)    

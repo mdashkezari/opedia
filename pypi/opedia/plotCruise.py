@@ -1,3 +1,11 @@
+"""
+Author: Mohammad Dehghani Ashkezari <mdehghan@uw.edu>
+
+Date: Fall 2017
+
+Function: Colocalize a cruise track with other data sets.
+"""
+
 import os
 import sys
 sys.path.append(os.path.dirname(__file__))
@@ -5,6 +13,7 @@ sys.dont_write_bytecode = True
 import numpy as np
 import pandas as pd
 import db
+import export
 import timeSeries as TS
 from datetime import datetime, date, timedelta
 import time

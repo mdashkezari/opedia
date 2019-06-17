@@ -1,3 +1,11 @@
+"""
+Author: Mohammad Dehghani Ashkezari <mdehghan@uw.edu>
+
+Date: Summer 2017
+
+Function: Detect if the package has been invoked by Jupyter notebook.
+"""
+
 from bokeh.plotting import figure, show
 from bokeh.io import output_notebook
 
