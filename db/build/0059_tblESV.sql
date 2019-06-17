@@ -23,6 +23,7 @@ CREATE TABLE [dbo].[tblESV](
 	[phylum] [nchar](50) NULL,
 	[class] [nchar](50) NULL,
 	[order] [nchar](50) NULL,
+	[family] [nchar](60) NULL,
 	[genus] [nchar](60) NULL,
 	[species] [nchar](60) NULL,
 	[esv_tempreature] [float] NULL,

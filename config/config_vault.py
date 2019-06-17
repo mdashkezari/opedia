@@ -19,11 +19,11 @@ def leafStruc(base):
 	return nrt, rep, doc, code
 
 
-# opedia_proj = r'H:/Dropbox/projects/opedia/'
-# vault = r'H:/Dropbox/Apps/OpediaVault/'
+opedia_proj = r'H:/Dropbox/projects/opedia/'
+vault = r'H:/Dropbox/Apps/OpediaVault/'
 
-opedia_proj = r'/media/nrhagen/Drobo/opedia/'
-vault = r'/media/nrhagen/Drobo/OpediaVault/'
+# opedia_proj = r'/media/nrhagen/Drobo/opedia/'
+# vault = r'/media/nrhagen/Drobo/OpediaVault/'
 
 makedir(vault)
 
@@ -212,6 +212,11 @@ chl_raw = satellite_raw +'chl/'
 nrt_chl_raw, rep_chl_raw, doc_chl_raw, code_chl_raw = leafStruc(chl_raw)
 nrt_chl_prefix = 'nrt_chl_'
 rep_chl_prefix = 'rep_chl_'
+
+chl_8day_raw = satellite_raw +'chl_8day/'
+nrt_chl_8day_raw, rep_chl_8day_raw, doc_chl_8day_raw, code_chl_8day_raw = leafStruc(chl_8day_raw)
+nrt_chl_8day_prefix = 'nrt_chl_8day_'
+rep_chl_8day_prefix = 'rep_chl_8day_'
 
 wind_raw = satellite_raw + 'wind/'
 nrt_wind_raw, rep_wind_raw, doc_wind_raw, code_wind_raw = leafStruc(wind_raw)
