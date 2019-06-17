@@ -22,16 +22,14 @@ https://cmap.readthedocs.io/en/latest/
 
 	```
 	$ /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-	$ brew install unixodbc
-	$ brew install freetds --with-unixodbc
+	$ brew install unixodbc freetds
 	```
 2. **Install [Python Anaconda Distribution](https://www.anaconda.com/download/).**<br>
-Make sure python is added to the system path.  Anaconda distribution covers the majority of python modules used by Opedia. There are a few more required modules that need to be installed using the conda package manager; run the following commands to install them. Finally pip-install the opedia package itself.
+Make sure python is added to the system path.  Anaconda distribution covers the majority of python modules used by Opedia. Finally pip-install the opedia package itself.
 
 	```
-	$ conda install shapely
-	$ conda install fiona
-	$ conda install -c conda-forge geopandas
-
 	$ pip install opedia
 	```
+
+# Author
+Mohammad Dehghani Ashkezari <mdehghan@uw.edu>
