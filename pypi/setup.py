@@ -49,5 +49,5 @@ setup(
     ],
     keywords='ocean oceanography database dataset satellite model in-situ remote sensing machine learning data visualization', 
     packages=find_packages(exclude=['contrib', 'docs', 'tests']),
-    install_requires=['matplotlib', 'numpy', 'pandas', 'scipy', 'bokeh', 'docopt', 'tqdm', 'folium', 'colorama', 'pyodbc'],
+    install_requires=['matplotlib', 'numpy', 'pandas', 'scipy', 'bokeh', 'docopt', 'tqdm', 'folium', 'colorama', 'seaborn', 'pyodbc'],
 )
