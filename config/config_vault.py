@@ -72,6 +72,13 @@ nrt_darwin_nutrient_3day_raw, rep_darwin_nutrient_3day_raw, doc_darwin_nutrient_
 nrt_darwin_nutrient_3day_prefix = 'darwin_nutrient_3day_'
 rep_darwin_nutrient_3day_prefix = 'darwin_nutrient_3day_'
 
+######## models/darwin_ocean_color_3day ########
+darwin_ocean_color_3day_raw = model_raw + 'darwin_ocean_color_3day/'
+makedir(darwin_ocean_color_3day_raw)
+nrt_darwin_ocean_color_3day_raw, rep_darwin_ocean_color_3day_raw, doc_darwin_ocean_color_3day_raw, code_darwin_ocean_color_3day_raw = leafStruc(darwin_ocean_color_3day_raw)
+nrt_darwin_ocean_color_3day_prefix = 'darwin_ocean_color_3day_'
+rep_darwin_ocean_color_3day_prefix = 'darwin_ocean_color_3day_'
+
 
 
 
@@ -149,6 +156,10 @@ nrt_gradients_16s_raw, rep_gradients_16s_raw, doc_gradients_16s_raw, code_gradie
 gradients_18s_raw = cruise_raw + 'gradients_18s/'
 makedir(gradients_18s_raw)
 nrt_gradients_18s_raw, rep_gradients_18s_raw, doc_gradients_18s_raw, code_gradients_18s_raw = leafStruc(gradients_18s_raw)
+####  obs/in-situ/cruise/GLODAP_gridded  #####
+GLODAP_gridded_raw = cruise_raw + 'GLODAP_gridded/'
+makedir(GLODAP_gridded_raw)
+nrt_GLODAP_gridded_raw, rep_GLODAP_gridded_raw, doc_GLODAP_gridded_raw, code_GLODAP_gridded_raw = leafStruc(GLODAP_gridded_raw)
 
 ####  obs/in-situ/cruise/CPR_zooplankton   #####
 CPR_zooplankton_raw = cruise_raw + 'CPR_zooplankton/'
@@ -262,6 +273,12 @@ modis_aerosol_raw = satellite_raw + 'modis_aerosol/'
 nrt_modis_aerosol_raw, rep_modis_aerosol_raw, doc_modis_aerosol_raw, code_modis_aerosol_raw = leafStruc(modis_aerosol_raw)
 nrt_modis_aerosol_prefix = 'nrt_modis_aerosol_'
 rep_modis_aerosol_prefix = 'rep_modis_aerosol_'
+
+modis_sea_ice_raw = satellite_raw + 'modis_sea_ice/'
+nrt_modis_sea_ice_raw, rep_modis_sea_ice_raw, doc_modis_sea_ice_raw, code_modis_sea_ice_raw = leafStruc(modis_sea_ice_raw)
+nrt_modis_sea_ice_prefix = 'nrt_modis_sea_ice_'
+rep_modis_sea_ice_prefix = 'rep_modis_sea_ice_'
+
 
 col_raw = satellite_raw + 'col/'
 nrt_col_raw, rep_col_raw, doc_col_raw, code_col_raw = leafStruc(col_raw)
