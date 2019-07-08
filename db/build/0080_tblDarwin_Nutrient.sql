@@ -9,7 +9,7 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 
-CREATE TABLE [dbo].[tblDarwin_Nutrient_3day](
+CREATE TABLE [dbo].[tblDarwin_Nutrient](
 	[time] [date] NOT NULL,
 	[lat] [float] NOT NULL,
 	[lon] [float] NOT NULL,
@@ -20,7 +20,7 @@ CREATE TABLE [dbo].[tblDarwin_Nutrient_3day](
 	[SiO2] [float] NULL,
 	[O2] [float] NULL,
 	[ID] [bigint] IDENTITY(1,1) NOT NULL,
- CONSTRAINT [PK_tblDarwin_Nutrient_3day] PRIMARY KEY CLUSTERED
+ CONSTRAINT [PK_tblDarwin_Nutrient] PRIMARY KEY CLUSTERED
 (
 	[ID] ASC
 )WITH (/*DATA_COMPRESSION = PAGE,*/ PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [FG4]
@@ -39,7 +39,7 @@ USE [Opedia]
 GO
 
 
-CREATE UNIQUE NONCLUSTERED INDEX [IX_tblDarwin_Nutrient_3day_time_lat_lon_depth] ON [dbo].[tblDarwin_Nutrient_3day]
+CREATE UNIQUE NONCLUSTERED INDEX [IX_tblDarwin_Nutrient_time_lat_lon_depth] ON [dbo].[tblDarwin_Nutrient]
 (
 	[time] ASC,
 	[lat] ASC,
@@ -53,7 +53,7 @@ GO
 
 --
 --
--- CREATE NONCLUSTERED INDEX [IX_tblDarwin_Nutrient_3day_FeT] ON [dbo].[tblDarwin_Nutrient_3day]
+-- CREATE NONCLUSTERED INDEX [IX_tblDarwin_Nutrient_FeT] ON [dbo].[tblDarwin_Nutrient]
 -- (
 -- 	[FeT] ASC
 -- )WITH (DATA_COMPRESSION = PAGE, PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON)
@@ -61,7 +61,7 @@ GO
 -- GO
 --
 --
--- CREATE NONCLUSTERED INDEX [IX_tblDarwin_Nutrient_3day_PO4] ON [dbo].[tblDarwin_Nutrient_3day]
+-- CREATE NONCLUSTERED INDEX [IX_tblDarwin_Nutrient_PO4] ON [dbo].[tblDarwin_Nutrient]
 -- (
 -- 	[PO4] ASC
 -- )WITH (DATA_COMPRESSION = PAGE, PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON)
@@ -69,7 +69,7 @@ GO
 -- GO
 --
 --
--- CREATE NONCLUSTERED INDEX [IX_tblDarwin_Nutrient_3day_DIN] ON [dbo].[tblDarwin_Nutrient_3day]
+-- CREATE NONCLUSTERED INDEX [IX_tblDarwin_Nutrient_DIN] ON [dbo].[tblDarwin_Nutrient]
 -- (
 -- 	[DIN] ASC
 -- )WITH (DATA_COMPRESSION = PAGE, PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON)
@@ -77,7 +77,7 @@ GO
 -- GO
 --
 --
--- CREATE NONCLUSTERED INDEX [IX_tblDarwin_Nutrient_3day_SiO2] ON [dbo].[tblDarwin_Nutrient_3day]
+-- CREATE NONCLUSTERED INDEX [IX_tblDarwin_Nutrient_SiO2] ON [dbo].[tblDarwin_Nutrient]
 -- (
 -- 	[SiO2] ASC
 -- )WITH (DATA_COMPRESSION = PAGE, PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON)
@@ -85,7 +85,7 @@ GO
 -- GO
 --
 --
--- CREATE NONCLUSTERED INDEX [IX_tblDarwin_Nutrient_3day_O2] ON [dbo].[tblDarwin_Nutrient_3day]
+-- CREATE NONCLUSTERED INDEX [IX_tblDarwin_Nutrient_O2] ON [dbo].[tblDarwin_Nutrient]
 -- (
 -- 	[O2] ASC
 -- )WITH (DATA_COMPRESSION = PAGE, PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON)

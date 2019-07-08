@@ -11,10 +11,11 @@ import glob
 import xarray as xr
 import os.path
 
+
 ############################
 ########### OPTS ###########
-tableName = 'tblDarwin_Nutrient'
-rawFilePath = '/media/nrhagen/Drobo/OpediaVault/model/darwin_Nutrient/'
+tableName = 'tblDarwin_Ecosystem'
+rawFilePath = '/media/nrhagen/Drobo/OpediaVault/model/darwin_Ecosystem/rep/'
 netcdf_list = glob.glob(rawFilePath + '*.nc')
 exportBase = cfgv.opedia_proj + 'db/dbInsert/export_temp/'
 prefix = tableName
@@ -23,7 +24,7 @@ export_path = '%s%s.csv' % (exportBase, prefix)
 ############################
 
 
-processed_csv_list = glob.glob(exportBase + '*darwin_v0.2_cs510_nutrients*.csv*')
+processed_csv_list = glob.glob(rawFilePath + '*.csv*')
 sorted_csvlist = np.sort(processed_csv_list).tolist()
 
 for sorted_csv in sorted_csvlist:

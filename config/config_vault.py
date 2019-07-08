@@ -19,11 +19,11 @@ def leafStruc(base):
 	return nrt, rep, doc, code
 
 
-opedia_proj = r'H:/Dropbox/projects/opedia/'
-vault = r'H:/Dropbox/Apps/OpediaVault/'
+# opedia_proj = r'H:/Dropbox/projects/opedia/'
+# vault = r'H:/Dropbox/Apps/OpediaVault/'
 
-# opedia_proj = r'/media/nrhagen/Drobo/opedia/'
-# vault = r'/media/nrhagen/Drobo/OpediaVault/'
+opedia_proj = r'/media/nrhagen/Drobo/opedia/'
+vault = r'/media/nrhagen/Drobo/OpediaVault/'
 
 makedir(vault)
 
@@ -65,19 +65,33 @@ nrt_darwin_clim_raw, rep_darwin_clim_raw, doc_darwin_clim_raw, code_darwin_clim_
 nrt_darwin_clim_prefix = 'darwin_clim_'
 rep_darwin_clim_prefix = 'darwin_clim_'
 
-######## models/darwin_nutrient_3day ########
-darwin_nutrient_3day_raw = model_raw + 'darwin_nutrient_3day/'
-makedir(darwin_nutrient_3day_raw)
-nrt_darwin_nutrient_3day_raw, rep_darwin_nutrient_3day_raw, doc_darwin_nutrient_3day_raw, code_darwin_nutrient_3day_raw = leafStruc(darwin_nutrient_3day_raw)
-nrt_darwin_nutrient_3day_prefix = 'darwin_nutrient_3day_'
-rep_darwin_nutrient_3day_prefix = 'darwin_nutrient_3day_'
+######## models/darwin_Nutrient ########
+darwin_Nutrient_raw = model_raw + 'darwin_Nutrient/'
+makedir(darwin_Nutrient_raw)
+nrt_darwin_Nutrient_raw, rep_darwin_Nutrient_raw, doc_darwin_Nutrient_raw, code_darwin_Nutrient_raw = leafStruc(darwin_Nutrient_raw)
+nrt_darwin_Nutrient_prefix = 'darwin_Nutrient_'
+rep_darwin_Nutrient_prefix = 'darwin_Nutrient_'
 
-######## models/darwin_ocean_color_3day ########
-darwin_ocean_color_3day_raw = model_raw + 'darwin_ocean_color_3day/'
-makedir(darwin_ocean_color_3day_raw)
-nrt_darwin_ocean_color_3day_raw, rep_darwin_ocean_color_3day_raw, doc_darwin_ocean_color_3day_raw, code_darwin_ocean_color_3day_raw = leafStruc(darwin_ocean_color_3day_raw)
-nrt_darwin_ocean_color_3day_prefix = 'darwin_ocean_color_3day_'
-rep_darwin_ocean_color_3day_prefix = 'darwin_ocean_color_3day_'
+######## models/darwin_Ocean_Color ########
+darwin_Ocean_Color_raw = model_raw + 'darwin_Ocean_Color/'
+makedir(darwin_Ocean_Color_raw)
+nrt_darwin_Ocean_Color_raw, rep_darwin_Ocean_Color_raw, doc_darwin_Ocean_Color_raw, code_darwin_Ocean_Color_raw = leafStruc(darwin_Ocean_Color_raw)
+nrt_darwin_Ocean_Color_prefix = 'darwin_Ocean_Color_'
+rep_darwin_Ocean_Color_prefix = 'darwin_Ocean_Color_'
+
+######## models/darwin_Nutrient_functional_types_3day ########
+darwin_Nutrient_functional_types_3day_raw = model_raw + 'darwin_Nutrient_functional_types_3day/'
+makedir(darwin_Nutrient_functional_types_3day_raw)
+nrt_darwin_Nutrient_functional_types_3day_raw, rep_darwin_Nutrient_functional_types_3day_raw, doc_darwin_Nutrient_functional_types_3day_raw, code_darwin_Nutrient_functional_types_3day_raw = leafStruc(darwin_Nutrient_functional_types_3day_raw)
+nrt_darwin_Nutrient_functional_types_3day_prefix = 'darwin_Nutrient_functional_types_3day_'
+rep_darwin_Nutrient_functional_types_3day_prefix = 'darwin_Nutrient_functional_types_3day_'
+
+######## models/darwin_Ecosystem ########
+darwin_Ecosystem_raw = model_raw + 'darwin_Ecosystem/'
+makedir(darwin_Ecosystem_raw)
+nrt_darwin_Ecosystem_raw, rep_darwin_Ecosystem_raw, doc_darwin_Ecosystem_raw, code_darwin_Ecosystem_raw = leafStruc(darwin_Ecosystem_raw)
+nrt_darwin_Ecosystem_prefix = 'darwin_Ecosystem_'
+rep_darwin_Ecosystem_prefix = 'darwin_Ecosystem_'
 
 
 
@@ -140,10 +154,6 @@ nrt_AMT13_Chisholm_raw, rep_AMT13_Chisholm_raw, doc_AMT13_Chisholm_raw, code_AMT
 SingleCellGenomes_Chisholm_raw = cruise_raw + 'SingleCellGenomes_Chisholm/'
 makedir(SingleCellGenomes_Chisholm_raw)
 nrt_SingleCellGenomes_Chisholm_raw, rep_SingleCellGenomes_Chisholm_raw, doc_SingleCellGenomes_Chisholm_raw, code_SingleCellGenomes_Chisholm_raw = leafStruc(SingleCellGenomes_Chisholm_raw)
-####  obs/in-situ/cruise/km1709_MESOSCOPE  #####
-km1709_MESOSCOPE_raw = cruise_raw + 'km1709_MESOSCOPE/'
-makedir(km1709_MESOSCOPE_raw)
-nrt_km1709_MESOSCOPE_raw, rep_km1709_MESOSCOPE_raw, doc_km1709_MESOSCOPE_raw, code_km1709_MESOSCOPE_raw = leafStruc(km1709_MESOSCOPE_raw)
 ####  obs/in-situ/cruise/HOT224  #####
 HOT224_raw = cruise_raw + 'HOT224/'
 makedir(HOT224_raw)
@@ -156,6 +166,20 @@ nrt_gradients_16s_raw, rep_gradients_16s_raw, doc_gradients_16s_raw, code_gradie
 gradients_18s_raw = cruise_raw + 'gradients_18s/'
 makedir(gradients_18s_raw)
 nrt_gradients_18s_raw, rep_gradients_18s_raw, doc_gradients_18s_raw, code_gradients_18s_raw = leafStruc(gradients_18s_raw)
+
+####  obs/in-situ/cruise/KM1709_mesoscopee  #####
+KM1709_mesoscope_raw = cruise_raw + 'KM1709_mesoscope/'
+makedir(KM1709_mesoscope_raw)
+nrt_KM1709_mesoscope_raw, rep_KM1709_mesoscope_raw, doc_KM1709_mesoscope_raw, code_KM1709_mesoscope_raw = leafStruc(KM1709_mesoscope_raw)
+
+
+
+####  obs/in-situ/cruise/GLODAP  #####
+GLODAP_raw = cruise_raw + 'GLODAP/'
+makedir(GLODAP_raw)
+nrt_GLODAP_raw, rep_GLODAP_raw, doc_GLODAP_raw, code_GLODAP_raw = leafStruc(GLODAP_raw)
+
+
 ####  obs/in-situ/cruise/GLODAP_gridded  #####
 GLODAP_gridded_raw = cruise_raw + 'GLODAP_gridded/'
 makedir(GLODAP_gridded_raw)
