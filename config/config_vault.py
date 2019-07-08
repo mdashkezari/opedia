@@ -19,11 +19,11 @@ def leafStruc(base):
 	return nrt, rep, doc, code
 
 
-# opedia_proj = r'H:/Dropbox/projects/opedia/'
-# vault = r'H:/Dropbox/Apps/OpediaVault/'
+opedia_proj = r'H:/Dropbox/projects/opedia/'
+vault = r'H:/Dropbox/Apps/OpediaVault/'
 
-opedia_proj = r'/media/nrhagen/Drobo/opedia/'
-vault = r'/media/nrhagen/Drobo/OpediaVault/'
+# opedia_proj = r'/media/nrhagen/Drobo/opedia/'
+# vault = r'/media/nrhagen/Drobo/OpediaVault/'
 
 makedir(vault)
 
