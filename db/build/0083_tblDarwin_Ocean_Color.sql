@@ -45,7 +45,7 @@ CREATE UNIQUE NONCLUSTERED INDEX [IX_tblDarwin_Ocean_Color_time_lat_lon_depth] O
 )
 INCLUDE ([irradiance_reflectance_waveband_3], [irradiance_reflectance_waveband_7])
 WITH (DATA_COMPRESSION = PAGE, PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON)
-ON [FG2]
+ON [FG4]
 GO
 
 --

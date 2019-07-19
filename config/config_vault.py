@@ -173,6 +173,37 @@ makedir(KM1709_mesoscope_raw)
 nrt_KM1709_mesoscope_raw, rep_KM1709_mesoscope_raw, doc_KM1709_mesoscope_raw, code_KM1709_mesoscope_raw = leafStruc(KM1709_mesoscope_raw)
 
 
+####  obs/in-situ/cruise/HL2A_diel_metagenomicse  #####
+HL2A_diel_metagenomics_raw = cruise_raw + 'HL2A_diel_metagenomics/'
+makedir(HL2A_diel_metagenomics_raw)
+nrt_HL2A_diel_metagenomics_raw, rep_HL2A_diel_metagenomics_raw, doc_HL2A_diel_metagenomics_raw, code_HL2A_diel_metagenomics_raw = leafStruc(HL2A_diel_metagenomics_raw)
+
+
+
+####  obs/in-situ/cruise/gradients_1e  #####
+gradients_1_raw = cruise_raw + 'gradients_1/'
+makedir(gradients_1_raw)
+nrt_gradients_1_raw, rep_gradients_1_raw, doc_gradients_1_raw, code_gradients_1_raw = leafStruc(gradients_1_raw)
+
+
+####  obs/in-situ/cruise/gradients_2  #####
+gradients_2_raw = cruise_raw + 'gradients_2/'
+makedir(gradients_2_raw)
+nrt_gradients_2_raw, rep_gradients_2_raw, doc_gradients_2_raw, code_gradients_2_raw = leafStruc(gradients_2_raw)
+
+####  obs/in-situ/cruise/gradients_3  #####
+gradients_3_raw = cruise_raw + 'gradients_3/'
+makedir(gradients_3_raw)
+nrt_gradients_3_raw, rep_gradients_3_raw, doc_gradients_3_raw, code_gradients_3_raw = leafStruc(gradients_3_raw)
+
+
+####  obs/in-situ/cruise/HOT268  #####
+HOT268_raw = cruise_raw + 'HOT268/'
+makedir(HOT268_raw)
+nrt_HOT268_raw, rep_HOT268_raw, doc_HOT268_raw, code_HOT268_raw = leafStruc(HOT268_raw)
+
+
+
 
 ####  obs/in-situ/cruise/GLODAP  #####
 GLODAP_raw = cruise_raw + 'GLODAP/'

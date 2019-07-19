@@ -10,7 +10,7 @@ import insertPrep as ip
 
 """ Mesoscope km 1709 data Catalog Table"""
 tableName = 'tblkm1709_mesoscope'
-rawFilePath = cfgv.rep_km1709_MESOSCOPE_raw
+rawFilePath = cfgv.rep_KM1709_mesoscope_raw
 rawFileName = 'mesoscope_cmap.xlsx'
 ############################
 
