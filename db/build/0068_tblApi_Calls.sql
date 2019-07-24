@@ -21,7 +21,7 @@ CREATE TABLE [dbo].[tblApi_Calls](
     CONSTRAINT [FK_ROUTE_ID] FOREIGN KEY (Route_ID) REFERENCES [dbo].[tblApi_Routes] (ID),
     CONSTRAINT [FK_API_KEY_ID] FOREIGN KEY (Api_Key_Id) REFERENCES [dbo].[tblApi_Keys] (ID),
     CONSTRAINT [FK_AUTH_METHOD] FOREIGN KEY (Auth_Method) REFERENCES [dbo].[tblApi_Auth_Methods] (ID),
-) ON [FG2]
+) ON [PRIMARY]
 GO
 
 ---------------------------
