@@ -18,6 +18,7 @@ USE [Opedia]
 GO
 
 INSERT INTO [dbo].[tblApi_Auth_Methods] (ID, Description)
-VALUES (1, 'Local username/password auth'),
+VALUES (0, 'Unprotected Route'),
+	(1, 'Local username/password auth'),
 	(2, 'JSON Web Token auth'),
 	(3, 'API key auth')
