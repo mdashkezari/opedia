@@ -11,7 +11,7 @@ import credentials as cr
 
 """ Supporting/catalog table insert functions"""
 
-def lineInsert(tableName, columnList ,query, determinator=',', usr=cr.usr, psw=cr.psw):
+def lineInsert(tableName, columnList ,query, determinator=',', server = 'Rainier',usr=cr.usr_rainier, psw=cr.psw_rainier):
     conn = dc.dbConnect(usr=usr, psw=psw)
     cursor = conn.cursor()
     insertQuery = """INSERT INTO %s %s VALUES %s """ % (tableName, columnList, query)
@@ -19,9 +19,9 @@ def lineInsert(tableName, columnList ,query, determinator=',', usr=cr.usr, psw=c
     conn.commit()
 
 
-def findID(datasetName, catalogTable, usr=cr.usr, psw=cr.psw):
+def findID(datasetName, catalogTable, server = 'Rainier'):
     """ this function pulls the ID value from the [tblDatasets] for the tblDataset_References to use """
-    conn = dc.dbConnect(usr=usr, psw=psw)
+    conn = dc.dbConnect(server)
     cursor = conn.cursor()
     cur_str = """select [ID] FROM [Opedia].[dbo].[""" + catalogTable + """] WHERE [Dataset_Name] = '""" + datasetName + """'"""
     cursor.execute(cur_str)
@@ -58,7 +58,7 @@ def remove_duplicatesCatalogTables(usr='nrhagen', psw='Rdw10^3pb'):
     cursor.execute(tblDataset_References)
     cursor.execute(tblVariables)
 
-def findVariables(datasetName, catalogTable, usr=cr.usr, psw=cr.psw):
+def findVariables(datasetName, catalogTable,server = 'Rainier',usr=cr.usr_rainier, psw=cr.psw_rainier):
     conn = dc.dbConnect(usr=usr, psw=psw)
     cursor = conn.cursor()
     cur_str = """select [Variables] FROM [Opedia].[dbo].[""" + catalogTable + """] WHERE [Dataset_Name] = '""" + datasetName + """'"""
@@ -67,7 +67,7 @@ def findVariables(datasetName, catalogTable, usr=cr.usr, psw=cr.psw):
     varlist = IDvar.split(',')
     return varlist
 
-def deleteCatalogTables(datasetName,usr=cr.usr, psw=cr.psw):
+def deleteCatalogTables(datasetName,server = 'Rainier',usr=cr.usr_rainier, psw=cr.psw_rainier):
     contYN = input('Are you sure you want to delete all of the catalog tables for ' + datasetName + ' ?  [yes/no]: ' )
     if contYN == 'yes':
         """ delete tblVariables, then tblDataset_References then finally tblDatasets """
@@ -98,17 +98,18 @@ def deleteCatalogTables(datasetName,usr=cr.usr, psw=cr.psw):
         print('Catalog tables for ' + datasetName + ' not deleted')
 
 
-def tblDatasets(DB, Dataset_Name, Dataset_Long_Name, Variables, Data_Source, Distributor, Description, Climatology):
+def tblDatasets(DB_id,DB, Dataset_Name, Dataset_Long_Name, Variables, Data_Source, Distributor, Description, Climatology):
     """ create a tuple out of variables and columns -- in future edit Climatology should be part of insert prep function to reduce repitition """
     if Climatology == 'NULL':
-        query = (DB, Dataset_Name, Dataset_Long_Name, Variables, Data_Source, Distributor, Description)
-        columnList = '(DB,Dataset_Name, Dataset_Long_Name, Variables, Data_Source, Distributor, Description)'
+        query = (DB_id,DB, Dataset_Name, Dataset_Long_Name, Variables, Data_Source, Distributor, Description)
+        columnList = '(ID, DB,Dataset_Name, Dataset_Long_Name, Variables, Data_Source, Distributor, Description)'
         print('Inserting data into tblDatasets')
+        # print('[opedia].[dbo].[tblDatasets]', columnList, query)
         cI.lineInsert('[opedia].[dbo].[tblDatasets]', columnList, query)
     else:
         if Climatology == '1':
-            columnList = '(DB,Dataset_Name, Dataset_Long_Name, Variables, Data_Source, Distributor, Description, Climatology)'
-            query = (DB, Dataset_Name, Dataset_Long_Name, Variables, Data_Source, Distributor, Description, Climatology)
+            columnList = '(ID, DB,Dataset_Name, Dataset_Long_Name, Variables, Data_Source, Distributor, Description, Climatology)'
+            query = (DB_id,DB, Dataset_Name, Dataset_Long_Name, Variables, Data_Source, Distributor, Description, Climatology)
         print('Inserting data into tblDatasets')
         cI.lineInsert('[opedia].[dbo].[tblDatasets]', columnList, query)
 
@@ -121,11 +122,11 @@ def tblDataset_References(Dataset_Name, reference_list):
     print('Inserting data into tblDataset_References')
 
 
-def tblVariables(DB_list, Dataset_Name_list, short_name_list, long_name_list, unit_list, temporal_res_list, spatial_res_list, Temporal_Coverage_Begin_list, Temporal_Coverage_End_list, Lat_Coverage_Begin_list, Lat_Coverage_End_list, Lon_Coverage_Begin_list, Lon_Coverage_End_list, Grid_Mapping_list, Make_ID_list, Sensor_ID_list, Process_ID_list, Study_Domain_ID_list, keyword_list, comment_list):
+def tblVariables(var_id_list,DB_list, Dataset_Name_list, short_name_list, long_name_list, unit_list, temporal_res_list, spatial_res_list, Temporal_Coverage_Begin_list, Temporal_Coverage_End_list, Lat_Coverage_Begin_list, Lat_Coverage_End_list, Lon_Coverage_Begin_list, Lon_Coverage_End_list, Grid_Mapping_list, Make_ID_list, Sensor_ID_list, Process_ID_list, Study_Domain_ID_list, keyword_list, comment_list):
     Dataset_ID_raw = cI.findID(Dataset_Name_list[0], 'tblDatasets')
     dataset_ID_list = [Dataset_ID_raw] * len(DB_list)
-    columnList = '(DB, Dataset_ID, Table_Name, Short_Name, Long_Name, Unit, Temporal_Res_ID, Spatial_Res_ID, Temporal_Coverage_Begin, Temporal_Coverage_End, Lat_Coverage_Begin, Lat_Coverage_End, Lon_Coverage_Begin, Lon_Coverage_End, Grid_Mapping, Make_ID, Sensor_ID, Process_ID, Study_Domain_ID, Keywords,Comment)'
-    for DB, dataset_ID, Dataset_Name, short_name, long_name, unit, temporal_res, spatial_res, Temporal_Coverage_Begin, Temporal_Coverage_End, Lat_Coverage_Begin, Lat_Coverage_End, Lon_Coverage_Begin, Lon_Coverage_End, Grid_Mapping, Make_ID, Sensor_ID, Process_ID, Study_Domain_ID, keyword, comment in zip(DB_list, dataset_ID_list, Dataset_Name_list, short_name_list, long_name_list, unit_list, temporal_res_list, spatial_res_list, Temporal_Coverage_Begin_list, Temporal_Coverage_End_list, Lat_Coverage_Begin_list, Lat_Coverage_End_list, Lon_Coverage_Begin_list, Lon_Coverage_End_list, Grid_Mapping_list, Make_ID_list, Sensor_ID_list, Process_ID_list, Study_Domain_ID_list, keyword_list, comment_list):
-        query = (DB, dataset_ID, Dataset_Name, short_name, long_name, unit, temporal_res, spatial_res, Temporal_Coverage_Begin, Temporal_Coverage_End, Lat_Coverage_Begin, Lat_Coverage_End, Lon_Coverage_Begin, Lon_Coverage_End, Grid_Mapping, Make_ID, Sensor_ID, Process_ID, Study_Domain_ID, keyword, comment)
+    columnList = '(ID,DB, Dataset_ID, Table_Name, Short_Name, Long_Name, Unit, Temporal_Res_ID, Spatial_Res_ID, Temporal_Coverage_Begin, Temporal_Coverage_End, Lat_Coverage_Begin, Lat_Coverage_End, Lon_Coverage_Begin, Lon_Coverage_End, Grid_Mapping, Make_ID, Sensor_ID, Process_ID, Study_Domain_ID, Keywords,Comment)'
+    for ID, DB, dataset_ID, Dataset_Name, short_name, long_name, unit, temporal_res, spatial_res, Temporal_Coverage_Begin, Temporal_Coverage_End, Lat_Coverage_Begin, Lat_Coverage_End, Lon_Coverage_Begin, Lon_Coverage_End, Grid_Mapping, Make_ID, Sensor_ID, Process_ID, Study_Domain_ID, keyword, comment in zip(var_id_list,DB_list, dataset_ID_list, Dataset_Name_list, short_name_list, long_name_list, unit_list, temporal_res_list, spatial_res_list, Temporal_Coverage_Begin_list, Temporal_Coverage_End_list, Lat_Coverage_Begin_list, Lat_Coverage_End_list, Lon_Coverage_Begin_list, Lon_Coverage_End_list, Grid_Mapping_list, Make_ID_list, Sensor_ID_list, Process_ID_list, Study_Domain_ID_list, keyword_list, comment_list):
+        query = (ID,DB, dataset_ID, Dataset_Name, short_name, long_name, unit, temporal_res, spatial_res, Temporal_Coverage_Begin, Temporal_Coverage_End, Lat_Coverage_Begin, Lat_Coverage_End, Lon_Coverage_Begin, Lon_Coverage_End, Grid_Mapping, Make_ID, Sensor_ID, Process_ID, Study_Domain_ID, keyword, comment)
         cI.lineInsert('[opedia].[dbo].[tblVariables]', columnList, query)
     print('Inserting data into tblVariables')

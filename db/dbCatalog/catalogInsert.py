@@ -12,25 +12,26 @@ import credentials as cr
 
 """ Supporting/catalog table insert functions"""
 
-def lineInsert(tableName, columnList ,query, determinator=',', usr=cr.usr, psw=cr.psw):
-    conn = dc.dbConnect(usr=usr, psw=psw)
+def lineInsert(tableName, columnList ,query, determinator=',', server = 'Rainier'):
+    conn = dc.dbConnect(server)
     cursor = conn.cursor()
     insertQuery = """INSERT INTO %s %s VALUES %s """ % (tableName, columnList, query)
+    print(insertQuery)
     cursor.execute(insertQuery)
     conn.commit()
 
 
-def findID(datasetName, catalogTable, usr=cr.usr, psw=cr.psw):
+def findID(datasetName, catalogTable, server = 'Rainier'):
     """ this function pulls the ID value from the [tblDatasets] for the tblDataset_References to use """
-    conn = dc.dbConnect(usr=usr, psw=psw)
+    conn = dc.dbConnect(server)
     cursor = conn.cursor()
     cur_str = """select [ID] FROM [Opedia].[dbo].[""" + catalogTable + """] WHERE [Dataset_Name] = '""" + datasetName + """'"""
     cursor.execute(cur_str)
     IDvar = (cursor.fetchone()[0])
     return IDvar
 
-def findVariables(datasetName, catalogTable, usr=cr.usr, psw=cr.psw):
-    conn = dc.dbConnect(usr=usr, psw=psw)
+def findVariables(datasetName, catalogTable,server = 'Rainier'):
+    conn = dc.dbConnect(server)
     cursor = conn.cursor()
     cur_str = """select [Variables] FROM [Opedia].[dbo].[""" + catalogTable + """] WHERE [Dataset_Name] = '""" + datasetName + """'"""
     cursor.execute(cur_str)
@@ -38,7 +39,7 @@ def findVariables(datasetName, catalogTable, usr=cr.usr, psw=cr.psw):
     varlist = IDvar.split(',')
     return varlist
 
-def deleteCatalogTables(datasetName,usr=cr.usr, psw=cr.psw):
+def deleteCatalogTables(datasetName,server = 'Rainier'):
     contYN = input('Are you sure you want to delete all of the catalog tables for ' + datasetName + ' ?  [yes/no]: ' )
     if contYN == 'yes':
         """ delete tblVariables, then tblDataset_References then finally tblDatasets """

@@ -22,8 +22,9 @@ def leafStruc(base):
 opedia_proj = r'H:/Dropbox/projects/opedia/'
 vault = r'H:/Dropbox/Apps/OpediaVault/'
 
-# opedia_proj = r'/media/nrhagen/Drobo/opedia/'
-# vault = r'/media/nrhagen/Drobo/OpediaVault/'
+
+# opedia_proj = r'/home/nrhagen/Documents/opedia'
+# vault = r'/run/user/1000/gvfs/afp-volume\:host\=cmap_vault.local\,user\=nrhagen\,volume\=vault/'
 
 makedir(vault)
 
@@ -79,12 +80,6 @@ nrt_darwin_Ocean_Color_raw, rep_darwin_Ocean_Color_raw, doc_darwin_Ocean_Color_r
 nrt_darwin_Ocean_Color_prefix = 'darwin_Ocean_Color_'
 rep_darwin_Ocean_Color_prefix = 'darwin_Ocean_Color_'
 
-######## models/darwin_Nutrient_functional_types_3day ########
-darwin_Nutrient_functional_types_3day_raw = model_raw + 'darwin_Nutrient_functional_types_3day/'
-makedir(darwin_Nutrient_functional_types_3day_raw)
-nrt_darwin_Nutrient_functional_types_3day_raw, rep_darwin_Nutrient_functional_types_3day_raw, doc_darwin_Nutrient_functional_types_3day_raw, code_darwin_Nutrient_functional_types_3day_raw = leafStruc(darwin_Nutrient_functional_types_3day_raw)
-nrt_darwin_Nutrient_functional_types_3day_prefix = 'darwin_Nutrient_functional_types_3day_'
-rep_darwin_Nutrient_functional_types_3day_prefix = 'darwin_Nutrient_functional_types_3day_'
 
 ######## models/darwin_Ecosystem ########
 darwin_Ecosystem_raw = model_raw + 'darwin_Ecosystem/'
@@ -92,6 +87,15 @@ makedir(darwin_Ecosystem_raw)
 nrt_darwin_Ecosystem_raw, rep_darwin_Ecosystem_raw, doc_darwin_Ecosystem_raw, code_darwin_Ecosystem_raw = leafStruc(darwin_Ecosystem_raw)
 nrt_darwin_Ecosystem_prefix = 'darwin_Ecosystem_'
 rep_darwin_Ecosystem_prefix = 'darwin_Ecosystem_'
+
+######## models/darwin_Phytoplankton ########
+darwin_Phytoplankton_raw = model_raw + 'darwin_Phytoplankton/'
+makedir(darwin_Phytoplankton_raw)
+nrt_darwin_Phytoplankton_raw, rep_darwin_Phytoplankton_raw, doc_darwin_Phytoplankton_raw, code_darwin_Phytoplankton_raw = leafStruc(darwin_Phytoplankton_raw)
+nrt_darwin_Phytoplankton_prefix = 'darwin_Phytoplankton_'
+rep_darwin_Phytoplankton_prefix = 'darwin_Phytoplankton_'
+
+
 
 
 
@@ -167,10 +171,40 @@ gradients_18s_raw = cruise_raw + 'gradients_18s/'
 makedir(gradients_18s_raw)
 nrt_gradients_18s_raw, rep_gradients_18s_raw, doc_gradients_18s_raw, code_gradients_18s_raw = leafStruc(gradients_18s_raw)
 
-####  obs/in-situ/cruise/KM1709_mesoscopee  #####
-KM1709_mesoscope_raw = cruise_raw + 'KM1709_mesoscope/'
-makedir(KM1709_mesoscope_raw)
-nrt_KM1709_mesoscope_raw, rep_KM1709_mesoscope_raw, doc_KM1709_mesoscope_raw, code_KM1709_mesoscope_raw = leafStruc(KM1709_mesoscope_raw)
+####  obs/in-situ/cruise/mesoscopee  #####
+mesoscope_raw = cruise_raw + 'mesoscope/'
+makedir(mesoscope_raw)
+nrt_mesoscope_raw, rep_mesoscope_raw, doc_mesoscope_raw, code_mesoscope_raw = leafStruc(mesoscope_raw)
+
+####  obs/in-situ/cruise/Falkor_2018  #####
+Falkor_2018_raw = cruise_raw + 'Falkor_2018/'
+makedir(Falkor_2018_raw)
+nrt_Falkor_2018_raw, rep_Falkor_2018_raw, doc_Falkor_2018_raw, code_Falkor_2018_raw = leafStruc(Falkor_2018_raw)
+
+####  obs/in-situ/cruise/HOE_legacy_2A  #####
+HOE_legacy_2A_raw = cruise_raw + 'HOE_legacy_2A/'
+makedir(HOE_legacy_2A_raw)
+nrt_HOE_legacy_2A_raw, rep_HOE_legacy_2A_raw, doc_HOE_legacy_2A_raw, code_HOE_legacy_2A_raw = leafStruc(HOE_legacy_2A_raw)
+
+####  obs/in-situ/cruise/HOE_legacy_2B  #####
+HOE_legacy_2B_raw = cruise_raw + 'HOE_legacy_2B/'
+makedir(HOE_legacy_2B_raw)
+nrt_HOE_legacy_2B_raw, rep_HOE_legacy_2B_raw, doc_HOE_legacy_2B_raw, code_HOE_legacy_2B_raw = leafStruc(HOE_legacy_2B_raw)
+
+####  obs/in-situ/cruise/HOE_legacy_3  #####
+HOE_legacy_3_raw = cruise_raw + 'HOE_legacy_3/'
+makedir(HOE_legacy_3_raw)
+nrt_HOE_legacy_3_raw, rep_HOE_legacy_3_raw, doc_HOE_legacy_3_raw, code_HOE_legacy_3_raw = leafStruc(HOE_legacy_3_raw)
+
+####  obs/in-situ/cruise/HOE_legacy_4  #####
+HOE_legacy_4_raw = cruise_raw + 'HOE_legacy_4/'
+makedir(HOE_legacy_4_raw)
+nrt_HOE_legacy_4_raw, rep_HOE_legacy_4_raw, doc_HOE_legacy_4_raw, code_HOE_legacy_4_raw = leafStruc(HOE_legacy_4_raw)
+
+####  obs/in-situ/cruise/HOTLAVA  #####
+HOTLAVA_raw = cruise_raw + 'HOTLAVA/'
+makedir(HOTLAVA_raw)
+nrt_HOTLAVA_raw, rep_HOTLAVA_raw, doc_HOTLAVA_raw, code_HOTLAVA_raw = leafStruc(HOTLAVA_raw)
 
 
 ####  obs/in-situ/cruise/HL2A_diel_metagenomicse  #####
@@ -202,8 +236,15 @@ HOT268_raw = cruise_raw + 'HOT268/'
 makedir(HOT268_raw)
 nrt_HOT268_raw, rep_HOT268_raw, doc_HOT268_raw, code_HOT268_raw = leafStruc(HOT268_raw)
 
+####  obs/in-situ/cruise/allSeaFlowCruises  #####
+allSeaFlowCruises_raw = cruise_raw + 'allSeaFlowCruises/'
+makedir(allSeaFlowCruises_raw)
+nrt_allSeaFlowCruises_raw, rep_allSeaFlowCruises_raw, doc_allSeaFlowCruises_raw, code_allSeaFlowCruises_raw = leafStruc(allSeaFlowCruises_raw)
 
-
+####  obs/in-situ/cruise/AMT_cruises  #####
+AMT_cruises_raw = cruise_raw + 'AMT_cruises/'
+makedir(AMT_cruises_raw)
+nrt_AMT_cruises_raw, rep_AMT_cruises_raw, doc_AMT_cruises_raw, code_AMT_cruises_raw = leafStruc(AMT_cruises_raw)
 
 ####  obs/in-situ/cruise/GLODAP  #####
 GLODAP_raw = cruise_raw + 'GLODAP/'

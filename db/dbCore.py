@@ -1,25 +1,37 @@
+import sys
 import os
 import platform
 import numpy as np
 import pandas as pd
 import pyodbc
 import pandas.io.sql as sql
+sys.path.append('login')
+import credentials as cr
 
 
 
-def dbConnect(usr='ArmLab', psw='ArmLab2018', ip='128.208.239.15', port='1433', db='Opedia', TDS_Version='7.3'):
-	try:
-		server = ip + ',' + port
-		if platform.system().lower().find('windows') != -1:
-			conn = pyodbc.connect('DRIVER={SQL Server};SERVER=' + server + ';DATABASE=' + db + ';Uid=' + usr + ';Pwd='+ psw )
-		elif platform.system().lower().find('darwin') != -1:
-			conn = pyodbc.connect('DRIVER=/usr/local/lib/libtdsodbc.so;SERVER=' + server + ';DATABASE=' + db + ';Uid=' + usr + ';Pwd='+ psw )
-		elif platform.system().lower().find('linux') != -1:
-			conn = pyodbc.connect(DRIVER='/usr/lib/x86_64-linux-gnu/odbc/libtdsodbc.so', TDS_Version =  TDS_Version , server =  ip , port =  port, uid = usr, pwd = psw)
-		#print('Successful database connection')
-	except Exception as e:
-		print('Database connection error. Error message: '+str(e))
-	return conn
+def dbConnect(server,db='Opedia', TDS_Version='7.3'):
+    if server == 'Rainier':
+        usr=cr.usr_rainier
+        psw=cr.psw_rainier
+        ip=cr.ip_rainier
+        port = cr.port_rainier
+    else:
+        usr=cr.usr_beast
+        psw=cr.psw_beast
+        ip=cr.ip_beast
+        port = cr.port_beast
+
+    server = ip + ',' + port
+
+    if platform.system().lower().find('windows') != -1:
+        conn = pyodbc.connect('DRIVER={SQL Server};SERVER=' + server + ';DATABASE=' + db + ';Uid=' + usr + ';Pwd='+ psw )
+    elif platform.system().lower().find('darwin') != -1:
+        conn = pyodbc.connect('DRIVER=/usr/local/lib/libtdsodbc.so;SERVER=' + server + ';DATABASE=' + db + ';Uid=' + usr + ';Pwd='+ psw )
+    elif platform.system().lower().find('linux') != -1:
+        conn = pyodbc.connect(DRIVER='/usr/lib/x86_64-linux-gnu/odbc/libtdsodbc.so', TDS_Version =  TDS_Version , server =  ip , port =  port, uid = usr, pwd = psw)
+
+    return conn
 
 '''
 def dbConnect(local=True):
@@ -55,8 +67,8 @@ def dbExecute(sql, vals):
 
 
 
-def dbRead(query, usr='ArmLab', psw='ArmLab2018', ip='128.208.239.15', port='1433', db='Opedia', TDS_Version='7.3'):
-	conn = dbConnect(usr=usr, psw=psw, ip=ip, port=port, db=db, TDS_Version=TDS_Version)
+def dbRead(query, usr=cr.usr_rainier, psw=cr.psw_rainier, ip=cr.ip_rainier, port=cr.port_rainier, db='Opedia', TDS_Version='7.3'):
+	conn = dbConnect('Rainier')
 	dframe = sql.read_sql(query, conn)
 	conn.close()
 	return dframe
@@ -73,6 +85,6 @@ def bulkInsert(filePath, tableName, determinator=',', usr='ArmLab', psw='ArmLab2
 
 
 def bcpInsert(filePath, tableName, determinator=',', usr='ArmLab', psw='ArmLab2018', ip='128.208.239.15', port='1433', db='Opedia', TDS_Version='7.3'):
-    str = """bcp """ + db + """.dbo.""" + tableName + """ in """ + filePath + """ -e error -c -t, -U  """ + usr + """ -P """ + psw + """ -S """ + ip + ""","""+ port 
+    str = """bcp """ + db + """.dbo.""" + tableName + """ in """ + filePath + """ -e error -c -t, -U  """ + usr + """ -P """ + psw + """ -S """ + ip + ""","""+ port
     os.system(str)
     # print('BCP insert finished')

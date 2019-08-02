@@ -4,7 +4,10 @@ import pandas as pd
 
 
 def convertYYYYMMDD(df):
-    df['time'] = pd.to_datetime(df['time'].astype(str), format='%Y-%m-%d')
+    # df['time'] = pd.to_datetime(df['time'].astype(str), format='%Y-%m-%d')
+    df['time'] = pd.to_datetime(df['time'].astype(str))
+
+    df['time'] = df['time'].dt.strftime('%Y-%m-%d %H:%M:%S')
     return df
 
 def removeColumn(cols, df):
