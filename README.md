@@ -31,5 +31,12 @@ Make sure python is added to the system path.  Anaconda distribution covers the 
 	$ pip install opedia
 	```
 
+3. **Need to update opedia?**<br>
+Both the python distribution and opedia are actively being developed, so it can be useful to update them every now and often. Using an older version of opedia with the latest python, or vice versa, may lead to errors for example.
+
+	```
+	$ sudo pip install opedia --upgrade
+	```
+
 # Author
 Mohammad Dehghani Ashkezari <mdehghan@uw.edu>
